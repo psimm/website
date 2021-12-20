@@ -312,18 +312,6 @@ tf %>%
   e_title("Flight destinations")
 ```
 
-## Treemap
-
-Finally, I created a treemap of destinations by origin airport. It's zoomable and shows the hierarchy of categories in the box at the bottom. Personally, I find it a little harder to navigate than a hierarchical treemap that lets the user jump between levels ([Highcharts example](https://www.highcharts.com/demo/treemap-large-dataset)).
-
-```{r treemap}
-flights %>% 
-  count(origin, dest, sort = TRUE) %>% 
-  e_charts() %>% 
-  e_treemap(parent = origin, child = dest, value = n) %>% 
-  e_title("Destinations by origin airport")
-```
-
 ## Wrapup
 
 The charts covered in this article are just a sample of the large variety of capabilities of echarts. There are many more examples on the [official site](https://www.echartsjs.com/examples/en/index.html) and the [echarts4r website](https://echarts4r.john-coene.com/index.html). Personally, echarts4r will become my go-to for interactive HTML publications in R Markdown and Shiny. For static graphs I'll stick with ggplot2 and vast ecosystem of extension packages, and for quick exploratory data analysis plotly's ggplotly() is by far the easiest tool.
