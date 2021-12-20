@@ -26,9 +26,9 @@ enableEmoji = true
     style = "github"
     
 [params]
-  orgName = "RStudio"
-  orgLocal = "Anywhere"
-  description = "A modern, beautiful, and easily configurable blog theme for Hugo."
+  orgName = "Paul Simmering"
+  orgLocal = "Germany"
+  description = "Website of data scientist Paul Simmering"
   favicon = "/img/favicon.ico"
   logo = "/img/blogophonic-mark-dark.png"
   mainSections = ["blog", "project", "talk"]
@@ -65,14 +65,6 @@ enableEmoji = true
   # for more http://tachyons.io/docs/typography/font-family/
   textFontFamily = "sans-serif"
   headingFontFamily = "sans-serif"
-
-  # Configuration of https://utteranc.es/ for comments
-  [params.utterances]
-    use_utterances = true
-    repo_name = "apreshill/apero"
-    issue_term = "pathname" # url, pathname, or title
-    theme = "boxy-light"
-    label = "comments :crystal_ball:"
 
   # Configuration of math rendering
   [params.math]
