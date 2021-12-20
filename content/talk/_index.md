@@ -1,9 +1,9 @@
 ---
 title: Talks
 description: |
-  A list of talks I've given. Please contact me if you would to get the presented slides.
+  A list of talks I've given. Please contact me if you would like to get the presented slides. I like public speaking and appreciate invitations to speak at data science related online events.
 show_post_thumbnail: true
-show_author_byline: true
+show_author_byline: false
 show_post_date: true
 show_post_time: true
 show_button_links: true
@@ -28,7 +28,7 @@ sidebar:
 # set up common front matter for all pages inside blog/
 cascade:
   author: "Paul Simmering"
-  show_author_byline: true
+  show_author_byline: false
   show_post_date: true
   show_post_time: true
   show_comments: false # see site config to choose Disqus or Utterances

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Paul Simmering&#39;s blog</title>
+    <link>/categories/python/</link>
+    <description>Recent content in Python on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data frame wars: pandas vs. polars vs duckdb</title>
+      <link>/blog/dataframes/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dataframes/</guid>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data acquisition libaries available for Python than for R.
+The contenders The first thing I needed was a way to manipulate data frames.</description>
+    </item>
+    
+  </channel>
+</rss>

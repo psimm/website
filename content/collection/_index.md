@@ -23,7 +23,7 @@ cascade:
       Sometimes you want a souped-up series- a bundle of related pages 
       meant to be read in sequence. This section is like a blog series, 
       minus the blog.
-    show_author_byline: true
+    show_author_byline: false
     show_post_date: true
     text_link_label: ""
     text_link_url: ""

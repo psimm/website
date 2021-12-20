@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>echarts4r on Paul Simmering&#39;s blog</title>
+    <link>/tags/echarts4r/</link>
+    <description>Recent content in echarts4r on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/echarts4r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring echarts4r</title>
+      <link>/blog/echarts4r/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/echarts4r/</guid>
+      <description>As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R.</description>
+    </item>
+    
+  </channel>
+</rss>

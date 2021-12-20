@@ -9,12 +9,14 @@ link_list_label: "Interests" # bookmarks, elsewhere, etc.
 link_list:
 - name: Lesswrong
   url: https://www.lesswrong.com
+- name: Effective Altruism
+  url: https://www.effectivealtruism.org
 - name: spaCy
   url: https://spacy.io
-- name: AWS
-  url: https://aws.com
 - name: Echarts
   url: https://echarts.apache.org/en/index.html
+- name: AWS
+  url: https://aws.com
 ---
 
 ** index doesn't contain a body, just front matter above.
