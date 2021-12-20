@@ -44,11 +44,11 @@ In terms of ease of use, I'd put echarts4r in the middle of the pack. The R docu
 The remainder of this article is a tour of echarts4r's features using the [nycflights13](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) dataset. The official package website shows many more types of graphs, including maps, which are not covered here.
 
 ```{r libraries}
-library(echarts4r) # charts
-library(tidyverse) # general use
-library(lubridate) # dates and times
-library(prophet) # forecasting
-library(nycflights13) # data
+library(echarts4r)
+library(dplyr)
+library(lubridate)
+library(nycflights13)
+library(stringr)
 ```
 
 ## Set a theme
@@ -72,6 +72,7 @@ top_destinations <- flights %>%
   count(dest) %>% 
   top_n(15, n) %>% 
   arrange(n)
+
 top_destinations %>%
   e_charts(x = dest) %>%
   e_bar(n, legend = FALSE, name = "Flights") %>% 
@@ -238,53 +239,6 @@ area <- ts_base %>% e_area(dep_delay, stack = "grp")
 area
 ```
 
-### Visualizing time series forecasts
-
-I used Facebook's prophet package (see <https://facebook.github.io/prophet/docs/quick_start.html#r-api>) to forecast the sum of daily departure delays for JFK airport. The prophet package already comes with a built-in visualization function using dygraphs, but this article is about echarts.
-
-```{r prediction}
-history <- flights %>% 
-  filter(origin == "JFK") %>% 
-  group_by(ds = as.Date(time_hour)) %>% 
-  summarise(y = sum(dep_delay, na.rm = TRUE))
-# Fit a prophet model based on history & make a forecast
-model <- prophet::prophet(history)
-future <- make_future_dataframe(model, periods = 100)
-forecast <- predict(model, future)
-# Combine history with forecast (I'm sure this can be done more elegantly)
-combined <- bind_rows(
-  history,
-  forecast %>% 
-    mutate(ds = as.Date(ds)) %>% # prophet returns a different date format
-    anti_join(history, by = "ds")
-) %>% select(ds, y, yhat, yhat_upper, yhat_lower)
-```
-
-```{r future}
-combined %>% 
-  e_charts(x = ds) %>% 
-  e_line(y, symbol = "none", name = "History", legend = FALSE)  %>% 
-  e_line(yhat, symbol = "none", name = "Prediction", legend = FALSE)  %>% 
-  e_band(
-    min = yhat_lower, 
-    max = yhat_upper,
-    name = c("Lower bound", "Upper bound"),
-    areaStyle = list(
-      list(color = "#a5e7f0"), 
-      list(color = "#a5e7f0")
-    )
-  ) %>% 
-  e_datazoom(
-    type = "slider", 
-    toolbox = FALSE,
-    bottom = -5
-  ) %>% 
-  e_title("Prediction of future departure delays") %>% 
-  e_tooltip() %>% 
-  e_x_axis(ds, axisPointer = list(show = TRUE))
-```
-
-While the forecast is not particularly useful, the tooltip and zoom give the viewer more precision than a static display.
 
 ### Timeline
 
@@ -306,55 +260,6 @@ flights_ts %>%
 ## Synchronized plots
 
 Similar to the [crosstalk](https://rstudio.github.io/crosstalk/) package, echarts allows linking of plots. They share legend, sliders and data zooms. From my point of view, it's easier to use but not as flexible. Crosstalk allows linking of any compatible HTMLWidgets like [Leaflet maps](https://rstudio.github.io/leaflet/) and [DT tables](https://rstudio.github.io/DT/), while echarts is limited to echarts itself. When used in [Shiny applications](https://shiny.rstudio.com), the complex interactions can be handled by the server functions, so echarts can also be linked without limitations.
-
-For this article, I demonstrate chart linking with a visualization of time series decomposition.
-
-### Time series decomposition
-
-```{r decomp}
-decomp <- predict(model) %>% # analyze history
-  mutate(
-    y = history$y, 
-    remainder = y - trend - weekly - additive_terms
-  )
-base_chart <- decomp %>% 
-  e_charts(x = ds, height = 200) %>%
-  e_tooltip() %>% 
-  e_x_axis(ds, axisPointer = list(
-    show = TRUE,
-    label = list(show = FALSE)
-  )) %>% 
-  e_y_axis(
-    nameLocation = "end",
-    nameTextStyle = list(
-      color = "#666666",
-      fontWeight = "bold"
-    )
-  ) %>% 
-  e_group("decomp") %>% 
-  e_grid(top = 35, bottom = 35)
-y <- base_chart %>% 
-  e_line(y, symbol = "none", legend = FALSE) %>% 
-  e_datazoom(show = FALSE, toolbox = FALSE) %>% 
-  e_axis_labels(y = "History")
-trend <- base_chart %>% 
-  e_line(trend, symbol = "none", legend = FALSE) %>% 
-  e_datazoom(show = FALSE, toolbox = FALSE) %>% 
-  e_axis_labels(y = "Trend")
-weekly <- base_chart %>% 
-  e_line(weekly, symbol = "none", legend = FALSE) %>% 
-  e_datazoom(show = FALSE, toolbox = FALSE) %>% 
-  e_axis_labels(y = "Seasonality")
-remainder <- base_chart %>% 
-  e_bar(remainder, legend = FALSE) %>%
-  e_datazoom(
-    show = TRUE,
-    toolbox = FALSE
-  ) %>% 
-  e_axis_labels(y = "Remainder") %>% 
-  e_connect_group("decomp")
-e_arrange(y, trend, weekly, remainder, nrow = 4)
-```
 
 ## Grab bag
 
