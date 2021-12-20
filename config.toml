@@ -35,7 +35,7 @@ enableEmoji = true
   navallcaps = true
   # show/hide social icons in site header & footer
   # configure social icons and links below in [[params.social]]
-  socialInHeader = false
+  socialInHeader = true
   socialInFooter = true
   # Default image for social sharing and search engines. 
   # Place image file in `static` folder and specify image name here.
@@ -123,21 +123,6 @@ enableEmoji = true
     title = "Talks"
     url = "/talk/"
     weight = 4
-  [[menu.header]]
-    name = "Twitter"
-    title = "Twitter"
-    url = "https://twitter.com/paul_simmering"
-    weight = 5
-  [[menu.header]]
-    name = "Github"
-    title = "Github"
-    url = "https://github.com/psimm"
-    weight = 6
-  [[menu.header]]
-    name = "LinkedIn"
-    title = "LinkedIn"
-    url = "https://de.linkedin.com/in/paulsimmering"
-    weight = 7
     
   # Configure footer  
   [[menu.footer]]
