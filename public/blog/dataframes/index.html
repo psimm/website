@@ -44,8 +44,8 @@
     
     
   <meta itemprop="name" content="Data frame wars: pandas vs. polars vs duckdb">
-<meta itemprop="description" content="I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data acquisition libaries available for Python than for R.
-The contenders The first thing I needed was a way to manipulate data frames."><meta itemprop="datePublished" content="2021-12-20T00:00:00+00:00" />
+<meta itemprop="description" content="I&rsquo;m a long time R user and lately I&rsquo;ve seen more and more signals that it&rsquo;s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
+The contenders     The first thing I needed was a way to manipulate data frames."><meta itemprop="datePublished" content="2021-12-20T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-12-20T00:00:00+00:00" />
 <meta itemprop="wordCount" content="855"><meta itemprop="image" content="/blog/dataframes/featured.jpg">
 <meta itemprop="keywords" content="Performance," />
@@ -164,17 +164,29 @@ The contenders The first thing I needed was a way to manipulate data frames."><m
 
       </header>
       <section class="post-body pt5 pb4">
-        
+        <p>I&rsquo;m a long time R user and lately I&rsquo;ve seen more and more signals that it&rsquo;s worth investing into learning more Python. I use it for NLP with 
+<a href="https://spacy.io" target="_blank" rel="noopener">spaCy</a> and to build functions on 
+<a href="https://aws.amazon.com/lambda/features/" target="_blank" rel="noopener">AWS Lambda</a> (though the recent 
+<a href="https://mdneuzerling.com/post/serverless-on-demand-parametrised-r-markdown-reports-with-aws-lambda/" target="_blank" rel="noopener">lambdr</a> package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.</p>
 
 
-<p>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with <a href="https://spacy.io">spaCy</a> and to build functions on <a href="https://aws.amazon.com/lambda/features/">AWS Lambda</a> (though the recent <a href="https://mdneuzerling.com/post/serverless-on-demand-parametrised-r-markdown-reports-with-aws-lambda/">lambdr</a> package gave R some great tools there too). Further, there are many more data acquisition libaries available for Python than for R.</p>
-<div id="the-contenders" class="section level2">
-<h2>The contenders</h2>
-<p>The first thing I needed was a way to manipulate data frames. I’ve narrowed it down to 3 choices:</p>
+
+
+<h2 id="the-contenders">The contenders
+  <a href="#the-contenders"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The first thing I needed was a way to manipulate data frames. I&rsquo;ve narrowed it down to 3 choices:</p>
 <ul>
-<li><a href="https://pandas.pydata.org">Pandas</a>: The most commonly used library and the one with the most tutorials and Stack Overflow answers available.</li>
-<li><a href="https://www.pola.rs">Polars</a>: The fastest library available. It’s a new library that doesn’t have nearly as many users or help available. But according to the <a href="https://h2oai.github.io/db-benchmark/">H2Oai ops benchmark</a>, it often runs 10x faster than Pandas.</li>
-<li><a href="https://www.pola.rs">Duckdb</a>: Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.</li>
+<li>
+<a href="https://pandas.pydata.org" target="_blank" rel="noopener">Pandas</a>: The most commonly used library and the one with the most tutorials and Stack Overflow answers available.</li>
+<li>
+<a href="https://www.pola.rs" target="_blank" rel="noopener">Polars</a>: The fastest library available. It&rsquo;s a new library that doesn&rsquo;t have nearly as many users or help available. But according to the 
+<a href="https://h2oai.github.io/db-benchmark/" target="_blank" rel="noopener">H2Oai ops benchmark</a>, it often runs 10x faster than Pandas.</li>
+<li>
+<a href="https://www.pola.rs" target="_blank" rel="noopener">Duckdb</a>: Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.</li>
 </ul>
 <p>There are far more options and this is my shortlist. I have excluded the other options in the benchmark for these reasons:</p>
 <ul>
@@ -185,41 +197,78 @@ The contenders The first thing I needed was a way to manipulate data frames."><m
 <li>Not in Python (DataFrames.jl)</li>
 <li>Meant for GPU only (cuDF)</li>
 </ul>
-<p>My reference is my current use of <a href="https://dplyr.tidyverse.org">dplyr</a> in R. When I need more performance, I use <a href="https://github.com/markfairbanks/tidytable">tidytable</a> to get the speed of data.table with the grammar of dplyr. I also use <a href="https://dbplyr.tidyverse.org">dbplyr</a> a lot, which translates dplyr to SQL. It’s composeable, which actually makes it superior to SQL for me in most use cases.</p>
-<p>With that out of the way, here’s a heavily biased comparison of the three Python packages.</p>
-<p>I’m speaking of my personal opinion of these packages given my own background - not a general comparison.</p>
-</div>
-<div id="pandas-most-popular" class="section level2">
-<h2>Pandas: Most popular</h2>
+<p>My reference is my current use of 
+<a href="https://dplyr.tidyverse.org" target="_blank" rel="noopener">dplyr</a> in R. When I need more performance, I use 
+<a href="https://github.com/markfairbanks/tidytable" target="_blank" rel="noopener">tidytable</a> to get the speed of data.table with the grammar of dplyr. I also use 
+<a href="https://dbplyr.tidyverse.org" target="_blank" rel="noopener">dbplyr</a> a lot, which translates dplyr to SQL. It&rsquo;s composeable, which actually makes it superior to SQL for me in most use cases.</p>
+<p>With that out of the way, here&rsquo;s a heavily biased comparison of the three Python packages.</p>
+<p>I&rsquo;m speaking of my personal opinion of these packages given my own background - not a general comparison.</p>
+
+
+
+
+<h2 id="pandas-most-popular">Pandas: Most popular
+  <a href="#pandas-most-popular"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
 <p>The syntax is inspired by base R, which is a good thing.</p>
 <p>Pandas uses a row index, which is basically a special blessed column. Base R also has this with row names, though the tidyverse and tibbles have largely removed them from common use.</p>
 <p>Pandas has the widest API, offering hundreds of functions for every conceivable manipulation.</p>
-</div>
-<div id="polars-fastest" class="section level2">
-<h2>Polars: Fastest</h2>
-<p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyer work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis.</p>
+
+
+
+
+<h2 id="polars-fastest">Polars: Fastest
+  <a href="#polars-fastest"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyer work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it&rsquo;s a little less convenient for interactive analysis.</p>
 <p>The API is leaner than pandas, requiring to memorize fewer functions and patterns.</p>
-<p>There isn’t nearly as much help available for problems with polars as for with pandas. Often, I had to use trial and error based on the documentation. While the documentation is good, it can’t answer every question.</p>
-</div>
-<div id="duckdb-easiest-for-sql-users" class="section level2">
-<h2>DuckDB: Easiest for SQL users</h2>
+<p>There isn&rsquo;t nearly as much help available for problems with polars as for with pandas. Often, I had to use trial and error based on the documentation. While the documentation is good, it can&rsquo;t answer every question.</p>
+
+
+
+
+<h2 id="duckdb-easiest-for-sql-users">DuckDB: Easiest for SQL users
+  <a href="#duckdb-easiest-for-sql-users"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
 <p>DuckDB can also operate directly on a pandas dataframe.</p>
 <p>The performance is closer to polars than to pandas.</p>
 <p>A big plus is the ability to handle larger than memory data.</p>
-<p>The code is portable to R, C, C++, Java and other programming languages the duckdb has <a href="https://duckdb.org/docs/api/overview">APIs</a>. It’s also portable when the logic is taken to a DB like <a href="https://www.postgresql.org">Postgres</a>, or <a href="https://www.snowflake.com/">Snowflake</a>, or is ported to an ETL framework like <a href="https://github.com/dbt-labs/dbt-core">DBT</a>.</p>
-<p>This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating data translates well to other situations - SQL has been around for more than 40 years. Something that can’t be said about any Python library. Learning SQL is future-proofing ones career.</p>
-<p>While these are big plusses, duckdb isn’t as convenient as Polars and Pandas for interactive data exploration. The SQL isn’t as composable. Plus, writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> and <a href="https://www.jetbrains.com/dataspell/">DataSpell</a> do).</p>
+<p>The code is portable to R, C, C++, Java and other programming languages the duckdb has 
+<a href="https://duckdb.org/docs/api/overview" target="_blank" rel="noopener">APIs</a>. It&rsquo;s also portable when the logic is taken to a DB like 
+<a href="https://www.postgresql.org" target="_blank" rel="noopener">Postgres</a>, or 
+<a href="https://www.snowflake.com/" target="_blank" rel="noopener">Snowflake</a>, or is ported to an ETL framework like 
+<a href="https://github.com/dbt-labs/dbt-core" target="_blank" rel="noopener">DBT</a>.</p>
+<p>This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating data translates well to other situations - SQL has been around for more than 40 years. Something that can&rsquo;t be said about any Python library. Learning SQL is future-proofing ones career.</p>
+<p>While these are big plusses, duckdb isn&rsquo;t as convenient as Polars and Pandas for interactive data exploration. The SQL isn&rsquo;t as composable. Plus, writing strings rather than actual Python is awkward and many editors don&rsquo;t provide syntax highlighting within the strings (Jetbrains editors like 
+<a href="https://www.jetbrains.com/pycharm/" target="_blank" rel="noopener">PyCharm</a> and 
+<a href="https://www.jetbrains.com/dataspell/" target="_blank" rel="noopener">DataSpell</a> do).</p>
 <p>SQL is less expressive than Python, especially when the names of output columns are unknown. It lacks shorthands.</p>
-<p>It’s also harder to write custom functions in SQL. With pandas and polars, custom operations are just one lambda away.</p>
-<p>Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.</p>
+<p>It&rsquo;s also harder to write custom functions in SQL. With pandas and polars, custom operations are just one lambda away.</p>
+<p>Using duckdb without pandas doesn&rsquo;t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.</p>
 <p>Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.</p>
-</div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p>It’s not a clear-cut choice. Each seems more useful in it’s own arena.</p>
-<p>None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with">tidy evaluation</a>, letting users refer to columns in a data frame by their names (<code>colname</code>) rather than as strings <code>"colname"</code>or constructs like <code>pl.col("colname")</code>. While this is nice for quickly writing code, I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like <code>{{ }}</code> and <code>:=</code>.</p>
+
+
+
+
+<h2 id="conclusion">Conclusion
+  <a href="#conclusion"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>It&rsquo;s not a clear-cut choice. Each seems more useful in it&rsquo;s own arena.</p>
+<p>None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with 
+<a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with" target="_blank" rel="noopener">tidy evaluation</a>, letting users refer to columns in a data frame by their names (<code>colname</code>) rather than as strings <code>&quot;colname&quot;</code>or constructs like <code>pl.col(&quot;colname&quot;)</code>. While this is nice for quickly writing code, I&rsquo;ve also seen it be confusing for newbies to R that mix it up with base R&rsquo;s syntax. It&rsquo;s also harder to program with, where it&rsquo;s necessary to use operators like <code>{{ }}</code> and <code>:=</code>.</p>
 <p>Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
-</div>
 
         
         <details closed class="f6 fw7 input-reset">

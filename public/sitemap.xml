@@ -53,6 +53,15 @@
     <loc>/tags/</loc>
     <lastmod>2021-12-20T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/talk/bvmki2021/</loc>
+    <lastmod>2021-11-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/symposium/</loc>
+    <lastmod>2021-11-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/talk/</loc>
+    <lastmod>2021-11-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/categories/aws/</loc>
     <lastmod>2021-04-01T00:00:00+00:00</lastmod>
   </url><url>
@@ -68,20 +77,11 @@
     <loc>/collection/</loc>
     <lastmod>2021-01-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/talk/campfire/</loc>
-    <lastmod>2021-01-12T00:00:00+00:00</lastmod>
+    <loc>/categories/conference/</loc>
+    <lastmod>2020-09-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/talk/</loc>
-    <lastmod>2021-01-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/workshop/</loc>
-    <lastmod>2021-01-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/talk/second-seedling/</loc>
-    <lastmod>2021-01-01T14:15:59-06:00</lastmod>
-  </url><url>
-    <loc>/categories/meetup/</loc>
-    <lastmod>2021-01-01T14:15:59-06:00</lastmod>
+    <loc>/talk/comes2020/</loc>
+    <lastmod>2020-09-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/data-visualization/</loc>
     <lastmod>2020-02-08T00:00:00+00:00</lastmod>
@@ -95,8 +95,8 @@
     <loc>/blog/echarts4r/</loc>
     <lastmod>2020-02-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/talk/seedling/</loc>
-    <lastmod>2020-01-13T14:15:59-06:00</lastmod>
+    <loc>/talk/gor2019/</loc>
+    <lastmod>2019-08-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/hugo-site/</loc>
     <lastmod>2019-07-03T00:00:00+00:00</lastmod>
@@ -121,6 +121,15 @@
   </url><url>
     <loc>/elements/</loc>
     <lastmod>2019-02-18T12:27:33-06:00</lastmod>
+  </url><url>
+    <loc>/talk/researchplus2018/</loc>
+    <lastmod>2018-09-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/talk/concordi2017/</loc>
+    <lastmod>2017-09-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/talk/emaee2017/</loc>
+    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/about/</loc>
   </url><url>

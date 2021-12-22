@@ -89,8 +89,18 @@ My content section is: collection  My layout is: single-series   part 2!     doe
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dataframes/</guid>
-      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data acquisition libaries available for Python than for R.
-The contenders The first thing I needed was a way to manipulate data frames.</description>
+      <description>I&amp;rsquo;m a long time R user and lately I&amp;rsquo;ve seen more and more signals that it&amp;rsquo;s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
+The contenders     The first thing I needed was a way to manipulate data frames.</description>
+    </item>
+    
+    <item>
+      <title>AI for Social Media Monitoring at dm</title>
+      <link>/talk/bvmki2021/</link>
+      <pubDate>Thu, 25 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/bvmki2021/</guid>
+      <description>A presentation on Cosmention&amp;rsquo;s data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language models and word vectors and then dives into text classification and named entity recognition.
+Photo by Christopher Burns on Unsplash</description>
     </item>
     
     <item>
@@ -103,21 +113,13 @@ The contenders The first thing I needed was a way to manipulate data frames.</de
     </item>
     
     <item>
-      <title>A campfire</title>
-      <link>/talk/campfire/</link>
-      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/talk/comes2020/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/talk/campfire/</guid>
-      <description>I&amp;rsquo;m really excited to give this talk! Stay tuned for video and slides.</description>
-    </item>
-    
-    <item>
-      <title>A seedling</title>
-      <link>/talk/second-seedling/</link>
-      <pubDate>Fri, 01 Jan 2021 14:15:59 -0600</pubDate>
-      
-      <guid>/talk/second-seedling/</guid>
-      <description></description>
+      <guid>/talk/comes2020/</guid>
+      <description>Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
+Photo by Alina Grubnyak on Unsplash</description>
     </item>
     
     <item>
@@ -130,11 +132,11 @@ The contenders The first thing I needed was a way to manipulate data frames.</de
     </item>
     
     <item>
-      <title>A seedling</title>
-      <link>/talk/seedling/</link>
-      <pubDate>Mon, 13 Jan 2020 14:15:59 -0600</pubDate>
+      <title>R Shiny for Interactive Data Visualization – A Case Study</title>
+      <link>/talk/gor2019/</link>
+      <pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/talk/seedling/</guid>
+      <guid>/talk/gor2019/</guid>
       <description></description>
     </item>
     
@@ -181,6 +183,33 @@ Formspree requires a (free) account and new form to be set up. The link is made 
 (20px) 1rem
 (16px) .875rem
 (14px)     Type Samples Head&amp;shy;line Sub&amp;shy;head&amp;shy;line Level 1 Heading One page to rule them all...well, not really. This page displays sample typography and page elements to illustrate their style. Things like headings and paragraphs showing the beautiful type scale, form elements, tabular data, and image layouts just to name a few.</description>
+    </item>
+    
+    <item>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation.</title>
+      <link>/talk/researchplus2018/</link>
+      <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/researchplus2018/</guid>
+      <description>A presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI&amp;rsquo;s lack of reciprocity, and potential problems in value alignment.</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/concordi2017/</link>
+      <pubDate>Wed, 27 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/concordi2017/</guid>
+      <description>Photo by Joan Oger on Unsplash</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/emaee2017/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/emaee2017/</guid>
+      <description>Photo by Patrick Robert Doyle on Unsplash</description>
     </item>
     
     <item>

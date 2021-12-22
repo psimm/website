@@ -219,8 +219,8 @@
 </h3>
 <p>This theme has a <strong>form-to-email</strong> feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form
 (<code>/content/forms/contact.md</code>). Of course, the example shown below (<code>your@email.here</code>) must not be used. Please use your actual email address.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># please replace with a valid Formspree form id or email address</span>
-<span style="color:#a6e22e">formspree_form_id</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#a6e22e">your</span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">here</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#f00;font-style:italic"># please replace with a valid Formspree form id or email address</span>
+formspree_form_id: your@email.here
 </code></pre></div><p>Update that file and you&rsquo;re ready to begin receiving submissions. Just submit
 the active form for the first time, and complete the email address verification
 step with Formspree, and your contact form is live. The next time someone
@@ -240,8 +240,8 @@ you can type <code>hugo new forms/contact.md</code> and you&rsquo;re off to the 
 layouts for <code>forms</code> – <code>split-right</code>, and <code>split-left</code> – you guessed it, one puts
 the form on the right and the other on the left. You just fill out the front
 matter, and the rest is automatic.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># layout options: split-right or split-left</span>
-<span style="color:#a6e22e">layout</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#a6e22e">split-right</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#f00;font-style:italic"># layout options: split-right or split-left</span>
+layout: split-right
 </code></pre></div><p><img src="built-in-contact-form-screenshot.png" alt="Contact Form Split Right Layout Screenshot"></p>
 <p>Both layouts display the page title and description opposite the form, and you
 can also choose to show your social icon links if you have those configured in

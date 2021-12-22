@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>conference on Paul Simmering&#39;s blog</title>
+    <link>/categories/conference/</link>
+    <description>Recent content in conference on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/conference/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/talk/comes2020/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/comes2020/</guid>
+      <description>Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
+Photo by Alina Grubnyak on Unsplash</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/concordi2017/</link>
+      <pubDate>Wed, 27 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/concordi2017/</guid>
+      <description>Photo by Joan Oger on Unsplash</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/emaee2017/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/emaee2017/</guid>
+      <description>Photo by Patrick Robert Doyle on Unsplash</description>
+    </item>
+    
+  </channel>
+</rss>

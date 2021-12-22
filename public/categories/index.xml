@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>symposium</title>
+      <link>/categories/symposium/</link>
+      <pubDate>Thu, 25 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/symposium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>AWS</title>
       <link>/categories/aws/</link>
       <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
@@ -35,20 +44,11 @@
     </item>
     
     <item>
-      <title>workshop</title>
-      <link>/categories/workshop/</link>
-      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      <title>conference</title>
+      <link>/categories/conference/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/categories/workshop/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>meetup</title>
-      <link>/categories/meetup/</link>
-      <pubDate>Fri, 01 Jan 2021 14:15:59 -0600</pubDate>
-      
-      <guid>/categories/meetup/</guid>
+      <guid>/categories/conference/</guid>
       <description></description>
     </item>
     

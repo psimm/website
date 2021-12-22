@@ -13,8 +13,8 @@
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dataframes/</guid>
-      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data acquisition libaries available for Python than for R.
-The contenders The first thing I needed was a way to manipulate data frames.</description>
+      <description>I&amp;rsquo;m a long time R user and lately I&amp;rsquo;ve seen more and more signals that it&amp;rsquo;s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
+The contenders     The first thing I needed was a way to manipulate data frames.</description>
     </item>
     
     <item>

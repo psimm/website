@@ -1,7 +1,7 @@
 ---
 title: Talks
 description: |
-  A list of talks I've given. Please contact me if you would like to get the presented slides. I like public speaking and appreciate invitations to speak at data science related online events.
+  A list of talks I've given. I like public speaking and appreciate invitations to speak at events related to data science.
 show_post_thumbnail: true
 show_author_byline: false
 show_post_date: true
