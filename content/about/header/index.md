@@ -3,7 +3,7 @@
 text_align_right: false
 show_title_as_headline: false
 headline: |
-  Hi, my name is Paul Simmering. Nice to meet you.
+  Hi there! Welcome.
 ---
 
 <!-- this is a subheadline -->

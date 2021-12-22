@@ -3,7 +3,7 @@ title: "Paul Simmering"
 subtitle: "Full stack data scientist"
 description: "Welcome to my website! It's the place where I share articles and projects. Check my [Github profile](https://github.com/psimm) to see the code. The best way to contact me is via a direct message on Twitter or LinkedIn."
 images:
-  - img/revoir.jpg
+  - img/portrait.jpeg
 image_left: true
 text_align_left: false
 show_social_links: true # specify social accounts in site config
