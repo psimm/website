@@ -17,7 +17,7 @@ sidebar:
   description: |
     My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosphy or project management.
     
-  author: "Paul Simmering"
+  author: ""
   text_link_label: Subscribe via RSS
   text_link_url: /index.xml
   show_sidebar_adunit: false # show ad container
