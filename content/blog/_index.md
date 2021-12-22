@@ -1,7 +1,7 @@
 ---
 title: Data science blog
 description: |
-  My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosphy or project management.
+  My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosophy or project management.
 author: "Paul Simmering"
 show_post_thumbnail: true
 thumbnail_left: true # for list-sidebar only
@@ -15,7 +15,7 @@ layout: list-sidebar # list, list-sidebar, list-grid
 sidebar: 
   title: Data science blog
   description: |
-    My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosphy or project management.
+    My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosophy or project management. Illustration by <a href="https://unsplash.com/@sonance">Viktor Forgacs</a> on <a href="https://unsplash.com/photos/7C5N8yLaeDI">Unsplash</a>
     
   author: ""
   text_link_label: Subscribe via RSS
