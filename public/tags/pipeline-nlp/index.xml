@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pipeline, NLP on Paul Simmering&#39;s blog</title>
+    <link>/tags/pipeline-nlp/</link>
+    <description>Recent content in pipeline, NLP on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/pipeline-nlp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cosmention</title>
+      <link>/project/cosmention/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/project/cosmention/</guid>
+      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.</description>
+    </item>
+    
+  </channel>
+</rss>

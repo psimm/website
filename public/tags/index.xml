@@ -8,9 +8,27 @@
     <language>en</language>
     <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Performance</title>
+      <link>/tags/performance/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/performance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pipeline, NLP</title>
+      <link>/tags/pipeline-nlp/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pipeline-nlp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>echarts</title>
       <link>/tags/echarts/</link>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/echarts/</guid>
       <description></description>
@@ -19,18 +37,9 @@
     <item>
       <title>echarts4r</title>
       <link>/tags/echarts4r/</link>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/echarts4r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Performance</title>
-      <link>/tags/performance/</link>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/performance/</guid>
       <description></description>
     </item>
     

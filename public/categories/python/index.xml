@@ -17,5 +17,14 @@
 The contenders The first thing I needed was a way to manipulate data frames.</description>
     </item>
     
+    <item>
+      <title>Cosmention</title>
+      <link>/project/cosmention/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/project/cosmention/</guid>
+      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.</description>
+    </item>
+    
   </channel>
 </rss>

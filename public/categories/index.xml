@@ -8,15 +8,6 @@
     <language>en</language>
     <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Data visualization</title>
-      <link>/categories/data-visualization/</link>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/data-visualization/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Python</title>
       <link>/categories/python/</link>
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
@@ -35,6 +26,15 @@
     </item>
     
     <item>
+      <title>AWS</title>
+      <link>/categories/aws/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>workshop</title>
       <link>/categories/workshop/</link>
       <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
@@ -49,6 +49,15 @@
       <pubDate>Fri, 01 Jan 2021 14:15:59 -0600</pubDate>
       
       <guid>/categories/meetup/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data visualization</title>
+      <link>/categories/data-visualization/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/data-visualization/</guid>
       <description></description>
     </item>
     

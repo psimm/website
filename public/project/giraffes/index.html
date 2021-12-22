@@ -235,22 +235,22 @@ giving you control over the theme color scheme. For an option like <code>siteBgC
 for example, you can just type one of the predefined color names from Tachyons
 and save the file. You can totally customize the theme colors within minutes of
 installing the theme.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#998;font-style:italic"># basic color options: use only color names as shown in the</span>
-<span style="color:#998;font-style:italic"># &#34;Color Palette&#34; section of http://tachyons.io/docs/themes/skins/</span>
-siteBgColor = <span style="color:#d14">&#34;near-white&#34;</span>
-sidebarBgColor = <span style="color:#d14">&#34;light-gray&#34;</span>
-headingColor = <span style="color:#d14">&#34;black&#34;</span>
-textColor = <span style="color:#d14">&#34;dark-gray&#34;</span>
-sidebarTextColor = <span style="color:#d14">&#34;mid-gray&#34;</span>
-bodyLinkColor = <span style="color:#d14">&#34;blue&#34;</span>
-navLinkColor = <span style="color:#d14">&#34;near-black&#34;</span>
-sidebarLinkColor = <span style="color:#d14">&#34;near-black&#34;</span>
-footerTextColor = <span style="color:#d14">&#34;silver&#34;</span>
-buttonTextColor = <span style="color:#d14">&#34;near-white&#34;</span>
-buttonBgColor = <span style="color:#d14">&#34;black&#34;</span>
-buttonHoverTextColor = <span style="color:#d14">&#34;white&#34;</span>
-buttonHoverBgColor = <span style="color:#d14">&#34;blue&#34;</span>
-borderColor = <span style="color:#d14">&#34;moon-gray&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># basic color options: use only color names as shown in the</span>
+<span style="color:#75715e"># &#34;Color Palette&#34; section of http://tachyons.io/docs/themes/skins/</span>
+<span style="color:#a6e22e">siteBgColor</span> = <span style="color:#e6db74">&#34;near-white&#34;</span>
+<span style="color:#a6e22e">sidebarBgColor</span> = <span style="color:#e6db74">&#34;light-gray&#34;</span>
+<span style="color:#a6e22e">headingColor</span> = <span style="color:#e6db74">&#34;black&#34;</span>
+<span style="color:#a6e22e">textColor</span> = <span style="color:#e6db74">&#34;dark-gray&#34;</span>
+<span style="color:#a6e22e">sidebarTextColor</span> = <span style="color:#e6db74">&#34;mid-gray&#34;</span>
+<span style="color:#a6e22e">bodyLinkColor</span> = <span style="color:#e6db74">&#34;blue&#34;</span>
+<span style="color:#a6e22e">navLinkColor</span> = <span style="color:#e6db74">&#34;near-black&#34;</span>
+<span style="color:#a6e22e">sidebarLinkColor</span> = <span style="color:#e6db74">&#34;near-black&#34;</span>
+<span style="color:#a6e22e">footerTextColor</span> = <span style="color:#e6db74">&#34;silver&#34;</span>
+<span style="color:#a6e22e">buttonTextColor</span> = <span style="color:#e6db74">&#34;near-white&#34;</span>
+<span style="color:#a6e22e">buttonBgColor</span> = <span style="color:#e6db74">&#34;black&#34;</span>
+<span style="color:#a6e22e">buttonHoverTextColor</span> = <span style="color:#e6db74">&#34;white&#34;</span>
+<span style="color:#a6e22e">buttonHoverBgColor</span> = <span style="color:#e6db74">&#34;blue&#34;</span>
+<span style="color:#a6e22e">borderColor</span> = <span style="color:#e6db74">&#34;moon-gray&#34;</span>
 </code></pre></div>
 
 
@@ -268,33 +268,33 @@ assets, locate and open the main SCSS file (<code>/assets/main.scss</code>). Aft
 crazy looking variables you probably don&rsquo;t recognize and directly following the
 Tachyons import (<code>@import 'tachyons';</code>) you&rsquo;ll see a comment that looks just
 like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#998;font-style:italic">// uncomment the import below to activate custom-colors
-</span><span style="color:#998;font-style:italic">// add your own colors at the top of the imported file
-</span><span style="color:#998;font-style:italic">// @import &#39;custom-colors&#39;;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#75715e">// uncomment the import below to activate custom-colors
+</span><span style="color:#75715e">// add your own colors at the top of the imported file
+</span><span style="color:#75715e">// @import &#39;custom-colors&#39;;
 </span></code></pre></div><p>Once you uncomment the <code>custom-colors</code> import, it will look like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#998;font-style:italic">// uncomment the import below to activate custom-colors
-</span><span style="color:#998;font-style:italic">// add your own colors at the top of the imported file
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">@import</span> <span style="color:#d14">&#34;custom-colors&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#75715e">// uncomment the import below to activate custom-colors
+</span><span style="color:#75715e">// add your own colors at the top of the imported file
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">@import</span> <span style="color:#e6db74">&#34;custom-colors&#34;</span>;
 </code></pre></div><p>Save that change, and now the color options in the <code>config.toml</code> are no longer
 active – they&rsquo;ve been bypassed. To customize the colors, locate and open the
 <code>custom-colors</code> file found in the theme assets (<code>/assets/custom-colors.scss</code>).
 At the top of that file, you&rsquo;ll find a whole new set of variables for all the
 same color options, but this time you get to assign your own HEX codes.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#998;font-style:italic">// set your custom colors here
-</span><span style="color:#998;font-style:italic"></span><span style="color:#008080">$siteBgColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#e3e3da</span>;
-<span style="color:#008080">$sidebarBgColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#dbdbd2</span>;
-<span style="color:#008080">$textColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#666260</span>;
-<span style="color:#008080">$sidebarTextColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#666260</span>;
-<span style="color:#008080">$headingColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#103742</span>;
-<span style="color:#008080">$bodyLinkColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#c4001a</span>;
-<span style="color:#008080">$navLinkColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#c4001a</span>;
-<span style="color:#008080">$sidebarLinkColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#c4001a</span>;
-<span style="color:#008080">$footerTextColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#918f8d</span>;
-<span style="color:#008080">$buttonTextColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#f7f7f4</span>;
-<span style="color:#008080">$buttonHoverTextColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#f9f9f8</span>;
-<span style="color:#008080">$buttonBgColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#103742</span>;
-<span style="color:#008080">$buttonHoverBgColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#c4001a</span>;
-<span style="color:#008080">$borderColorCustom</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">#c4beb9</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scss" data-lang="scss"><span style="color:#75715e">// set your custom colors here
+</span><span style="color:#75715e"></span>$siteBgColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#e3e3da</span>;
+$sidebarBgColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#dbdbd2</span>;
+$textColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#666260</span>;
+$sidebarTextColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#666260</span>;
+$headingColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#103742</span>;
+$bodyLinkColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#c4001a</span>;
+$navLinkColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#c4001a</span>;
+$sidebarLinkColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#c4001a</span>;
+$footerTextColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#918f8d</span>;
+$buttonTextColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#f7f7f4</span>;
+$buttonHoverTextColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#f9f9f8</span>;
+$buttonBgColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#103742</span>;
+$buttonHoverBgColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#c4001a</span>;
+$borderColorCustom<span style="color:#f92672">:</span> <span style="color:#ae81ff">#c4beb9</span>;
 </code></pre></div>
         
         <details closed class="f6 fw7 input-reset">
@@ -322,8 +322,6 @@ same color options, but this time you get to assign your own HEX codes.</p>
   <dl class="f6 lh-copy">
     <dt class="fw7">See Also:</dt>
     
-    <dd class="fw5 ml0"><a href="/project/penguins/">Palmer Penguins</a></dd>
-    
     <dd class="fw5 ml0"><a href="/project/bakeoff/">Bakeoff</a></dd>
     
   </dl>
@@ -334,10 +332,13 @@ same color options, but this time you get to assign your own HEX codes.</p>
         <div class="post-pagination dt w-100 mt4 mb2">
   
   
+    <a class="prev dtc pr2 tl v-top fw6"
+    href="/project/cosmention/">&larr; Cosmention</a>
+  
   
   
     <a class="next dtc pl2 tr v-top fw6"
-    href="/project/penguins/">Palmer Penguins &rarr;</a>
+    href="/project/bakeoff/">Bakeoff &rarr;</a>
   
 </div>
 
