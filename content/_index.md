@@ -1,7 +1,7 @@
 ---
 title: "Paul Simmering"
 subtitle: "Full stack data scientist"
-description: "Welcome to my website! It's the place where I share articles and projects. Check my [Github profile](https://github.com/psimm) to see the code. The best way to contact me is via a direct message on Twitter or LinkedIn."
+description: "I'm a data scientist working on natural language processing, cloud and interactive data visualization. I'm the lead developer of the AI-powered social media monitoring tool [Cosmention](https://www.cosmention.com). The best way to contact me is via direct message on Twitter or LinkedIn."
 images:
   - img/portrait.jpeg
 image_left: true
