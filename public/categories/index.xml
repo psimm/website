@@ -37,9 +37,27 @@
     <item>
       <title>AWS</title>
       <link>/categories/aws/</link>
-      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>/categories/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network-analysis</title>
+      <link>/categories/network-analysis/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/network-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Shiny</title>
+      <link>/categories/shiny/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/shiny/</guid>
       <description></description>
     </item>
     
@@ -58,24 +76,6 @@
       <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/categories/data-visualization/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>package</title>
-      <link>/categories/package/</link>
-      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/package/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Theme Features</title>
-      <link>/categories/theme-features/</link>
-      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/theme-features/</guid>
       <description></description>
     </item>
     

@@ -20,10 +20,22 @@ The contenders     The first thing I needed was a way to manipulate data frames.
     <item>
       <title>Cosmention</title>
       <link>/project/cosmention/</link>
-      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>/project/cosmention/</guid>
-      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.</description>
+      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.
+I am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and is now in use at dm, the largest drug store chain in Europe.
+I presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.</description>
+    </item>
+    
+    <item>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/project/stakex/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/project/stakex/</guid>
+      <description>StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:
+ methods for gathering public data on relevant stakeholders building a network based on sociological theory analyzing the network through use of force-based layout algorithms and centrality statistics extracting valuable insights for customers  To learn more about the method, see the talk by Thomas Perry and me or check the methods section of the demo app.</description>
     </item>
     
     <item>
@@ -36,21 +48,12 @@ The contenders     The first thing I needed was a way to manipulate data frames.
     </item>
     
     <item>
-      <title>Tachyons for Style</title>
-      <link>/project/giraffes/</link>
-      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
+      <title>Global Patent Explorer</title>
+      <link>/project/gpexp/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/project/giraffes/</guid>
-      <description>Tachyons is a design system that allows you to design gorgeous interfaces in the browser with little effort.      Because Speed     Building this static site generator theme was the first time I used an Atomic (or Functional) CSS system like Tachyons. It&amp;rsquo;s a design system that provides very small (which means fast) CSS modules that you can use in your HTML. So, rather than writing every line of CSS, you apply the style you need as you write your HTML with easy to understand shorthand class names.</description>
-    </item>
-    
-    <item>
-      <title>Bakeoff</title>
-      <link>/project/bakeoff/</link>
-      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/bakeoff/</guid>
-      <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
+      <guid>/project/gpexp/</guid>
+      <description></description>
     </item>
     
   </channel>

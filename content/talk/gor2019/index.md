@@ -20,7 +20,7 @@ links:
   url: /talk/gor2019/gor_2019_simmering.pdf
 - icon: door-open
   icon_pack: fas
-  name: Patent Explorer
+  name: Shiny app
   url: https://psim.shinyapps.io/patent
 ---
 

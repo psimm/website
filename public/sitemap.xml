@@ -63,19 +63,31 @@
     <lastmod>2021-11-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/aws/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/project/cosmention/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/pipeline-nlp/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/project/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/collection/</loc>
     <lastmod>2021-01-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/network-analysis/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/shiny/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/project/stakex/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/visualization/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/conference/</loc>
     <lastmod>2020-09-28T00:00:00+00:00</lastmod>
@@ -98,21 +110,6 @@
     <loc>/talk/gor2019/</loc>
     <lastmod>2019-08-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/tags/hugo-site/</loc>
-    <lastmod>2019-07-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/package/</loc>
-    <lastmod>2019-07-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/project/giraffes/</loc>
-    <lastmod>2019-07-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/theme-features/</loc>
-    <lastmod>2019-07-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/project/bakeoff/</loc>
-    <lastmod>2019-07-01T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/contact/</loc>
     <lastmod>2019-02-25T13:38:41-06:00</lastmod>
   </url><url>
@@ -124,6 +121,12 @@
   </url><url>
     <loc>/talk/researchplus2018/</loc>
     <lastmod>2018-09-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/data-visualization/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/project/gpexp/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/talk/concordi2017/</loc>
     <lastmod>2017-09-27T00:00:00+00:00</lastmod>
