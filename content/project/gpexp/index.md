@@ -1,7 +1,7 @@
 ---
 title: "Global Patent Explorer"
 subtitle: "Award-winning Shiny App for patent statistics"
-excerpt: "Shiny app for display of worldwide patent statistics and citation patterns. Freelance work for Aalborg University."
+excerpt: "Award-winning Shiny app for display of worldwide patent statistics and citation patterns. Freelance work for Aalborg University."
 date: 2018-07-01
 author: "Paul Simmering"
 draft: false
