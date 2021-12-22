@@ -1,7 +1,7 @@
 ---
 ## Configure sidebar content in narrow column
 author: "Paul Simmering"
-role: "Data Scientist"
+role: "Data Scientist at [Q Insight Agency](gttps://teamq.de)"
 avatar_shape: rounded # circle, square, rounded, leave blank to exclude
 show_social_links: true # specify social accounts in site config
 audio_link_label:
