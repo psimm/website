@@ -1,6 +1,6 @@
 ---
 title: Project portfolio
-description: "Projects I've lead or contributed to"
+description: "Public facing projects I've lead or been a major contributor to"
 author: "Paul Simmering"
 show_post_thumbnail: true
 show_author_byline: false
