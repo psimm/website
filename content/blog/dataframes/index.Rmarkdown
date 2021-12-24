@@ -35,11 +35,78 @@ My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. Whe
 
 With that out of the way, here's a heavily biased comparison of the three Python packages.
 
-I'm speaking of my personal opinion of these packages given my own background - not a general comparison. I'll compare the three contenders by running a data transformation pipeline involving mutate, filter, sort, join, group by, summarise and pivot operations. I'll use the nycflights13 dataset, which some readers may know from Hadley Wickham's [R for Data Science](https://r4ds.had.co.nz/transform.html).
+I'm speaking of my personal opinion of these packages given my own background - not a general comparison. I'll compare the three contenders by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarise. I'll use the nycflights13 dataset, which some readers may know from Hadley Wickham's [R for Data Science](https://r4ds.had.co.nz/transform.html).
+
+## dplyr: Reference in R
+
+Let's start off the comparison with a reference implementation with my current default, dplyr. The dataset is available as a package, so I skip the CSV import step here.
+
+```{r r_pkg_loading}
+suppressMessages(library(dplyr))
+library(nycflights13)
+library(reactable)
+
+# Take a look at the tables
+reactable(head(flights, 10))
+reactable(head(airlines, 10))
+```
+
+The `flights` tables has `r nrow(flights)` rows, one for each flight of an airplane. The `airlines` table has `r nrow(airlines)` rows, one for each airline mapping the full name of the company to a shortcode.
+
+Let's find the airline with the highest arrival delays in January 2013. Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replace these values with 0 because I don't want them to cancel out delays of other flights. I join to the airlines table to get the full names of the airlines.
+
+```{r dplyr}
+delayed_airlines <- flights |>
+  filter(year == 2013, month == 1) |> 
+  mutate(arr_delay = replace(arr_delay, arr_delay < 0, 0)) |>
+  left_join(airlines, by = "carrier") |>
+  group_by(airline = name) |>
+  summarise(
+    flights = n(),
+    mean_delay = mean(arr_delay, na.rm = TRUE)
+  ) %>% 
+  arrange(desc(mean_delay))
+
+reactable(delayed_airlines)
+```
+
+I export two tables from the dataset to CSV to make it available for Python packages.
+
+```{r to_csv}
+# Use data.table::fwrite instead of write.csv because it's faster
+data.table::fwrite(flights, "flights.csv", row.names = FALSE)
+data.table::fwrite(airlines, "airlines.csv", row.names = FALSE)
+```
 
 ## Pandas: Most popular
 
 The syntax is inspired by base R, which is a good thing.
+
+```{python pandas_import}
+import pandas as pd
+
+# Import from CSV
+flights = pd.read_csv("flights.csv")
+airlines = pd.read_csv("airlines.csv")
+```
+
+`pandas.read_csv` read the header and conveniently inferred the column types.
+
+```{python pandas_query}
+(
+  flights
+    .assign(arr_delay = flights.arr_delay.clip(lower = 0))
+    .query("year == 2013 & month == 1")
+    .merge(airlines, how = "left", on = "carrier")
+    .rename(columns = {"name": "airline"})
+    .groupby("airline")
+    .agg({'airline':'count', 'arr_delay':'mean'})
+    .rename(columns = {"airline": "flights", "arr_delay": "mean_delay"})
+    .sort_values(by= "mean_delay", ascending = False)
+)
+```
+
+Rows with missing values for `arr_delay` are dropped implicitly in the `agg` step.
 
 Pandas uses a row index, which is basically a special column. Base R also has this with row names, though the tidyverse and tibbles have largely removed them from common use.
 
@@ -47,7 +114,14 @@ Pandas has the widest API, offering hundreds of functions for every conceivable 
 
 ## Polars: Fastest
 
-Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyer work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it's a little less convenient for interactive analysis.
+Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyer work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it's a little less convenient for interactive analysis. I'll use the eager API here.
+
+```{python}
+import polars as pl
+
+# Import from CSV
+```
+
 
 The API is leaner than pandas, requiring to memorize fewer functions and patterns.
 
@@ -56,6 +130,31 @@ There isn't nearly as much help available for problems with polars as for with p
 ## DuckDB: Easiest for SQL users
 
 DuckDB can also operate directly on a pandas dataframe.
+
+```{python duckdb_import}
+import duckdb
+
+con = duckdb.connect(database = ':memory:')
+
+# Import from CSV
+con.execute(
+  "CREATE TABLE 'flights' AS "
+  "SELECT * FROM read_csv_auto('flights.csv', header = True);"
+  "CREATE TABLE 'airlines' AS "
+  "SELECT * FROM read_csv_auto('airlines.csv', header = True);"
+)
+```
+
+```{python duckdb_query}
+con.execute(
+  "SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "
+  "FROM flights "
+  "LEFT JOIN airlines ON flights.carrier = airlines.carrier "
+  "WHERE year = 2013 AND month = 1 "
+  "GROUP BY name "
+  "ORDER BY mean_delay DESC "
+).fetchdf()
+```
 
 The performance is closer to polars than to pandas.
 
