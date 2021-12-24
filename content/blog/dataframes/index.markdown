@@ -14,7 +14,7 @@ I'm a long time R user and lately I've seen more and more signals that it's wort
 
 ## The contenders
 
-The first thing I needed was a way to manipulate data frames. I've narrowed it down to 3 choices:
+Python has a larger package ecosystem and ways of doing things than R, which seems more centralized thanks to CRAN. Adopting Python means making many choices on which libraries to invest time into learning. The first thing I needed was a way to manipulate data frames. I've narrowed it down to 3 choices:
 
 - [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
 - [Polars](https://www.pola.rs): The fastest library available. It's a new library that doesn't have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it often runs 10x faster than Pandas.
@@ -33,13 +33,13 @@ My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. Whe
 
 With that out of the way, here's a heavily biased comparison of the three Python packages.
 
-I'm speaking of my personal opinion of these packages given my own background - not a general comparison.
+I'm speaking of my personal opinion of these packages given my own background - not a general comparison. I'll compare the three contenders by running a data transformation pipeline involving mutate, filter, sort, join, group by, summarise and pivot operations. I'll use the nycflights13 dataset, which some readers may know from Hadley Wickham's [R for Data Science](https://r4ds.had.co.nz/transform.html).
 
 ## Pandas: Most popular
 
 The syntax is inspired by base R, which is a good thing.
 
-Pandas uses a row index, which is basically a special blessed column. Base R also has this with row names, though the tidyverse and tibbles have largely removed them from common use.
+Pandas uses a row index, which is basically a special column. Base R also has this with row names, though the tidyverse and tibbles have largely removed them from common use.
 
 Pandas has the widest API, offering hundreds of functions for every conceivable manipulation.
 
@@ -78,5 +78,7 @@ Speed of iteration is critical: the faster one can iterate, the more hypotheses 
 It's not a clear-cut choice. Each seems more useful in it's own arena.
 
 None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) rather than as strings `"colname"`or constructs like `pl.col("colname")`. While this is nice for quickly writing code, I've also seen it be confusing for newbies to R that mix it up with base R's syntax. It's also harder to program with, where it's necessary to use operators like `{{ }}` and `:=`.
+
+Personally, I'll leverage my existing knowledge and rely on SQL and an OLAP database (such as Snowflake) to do the heavy lifting. For steps that are better done locally, I'll use pandas for maximum compatibility. The syntax isn't my favorite, but there's so much online help available that StackOverflow has the answer for almost any problem. Github Copilot also deserves a mention for making it easier to pick up.
 
 Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
