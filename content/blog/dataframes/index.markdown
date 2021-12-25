@@ -20,12 +20,6 @@ tags: ["Performance"]
 <script src="{{< blogdown/postref >}}index_files/reactwidget/react-tools.js"></script>
 <script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
 <script src="{{< blogdown/postref >}}index_files/reactable-binding/reactable.js"></script>
-<script src="{{< blogdown/postref >}}index_files/core-js/shim.min.js"></script>
-<script src="{{< blogdown/postref >}}index_files/react/react.min.js"></script>
-<script src="{{< blogdown/postref >}}index_files/react/react-dom.min.js"></script>
-<script src="{{< blogdown/postref >}}index_files/reactwidget/react-tools.js"></script>
-<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
-<script src="{{< blogdown/postref >}}index_files/reactable-binding/reactable.js"></script>
 
 I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/) (though the recent [lambdr](https://mdneuzerling.com/post/serverless-on-demand-parametrised-r-markdown-reports-with-aws-lambda/) package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
 
@@ -34,12 +28,11 @@ I’m a long time R user and lately I’ve seen more and more signals that it’
 Python has a larger package ecosystem and ways of doing things than R, which seems more centralized thanks to CRAN. Adopting Python means making many choices on which libraries to invest time into learning. The first thing I needed was a way to manipulate data frames. I’ve narrowed it down to 3 choices:
 
 -   [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
--   [Polars](https://www.pola.rs): The fastest library available. It’s a new library that doesn’t have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it often runs 10x faster than Pandas.
+-   [Polars](https://www.pola.rs): The fastest library available. It’s a new library that doesn’t have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it runs 3-10x faster than Pandas.
 -   [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.
 
 There are far more options and this is my shortlist. I have excluded the other options in the benchmark for these reasons:
 
--   Less popular than pandas (meaning less help available)
 -   Slower than polars (dask, Arrow, Modin)
 -   Not mature enough, as shown by lower activity on Github (siuba, pydatatable)
 -   Requires other software or a server (ClickHouse)
@@ -76,22 +69,33 @@ The `flights` tables has 336776 rows, one for each flight of an airplane. The `a
 Let’s find the airline with the highest arrival delays in January 2013. Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replace these values with 0 because I don’t want them to cancel out delays of other flights. I join to the airlines table to get the full names of the airlines.
 
 ``` r
-delayed_airlines <- flights |>
-  filter(year == 2013, month == 1) |> 
+flights |>
+  filter(year == 2013, month == 1, !is.na(arr_delay)) |> 
   mutate(arr_delay = replace(arr_delay, arr_delay < 0, 0)) |>
   left_join(airlines, by = "carrier") |>
   group_by(airline = name) |>
-  summarise(
-    flights = n(),
-    mean_delay = mean(arr_delay, na.rm = TRUE)
-  ) %>% 
+  summarise(flights = n(), mean_delay = mean(arr_delay)) %>% 
   arrange(desc(mean_delay))
-
-reactable(delayed_airlines)
+## # A tibble: 16 × 3
+##    airline                     flights mean_delay
+##    <chr>                         <int>      <dbl>
+##  1 SkyWest Airlines Inc.             1     107   
+##  2 Hawaiian Airlines Inc.           31      48.8 
+##  3 ExpressJet Airlines Inc.       3964      29.6 
+##  4 Frontier Airlines Inc.           59      23.9 
+##  5 Mesa Airlines Inc.               39      20.4 
+##  6 Endeavor Air Inc.              1480      19.3 
+##  7 Alaska Airlines Inc.             62      17.6 
+##  8 Envoy Air                      2203      14.3 
+##  9 Southwest Airlines Co.          985      13.0 
+## 10 JetBlue Airways                4413      12.9 
+## 11 United Air Lines Inc.          4590      11.9 
+## 12 American Airlines Inc.         2724      11.0 
+## 13 AirTran Airways Corporation     324       9.95
+## 14 US Airways Inc.                1554       9.11
+## 15 Delta Air Lines Inc.           3655       8.07
+## 16 Virgin America                  314       3.17
 ```
-
-<div id="htmlwidget-3" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"airline":["SkyWest Airlines Inc.","Hawaiian Airlines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","Mesa Airlines Inc.","Endeavor Air Inc.","Alaska Airlines Inc.","Envoy Air","Southwest Airlines Co.","JetBlue Airways","United Air Lines Inc.","American Airlines Inc.","AirTran Airways Corporation","US Airways Inc.","Delta Air Lines Inc.","Virgin America"],"flights":[1,31,4171,59,46,1573,62,2271,996,4427,4637,2794,328,1602,3690,316],"mean_delay":[107,48.7741935483871,29.6427850655903,23.8813559322034,20.4102564102564,19.3216216216216,17.6451612903226,14.3036768043577,12.9644670050761,12.9193292544754,11.8518518518519,10.9533773861968,9.9537037037037,9.11132561132561,8.0703146374829,3.1656050955414]},"columns":[{"accessor":"airline","name":"airline","type":"character"},{"accessor":"flights","name":"flights","type":"numeric"},{"accessor":"mean_delay","name":"mean_delay","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"e869ab85166b7808dd0d42af69c19dd8","key":"e869ab85166b7808dd0d42af69c19dd8"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 
 I export two tables from the dataset to CSV to make it available for Python packages.
 
@@ -109,42 +113,39 @@ The syntax is inspired by base R, which is a good thing.
 import pandas as pd
 
 # Import from CSV
-flights = pd.read_csv("flights.csv")
-airlines = pd.read_csv("airlines.csv")
+flights_pd = pd.read_csv("flights.csv")
+airlines_pd = pd.read_csv("airlines.csv")
 ```
 
 `pandas.read_csv` read the header and conveniently inferred the column types.
 
 ``` python
-(
-  flights
-    .assign(arr_delay = flights.arr_delay.clip(lower = 0))
-    .query("year == 2013 & month == 1")
-    .merge(airlines, how = "left", on = "carrier")
-    .rename(columns = {"name": "airline"})
-    .groupby("airline")
-    .agg({'airline':'count', 'arr_delay':'mean'})
-    .rename(columns = {"airline": "flights", "arr_delay": "mean_delay"})
-    .sort_values(by= "mean_delay", ascending = False)
-)
+(flights_pd
+  .query("year == 2013 & month == 1 & arr_delay.notnull()")
+  .assign(arr_delay = flights_pd.arr_delay.clip(lower = 0))
+  .merge(airlines_pd, how = "left", on = "carrier")
+  .rename(columns = {"name": "airline"})
+  .groupby("airline")
+  .agg(flights = ("airline", "count"), mean_delay = ("arr_delay", "mean"))
+  .sort_values(by = "mean_delay", ascending = False))
 ##                              flights  mean_delay
 ## airline                                         
 ## SkyWest Airlines Inc.              1  107.000000
 ## Hawaiian Airlines Inc.            31   48.774194
-## ExpressJet Airlines Inc.        4171   29.642785
+## ExpressJet Airlines Inc.        3964   29.642785
 ## Frontier Airlines Inc.            59   23.881356
-## Mesa Airlines Inc.                46   20.410256
-## Endeavor Air Inc.               1573   19.321622
+## Mesa Airlines Inc.                39   20.410256
+## Endeavor Air Inc.               1480   19.321622
 ## Alaska Airlines Inc.              62   17.645161
-## Envoy Air                       2271   14.303677
-## Southwest Airlines Co.           996   12.964467
-## JetBlue Airways                 4427   12.919329
-## United Air Lines Inc.           4637   11.851852
-## American Airlines Inc.          2794   10.953377
-## AirTran Airways Corporation      328    9.953704
-## US Airways Inc.                 1602    9.111326
-## Delta Air Lines Inc.            3690    8.070315
-## Virgin America                   316    3.165605
+## Envoy Air                       2203   14.303677
+## Southwest Airlines Co.           985   12.964467
+## JetBlue Airways                 4413   12.919329
+## United Air Lines Inc.           4590   11.851852
+## American Airlines Inc.          2724   10.953377
+## AirTran Airways Corporation      324    9.953704
+## US Airways Inc.                 1554    9.111326
+## Delta Air Lines Inc.            3655    8.070315
+## Virgin America                   314    3.165605
 ```
 
 Rows with missing values for `arr_delay` are dropped implicitly in the `agg` step.
@@ -161,30 +162,315 @@ Polars is written in Rust and also offers a Python API. It comes in two flavors:
 import polars as pl
 
 # Import from CSV
+flights_pl = pl.read_csv("flights.csv")
+airlines_pl = pl.read_csv("airlines.csv")
 ```
 
-The API is leaner than pandas, requiring to memorize fewer functions and patterns.
+The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated `clip` function.
+
+``` python
+(flights_pl
+  .filter((pl.col("year") == 2013) & (pl.col("month") == 1))
+  .drop_nulls("arr_delay")
+  .join(airlines_pl, on = "carrier", how = "left")
+  .with_columns(
+    [
+      pl.when(pl.col("arr_delay") > 0)
+        .then(pl.col("arr_delay"))
+        .otherwise(0)
+        .alias("arr_delay"),
+      pl.col("name").alias("airline")
+    ]
+  )
+  .groupby("airline")
+  .agg(
+    [
+      pl.count("airline").alias("flights"),
+      pl.mean("arr_delay").alias("mean_delay")
+    ]
+  )
+  .sort("mean_delay", reverse = True)
+)
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1 "class="dataframe ">
+<thead>
+<tr>
+<th>
+airline
+</th>
+<th>
+flights
+</th>
+<th>
+mean_delay
+</th>
+</tr>
+<tr>
+<td>
+str
+</td>
+<td>
+u32
+</td>
+<td>
+f64
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+"SkyWest Airlines Inc."
+</td>
+<td>
+1
+</td>
+<td>
+107
+</td>
+</tr>
+<tr>
+<td>
+"Hawaiian Airlines Inc."
+</td>
+<td>
+31
+</td>
+<td>
+48.774193548387096
+</td>
+</tr>
+<tr>
+<td>
+"ExpressJet Airlines Inc."
+</td>
+<td>
+3964
+</td>
+<td>
+29.642785065590314
+</td>
+</tr>
+<tr>
+<td>
+"Frontier Airlines Inc."
+</td>
+<td>
+59
+</td>
+<td>
+23.88135593220339
+</td>
+</tr>
+<tr>
+<td>
+"Mesa Airlines Inc."
+</td>
+<td>
+39
+</td>
+<td>
+20.41025641025641
+</td>
+</tr>
+<tr>
+<td>
+"Endeavor Air Inc."
+</td>
+<td>
+1480
+</td>
+<td>
+19.32162162162162
+</td>
+</tr>
+<tr>
+<td>
+"Alaska Airlines Inc."
+</td>
+<td>
+62
+</td>
+<td>
+17.64516129032258
+</td>
+</tr>
+<tr>
+<td>
+"Envoy Air"
+</td>
+<td>
+2203
+</td>
+<td>
+14.303676804357695
+</td>
+</tr>
+<tr>
+<td>
+"Southwest Airlines Co."
+</td>
+<td>
+985
+</td>
+<td>
+12.964467005076141
+</td>
+</tr>
+<tr>
+<td>
+"JetBlue Airways"
+</td>
+<td>
+4413
+</td>
+<td>
+12.919329254475414
+</td>
+</tr>
+<tr>
+<td>
+"United Air Lines Inc."
+</td>
+<td>
+4590
+</td>
+<td>
+11.851851851851851
+</td>
+</tr>
+<tr>
+<td>
+"American Airlines Inc."
+</td>
+<td>
+2724
+</td>
+<td>
+10.95337738619677
+</td>
+</tr>
+<tr>
+<td>
+"AirTran Airways Corporation"
+</td>
+<td>
+324
+</td>
+<td>
+9.953703703703704
+</td>
+</tr>
+<tr>
+<td>
+"US Airways Inc."
+</td>
+<td>
+1554
+</td>
+<td>
+9.111325611325611
+</td>
+</tr>
+<tr>
+<td>
+"Delta Air Lines Inc."
+</td>
+<td>
+3655
+</td>
+<td>
+8.0703146374829
+</td>
+</tr>
+<tr>
+<td>
+"Virgin America"
+</td>
+<td>
+314
+</td>
+<td>
+3.1656050955414012
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 There isn’t nearly as much help available for problems with polars as for with pandas. Often, I had to use trial and error based on the documentation. While the documentation is good, it can’t answer every question.
 
-## DuckDB: Easiest for SQL users
+A comparison of polars and pandas is available in the [polars documentation](https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment). A notable difference is that polars doesn’t have a concept of indexes, just like tibbles in R.
 
-DuckDB can also operate directly on a pandas dataframe.
+## DuckDB: Highly compatible and easy for SQL users
 
 ``` python
 import duckdb
 
+con = duckdb.connect(database = ':memory:')
+
 # Import from CSV
-"""
-CREATE TABLE 'flights' AS
-SELECT * FROM 'flights.csv'
-"""
-## "\nCREATE TABLE 'flights' AS\nSELECT * FROM 'flights.csv'\n"
+con.execute(
+  "CREATE TABLE 'flights' AS "
+  "SELECT * FROM read_csv_auto('flights.csv', header = True);"
+  "CREATE TABLE 'airlines' AS "
+  "SELECT * FROM read_csv_auto('airlines.csv', header = True);"
+)
+## <duckdb.DuckDBPyConnection object at 0x115a6a430>
+```
+
+``` python
+con.execute(
+  "WITH flights_clipped AS ( "
+  "SELECT carrier, CASE WHEN arr_delay > 0 THEN arr_delay ELSE 0 END AS arr_delay "
+  "FROM flights "
+  "WHERE year = 2013 AND month = 1 AND arr_delay IS NOT NULL"
+  ")"
+  "SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "
+  "FROM flights_clipped "
+  "LEFT JOIN airlines ON flights_clipped.carrier = airlines.carrier "
+  "GROUP BY name "
+  "ORDER BY mean_delay DESC "
+).fetchdf()
+##                         airline  flights  mean_delay
+## 0         SkyWest Airlines Inc.        1  107.000000
+## 1        Hawaiian Airlines Inc.       31   48.774194
+## 2      ExpressJet Airlines Inc.     3964   29.642785
+## 3        Frontier Airlines Inc.       59   23.881356
+## 4            Mesa Airlines Inc.       39   20.410256
+## 5             Endeavor Air Inc.     1480   19.321622
+## 6          Alaska Airlines Inc.       62   17.645161
+## 7                     Envoy Air     2203   14.303677
+## 8        Southwest Airlines Co.      985   12.964467
+## 9               JetBlue Airways     4413   12.919329
+## 10        United Air Lines Inc.     4590   11.851852
+## 11       American Airlines Inc.     2724   10.953377
+## 12  AirTran Airways Corporation      324    9.953704
+## 13              US Airways Inc.     1554    9.111326
+## 14         Delta Air Lines Inc.     3655    8.070315
+## 15               Virgin America      314    3.165605
 ```
 
 The performance is closer to polars than to pandas.
 
 A big plus is the ability to handle larger than memory data.
+
+DuckDB can also operate directly on a pandas dataframe.
 
 The code is portable to R, C, C++, Java and other programming languages the duckdb has [APIs](https://duckdb.org/docs/api/overview). It’s also portable when the logic is taken to a DB like [Postgres](https://www.postgresql.org), or [Snowflake](https://www.snowflake.com/), or is ported to an ETL framework like [DBT](https://github.com/dbt-labs/dbt-core).
 
@@ -207,5 +493,10 @@ It’s not a clear-cut choice. Each seems more useful in it’s own arena.
 None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) rather than as strings `"colname"`or constructs like `pl.col("colname")`. While this is nice for quickly writing code, I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like `{{ }}` and `:=`.
 
 Personally, I’ll leverage my existing knowledge and rely on SQL and an OLAP database (such as Snowflake) to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. The syntax isn’t my favorite, but there’s so much online help available that StackOverflow has the answer for almost any problem. Github Copilot also deserves a mention for making it easier to pick up.
+
+Related articles:
+
+-   [Polars: the fastest DataFrame library you’ve never heard of](https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/)
+-   [What would it take to recreate dplyr in python?](https://mchow.com/posts/2020-02-11-dplyr-in-python/)
 
 Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

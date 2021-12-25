@@ -19,12 +19,11 @@ I'm a long time R user and lately I've seen more and more signals that it's wort
 Python has a larger package ecosystem and ways of doing things than R, which seems more centralized thanks to CRAN. Adopting Python means making many choices on which libraries to invest time into learning. The first thing I needed was a way to manipulate data frames. I've narrowed it down to 3 choices:
 
 - [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
-- [Polars](https://www.pola.rs): The fastest library available. It's a new library that doesn't have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it often runs 10x faster than Pandas.
+- [Polars](https://www.pola.rs): The fastest library available. It's a new library that doesn't have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it runs 3-10x faster than Pandas.
 - [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.
 
 There are far more options and this is my shortlist. I have excluded the other options in the benchmark for these reasons:
 
-- Less popular than pandas (meaning less help available)
 - Slower than polars (dask, Arrow, Modin)
 - Not mature enough, as shown by lower activity on Github (siuba, pydatatable)
 - Requires other software or a server (ClickHouse)
@@ -56,18 +55,13 @@ The `flights` tables has `r nrow(flights)` rows, one for each flight of an airpl
 Let's find the airline with the highest arrival delays in January 2013. Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replace these values with 0 because I don't want them to cancel out delays of other flights. I join to the airlines table to get the full names of the airlines.
 
 ```{r dplyr}
-delayed_airlines <- flights |>
-  filter(year == 2013, month == 1) |> 
+flights |>
+  filter(year == 2013, month == 1, !is.na(arr_delay)) |> 
   mutate(arr_delay = replace(arr_delay, arr_delay < 0, 0)) |>
   left_join(airlines, by = "carrier") |>
   group_by(airline = name) |>
-  summarise(
-    flights = n(),
-    mean_delay = mean(arr_delay, na.rm = TRUE)
-  ) %>% 
+  summarise(flights = n(), mean_delay = mean(arr_delay)) %>% 
   arrange(desc(mean_delay))
-
-reactable(delayed_airlines)
 ```
 
 I export two tables from the dataset to CSV to make it available for Python packages.
@@ -86,24 +80,21 @@ The syntax is inspired by base R, which is a good thing.
 import pandas as pd
 
 # Import from CSV
-flights = pd.read_csv("flights.csv")
-airlines = pd.read_csv("airlines.csv")
+flights_pd = pd.read_csv("flights.csv")
+airlines_pd = pd.read_csv("airlines.csv")
 ```
 
 `pandas.read_csv` read the header and conveniently inferred the column types.
 
 ```{python pandas_query}
-(
-  flights
-    .assign(arr_delay = flights.arr_delay.clip(lower = 0))
-    .query("year == 2013 & month == 1")
-    .merge(airlines, how = "left", on = "carrier")
-    .rename(columns = {"name": "airline"})
-    .groupby("airline")
-    .agg({'airline':'count', 'arr_delay':'mean'})
-    .rename(columns = {"airline": "flights", "arr_delay": "mean_delay"})
-    .sort_values(by= "mean_delay", ascending = False)
-)
+(flights_pd
+  .query("year == 2013 & month == 1 & arr_delay.notnull()")
+  .assign(arr_delay = flights_pd.arr_delay.clip(lower = 0))
+  .merge(airlines_pd, how = "left", on = "carrier")
+  .rename(columns = {"name": "airline"})
+  .groupby("airline")
+  .agg(flights = ("airline", "count"), mean_delay = ("arr_delay", "mean"))
+  .sort_values(by = "mean_delay", ascending = False))
 ```
 
 Rows with missing values for `arr_delay` are dropped implicitly in the `agg` step.
@@ -120,16 +111,42 @@ Polars is written in Rust and also offers a Python API. It comes in two flavors:
 import polars as pl
 
 # Import from CSV
+flights_pl = pl.read_csv("flights.csv")
+airlines_pl = pl.read_csv("airlines.csv")
 ```
 
+The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated `clip` function.
 
-The API is leaner than pandas, requiring to memorize fewer functions and patterns.
+```{python}
+(flights_pl
+  .filter((pl.col("year") == 2013) & (pl.col("month") == 1))
+  .drop_nulls("arr_delay")
+  .join(airlines_pl, on = "carrier", how = "left")
+  .with_columns(
+    [
+      pl.when(pl.col("arr_delay") > 0)
+        .then(pl.col("arr_delay"))
+        .otherwise(0)
+        .alias("arr_delay"),
+      pl.col("name").alias("airline")
+    ]
+  )
+  .groupby("airline")
+  .agg(
+    [
+      pl.count("airline").alias("flights"),
+      pl.mean("arr_delay").alias("mean_delay")
+    ]
+  )
+  .sort("mean_delay", reverse = True)
+)
+```
 
 There isn't nearly as much help available for problems with polars as for with pandas. Often, I had to use trial and error based on the documentation. While the documentation is good, it can't answer every question.
 
-## DuckDB: Easiest for SQL users
+A comparison of polars and pandas is available in the [polars documentation](https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment). A notable difference is that polars doesn't have a concept of indexes, just like tibbles in R.
 
-DuckDB can also operate directly on a pandas dataframe.
+## DuckDB: Highly compatible and easy for SQL users
 
 ```{python duckdb_import}
 import duckdb
@@ -147,10 +164,14 @@ con.execute(
 
 ```{python duckdb_query}
 con.execute(
-  "SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "
+  "WITH flights_clipped AS ( "
+  "SELECT carrier, CASE WHEN arr_delay > 0 THEN arr_delay ELSE 0 END AS arr_delay "
   "FROM flights "
-  "LEFT JOIN airlines ON flights.carrier = airlines.carrier "
-  "WHERE year = 2013 AND month = 1 "
+  "WHERE year = 2013 AND month = 1 AND arr_delay IS NOT NULL"
+  ")"
+  "SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "
+  "FROM flights_clipped "
+  "LEFT JOIN airlines ON flights_clipped.carrier = airlines.carrier "
   "GROUP BY name "
   "ORDER BY mean_delay DESC "
 ).fetchdf()
@@ -159,6 +180,8 @@ con.execute(
 The performance is closer to polars than to pandas.
 
 A big plus is the ability to handle larger than memory data.
+
+DuckDB can also operate directly on a pandas dataframe.
 
 The code is portable to R, C, C++, Java and other programming languages the duckdb has [APIs](https://duckdb.org/docs/api/overview). It's also portable when the logic is taken to a DB like [Postgres](https://www.postgresql.org), or [Snowflake](https://www.snowflake.com/), or is ported to an ETL framework like [DBT](https://github.com/dbt-labs/dbt-core).
 
@@ -181,5 +204,10 @@ It's not a clear-cut choice. Each seems more useful in it's own arena.
 None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) rather than as strings `"colname"`or constructs like `pl.col("colname")`. While this is nice for quickly writing code, I've also seen it be confusing for newbies to R that mix it up with base R's syntax. It's also harder to program with, where it's necessary to use operators like `{{ }}` and `:=`.
 
 Personally, I'll leverage my existing knowledge and rely on SQL and an OLAP database (such as Snowflake) to do the heavy lifting. For steps that are better done locally, I'll use pandas for maximum compatibility. The syntax isn't my favorite, but there's so much online help available that StackOverflow has the answer for almost any problem. Github Copilot also deserves a mention for making it easier to pick up.
+
+Related articles:
+
+- [Polars: the fastest DataFrame library you've never heard of](https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/)
+- [What would it take to recreate dplyr in python?](https://mchow.com/posts/2020-02-11-dplyr-in-python/)
 
 Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
