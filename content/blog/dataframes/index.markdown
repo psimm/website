@@ -23,25 +23,58 @@ tags: ["Performance"]
 
 I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/) (though the recent [lambdr](https://mdneuzerling.com/post/serverless-on-demand-parametrised-r-markdown-reports-with-aws-lambda/) package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
 
+Michael Chow, developer of [siuba](https://github.com/machow/siuba), a Python port of dplyr on top of pandas [wrote](https://mchow.com/posts/pandas-has-a-hard-job/):
+
+> It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).
+
+And that summarizes how I feel about it: The syntax of pandas feels inferior to dplyr and I wish I could have the same fluency as with dplyr. The higher-level libraries he mentions come with a problem though: There’s no accepted standard. So investing the time to learn one of them may be futile as the next project one is working on could be with other developers who are fluent in a different one.
+
 ## The contenders
 
 Python has a larger package ecosystem and ways of doing things than R, which seems more centralized thanks to CRAN. Adopting Python means making many choices on which libraries to invest time into learning. The first thing I needed was a way to manipulate data frames. I’ve narrowed it down to 3 choices:
 
 -   [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
+-   [siuba](https://github.com/machow/siuba): A port of dplyr to Python, built on top of pandas
 -   [Polars](https://www.pola.rs): The fastest library available. It’s a new library that doesn’t have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it runs 3-10x faster than Pandas.
 -   [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.
 
 There are far more options and this is my shortlist. I have excluded the other options in the benchmark for these reasons:
 
 -   Slower than polars (dask, Arrow, Modin)
--   Not mature enough, as shown by lower activity on Github (siuba, pydatatable)
+-   Not mature enough, as shown by lower activity on Github (pydatatable)
 -   Requires other software or a server (ClickHouse)
 -   Not in Python (DataFrames.jl)
 -   Meant for GPU only (cuDF)
+-   Wrappers like [ibis](https://ibis-project.org/docs/index.html) that delegate computation to pandas or a server running SQL. Technically siuba is also in this group, but as I’m coming from dplyr I had to include it.
+
+The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow.
+
+``` r
+library(ggplot2)
+libs <- data.frame(
+  library = c("pandas", "siuba", "polars", "duckdb", "dplyr", "data.table"),
+  language = c("Python", "Python", "Python", "SQL", "R", "R"),
+  stars = c(32100, 732, 3900, 4100, 3900, 2900)
+)
+
+ggplot(libs, aes(x = reorder(library, -stars), y = stars, fill = language)) +
+  geom_col() + 
+  labs(
+    title = "Pandas is by far the most popular choice",
+    subtitle = "Comparison of Github stars on 2021-12-25",
+    fill = "Language",
+    x = "Library",
+    y = "Github stars"
+  )
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/github_stars-1.png" width="672" />
+
+Github stars are not a perfect proxy. For instance, dplyr is much more mature than its star count suggests. Comparing the completen and completeness of the documentation of dplyr and polars reveals that it’s a night and day difference.
 
 My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. When I need more performance, I use [tidytable](https://github.com/markfairbanks/tidytable) to get the speed of data.table with the grammar of dplyr. I also use [dbplyr](https://dbplyr.tidyverse.org) a lot, which translates dplyr to SQL. It’s composeable, which actually makes it superior to SQL for me in most use cases.
 
-With that out of the way, here’s a heavily biased comparison of the three Python packages.
+With that out of the way, here’s a heavily biased comparison of the four Python packages.
 
 I’m speaking of my personal opinion of these packages given my own background - not a general comparison. I’ll compare the three contenders by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarise. I’ll use the nycflights13 dataset, which some readers may know from Hadley Wickham’s [R for Data Science](https://r4ds.had.co.nz/transform.html).
 
@@ -431,7 +464,7 @@ con.execute(
   "CREATE TABLE 'airlines' AS "
   "SELECT * FROM read_csv_auto('airlines.csv', header = True);"
 )
-## <duckdb.DuckDBPyConnection object at 0x115a6a430>
+## <duckdb.DuckDBPyConnection object at 0x11aa052b0>
 ```
 
 ``` python
@@ -476,11 +509,15 @@ The code is portable to R, C, C++, Java and other programming languages the duck
 
 This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating data translates well to other situations - SQL has been around for more than 40 years. Something that can’t be said about any Python library. Learning SQL is future-proofing ones career.
 
-While these are big plusses, duckdb isn’t as convenient as Polars and Pandas for interactive data exploration. The SQL isn’t as composable. Plus, writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like [PyCharm](https://www.jetbrains.com/pycharm/) and [DataSpell](https://www.jetbrains.com/dataspell/) do).
+While these are big plusses, duckdb isn’t as convenient as Polars and Pandas for interactive data exploration. The SQL isn’t as composeable.
 
-SQL is less expressive than Python, especially when the names of output columns are unknown. It lacks shorthands.
+Composing SQL queries requires many common table expressions (CTEs, `WITH x AS (SELECT ...)`).
 
-It’s also harder to write custom functions in SQL. With pandas and polars, custom operations are just one lambda away.
+Plus, writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like [PyCharm](https://www.jetbrains.com/pycharm/) and [DataSpell](https://www.jetbrains.com/dataspell/) do).
+
+SQL is less expressive than Python, especially when the names of output columns are unknown.
+
+It lacks shorthands. It’s also harder to write custom functions in SQL. With pandas and polars, custom operations are just one lambda away.
 
 Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.
 
@@ -494,9 +531,12 @@ None of the three options offer a syntax that is as convenient for interactive a
 
 Personally, I’ll leverage my existing knowledge and rely on SQL and an OLAP database (such as Snowflake) to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. The syntax isn’t my favorite, but there’s so much online help available that StackOverflow has the answer for almost any problem. Github Copilot also deserves a mention for making it easier to pick up.
 
+Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.
+
 Related articles:
 
 -   [Polars: the fastest DataFrame library you’ve never heard of](https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/)
 -   [What would it take to recreate dplyr in python?](https://mchow.com/posts/2020-02-11-dplyr-in-python/)
+-   [Pandas has a hard job (and does it well)](https://mchow.com/posts/pandas-has-a-hard-job/)
 
 Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
