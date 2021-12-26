@@ -101,7 +101,11 @@ reactable(head(flights, 10))
 
 <div id="htmlwidget-1" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],"month":[1,1,1,1,1,1,1,1,1,1],"day":[1,1,1,1,1,1,1,1,1,1],"dep_time":[517,533,542,544,554,554,555,557,557,558],"sched_dep_time":[515,529,540,545,600,558,600,600,600,600],"dep_delay":[2,4,2,-1,-6,-4,-5,-3,-3,-2],"arr_time":[830,850,923,1004,812,740,913,709,838,753],"sched_arr_time":[819,830,850,1022,837,728,854,723,846,745],"arr_delay":[11,20,33,-18,-25,12,19,-14,-8,8],"carrier":["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA"],"flight":[1545,1714,1141,725,461,1696,507,5708,79,301],"tailnum":["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA"],"origin":["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA"],"dest":["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD"],"air_time":[227,227,160,183,116,150,158,53,140,138],"distance":[1400,1416,1089,1576,762,719,1065,229,944,733],"hour":[5,5,5,5,6,5,6,6,6,6],"minute":[15,29,40,45,0,58,0,0,0,0],"time_hour":["2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00"]},"columns":[{"accessor":"year","name":"year","type":"numeric"},{"accessor":"month","name":"month","type":"numeric"},{"accessor":"day","name":"day","type":"numeric"},{"accessor":"dep_time","name":"dep_time","type":"numeric"},{"accessor":"sched_dep_time","name":"sched_dep_time","type":"numeric"},{"accessor":"dep_delay","name":"dep_delay","type":"numeric"},{"accessor":"arr_time","name":"arr_time","type":"numeric"},{"accessor":"sched_arr_time","name":"sched_arr_time","type":"numeric"},{"accessor":"arr_delay","name":"arr_delay","type":"numeric"},{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"flight","name":"flight","type":"numeric"},{"accessor":"tailnum","name":"tailnum","type":"character"},{"accessor":"origin","name":"origin","type":"character"},{"accessor":"dest","name":"dest","type":"character"},{"accessor":"air_time","name":"air_time","type":"numeric"},{"accessor":"distance","name":"distance","type":"numeric"},{"accessor":"hour","name":"hour","type":"numeric"},{"accessor":"minute","name":"minute","type":"numeric"},{"accessor":"time_hour","name":"time_hour","type":"Date"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"0fe230bb41adb4c97e1205322b49f222","key":"0fe230bb41adb4c97e1205322b49f222"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+
+``` r
 reactable(head(airlines, 10))
+```
+
 <div id="htmlwidget-2" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"name","name":"name","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"08ac76438f639beb63f40296e9c2c3c3","key":"08ac76438f639beb63f40296e9c2c3c3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 
@@ -117,26 +121,27 @@ flights |>
   group_by(airline = name) |>
   summarise(flights = n(), mean_delay = mean(arr_delay)) |> 
   arrange(desc(mean_delay))
-## # A tibble: 16 × 3
-##    airline                     flights mean_delay
-##    <chr>                         <int>      <dbl>
-##  1 SkyWest Airlines Inc.             1     107   
-##  2 Hawaiian Airlines Inc.           31      48.8 
-##  3 ExpressJet Airlines Inc.       3964      29.6 
-##  4 Frontier Airlines Inc.           59      23.9 
-##  5 Mesa Airlines Inc.               39      20.4 
-##  6 Endeavor Air Inc.              1480      19.3 
-##  7 Alaska Airlines Inc.             62      17.6 
-##  8 Envoy Air                      2203      14.3 
-##  9 Southwest Airlines Co.          985      13.0 
-## 10 JetBlue Airways                4413      12.9 
-## 11 United Air Lines Inc.          4590      11.9 
-## 12 American Airlines Inc.         2724      11.0 
-## 13 AirTran Airways Corporation     324       9.95
-## 14 US Airways Inc.                1554       9.11
-## 15 Delta Air Lines Inc.           3655       8.07
-## 16 Virgin America                  314       3.17
 ```
+
+    ## # A tibble: 16 × 3
+    ##    airline                     flights mean_delay
+    ##    <chr>                         <int>      <dbl>
+    ##  1 SkyWest Airlines Inc.             1     107   
+    ##  2 Hawaiian Airlines Inc.           31      48.8 
+    ##  3 ExpressJet Airlines Inc.       3964      29.6 
+    ##  4 Frontier Airlines Inc.           59      23.9 
+    ##  5 Mesa Airlines Inc.               39      20.4 
+    ##  6 Endeavor Air Inc.              1480      19.3 
+    ##  7 Alaska Airlines Inc.             62      17.6 
+    ##  8 Envoy Air                      2203      14.3 
+    ##  9 Southwest Airlines Co.          985      13.0 
+    ## 10 JetBlue Airways                4413      12.9 
+    ## 11 United Air Lines Inc.          4590      11.9 
+    ## 12 American Airlines Inc.         2724      11.0 
+    ## 13 AirTran Airways Corporation     324       9.95
+    ## 14 US Airways Inc.                1554       9.11
+    ## 15 Delta Air Lines Inc.           3655       8.07
+    ## 16 Virgin America                  314       3.17
 
 Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don’t want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.
 
@@ -170,25 +175,26 @@ airlines_pd = pd.read_csv("airlines.csv")
   .groupby("airline")
   .agg(flights = ("airline", "count"), mean_delay = ("arr_delay", "mean"))
   .sort_values(by = "mean_delay", ascending = False))
-##                              flights  mean_delay
-## airline                                         
-## SkyWest Airlines Inc.              1  107.000000
-## Hawaiian Airlines Inc.            31   48.774194
-## ExpressJet Airlines Inc.        3964   29.642785
-## Frontier Airlines Inc.            59   23.881356
-## Mesa Airlines Inc.                39   20.410256
-## Endeavor Air Inc.               1480   19.321622
-## Alaska Airlines Inc.              62   17.645161
-## Envoy Air                       2203   14.303677
-## Southwest Airlines Co.           985   12.964467
-## JetBlue Airways                 4413   12.919329
-## United Air Lines Inc.           4590   11.851852
-## American Airlines Inc.          2724   10.953377
-## AirTran Airways Corporation      324    9.953704
-## US Airways Inc.                 1554    9.111326
-## Delta Air Lines Inc.            3655    8.070315
-## Virgin America                   314    3.165605
 ```
+
+    ##                              flights  mean_delay
+    ## airline                                         
+    ## SkyWest Airlines Inc.              1  107.000000
+    ## Hawaiian Airlines Inc.            31   48.774194
+    ## ExpressJet Airlines Inc.        3964   29.642785
+    ## Frontier Airlines Inc.            59   23.881356
+    ## Mesa Airlines Inc.                39   20.410256
+    ## Endeavor Air Inc.               1480   19.321622
+    ## Alaska Airlines Inc.              62   17.645161
+    ## Envoy Air                       2203   14.303677
+    ## Southwest Airlines Co.           985   12.964467
+    ## JetBlue Airways                 4413   12.919329
+    ## United Air Lines Inc.           4590   11.851852
+    ## American Airlines Inc.          2724   10.953377
+    ## AirTran Airways Corporation      324    9.953704
+    ## US Airways Inc.                 1554    9.111326
+    ## Delta Air Lines Inc.            3655    8.070315
+    ## Virgin America                   314    3.165605
 
 I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.
 
@@ -207,78 +213,54 @@ That’s quite passive aggressive, but I do agree and wish pandas didn’t have 
 ## siuba: dplyr in Python
 
 ``` python
-from siuba import _, filter, group_by, summarize, left_join, rename, mutate, arrange
+import siuba as si
 
 # Import from CSV
-```
-
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 flights_si = pd.read_csv("flights.csv")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 airlines_si = pd.read_csv("airlines.csv")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+```
 
 As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.
 
 ``` python
 (
   flights_si
-    >> filter(
-      _.year == 2013,
-      _.month == 1,
-      _.arr_delay.notnull()
+    >> si.filter(
+      si._.year == 2013,
+      si._.month == 1,
+      si._.arr_delay.notnull()
     )
-    >> mutate(arr_delay = _.arr_delay.clip(lower = 0))
-    >> left_join(_, airlines_si, on = "carrier")
-    >> rename(airline = _.name)
-    >> group_by(_.airline)
-    >> summarize(
-        flights = _.airline.count(),
-        mean_delay = _.arr_delay.mean()
+    >> si.mutate(arr_delay = si._.arr_delay.clip(lower = 0))
+    >> si.left_join(si._, airlines_si, on = "carrier")
+    >> si.rename(airline = si._.name)
+    >> si.group_by(si._.airline)
+    >> si.summarize(
+        flights = si._.airline.count(),
+        mean_delay = si._.arr_delay.mean()
     )
-    >> arrange(-_.mean_delay)
+    >> si.arrange(-si._.mean_delay)
 )
 ```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+    ##                         airline  flights  mean_delay
+    ## 11        SkyWest Airlines Inc.        1  107.000000
+    ## 8        Hawaiian Airlines Inc.       31   48.774194
+    ## 6      ExpressJet Airlines Inc.     3964   29.642785
+    ## 7        Frontier Airlines Inc.       59   23.881356
+    ## 10           Mesa Airlines Inc.       39   20.410256
+    ## 4             Endeavor Air Inc.     1480   19.321622
+    ## 1          Alaska Airlines Inc.       62   17.645161
+    ## 5                     Envoy Air     2203   14.303677
+    ## 12       Southwest Airlines Co.      985   12.964467
+    ## 9               JetBlue Airways     4413   12.919329
+    ## 14        United Air Lines Inc.     4590   11.851852
+    ## 2        American Airlines Inc.     2724   10.953377
+    ## 0   AirTran Airways Corporation      324    9.953704
+    ## 13              US Airways Inc.     1554    9.111326
+    ## 3          Delta Air Lines Inc.     3655    8.070315
+    ## 15               Virgin America      314    3.165605
 
-I found this one the easiest to work with. Once I understood the `_` placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with) (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.
+I found siuba the easiest to work with. Once I understood the `_` placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with) (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.
 
 It’s always possible to drop into pandas, such as for the aggregation functions which use the `mean()` and `count()` methods of the pandas series. The `>>` is an easy replacement for the `%>%` magrittr pipe or `|>` base pipe in R.
 
@@ -296,40 +278,9 @@ Polars is written in Rust and also offers a Python API. It comes in two flavors:
 import polars as pl
 
 # Import from CSV
-```
-
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 flights_pl = pl.read_csv("flights.csv")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 airlines_pl = pl.read_csv("airlines.csv")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+```
 
 ``` python
 (flights_pl
@@ -356,16 +307,225 @@ function (...)
 )
 ```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1 "class="dataframe ">
+<thead>
+<tr>
+<th>
+airline
+</th>
+<th>
+flights
+</th>
+<th>
+mean_delay
+</th>
+</tr>
+<tr>
+<td>
+str
+</td>
+<td>
+u32
+</td>
+<td>
+f64
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+"SkyWest Airlines Inc."
+</td>
+<td>
+1
+</td>
+<td>
+107
+</td>
+</tr>
+<tr>
+<td>
+"Hawaiian Airlines Inc."
+</td>
+<td>
+31
+</td>
+<td>
+48.774193548387096
+</td>
+</tr>
+<tr>
+<td>
+"ExpressJet Airlines Inc."
+</td>
+<td>
+3964
+</td>
+<td>
+29.642785065590314
+</td>
+</tr>
+<tr>
+<td>
+"Frontier Airlines Inc."
+</td>
+<td>
+59
+</td>
+<td>
+23.88135593220339
+</td>
+</tr>
+<tr>
+<td>
+"Mesa Airlines Inc."
+</td>
+<td>
+39
+</td>
+<td>
+20.41025641025641
+</td>
+</tr>
+<tr>
+<td>
+"Endeavor Air Inc."
+</td>
+<td>
+1480
+</td>
+<td>
+19.32162162162162
+</td>
+</tr>
+<tr>
+<td>
+"Alaska Airlines Inc."
+</td>
+<td>
+62
+</td>
+<td>
+17.64516129032258
+</td>
+</tr>
+<tr>
+<td>
+"Envoy Air"
+</td>
+<td>
+2203
+</td>
+<td>
+14.303676804357695
+</td>
+</tr>
+<tr>
+<td>
+"Southwest Airlines Co."
+</td>
+<td>
+985
+</td>
+<td>
+12.964467005076141
+</td>
+</tr>
+<tr>
+<td>
+"JetBlue Airways"
+</td>
+<td>
+4413
+</td>
+<td>
+12.919329254475414
+</td>
+</tr>
+<tr>
+<td>
+"United Air Lines Inc."
+</td>
+<td>
+4590
+</td>
+<td>
+11.851851851851851
+</td>
+</tr>
+<tr>
+<td>
+"American Airlines Inc."
+</td>
+<td>
+2724
+</td>
+<td>
+10.95337738619677
+</td>
+</tr>
+<tr>
+<td>
+"AirTran Airways Corporation"
+</td>
+<td>
+324
+</td>
+<td>
+9.953703703703704
+</td>
+</tr>
+<tr>
+<td>
+"US Airways Inc."
+</td>
+<td>
+1554
+</td>
+<td>
+9.111325611325611
+</td>
+</tr>
+<tr>
+<td>
+"Delta Air Lines Inc."
+</td>
+<td>
+3655
+</td>
+<td>
+8.0703146374829
+</td>
+</tr>
+<tr>
+<td>
+"Virgin America"
+</td>
+<td>
+314
+</td>
+<td>
+3.1656050955414012
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated `clip` function.
 
@@ -377,47 +537,19 @@ A comparison of polars and pandas is available in the [polars documentation](htt
 
 ``` python
 import duckdb
-```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 con_duckdb = duckdb.connect(database = ':memory:')
 
 # Import from CSV
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 con_duckdb.execute(
   "CREATE TABLE 'flights' AS "
   "SELECT * FROM read_csv_auto('flights.csv', header = True);"
   "CREATE TABLE 'airlines' AS "
   "SELECT * FROM read_csv_auto('airlines.csv', header = True);"
 )
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+```
+
+    ## <duckdb.DuckDBPyConnection object at 0x120b20070>
 
 DuckDB’s `read_csv_auto()` works just like the csv readers in Python.
 
@@ -436,16 +568,23 @@ con_duckdb.execute(
 ).fetchdf()
 ```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+    ##                         airline  flights  mean_delay
+    ## 0         SkyWest Airlines Inc.        1  107.000000
+    ## 1        Hawaiian Airlines Inc.       31   48.774194
+    ## 2      ExpressJet Airlines Inc.     3964   29.642785
+    ## 3        Frontier Airlines Inc.       59   23.881356
+    ## 4            Mesa Airlines Inc.       39   20.410256
+    ## 5             Endeavor Air Inc.     1480   19.321622
+    ## 6          Alaska Airlines Inc.       62   17.645161
+    ## 7                     Envoy Air     2203   14.303677
+    ## 8        Southwest Airlines Co.      985   12.964467
+    ## 9               JetBlue Airways     4413   12.919329
+    ## 10        United Air Lines Inc.     4590   11.851852
+    ## 11       American Airlines Inc.     2724   10.953377
+    ## 12  AirTran Airways Corporation      324    9.953704
+    ## 13              US Airways Inc.     1554    9.111326
+    ## 14         Delta Air Lines Inc.     3655    8.070315
+    ## 15               Virgin America      314    3.165605
 
 The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.
 
@@ -479,55 +618,13 @@ For the test drive, I’ll use the [pandas backend](https://ibis-project.org/doc
 
 ``` python
 import ibis
-```
-
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 ibis.options.interactive = True
 
 # Import from CSV into pandas
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 flights_ib_csv = pd.read_csv("flights.csv")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 airlines_ib_csv = pd.read_csv("airlines.csv")
 
 # Connect ibis to pandas
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 con_ibis = ibis.pandas.connect(
   {
     'flights': flights_ib_csv,
@@ -536,38 +633,9 @@ con_ibis = ibis.pandas.connect(
 )
 
 # Checkout the tables
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 flights_ib = con_ibis.table("flights")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
 airlines_ib = con_ibis.table("airlines")
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+```
 
 Non-interactive ibis means that queries are evaluated lazily.
 
@@ -587,16 +655,23 @@ Non-interactive ibis means that queries are evaluated lazily.
 )
 ```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+    ##    carrier  flights  mean_delay
+    ## 0       9E     1480   10.207432
+    ## 1       AA     2724    0.982379
+    ## 2       AS       62    8.967742
+    ## 3       B6     4413    4.717199
+    ## 4       DL     3655   -4.404651
+    ## 5       EV     3964   25.160192
+    ## 6       F9       59   21.830508
+    ## 7       FL      324    3.317901
+    ## 8       HA       31   27.483871
+    ## 9       MQ     2203    7.883795
+    ## 10      OO        1  107.000000
+    ## 11      UA     4590    3.175599
+    ## 12      US     1554    1.431145
+    ## 13      VX      314  -15.280255
+    ## 14      WN      985    5.886294
+    ## 15      YV       39   13.769231
 
 Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help. For that reason I left the ibis pipeline incomplete. The clipping of the `arr_delay` to 0 and the join to `airlines` are missing.
 
@@ -614,16 +689,7 @@ max(flights_pd["arr_delay"]) # 1272.0
 # max(flights_ib.arr_delay) # TypeError: 'FloatingColumn' object is not iterable
 ```
 
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
+    ## 1272.0
 
 And the [documentation](https://ibis-project.org/docs/user_guide/udf.html) warns:
 

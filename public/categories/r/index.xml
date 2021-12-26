@@ -8,13 +8,13 @@
     <language>en</language>
     <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Data frame wars: pandas vs. polars vs duckdb</title>
+      <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
       <link>/blog/dataframes/</link>
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dataframes/</guid>
-      <description>I&amp;rsquo;m a long time R user and lately I&amp;rsquo;ve seen more and more signals that it&amp;rsquo;s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
-The contenders     The first thing I needed was a way to manipulate data frames.</description>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning.</description>
     </item>
     
     <item>
@@ -53,7 +53,29 @@ I presented the data pipeline in 2021 at the BVM (German association of social a
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/project/gpexp/</guid>
-      <description></description>
+      <description>Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. It visualizes the results of a paper on natural language processing on patent texts:
+ D.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html
+ This tool lets users map and visualize inventive and innovative activity around the globe.</description>
+    </item>
+    
+    <item>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation</title>
+      <link>/project/masterthesis/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/masterthesis/</guid>
+      <description>My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.
+Current AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker.</description>
+    </item>
+    
+    <item>
+      <title>Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?</title>
+      <link>/project/bachelorthesis/</link>
+      <pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>/project/bachelorthesis/</guid>
+      <description>I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
+Photo by Justus Menke on Unsplash</description>
     </item>
     
   </channel>

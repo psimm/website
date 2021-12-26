@@ -8,10 +8,6 @@ categories: ["R", "Python"]
 tags: ["Performance"]
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-```
-
 I'm a long time R user and lately I've seen more and more [signals](https://www.tiobe.com/tiobe-index/python/) that it's worth investing into Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/). Further, there are many more data API libraries and machine learning libraries for Python than for R.
 
 Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.
@@ -154,7 +150,7 @@ That's quite passive aggressive, but I do agree and wish pandas didn't have it.
 ## siuba: dplyr in Python
 
 ```{python siuba_import}
-from siuba import _, filter, group_by, summarize, left_join, rename, mutate, arrange
+import siuba as si
 
 # Import from CSV
 flights_si = pd.read_csv("flights.csv")
@@ -166,24 +162,24 @@ As siuba is just an alternative way of writing some pandas commands, we read the
 ```{python siuba_query}
 (
   flights_si
-    >> filter(
-      _.year == 2013,
-      _.month == 1,
-      _.arr_delay.notnull()
+    >> si.filter(
+      si._.year == 2013,
+      si._.month == 1,
+      si._.arr_delay.notnull()
     )
-    >> mutate(arr_delay = _.arr_delay.clip(lower = 0))
-    >> left_join(_, airlines_si, on = "carrier")
-    >> rename(airline = _.name)
-    >> group_by(_.airline)
-    >> summarize(
-        flights = _.airline.count(),
-        mean_delay = _.arr_delay.mean()
+    >> si.mutate(arr_delay = si._.arr_delay.clip(lower = 0))
+    >> si.left_join(si._, airlines_si, on = "carrier")
+    >> si.rename(airline = si._.name)
+    >> si.group_by(si._.airline)
+    >> si.summarize(
+        flights = si._.airline.count(),
+        mean_delay = si._.arr_delay.mean()
     )
-    >> arrange(-_.mean_delay)
+    >> si.arrange(-si._.mean_delay)
 )
 ```
 
-I found this one the easiest to work with. Once I understood the `_` placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn't require me to spell out the name of the data frame over and over. While not as elegant as dplyr's [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with) (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.
+I found siuba the easiest to work with. Once I understood the `_` placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn't require me to spell out the name of the data frame over and over. While not as elegant as dplyr's [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with) (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.
 
 It's always possible to drop into pandas, such as for the aggregation functions which use the `mean()` and `count()` methods of the pandas series. The `>>` is an easy replacement for the `%>%` magrittr pipe or `|>` base pipe in R.
 

@@ -34,7 +34,29 @@ I presented the data pipeline in 2021 at the BVM (German association of social a
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/project/gpexp/</guid>
-      <description></description>
+      <description>Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. It visualizes the results of a paper on natural language processing on patent texts:
+ D.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html
+ This tool lets users map and visualize inventive and innovative activity around the globe.</description>
+    </item>
+    
+    <item>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation</title>
+      <link>/project/masterthesis/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/masterthesis/</guid>
+      <description>My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.
+Current AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker.</description>
+    </item>
+    
+    <item>
+      <title>Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?</title>
+      <link>/project/bachelorthesis/</link>
+      <pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>/project/bachelorthesis/</guid>
+      <description>I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
+Photo by Justus Menke on Unsplash</description>
     </item>
     
   </channel>

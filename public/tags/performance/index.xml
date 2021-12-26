@@ -8,13 +8,13 @@
     <language>en</language>
     <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/performance/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Data frame wars: pandas vs. polars vs duckdb</title>
+      <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
       <link>/blog/dataframes/</link>
       <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dataframes/</guid>
-      <description>I&amp;rsquo;m a long time R user and lately I&amp;rsquo;ve seen more and more signals that it&amp;rsquo;s worth investing into learning more Python. I use it for NLP with spaCy and to build functions on AWS Lambda (though the recent lambdr package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
-The contenders     The first thing I needed was a way to manipulate data frames.</description>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning.</description>
     </item>
     
   </channel>
