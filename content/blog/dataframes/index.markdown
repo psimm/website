@@ -207,22 +207,11 @@ That’s quite passive aggressive, but I do agree and wish pandas didn’t have 
 ## siuba: dplyr in Python
 
 ``` python
-from siuba import *
-```
-
-function (...) 
-{
-    dots <- py_resolve_dots(list(...))
-    result <- py_call_impl(callable, dots$args, dots$keywords)
-    if (convert) 
-        result <- py_to_r(result)
-    if (is.null(result)) 
-        invisible(result)
-    else result
-}
-from siuba.dply.vector import *
+from siuba import _, filter, group_by, summarize, left_join, rename, mutate, arrange
 
 # Import from CSV
+```
+
 function (...) 
 {
     dots <- py_resolve_dots(list(...))
@@ -262,7 +251,7 @@ As siuba is just an alternative way of writing some pandas commands, we read the
 (
   flights_si
     >> filter(
-      _.year == 2013, 
+      _.year == 2013,
       _.month == 1,
       _.arr_delay.notnull()
     )
@@ -271,8 +260,8 @@ As siuba is just an alternative way of writing some pandas commands, we read the
     >> rename(airline = _.name)
     >> group_by(_.airline)
     >> summarize(
-      flights = _.airline.count(),
-      mean_delay = _.arr_delay.mean()
+        flights = _.airline.count(),
+        mean_delay = _.arr_delay.mean()
     )
     >> arrange(-_.mean_delay)
 )
@@ -590,25 +579,11 @@ Non-interactive ibis means that queries are evaluated lazily.
       (flights_ib.month == 1) &
       (flights_ib.arr_delay.notnull())
     )
-    #.mutate(
-    #  delay = flights_ib.arr_delay
-    #  .case()
-    #  .when(flights_ib.arr_delay < 0.0, 0.0)
-    #  .else_(flights_ib.arr_delay)
-    #  .end()
-    #  .execute()
-    #)
-    #.join(
-    #  airlines_ib, 
-    #  predicates = flights_ib["carrier"] == airlines_ib["carrier"],
-    #  how = "left"
-    #)
-    #.materialize() # actually compute the join
-    #.group_by("name")
-    #.aggregate([
-    #  flights_ib["name"].count().name("flights"),
-    #  flights_ib["arr_delay"].mean().name("mean_delay")
-    #])
+    .group_by("carrier")
+    .aggregate([
+      flights_ib["carrier"].count().name("flights"),
+      flights_ib["arr_delay"].mean().name("mean_delay")
+    ])
 )
 ```
 
@@ -623,25 +598,48 @@ function (...)
     else result
 }
 
-Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help, a similar issue as with polars. I ran into multiple issues:
+Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help. For that reason I left the ibis pipeline incomplete. The clipping of the `arr_delay` to 0 and the join to `airlines` are missing.
+
+I ran into multiple issues:
 
 -   An error in the predicates argument of `join` when the tables share a column name. Here, it was the column that the join operates on, so I don’t see why an error is raised.
 -   Due to the lazy evaluation, is is required to have a `materialize` step after the join.
 -   The need to “register” the pandas data frames in ibis rather than operating directly on them as duckdb can
+-   I didn’t find documentation indicating how to refer to an other column in a `case` statement
+
+Ibis objects don’t play nice with other Python functions:
+
+``` python
+max(flights_pd["arr_delay"]) # 1272.0
+# max(flights_ib.arr_delay) # TypeError: 'FloatingColumn' object is not iterable
+```
+
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+And the [documentation](https://ibis-project.org/docs/user_guide/udf.html) warns:
+
+> UDFs \[User defined functions\] are a complex topic. The UDF API is provisional and subject to change.
 
 Googling and StackOverflow was of little help, only very careful reading of the API docs got me there. Issues like that go away once the user has gained familiarity with the library, but they’ll still remain for new teammates.
 
-The general promise of ibis is amazing: run on everything like SQL, but with the composeability and expressiveness of Python. It just seems rough around the edges and with limited help available.
+The general promise of ibis is amazing: run on everything like SQL, but with the composition and expressiveness of Python. It just seems rough around the edges and with limited help available.
 
 ## Conclusion
 
-It’s not a clear-cut choice. Each seems most useful in it’s own arena.
-
-None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like `{{ }}` and `:=`.
+It’s not a clear-cut choice. None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like `{{ }}` and `:=`.
 
 My appreciation for dplyr (and the closely associated tidyr) grew during this research. Not only is it a widely accepted standard like pandas, it can also be used as a translation layer for backends like SQL databases (including duckdb), data.table, and Spark. All while having the most elegant and flexible syntax available.
 
-Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. The syntax isn’t my favorite, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.
+Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. I find the use of an index inconvenient, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.
 
 Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.
 
