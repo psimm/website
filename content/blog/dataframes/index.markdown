@@ -549,7 +549,7 @@ con_duckdb.execute(
 )
 ```
 
-    ## <duckdb.DuckDBPyConnection object at 0x120b20070>
+    ## <duckdb.DuckDBPyConnection object at 0x121b25bb0>
 
 DuckDB’s `read_csv_auto()` works just like the csv readers in Python.
 
@@ -652,26 +652,27 @@ Non-interactive ibis means that queries are evaluated lazily.
       flights_ib["carrier"].count().name("flights"),
       flights_ib["arr_delay"].mean().name("mean_delay")
     ])
+    .sort_by(ibis.desc("mean_delay"))
 )
 ```
 
     ##    carrier  flights  mean_delay
-    ## 0       9E     1480   10.207432
-    ## 1       AA     2724    0.982379
-    ## 2       AS       62    8.967742
-    ## 3       B6     4413    4.717199
-    ## 4       DL     3655   -4.404651
-    ## 5       EV     3964   25.160192
-    ## 6       F9       59   21.830508
-    ## 7       FL      324    3.317901
-    ## 8       HA       31   27.483871
-    ## 9       MQ     2203    7.883795
-    ## 10      OO        1  107.000000
+    ## 0       OO        1  107.000000
+    ## 1       HA       31   27.483871
+    ## 2       EV     3964   25.160192
+    ## 3       F9       59   21.830508
+    ## 4       YV       39   13.769231
+    ## 5       9E     1480   10.207432
+    ## 6       AS       62    8.967742
+    ## 7       MQ     2203    7.883795
+    ## 8       WN      985    5.886294
+    ## 9       B6     4413    4.717199
+    ## 10      FL      324    3.317901
     ## 11      UA     4590    3.175599
     ## 12      US     1554    1.431145
-    ## 13      VX      314  -15.280255
-    ## 14      WN      985    5.886294
-    ## 15      YV       39   13.769231
+    ## 13      AA     2724    0.982379
+    ## 14      DL     3655   -4.404651
+    ## 15      VX      314  -15.280255
 
 Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help. For that reason I left the ibis pipeline incomplete. The clipping of the `arr_delay` to 0 and the join to `airlines` are missing.
 

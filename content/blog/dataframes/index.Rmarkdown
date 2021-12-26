@@ -331,6 +331,7 @@ Non-interactive ibis means that queries are evaluated lazily.
       flights_ib["carrier"].count().name("flights"),
       flights_ib["arr_delay"].mean().name("mean_delay")
     ])
+    .sort_by(ibis.desc("mean_delay"))
 )
 ```
 
