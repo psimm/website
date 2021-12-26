@@ -1,6 +1,6 @@
 ---
-title: "Data frame wars: pandas vs. polars vs duckdb"
-excerpt: "A comparison of pandas, polars and duckdb from the perspective of a dplyr user."
+title: "Data frame wars: Choosing a Python dataframe library as a dplyr user"
+excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user"
 slug: "dataframes"
 author: "Paul Simmering"
 date: "2021-12-20"
@@ -21,40 +21,50 @@ tags: ["Performance"]
 <script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
 <script src="{{< blogdown/postref >}}index_files/reactable-binding/reactable.js"></script>
 
-I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into learning more Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/) (though the recent [lambdr](https://mdneuzerling.com/post/serverless-on-demand-parametrised-r-markdown-reports-with-aws-lambda/) package gave R some great tools there too). Further, there are many more data API libraries available for Python than for R.
+I’m a long time R user and lately I’ve seen more and more [signals](https://www.tiobe.com/tiobe-index/python/) that it’s worth investing into Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/). Further, there are many more data API libraries and machine learning libraries for Python than for R.
 
-Michael Chow, developer of [siuba](https://github.com/machow/siuba), a Python port of dplyr on top of pandas [wrote](https://mchow.com/posts/pandas-has-a-hard-job/):
+Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.
+
+Michael Chow, developer of [siuba](https://github.com/machow/siuba), a Python port of dplyr on top of pandas [wrote](https://mchow.com/posts/pandas-has-a-hard-job/) describes the situation well:
 
 > It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).
 
-And that summarizes how I feel about it: The syntax of pandas feels inferior to dplyr and I wish I could have the same fluency as with dplyr. The higher-level libraries he mentions come with a problem though: There’s no accepted standard. So investing the time to learn one of them may be futile as the next project one is working on could be with other developers who are fluent in a different one.
+The higher-level libraries he mentions come with a problem : There’s no universal standard.
+
+In a discussion of the polars library on Hacker News the user “civilized” put the dplyr user perspective more bluntly:
+
+> In my world, anything that isn’t “identical to R’s dplyr API but faster” just isn’t quite worth switching for. There’s absolutely no contest: dplyr has the most productive API and that matters to me more than anything else.
+
+I’m more willing to compromise though, so here’s a comparison of the strongest contenders.
 
 ## The contenders
 
-Python has a larger package ecosystem and ways of doing things than R, which seems more centralized thanks to CRAN. Adopting Python means making many choices on which libraries to invest time into learning. The first thing I needed was a way to manipulate data frames. I’ve narrowed it down to 3 choices:
+The [database-like ops benchmark on H2Oai](https://h2oai.github.io/db-benchmark/) is a helpful performance comparison.
 
--   [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
--   [siuba](https://github.com/machow/siuba): A port of dplyr to Python, built on top of pandas
--   [Polars](https://www.pola.rs): The fastest library available. It’s a new library that doesn’t have nearly as many users or help available. But according to the [H2Oai ops benchmark](https://h2oai.github.io/db-benchmark/), it runs 3-10x faster than Pandas.
--   [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe. I know SQL, so this is the easiest one to pick up.
+I’m considering these libraries:
 
-There are far more options and this is my shortlist. I have excluded the other options in the benchmark for these reasons:
+1.  [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
+2.  [siuba](https://github.com/machow/siuba): A port of dplyr to Python, built on top of pandas. Not in the benchmark. Performance probably similar to pandas or worse due to translation.
+3.  [Polars](https://www.pola.rs): The fastest library available. According to the benchmark, it runs 3-10x faster than Pandas.
+4.  [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe and write SQL. In R, this can also be queried via dbplyr.
+5.  [ibis](https://ibis-project.org/docs/index.html). Backend-agnostic wrapper for pandas and SQL engines.
 
--   Slower than polars (dask, Arrow, Modin)
--   Not mature enough, as shown by lower activity on Github (pydatatable)
--   Requires other software or a server (ClickHouse)
+There are more options. I excluded the others for these reasons:
+
+-   Slower than polars and not with a readability focus (dask, Arrow, Modin, pydatatable)
+-   Requires or is optmized for running on a remote server (Spark, ClickHouse and most other SQL databases).
+-   Not meant for OLAP (sqlite)
 -   Not in Python (DataFrames.jl)
--   Meant for GPU only (cuDF)
--   Wrappers like [ibis](https://ibis-project.org/docs/index.html) that delegate computation to pandas or a server running SQL. Technically siuba is also in this group, but as I’m coming from dplyr I had to include it.
+-   Meant for GPU (cuDF)
 
-The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow.
+The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.
 
 ``` r
 library(ggplot2)
 libs <- data.frame(
-  library = c("pandas", "siuba", "polars", "duckdb", "dplyr", "data.table"),
-  language = c("Python", "Python", "Python", "SQL", "R", "R"),
-  stars = c(32100, 732, 3900, 4100, 3900, 2900)
+  library = c("pandas", "siuba", "polars", "duckdb", "dplyr", "data.table", "pydatatable", "dtplyr", "tidytable", "ibis"),
+  language = c("Python", "Python", "Python", "SQL", "R", "R", "Python", "R", "R", "Python"),
+  stars = c(32100, 732, 3900, 4100, 3900, 2900, 1400, 542, 285, 1600)
 )
 
 ggplot(libs, aes(x = reorder(library, -stars), y = stars, fill = language)) +
@@ -70,20 +80,18 @@ ggplot(libs, aes(x = reorder(library, -stars), y = stars, fill = language)) +
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/github_stars-1.png" width="672" />
 
-Github stars are not a perfect proxy. For instance, dplyr is much more mature than its star count suggests. Comparing the completen and completeness of the documentation of dplyr and polars reveals that it’s a night and day difference.
+Github stars are not a perfect proxy. For instance, dplyr is more mature than its star count suggests. Comparing the completeness of the documentation and tutorials for dplyr and polars reveals that it’s a day and night difference.
 
-My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. When I need more performance, I use [tidytable](https://github.com/markfairbanks/tidytable) to get the speed of data.table with the grammar of dplyr. I also use [dbplyr](https://dbplyr.tidyverse.org) a lot, which translates dplyr to SQL. It’s composeable, which actually makes it superior to SQL for me in most use cases.
+With the quantitative comparison out of the way, here’s a qualitative comparison of the Python packages. I’m speaking of my personal opinion of these packages - not a general comparison. My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. When I need more performance, I use [tidytable](https://github.com/markfairbanks/tidytable) to get most of the speed of data.table with the grammar of dplyr and eager evaluation. Another alternative is [dtplyr](https://github.com/tidyverse/dtplyr), which translates dplyr to data.table with lazy evaluation. I also use [dbplyr](https://dbplyr.tidyverse.org), which translates dplyr to SQL.
 
-With that out of the way, here’s a heavily biased comparison of the four Python packages.
-
-I’m speaking of my personal opinion of these packages given my own background - not a general comparison. I’ll compare the three contenders by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarise. I’ll use the nycflights13 dataset, which some readers may know from Hadley Wickham’s [R for Data Science](https://r4ds.had.co.nz/transform.html).
+I’ll compare the libraries by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarize. I’ll use the nycflights13 dataset, which is featured in Hadley Wickham’s [R for Data Science](https://r4ds.had.co.nz/transform.html).
 
 ## dplyr: Reference in R
 
-Let’s start off the comparison with a reference implementation with my current default, dplyr. The dataset is available as a package, so I skip the CSV import step here.
+Let’s start with a reference implementation in dplyr. The dataset is available as a package, so I skip the CSV import.
 
 ``` r
-suppressMessages(library(dplyr))
+library(dplyr, warn.conflicts = FALSE)
 library(nycflights13)
 library(reactable)
 
@@ -97,9 +105,9 @@ reactable(head(airlines, 10))
 <div id="htmlwidget-2" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"name","name":"name","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"08ac76438f639beb63f40296e9c2c3c3","key":"08ac76438f639beb63f40296e9c2c3c3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 
-The `flights` tables has 336776 rows, one for each flight of an airplane. The `airlines` table has 16 rows, one for each airline mapping the full name of the company to a shortcode.
+The `flights` tables has 336776 rows, one for each flight of an airplane. The `airlines` table has 16 rows, one for each airline mapping the full name of the company to a code.
 
-Let’s find the airline with the highest arrival delays in January 2013. Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replace these values with 0 because I don’t want them to cancel out delays of other flights. I join to the airlines table to get the full names of the airlines.
+Let’s find the airline with the highest arrival delays in January 2013.
 
 ``` r
 flights |>
@@ -107,7 +115,7 @@ flights |>
   mutate(arr_delay = replace(arr_delay, arr_delay < 0, 0)) |>
   left_join(airlines, by = "carrier") |>
   group_by(airline = name) |>
-  summarise(flights = n(), mean_delay = mean(arr_delay)) %>% 
+  summarise(flights = n(), mean_delay = mean(arr_delay)) |> 
   arrange(desc(mean_delay))
 ## # A tibble: 16 × 3
 ##    airline                     flights mean_delay
@@ -130,17 +138,18 @@ flights |>
 ## 16 Virgin America                  314       3.17
 ```
 
-I export two tables from the dataset to CSV to make it available for Python packages.
+Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don’t want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.
+
+I export the flights and airlines tables to CSV to hand them over to Python.
 
 ``` r
-# Use data.table::fwrite instead of write.csv because it's faster
 data.table::fwrite(flights, "flights.csv", row.names = FALSE)
 data.table::fwrite(airlines, "airlines.csv", row.names = FALSE)
 ```
 
 ## Pandas: Most popular
 
-The syntax is inspired by base R, which is a good thing.
+The following sections follow a pattern: read in from CSV, then build a query.
 
 ``` python
 import pandas as pd
@@ -150,7 +159,7 @@ flights_pd = pd.read_csv("flights.csv")
 airlines_pd = pd.read_csv("airlines.csv")
 ```
 
-`pandas.read_csv` read the header and conveniently inferred the column types.
+`pandas.read_csv` reads the header and conveniently infers the column types.
 
 ``` python
 (flights_pd
@@ -181,25 +190,157 @@ airlines_pd = pd.read_csv("airlines.csv")
 ## Virgin America                   314    3.165605
 ```
 
-Rows with missing values for `arr_delay` are dropped implicitly in the `agg` step.
+I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.
 
-Pandas uses a row index, which is basically a special column. Base R also has this with row names, though the tidyverse and tibbles have largely removed them from common use.
+Here, the `query()` function is slightly awkward with the long string argument. The `groupby` doesn’t allow renaming on the fly like dplyr, though I don’t consider that a real drawback. Perhaps it’s clearer to rename explicitly anyway.
 
-Pandas has the widest API, offering hundreds of functions for every conceivable manipulation.
+Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The `clip` function used here is one such example. One difference to dplyr is that pandas uses its own methods `.mean()`, rather than using external ones such as `base::mean()`. That means using custom functions instead carries a [performance penalty](https://stackoverflow.com/a/26812998).
+
+As we’ll see later, pandas is the backend for siuba and ibis, which boil down to pandas code.
+
+One difference to all other discussed solutions is that pandas uses a [row index](https://www.sharpsightlabs.com/blog/pandas-index/). Base R also has this with row names, but the tidyverse and tibbles have largely removed them from common use. I never missed row names. At the times I had to work with them in pandas they were more confusing than helpful. The documentation of polars puts it more bluntly:
+
+> No index. They are not needed. Not having them makes things easier. Convince me otherwise
+
+That’s quite passive aggressive, but I do agree and wish pandas didn’t have it.
+
+## siuba: dplyr in Python
+
+``` python
+from siuba import *
+```
+
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+from siuba.dply.vector import *
+
+# Import from CSV
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+flights_si = pd.read_csv("flights.csv")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+airlines_si = pd.read_csv("airlines.csv")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.
+
+``` python
+(
+  flights_si
+    >> filter(
+      _.year == 2013, 
+      _.month == 1,
+      _.arr_delay.notnull()
+    )
+    >> mutate(arr_delay = _.arr_delay.clip(lower = 0))
+    >> left_join(_, airlines_si, on = "carrier")
+    >> rename(airline = _.name)
+    >> group_by(_.airline)
+    >> summarize(
+      flights = _.airline.count(),
+      mean_delay = _.arr_delay.mean()
+    )
+    >> arrange(-_.mean_delay)
+)
+```
+
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+I found this one the easiest to work with. Once I understood the `_` placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with) (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.
+
+It’s always possible to drop into pandas, such as for the aggregation functions which use the `mean()` and `count()` methods of the pandas series. The `>>` is an easy replacement for the `%>%` magrittr pipe or `|>` base pipe in R.
+
+The author advertises siuba like this (from the [docs](https://siuba.readthedocs.io/en/latest/)):
+
+> Siuba is a library for quick, scrappy data analysis in Python. It is a port of dplyr, tidyr, and other R Tidyverse libraries.
+
+A way for dplyr users to quickly hack away at data analysis in Python, but not meant for unsupervised production use.
 
 ## Polars: Fastest
 
-Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyer work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.
+Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyr work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.
 
 ``` python
 import polars as pl
 
 # Import from CSV
-flights_pl = pl.read_csv("flights.csv")
-airlines_pl = pl.read_csv("airlines.csv")
 ```
 
-The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated `clip` function.
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+flights_pl = pl.read_csv("flights.csv")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+airlines_pl = pl.read_csv("airlines.csv")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
 
 ``` python
 (flights_pl
@@ -226,249 +367,73 @@ The API is leaner than pandas, requiring to memorize fewer functions and pattern
 )
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
+The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated `clip` function.
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1 "class="dataframe ">
-<thead>
-<tr>
-<th>
-airline
-</th>
-<th>
-flights
-</th>
-<th>
-mean_delay
-</th>
-</tr>
-<tr>
-<td>
-str
-</td>
-<td>
-u32
-</td>
-<td>
-f64
-</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-"SkyWest Airlines Inc."
-</td>
-<td>
-1
-</td>
-<td>
-107
-</td>
-</tr>
-<tr>
-<td>
-"Hawaiian Airlines Inc."
-</td>
-<td>
-31
-</td>
-<td>
-48.774193548387096
-</td>
-</tr>
-<tr>
-<td>
-"ExpressJet Airlines Inc."
-</td>
-<td>
-3964
-</td>
-<td>
-29.642785065590314
-</td>
-</tr>
-<tr>
-<td>
-"Frontier Airlines Inc."
-</td>
-<td>
-59
-</td>
-<td>
-23.88135593220339
-</td>
-</tr>
-<tr>
-<td>
-"Mesa Airlines Inc."
-</td>
-<td>
-39
-</td>
-<td>
-20.41025641025641
-</td>
-</tr>
-<tr>
-<td>
-"Endeavor Air Inc."
-</td>
-<td>
-1480
-</td>
-<td>
-19.32162162162162
-</td>
-</tr>
-<tr>
-<td>
-"Alaska Airlines Inc."
-</td>
-<td>
-62
-</td>
-<td>
-17.64516129032258
-</td>
-</tr>
-<tr>
-<td>
-"Envoy Air"
-</td>
-<td>
-2203
-</td>
-<td>
-14.303676804357695
-</td>
-</tr>
-<tr>
-<td>
-"Southwest Airlines Co."
-</td>
-<td>
-985
-</td>
-<td>
-12.964467005076141
-</td>
-</tr>
-<tr>
-<td>
-"JetBlue Airways"
-</td>
-<td>
-4413
-</td>
-<td>
-12.919329254475414
-</td>
-</tr>
-<tr>
-<td>
-"United Air Lines Inc."
-</td>
-<td>
-4590
-</td>
-<td>
-11.851851851851851
-</td>
-</tr>
-<tr>
-<td>
-"American Airlines Inc."
-</td>
-<td>
-2724
-</td>
-<td>
-10.95337738619677
-</td>
-</tr>
-<tr>
-<td>
-"AirTran Airways Corporation"
-</td>
-<td>
-324
-</td>
-<td>
-9.953703703703704
-</td>
-</tr>
-<tr>
-<td>
-"US Airways Inc."
-</td>
-<td>
-1554
-</td>
-<td>
-9.111325611325611
-</td>
-</tr>
-<tr>
-<td>
-"Delta Air Lines Inc."
-</td>
-<td>
-3655
-</td>
-<td>
-8.0703146374829
-</td>
-</tr>
-<tr>
-<td>
-"Virgin America"
-</td>
-<td>
-314
-</td>
-<td>
-3.1656050955414012
-</td>
-</tr>
-</tbody>
-</table>
-</div>
+There isn’t nearly as much help available for problems with polars as for with pandas. While the documentation is good, it can’t answer every question and lots of trial and error is needed.
 
-There isn’t nearly as much help available for problems with polars as for with pandas. Often, I had to use trial and error based on the documentation. While the documentation is good, it can’t answer every question.
-
-A comparison of polars and pandas is available in the [polars documentation](https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment). A notable difference is that polars doesn’t have a concept of indexes, just like tibbles in R.
+A comparison of polars and pandas is available in the [polars documentation](https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment).
 
 ## DuckDB: Highly compatible and easy for SQL users
 
 ``` python
 import duckdb
+```
 
-con = duckdb.connect(database = ':memory:')
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+con_duckdb = duckdb.connect(database = ':memory:')
 
 # Import from CSV
-con.execute(
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+con_duckdb.execute(
   "CREATE TABLE 'flights' AS "
   "SELECT * FROM read_csv_auto('flights.csv', header = True);"
   "CREATE TABLE 'airlines' AS "
   "SELECT * FROM read_csv_auto('airlines.csv', header = True);"
 )
-## <duckdb.DuckDBPyConnection object at 0x11aa052b0>
-```
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+DuckDB’s `read_csv_auto()` works just like the csv readers in Python.
 
 ``` python
-con.execute(
+con_duckdb.execute(
   "WITH flights_clipped AS ( "
   "SELECT carrier, CASE WHEN arr_delay > 0 THEN arr_delay ELSE 0 END AS arr_delay "
   "FROM flights "
@@ -480,56 +445,203 @@ con.execute(
   "GROUP BY name "
   "ORDER BY mean_delay DESC "
 ).fetchdf()
-##                         airline  flights  mean_delay
-## 0         SkyWest Airlines Inc.        1  107.000000
-## 1        Hawaiian Airlines Inc.       31   48.774194
-## 2      ExpressJet Airlines Inc.     3964   29.642785
-## 3        Frontier Airlines Inc.       59   23.881356
-## 4            Mesa Airlines Inc.       39   20.410256
-## 5             Endeavor Air Inc.     1480   19.321622
-## 6          Alaska Airlines Inc.       62   17.645161
-## 7                     Envoy Air     2203   14.303677
-## 8        Southwest Airlines Co.      985   12.964467
-## 9               JetBlue Airways     4413   12.919329
-## 10        United Air Lines Inc.     4590   11.851852
-## 11       American Airlines Inc.     2724   10.953377
-## 12  AirTran Airways Corporation      324    9.953704
-## 13              US Airways Inc.     1554    9.111326
-## 14         Delta Air Lines Inc.     3655    8.070315
-## 15               Virgin America      314    3.165605
 ```
 
-The performance is closer to polars than to pandas.
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
 
-A big plus is the ability to handle larger than memory data.
+The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.
 
-DuckDB can also operate directly on a pandas dataframe.
+DuckDB can also operate directly on a pandas dataframe. The SQL code is portable to R, C, C++, Java and other programming languages the duckdb has [APIs](https://duckdb.org/docs/api/overview). It’s also portable when the logic is taken to a DB like [Postgres](https://www.postgresql.org), or [Clickhouse](https://clickhouse.com), or is ported to an ETL framework like [DBT](https://github.com/dbt-labs/dbt-core).
 
-The code is portable to R, C, C++, Java and other programming languages the duckdb has [APIs](https://duckdb.org/docs/api/overview). It’s also portable when the logic is taken to a DB like [Postgres](https://www.postgresql.org), or [Snowflake](https://www.snowflake.com/), or is ported to an ETL framework like [DBT](https://github.com/dbt-labs/dbt-core).
+This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating SQL translates well to other situations. SQL has been around for more than 50 years - learning SQL is future-proofing a career.
 
-This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating data translates well to other situations - SQL has been around for more than 40 years. Something that can’t be said about any Python library. Learning SQL is future-proofing ones career.
+While these are big plusses, duckdb isn’t so convenient for interactive data exploration. SQL isn’t as composeable. Composing SQL queries requires many common table expressions (CTEs, `WITH x AS (SELECT ...)`). Reusing them for other queries is not as easy as with Python. SQL is typically less expressive than Python. It lacks shorthands and it’s awkward when there are many columns. It’s also harder to write custom functions in SQL than in R or Python. This is the motivation for using libraries like pandas and dplyr. But SQL can actually do a surprising amount of things, as database expert Haki Benita explained in a [detailed article](https://hakibenita.com/sql-for-data-analysis).
 
-While these are big plusses, duckdb isn’t as convenient as Polars and Pandas for interactive data exploration. The SQL isn’t as composeable.
+Or in short, from the [documentation](https://ibis-project.org) of ibis:
 
-Composing SQL queries requires many common table expressions (CTEs, `WITH x AS (SELECT ...)`).
+> SQL is widely used and very convenient when writing simple queries. But as the complexity of operations grow, SQL can become very difficult to deal with.
 
-Plus, writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like [PyCharm](https://www.jetbrains.com/pycharm/) and [DataSpell](https://www.jetbrains.com/dataspell/) do).
+Then, there’s the issue of how to actually write the SQL code. Writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like [PyCharm](https://www.jetbrains.com/pycharm/) and [DataSpell](https://www.jetbrains.com/dataspell/) do). The other option is writing `.sql` that have placeholders for parameters. That’s cleaner and allows using a linter, but is inconvenient for interactive use.
 
-SQL is less expressive than Python, especially when the names of output columns are unknown.
+SQL is inherently lazily executed, because the query planner needs to take the whole query into account before starting computation. This enables performance gains. For interactive use, lazy evaluation is less convenient, because one can’t see the intermediate results at each step. Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.
 
-It lacks shorthands. It’s also harder to write custom functions in SQL. With pandas and polars, custom operations are just one lambda away.
+There is a [programmatic way to construct queries](https://github.com/duckdb/duckdb/blob/master/examples/python/duckdb-python.py) for duckdb, designed to provide a [dbplyr alternative](https://github.com/duckdb/duckdb/issues/302) in Python. Unfortunately its documentation is sparse.
 
 Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.
 
-Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.
+## ibis: Lingua franca in Python
+
+The goal of ibis is to provide a universal language for working with data frames in Python, regardless of the backend that is used. It’s tagline is: *Write your analytics code once, run in everywhere*. This is similar to how dplyr can use SQL as a backend with dbplyr and data.table with dtplyr.
+
+Among others, Ibis supports pandas, PostgreSQL and SQLite as backends. Unfortunately duckdb is not an available backend, because the authors of duckdb have [decided against](https://github.com/duckdb/duckdb/issues/302) building on ibis.
+
+The ibis project aims to bridge the gap between the needs of interactive data analysis and the capabilities of SQL, which I have detailed in the previous section on duckdb.
+
+For the test drive, I’ll use the [pandas backend](https://ibis-project.org/docs/backends/pandas.html), meaning that the ibis code is translated to pandas operations, similar to how siuba is translated to pandas.
+
+``` python
+import ibis
+```
+
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+ibis.options.interactive = True
+
+# Import from CSV into pandas
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+flights_ib_csv = pd.read_csv("flights.csv")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+airlines_ib_csv = pd.read_csv("airlines.csv")
+
+# Connect ibis to pandas
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+con_ibis = ibis.pandas.connect(
+  {
+    'flights': flights_ib_csv,
+    'airlines': airlines_ib_csv
+  }
+)
+
+# Checkout the tables
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+flights_ib = con_ibis.table("flights")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+airlines_ib = con_ibis.table("airlines")
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+Non-interactive ibis means that queries are evaluated lazily.
+
+``` python
+(
+  flights_ib
+    .filter(
+      (flights_ib.year == 2013) & 
+      (flights_ib.month == 1) &
+      (flights_ib.arr_delay.notnull())
+    )
+    #.mutate(
+    #  delay = flights_ib.arr_delay
+    #  .case()
+    #  .when(flights_ib.arr_delay < 0.0, 0.0)
+    #  .else_(flights_ib.arr_delay)
+    #  .end()
+    #  .execute()
+    #)
+    #.join(
+    #  airlines_ib, 
+    #  predicates = flights_ib["carrier"] == airlines_ib["carrier"],
+    #  how = "left"
+    #)
+    #.materialize() # actually compute the join
+    #.group_by("name")
+    #.aggregate([
+    #  flights_ib["name"].count().name("flights"),
+    #  flights_ib["arr_delay"].mean().name("mean_delay")
+    #])
+)
+```
+
+function (...) 
+{
+    dots <- py_resolve_dots(list(...))
+    result <- py_call_impl(callable, dots$args, dots$keywords)
+    if (convert) 
+        result <- py_to_r(result)
+    if (is.null(result)) 
+        invisible(result)
+    else result
+}
+
+Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help, a similar issue as with polars. I ran into multiple issues:
+
+-   An error in the predicates argument of `join` when the tables share a column name. Here, it was the column that the join operates on, so I don’t see why an error is raised.
+-   Due to the lazy evaluation, is is required to have a `materialize` step after the join.
+-   The need to “register” the pandas data frames in ibis rather than operating directly on them as duckdb can
+
+Googling and StackOverflow was of little help, only very careful reading of the API docs got me there. Issues like that go away once the user has gained familiarity with the library, but they’ll still remain for new teammates.
+
+The general promise of ibis is amazing: run on everything like SQL, but with the composeability and expressiveness of Python. It just seems rough around the edges and with limited help available.
 
 ## Conclusion
 
-It’s not a clear-cut choice. Each seems more useful in it’s own arena.
+It’s not a clear-cut choice. Each seems most useful in it’s own arena.
 
-None of the three options offer a syntax that is as convenient for interactive analysis as dplyr. Polars is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) rather than as strings `"colname"`or constructs like `pl.col("colname")`. While this is nice for quickly writing code, I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like `{{ }}` and `:=`.
+None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with [tidy evaluation](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with), letting users refer to columns in a data frame by their names (`colname`) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like `{{ }}` and `:=`.
 
-Personally, I’ll leverage my existing knowledge and rely on SQL and an OLAP database (such as Snowflake) to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. The syntax isn’t my favorite, but there’s so much online help available that StackOverflow has the answer for almost any problem. Github Copilot also deserves a mention for making it easier to pick up.
+My appreciation for dplyr (and the closely associated tidyr) grew during this research. Not only is it a widely accepted standard like pandas, it can also be used as a translation layer for backends like SQL databases (including duckdb), data.table, and Spark. All while having the most elegant and flexible syntax available.
+
+Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. The syntax isn’t my favorite, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.
 
 Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.
 
@@ -538,5 +650,10 @@ Related articles:
 -   [Polars: the fastest DataFrame library you’ve never heard of](https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/)
 -   [What would it take to recreate dplyr in python?](https://mchow.com/posts/2020-02-11-dplyr-in-python/)
 -   [Pandas has a hard job (and does it well)](https://mchow.com/posts/pandas-has-a-hard-job/)
+-   [dplyr in Python? First impressions of the siuba module](https://bensstats.wordpress.com/2021/09/14/pythonmusings-6-dplyr-in-python-first-impressions-of-the-siuba-小巴-module/)
+-   [An Overview of Python’s Datatable package](https://towardsdatascience.com/an-overview-of-pythons-datatable-package-5d3a97394ee9)
+-   [Discussion of DuckDB on Hacker News](https://news.ycombinator.com/item?id=24531085)
+-   [Discussion of Polars on Hacker News](https://news.ycombinator.com/item?id=29584698)
+-   [Practical SQL for Data Analysis](https://hakibenita.com/sql-for-data-analysis)
 
 Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

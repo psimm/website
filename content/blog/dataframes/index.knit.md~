@@ -1,0 +1,233 @@
+---
+title: "Data frame wars: Choosing a Python dataframe library as a dplyr user"
+excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user"
+slug: "dataframes"
+author: "Paul Simmering"
+date: "2021-12-20"
+categories: ["R", "Python"]
+tags: ["Performance"]
+---
+
+
+
+I'm a long time R user and lately I've seen more and more [signals](https://www.tiobe.com/tiobe-index/python/) that it's worth investing into Python. I use it for NLP with [spaCy](https://spacy.io) and to build functions on [AWS Lambda](https://aws.amazon.com/lambda/features/). Further, there are many more data API libraries and machine learning libraries for Python than for R.
+
+Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.
+
+Michael Chow, developer of [siuba](https://github.com/machow/siuba), a Python port of dplyr on top of pandas [wrote](https://mchow.com/posts/pandas-has-a-hard-job/) describes the situation well:
+
+> It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).
+
+The higher-level libraries he mentions come with a problem : There's no universal standard.
+
+In a discussion of the polars library on Hacker News the user "civilized" put the dplyr user perspective more bluntly:
+
+> In my world, anything that isn't "identical to R's dplyr API but faster" just isn't quite worth switching for. There's absolutely no contest: dplyr has the most productive API and that matters to me more than anything else.
+
+I'm more willing to compromise though, so here's a comparison of the strongest contenders.
+
+## The contenders
+
+The [database-like ops benchmark on H2Oai](https://h2oai.github.io/db-benchmark/) is a helpful performance comparison.
+
+I'm considering these libraries:
+
+1. [Pandas](https://pandas.pydata.org): The most commonly used library and the one with the most tutorials and Stack Overflow answers available.
+2. [siuba](https://github.com/machow/siuba): A port of dplyr to Python, built on top of pandas. Not in the benchmark. Performance probably similar to pandas or worse due to translation.
+3. [Polars](https://www.pola.rs): The fastest library available. According to the benchmark, it runs 3-10x faster than Pandas.
+4. [Duckdb](https://www.pola.rs): Use an in-memory OLAP database instead of a dataframe and write SQL. In R, this can also be queried via dbplyr.
+5. [ibis](https://ibis-project.org/docs/index.html). Backend-agnostic wrapper for pandas and SQL engines.
+
+There are more options. I excluded the others for these reasons:
+
+- Slower than polars and not with a readability focus (dask, Arrow, Modin, pydatatable)
+- Requires or is optmized for running on a remote server (Spark, ClickHouse and most other SQL databases).
+- Not meant for OLAP (sqlite)
+- Not in Python (DataFrames.jl)
+- Meant for GPU (cuDF)
+
+The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.
+
+
+```r
+library(ggplot2)
+libs <- data.frame(
+  library = c("pandas", "siuba", "polars", "duckdb", "dplyr", "data.table", "pydatatable", "dtplyr", "tidytable", "ibis"),
+  language = c("Python", "Python", "Python", "SQL", "R", "R", "Python", "R", "R", "Python"),
+  stars = c(32100, 732, 3900, 4100, 3900, 2900, 1400, 542, 285, 1600)
+)
+
+ggplot(libs, aes(x = reorder(library, -stars), y = stars, fill = language)) +
+  geom_col() + 
+  labs(
+    title = "Pandas is by far the most popular choice",
+    subtitle = "Comparison of Github stars on 2021-12-25",
+    fill = "Language",
+    x = "Library",
+    y = "Github stars"
+  )
+```
+
+<img src="index_files/figure-html/github_stars-1.png" width="672" />
+
+Github stars are not a perfect proxy. For instance, dplyr is more mature than its star count suggests. Comparing the completeness of the documentation and tutorials for dplyr and polars reveals that it's a day and night difference.
+
+With the quantitative comparison out of the way, here's a qualitative comparison of the Python packages. I'm speaking of my personal opinion of these packages - not a general comparison. My reference is my current use of [dplyr](https://dplyr.tidyverse.org) in R. When I need more performance, I use [tidytable](https://github.com/markfairbanks/tidytable) to get most of the speed of data.table with the grammar of dplyr and eager evaluation. Another alternative is [dtplyr](https://github.com/tidyverse/dtplyr), which translates dplyr to data.table with lazy evaluation. I also use [dbplyr](https://dbplyr.tidyverse.org), which translates dplyr to SQL. 
+
+I'll compare the libraries by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarize. I'll use the nycflights13 dataset, which is featured in Hadley Wickham's [R for Data Science](https://r4ds.had.co.nz/transform.html).
+
+## dplyr: Reference in R
+
+Let's start with a reference implementation in dplyr. The dataset is available as a package, so I skip the CSV import.
+
+
+```r
+library(dplyr, warn.conflicts = FALSE)
+library(nycflights13)
+library(reactable)
+
+# Take a look at the tables
+reactable(head(flights, 10))
+```
+
+```{=html}
+<div id="htmlwidget-65d7e50d5f77cfb1e9e4" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-65d7e50d5f77cfb1e9e4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],"month":[1,1,1,1,1,1,1,1,1,1],"day":[1,1,1,1,1,1,1,1,1,1],"dep_time":[517,533,542,544,554,554,555,557,557,558],"sched_dep_time":[515,529,540,545,600,558,600,600,600,600],"dep_delay":[2,4,2,-1,-6,-4,-5,-3,-3,-2],"arr_time":[830,850,923,1004,812,740,913,709,838,753],"sched_arr_time":[819,830,850,1022,837,728,854,723,846,745],"arr_delay":[11,20,33,-18,-25,12,19,-14,-8,8],"carrier":["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA"],"flight":[1545,1714,1141,725,461,1696,507,5708,79,301],"tailnum":["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA"],"origin":["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA"],"dest":["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD"],"air_time":[227,227,160,183,116,150,158,53,140,138],"distance":[1400,1416,1089,1576,762,719,1065,229,944,733],"hour":[5,5,5,5,6,5,6,6,6,6],"minute":[15,29,40,45,0,58,0,0,0,0],"time_hour":["2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00"]},"columns":[{"accessor":"year","name":"year","type":"numeric"},{"accessor":"month","name":"month","type":"numeric"},{"accessor":"day","name":"day","type":"numeric"},{"accessor":"dep_time","name":"dep_time","type":"numeric"},{"accessor":"sched_dep_time","name":"sched_dep_time","type":"numeric"},{"accessor":"dep_delay","name":"dep_delay","type":"numeric"},{"accessor":"arr_time","name":"arr_time","type":"numeric"},{"accessor":"sched_arr_time","name":"sched_arr_time","type":"numeric"},{"accessor":"arr_delay","name":"arr_delay","type":"numeric"},{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"flight","name":"flight","type":"numeric"},{"accessor":"tailnum","name":"tailnum","type":"character"},{"accessor":"origin","name":"origin","type":"character"},{"accessor":"dest","name":"dest","type":"character"},{"accessor":"air_time","name":"air_time","type":"numeric"},{"accessor":"distance","name":"distance","type":"numeric"},{"accessor":"hour","name":"hour","type":"numeric"},{"accessor":"minute","name":"minute","type":"numeric"},{"accessor":"time_hour","name":"time_hour","type":"Date"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"0fe230bb41adb4c97e1205322b49f222","key":"0fe230bb41adb4c97e1205322b49f222"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+reactable(head(airlines, 10))
+```
+
+```{=html}
+<div id="htmlwidget-98c18912020f11470f8a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-98c18912020f11470f8a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"name","name":"name","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"08ac76438f639beb63f40296e9c2c3c3","key":"08ac76438f639beb63f40296e9c2c3c3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+```
+
+The `flights` tables has 336776 rows, one for each flight of an airplane. The `airlines` table has 16 rows, one for each airline mapping the full name of the company to a code.
+
+Let's find the airline with the highest arrival delays in January 2013. 
+
+
+```r
+flights |>
+  filter(year == 2013, month == 1, !is.na(arr_delay)) |> 
+  mutate(arr_delay = replace(arr_delay, arr_delay < 0, 0)) |>
+  left_join(airlines, by = "carrier") |>
+  group_by(airline = name) |>
+  summarise(flights = n(), mean_delay = mean(arr_delay)) |> 
+  arrange(desc(mean_delay))
+## # A tibble: 16 × 3
+##    airline                     flights mean_delay
+##    <chr>                         <int>      <dbl>
+##  1 SkyWest Airlines Inc.             1     107   
+##  2 Hawaiian Airlines Inc.           31      48.8 
+##  3 ExpressJet Airlines Inc.       3964      29.6 
+##  4 Frontier Airlines Inc.           59      23.9 
+##  5 Mesa Airlines Inc.               39      20.4 
+##  6 Endeavor Air Inc.              1480      19.3 
+##  7 Alaska Airlines Inc.             62      17.6 
+##  8 Envoy Air                      2203      14.3 
+##  9 Southwest Airlines Co.          985      13.0 
+## 10 JetBlue Airways                4413      12.9 
+## 11 United Air Lines Inc.          4590      11.9 
+## 12 American Airlines Inc.         2724      11.0 
+## 13 AirTran Airways Corporation     324       9.95
+## 14 US Airways Inc.                1554       9.11
+## 15 Delta Air Lines Inc.           3655       8.07
+## 16 Virgin America                  314       3.17
+```
+
+Some values in `arr_delay` are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don't want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.
+
+I export the flights and airlines tables to CSV to hand them over to Python.
+
+
+```r
+data.table::fwrite(flights, "flights.csv", row.names = FALSE)
+data.table::fwrite(airlines, "airlines.csv", row.names = FALSE)
+```
+
+## Pandas: Most popular
+
+The following sections follow a pattern: read in from CSV, then build a query.
+
+
+```python
+import pandas as pd
+
+# Import from CSV
+flights_pd = pd.read_csv("flights.csv")
+airlines_pd = pd.read_csv("airlines.csv")
+```
+
+`pandas.read_csv` reads the header and conveniently infers the column types.
+
+
+```python
+(flights_pd
+  .query("year == 2013 & month == 1 & arr_delay.notnull()")
+  .assign(arr_delay = flights_pd.arr_delay.clip(lower = 0))
+  .merge(airlines_pd, how = "left", on = "carrier")
+  .rename(columns = {"name": "airline"})
+  .groupby("airline")
+  .agg(flights = ("airline", "count"), mean_delay = ("arr_delay", "mean"))
+  .sort_values(by = "mean_delay", ascending = False))
+##                              flights  mean_delay
+## airline                                         
+## SkyWest Airlines Inc.              1  107.000000
+## Hawaiian Airlines Inc.            31   48.774194
+## ExpressJet Airlines Inc.        3964   29.642785
+## Frontier Airlines Inc.            59   23.881356
+## Mesa Airlines Inc.                39   20.410256
+## Endeavor Air Inc.               1480   19.321622
+## Alaska Airlines Inc.              62   17.645161
+## Envoy Air                       2203   14.303677
+## Southwest Airlines Co.           985   12.964467
+## JetBlue Airways                 4413   12.919329
+## United Air Lines Inc.           4590   11.851852
+## American Airlines Inc.          2724   10.953377
+## AirTran Airways Corporation      324    9.953704
+## US Airways Inc.                 1554    9.111326
+## Delta Air Lines Inc.            3655    8.070315
+## Virgin America                   314    3.165605
+```
+
+I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can't be run repeatedly for the same result, such as in interactive use in a notebook.
+
+Here, the `query()` function is slightly awkward with the long string argument. The `groupby` doesn't allow renaming on the fly like dplyr, though I don't consider that a real drawback. Perhaps it's clearer to rename explicitly anyway.
+
+Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The `clip` function used here is one such example. One difference to dplyr is that pandas uses its own methods `.mean()`, rather than using external ones such as `base::mean()`. That means using custom functions instead carries a [performance penalty](https://stackoverflow.com/a/26812998).
+
+As we'll see later, pandas is the backend for siuba and ibis, which boil down to pandas code.
+
+One difference to all other discussed solutions is that pandas uses a [row index](https://www.sharpsightlabs.com/blog/pandas-index/). Base R also has this with row names, but the tidyverse and tibbles have largely removed them from common use. I never missed row names. At the times I had to work with them in pandas they were more confusing than helpful. The documentation of polars puts it more bluntly:
+
+> No index. They are not needed. Not having them makes things easier. Convince me otherwise
+
+That's quite passive aggressive, but I do agree and wish pandas didn't have it.
+
+## siuba: dplyr in Python
+
+
+```python
+import siuba
+
+# Import from CSV
+flights_si = pd.read_csv("flights.csv")
+airlines_si = pd.read_csv("airlines.csv")
+```
+
+As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
