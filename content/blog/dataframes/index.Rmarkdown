@@ -44,6 +44,8 @@ There are more options. I excluded the others for these reasons:
 - Not in Python (DataFrames.jl)
 - Meant for GPU (cuDF)
 
+## Github stars as a proxy for popularity
+
 The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.
 
 ```{r github_stars}

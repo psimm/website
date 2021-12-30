@@ -47,7 +47,7 @@
 <meta itemprop="description" content="I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
 Adopting Python means making choices on which libraries to invest time into learning."><meta itemprop="datePublished" content="2021-12-20T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-12-20T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3785"><meta itemprop="image" content="/blog/dataframes/featured.jpg">
+<meta itemprop="wordCount" content="3780"><meta itemprop="image" content="/blog/dataframes/featured.jpg">
 <meta itemprop="keywords" content="Performance," />
   
   
@@ -307,52 +307,7 @@ libs &lt;- <span style="color:#c34e00">data.frame</span>(
 <p>I export the flights and airlines tables to CSV to hand them over to Python.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data.table::<span style="color:#c34e00">fwrite</span>(flights, <span style="color:#009c00">&#34;flights.csv&#34;</span>, row.names = <span style="color:#00f">FALSE</span>)
 data.table::<span style="color:#c34e00">fwrite</span>(airlines, <span style="color:#009c00">&#34;airlines.csv&#34;</span>, row.names = <span style="color:#00f">FALSE</span>)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> pandas <span style="color:#00f">as</span> pd
-<span style="color:#00f">from</span> siuba <span style="color:#00f">import</span> _, filter, group_by, summarize, left_join, rename, mutate, arrange
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> polars <span style="color:#00f">as</span> pl
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> duckdb
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> ibis
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-
+</code></pre></div>
 
 
 
@@ -363,29 +318,12 @@ else result
     </svg></a>
 </h2>
 <p>The following sections follow a pattern: read in from CSV, then build a query.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">flights_pd = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">airlines_pd = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<p><code>pandas.read_csv</code> reads the header and conveniently infers the column types.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> pandas <span style="color:#00f">as</span> pd
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+flights_pd = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_pd = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><p><code>pandas.read_csv</code> reads the header and conveniently infers the column types.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(flights_pd
   .query(<span style="color:#009c00">&#34;year == 2013 &amp; month == 1 &amp; arr_delay.notnull()&#34;</span>)
   .assign(arr_delay = flights_pd.arr_delay.clip(lower = 0))
@@ -394,16 +332,25 @@ else result
   .groupby(<span style="color:#009c00">&#34;airline&#34;</span>)
   .agg(flights = (<span style="color:#009c00">&#34;airline&#34;</span>, <span style="color:#009c00">&#34;count&#34;</span>), mean_delay = (<span style="color:#009c00">&#34;arr_delay&#34;</span>, <span style="color:#009c00">&#34;mean&#34;</span>))
   .sort_values(by = <span style="color:#009c00">&#34;mean_delay&#34;</span>, ascending = <span style="color:#00f">False</span>))
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><pre><code>##                              flights  mean_delay
+## airline                                         
+## SkyWest Airlines Inc.              1  107.000000
+## Hawaiian Airlines Inc.            31   48.774194
+## ExpressJet Airlines Inc.        3964   29.642785
+## Frontier Airlines Inc.            59   23.881356
+## Mesa Airlines Inc.                39   20.410256
+## Endeavor Air Inc.               1480   19.321622
+## Alaska Airlines Inc.              62   17.645161
+## Envoy Air                       2203   14.303677
+## Southwest Airlines Co.           985   12.964467
+## JetBlue Airways                 4413   12.919329
+## United Air Lines Inc.           4590   11.851852
+## American Airlines Inc.          2724   10.953377
+## AirTran Airways Corporation      324    9.953704
+## US Airways Inc.                 1554    9.111326
+## Delta Air Lines Inc.            3655    8.070315
+## Virgin America                   314    3.165605
+</code></pre>
 <p>I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.</p>
 <p>Here, the <code>query()</code> function is slightly awkward with the long string argument. The <code>groupby</code> doesn’t allow renaming on the fly like dplyr, though I don’t consider that a real drawback. Perhaps it’s clearer to rename explicitly anyway.</p>
 <p>Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The <code>clip</code> function used here is one such example. One difference to dplyr is that pandas uses its own methods <code>.mean()</code>, rather than using external ones such as <code>base::mean()</code>. That means using custom functions instead carries a 
@@ -425,58 +372,48 @@ else result
       <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
     </svg></a>
 </h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f00;font-style:italic"># Import from CSV</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> siuba <span style="color:#00f">as</span> si
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
 flights_si = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">airlines_si = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<p>As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.</p>
+airlines_si = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><p>As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(
   flights_si
-    &gt;&gt; filter(
-      _.year == 2013,
-      _.month == 1,
-      _.arr_delay.notnull()
+    &gt;&gt; si.filter(
+      si._.year == 2013,
+      si._.month == 1,
+      si._.arr_delay.notnull()
     )
-    &gt;&gt; mutate(arr_delay = _.arr_delay.clip(lower = 0))
-    &gt;&gt; left_join(_, airlines_si, on = <span style="color:#009c00">&#34;carrier&#34;</span>)
-    &gt;&gt; rename(airline = _.name)
-    &gt;&gt; group_by(_.airline)
-    &gt;&gt; summarize(
-        flights = _.airline.count(),
-        mean_delay = _.arr_delay.mean()
+    &gt;&gt; si.mutate(arr_delay = si._.arr_delay.clip(lower = 0))
+    &gt;&gt; si.left_join(si._, airlines_si, on = <span style="color:#009c00">&#34;carrier&#34;</span>)
+    &gt;&gt; si.rename(airline = si._.name)
+    &gt;&gt; si.group_by(si._.airline)
+    &gt;&gt; si.summarize(
+        flights = si._.airline.count(),
+        mean_delay = si._.arr_delay.mean()
     )
-    &gt;&gt; arrange(-_.mean_delay)
+    &gt;&gt; si.arrange(-si._.mean_delay)
 )
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<p>I found this one the easiest to work with. Once I understood the <code>_</code> placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s 
+</code></pre></div><pre><code>##                         airline  flights  mean_delay
+## 11        SkyWest Airlines Inc.        1  107.000000
+## 8        Hawaiian Airlines Inc.       31   48.774194
+## 6      ExpressJet Airlines Inc.     3964   29.642785
+## 7        Frontier Airlines Inc.       59   23.881356
+## 10           Mesa Airlines Inc.       39   20.410256
+## 4             Endeavor Air Inc.     1480   19.321622
+## 1          Alaska Airlines Inc.       62   17.645161
+## 5                     Envoy Air     2203   14.303677
+## 12       Southwest Airlines Co.      985   12.964467
+## 9               JetBlue Airways     4413   12.919329
+## 14        United Air Lines Inc.     4590   11.851852
+## 2        American Airlines Inc.     2724   10.953377
+## 0   AirTran Airways Corporation      324    9.953704
+## 13              US Airways Inc.     1554    9.111326
+## 3          Delta Air Lines Inc.     3655    8.070315
+## 15               Virgin America      314    3.165605
+</code></pre>
+<p>I found siuba the easiest to work with. Once I understood the <code>_</code> placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s 
 <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with" target="_blank" rel="noopener">tidy evaluation</a> (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.</p>
 <p>It’s always possible to drop into pandas, such as for the aggregation functions which use the <code>mean()</code> and <code>count()</code> methods of the pandas series. The <code>&gt;&gt;</code> is an easy replacement for the <code>%&gt;%</code> magrittr pipe or <code>|&gt;</code> base pipe in R.</p>
 <p>The author advertises siuba like this (from the 
@@ -496,30 +433,12 @@ else result
     </svg></a>
 </h2>
 <p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyr work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">flights_pl = pl.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">airlines_pl = pl.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<p>So far, polars reads exactly like pandas.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(flights_pl
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> polars <span style="color:#00f">as</span> pl
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+flights_pl = pl.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_pl = pl.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(flights_pl
   .filter((pl.col(<span style="color:#009c00">&#34;year&#34;</span>) == 2013) &amp; (pl.col(<span style="color:#009c00">&#34;month&#34;</span>) == 1))
   .drop_nulls(<span style="color:#009c00">&#34;arr_delay&#34;</span>)
   .join(airlines_pl, on = <span style="color:#009c00">&#34;carrier&#34;</span>, how = <span style="color:#009c00">&#34;left&#34;</span>)
@@ -541,16 +460,225 @@ else result
   )
   .sort(<span style="color:#009c00">&#34;mean_delay&#34;</span>, reverse = <span style="color:#00f">True</span>)
 )
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1 "class="dataframe ">
+<thead>
+<tr>
+<th>
+airline
+</th>
+<th>
+flights
+</th>
+<th>
+mean_delay
+</th>
+</tr>
+<tr>
+<td>
+str
+</td>
+<td>
+u32
+</td>
+<td>
+f64
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+"SkyWest Airlines Inc."
+</td>
+<td>
+1
+</td>
+<td>
+107
+</td>
+</tr>
+<tr>
+<td>
+"Hawaiian Airlines Inc."
+</td>
+<td>
+31
+</td>
+<td>
+48.774193548387096
+</td>
+</tr>
+<tr>
+<td>
+"ExpressJet Airlines Inc."
+</td>
+<td>
+3964
+</td>
+<td>
+29.642785065590314
+</td>
+</tr>
+<tr>
+<td>
+"Frontier Airlines Inc."
+</td>
+<td>
+59
+</td>
+<td>
+23.88135593220339
+</td>
+</tr>
+<tr>
+<td>
+"Mesa Airlines Inc."
+</td>
+<td>
+39
+</td>
+<td>
+20.41025641025641
+</td>
+</tr>
+<tr>
+<td>
+"Endeavor Air Inc."
+</td>
+<td>
+1480
+</td>
+<td>
+19.32162162162162
+</td>
+</tr>
+<tr>
+<td>
+"Alaska Airlines Inc."
+</td>
+<td>
+62
+</td>
+<td>
+17.64516129032258
+</td>
+</tr>
+<tr>
+<td>
+"Envoy Air"
+</td>
+<td>
+2203
+</td>
+<td>
+14.303676804357695
+</td>
+</tr>
+<tr>
+<td>
+"Southwest Airlines Co."
+</td>
+<td>
+985
+</td>
+<td>
+12.964467005076141
+</td>
+</tr>
+<tr>
+<td>
+"JetBlue Airways"
+</td>
+<td>
+4413
+</td>
+<td>
+12.919329254475414
+</td>
+</tr>
+<tr>
+<td>
+"United Air Lines Inc."
+</td>
+<td>
+4590
+</td>
+<td>
+11.851851851851851
+</td>
+</tr>
+<tr>
+<td>
+"American Airlines Inc."
+</td>
+<td>
+2724
+</td>
+<td>
+10.95337738619677
+</td>
+</tr>
+<tr>
+<td>
+"AirTran Airways Corporation"
+</td>
+<td>
+324
+</td>
+<td>
+9.953703703703704
+</td>
+</tr>
+<tr>
+<td>
+"US Airways Inc."
+</td>
+<td>
+1554
+</td>
+<td>
+9.111325611325611
+</td>
+</tr>
+<tr>
+<td>
+"Delta Air Lines Inc."
+</td>
+<td>
+3655
+</td>
+<td>
+8.0703146374829
+</td>
+</tr>
+<tr>
+<td>
+"Virgin America"
+</td>
+<td>
+314
+</td>
+<td>
+3.1656050955414012
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated <code>clip</code> function.</p>
 <p>There isn’t nearly as much help available for problems with polars as for with pandas. While the documentation is good, it can’t answer every question and lots of trial and error is needed.</p>
 <p>A comparison of polars and pandas is available in the 
@@ -565,35 +693,19 @@ else result
       <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
     </svg></a>
 </h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">con_duckdb = duckdb.connect(database = <span style="color:#009c00">&#39;:memory:&#39;</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> duckdb
+
+con_duckdb = duckdb.connect(database = <span style="color:#009c00">&#39;:memory:&#39;</span>)
 
 <span style="color:#f00;font-style:italic"># Import from CSV</span>
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">con_duckdb.execute(
+con_duckdb.execute(
   <span style="color:#009c00">&#34;CREATE TABLE &#39;flights&#39; AS &#34;</span>
   <span style="color:#009c00">&#34;SELECT * FROM read_csv_auto(&#39;flights.csv&#39;, header = True);&#34;</span>
   <span style="color:#009c00">&#34;CREATE TABLE &#39;airlines&#39; AS &#34;</span>
   <span style="color:#009c00">&#34;SELECT * FROM read_csv_auto(&#39;airlines.csv&#39;, header = True);&#34;</span>
 )
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><pre><code>## &lt;duckdb.DuckDBPyConnection object at 0x121b25bb0&gt;
+</code></pre>
 <p>DuckDB’s <code>read_csv_auto()</code> works just like the csv readers in Python.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">con_duckdb.execute(
   <span style="color:#009c00">&#34;WITH flights_clipped AS ( &#34;</span>
@@ -607,16 +719,24 @@ else result
   <span style="color:#009c00">&#34;GROUP BY name &#34;</span>
   <span style="color:#009c00">&#34;ORDER BY mean_delay DESC &#34;</span>
 ).fetchdf()
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><pre><code>##                         airline  flights  mean_delay
+## 0         SkyWest Airlines Inc.        1  107.000000
+## 1        Hawaiian Airlines Inc.       31   48.774194
+## 2      ExpressJet Airlines Inc.     3964   29.642785
+## 3        Frontier Airlines Inc.       59   23.881356
+## 4            Mesa Airlines Inc.       39   20.410256
+## 5             Endeavor Air Inc.     1480   19.321622
+## 6          Alaska Airlines Inc.       62   17.645161
+## 7                     Envoy Air     2203   14.303677
+## 8        Southwest Airlines Co.      985   12.964467
+## 9               JetBlue Airways     4413   12.919329
+## 10        United Air Lines Inc.     4590   11.851852
+## 11       American Airlines Inc.     2724   10.953377
+## 12  AirTran Airways Corporation      324    9.953704
+## 13              US Airways Inc.     1554    9.111326
+## 14         Delta Air Lines Inc.     3655    8.070315
+## 15               Virgin America      314    3.165605
+</code></pre>
 <p>The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.</p>
 <p>DuckDB can also operate directly on a pandas dataframe. The SQL code is portable to R, C, C++, Java and other programming languages the duckdb has 
 <a href="https://duckdb.org/docs/api/overview" target="_blank" rel="noopener">APIs</a>. It’s also portable when the logic is taken to a DB like 
@@ -655,44 +775,15 @@ else result
 <p>The ibis project aims to bridge the gap between the needs of interactive data analysis and the capabilities of SQL, which I have detailed in the previous section on duckdb.</p>
 <p>For the test drive, I’ll use the 
 <a href="https://ibis-project.org/docs/backends/pandas.html" target="_blank" rel="noopener">pandas backend</a>, meaning that the ibis code is translated to pandas operations, similar to how siuba is translated to pandas.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ibis.options.interactive = <span style="color:#00f">True</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> ibis
+ibis.options.interactive = <span style="color:#00f">True</span>
 
 <span style="color:#f00;font-style:italic"># Import from CSV into pandas</span>
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">flights_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">airlines_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+flights_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
 
 <span style="color:#f00;font-style:italic"># Connect ibis to pandas</span>
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">con_ibis = ibis.pandas.connect(
+con_ibis = ibis.pandas.connect(
   {
     <span style="color:#009c00">&#39;flights&#39;</span>: flights_ib_csv,
     <span style="color:#009c00">&#39;airlines&#39;</span>: airlines_ib_csv
@@ -700,39 +791,9 @@ else result
 )
 
 <span style="color:#f00;font-style:italic"># Checkout the tables</span>
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">flights_ib = con_ibis.table(<span style="color:#009c00">&#34;flights&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">airlines_ib = con_ibis.table(<span style="color:#009c00">&#34;airlines&#34;</span>)
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
-<p>Non-interactive ibis means that queries are evaluated lazily.</p>
+flights_ib = con_ibis.table(<span style="color:#009c00">&#34;flights&#34;</span>)
+airlines_ib = con_ibis.table(<span style="color:#009c00">&#34;airlines&#34;</span>)
+</code></pre></div><p>Non-interactive ibis means that queries are evaluated lazily.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(
   flights_ib
     .filter(
@@ -745,17 +806,26 @@ else result
       flights_ib[<span style="color:#009c00">&#34;carrier&#34;</span>].count().name(<span style="color:#009c00">&#34;flights&#34;</span>),
       flights_ib[<span style="color:#009c00">&#34;arr_delay&#34;</span>].mean().name(<span style="color:#009c00">&#34;mean_delay&#34;</span>)
     ])
+    .sort_by(ibis.desc(<span style="color:#009c00">&#34;mean_delay&#34;</span>))
 )
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><pre><code>##    carrier  flights  mean_delay
+## 0       OO        1  107.000000
+## 1       HA       31   27.483871
+## 2       EV     3964   25.160192
+## 3       F9       59   21.830508
+## 4       YV       39   13.769231
+## 5       9E     1480   10.207432
+## 6       AS       62    8.967742
+## 7       MQ     2203    7.883795
+## 8       WN      985    5.886294
+## 9       B6     4413    4.717199
+## 10      FL      324    3.317901
+## 11      UA     4590    3.175599
+## 12      US     1554    1.431145
+## 13      AA     2724    0.982379
+## 14      DL     3655   -4.404651
+## 15      VX      314  -15.280255
+</code></pre>
 <p>Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help. For that reason I left the ibis pipeline incomplete. The clipping of the <code>arr_delay</code> to 0 and the join to <code>airlines</code> are missing.</p>
 <p>I ran into multiple issues:</p>
 <ul>
@@ -767,16 +837,8 @@ else result
 <p>Ibis objects don’t play nice with other Python functions:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">max(flights_pd[<span style="color:#009c00">&#34;arr_delay&#34;</span>]) <span style="color:#f00;font-style:italic"># 1272.0</span>
 <span style="color:#f00;font-style:italic"># max(flights_ib.arr_delay) # TypeError: &#39;FloatingColumn&#39; object is not iterable</span>
-</code></pre></div><p>function (&hellip;)
-{
-dots &lt;- py_resolve_dots(list(&hellip;))
-result &lt;- py_call_impl(callable, dots$args, dots$keywords)
-if (convert)
-result &lt;- py_to_r(result)
-if (is.null(result))
-invisible(result)
-else result
-}</p>
+</code></pre></div><pre><code>## 1272.0
+</code></pre>
 <p>And the 
 <a href="https://ibis-project.org/docs/user_guide/udf.html" target="_blank" rel="noopener">documentation</a> warns:</p>
 <blockquote>
@@ -828,7 +890,7 @@ else result
   </dl>
   <dl class="f6 lh-copy">
     <dt class="fw7">Length:</dt>
-    <dd class="fw5 ml0">18 minute read, 3785 words</dd>
+    <dd class="fw5 ml0">18 minute read, 3780 words</dd>
   </dl>
   
   <dl class="f6 lh-copy">
@@ -857,7 +919,7 @@ else result
   
   
     <a class="next dtc pl2 tr v-top fw6"
-    href="/blog/echarts4r/">Exploring echarts4r &rarr;</a>
+    href="/blog/fangmant/">FANGMANT: Tech stock analysis with pandas &rarr;</a>
   
 </div>
 

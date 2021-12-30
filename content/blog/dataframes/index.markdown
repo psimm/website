@@ -57,6 +57,8 @@ There are more options. I excluded the others for these reasons:
 -   Not in Python (DataFrames.jl)
 -   Meant for GPU (cuDF)
 
+## Github stars as a proxy for popularity
+
 The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.
 
 ``` r
@@ -549,7 +551,7 @@ con_duckdb.execute(
 )
 ```
 
-    ## <duckdb.DuckDBPyConnection object at 0x121b25bb0>
+    ## <duckdb.DuckDBPyConnection object at 0x11de8a1f0>
 
 DuckDB’s `read_csv_auto()` works just like the csv readers in Python.
 

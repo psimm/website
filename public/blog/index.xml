@@ -18,6 +18,18 @@ Adopting Python means making choices on which libraries to invest time into lear
     </item>
     
     <item>
+      <title>FANGMANT: Tech stock analysis with pandas</title>
+      <link>/blog/fangmant/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/fangmant/</guid>
+      <description>The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their respective markets. Other common acronyms are FANG, FAANG and FANGMAN.
+In this article, I&amp;rsquo;m analyzing their stock performance from 2016 to 2021.
+Disclaimer: This article is not financial advice. It&amp;rsquo;s a data analysis for fun.
+Download with yfinance      yfinance is a Python package that downloads financial data from Yahoo!</description>
+    </item>
+    
+    <item>
       <title>Exploring echarts4r</title>
       <link>/blog/echarts4r/</link>
       <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
