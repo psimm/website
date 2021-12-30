@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network-analysis on Paul Simmering&#39;s blog</title>
+    <link>/categories/network-analysis/</link>
+    <description>Recent content in Network-analysis on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/network-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/project/stakex/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/project/stakex/</guid>
+      <description>StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:
+ methods for gathering public data on relevant stakeholders building a network based on sociological theory analyzing the network through use of force-based layout algorithms and centrality statistics extracting valuable insights for customers  To learn more about the method, see the talk by Thomas Perry and me or check the methods section of the demo app.</description>
+    </item>
+    
+    <item>
+      <title>Global Patent Explorer</title>
+      <link>/project/gpexp/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/gpexp/</guid>
+      <description>Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. It visualizes the results of a paper on natural language processing on patent texts:
+ D.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html
+ This tool lets users map and visualize inventive and innovative activity around the globe.</description>
+    </item>
+    
+  </channel>
+</rss>

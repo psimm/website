@@ -6,7 +6,7 @@
     <description>Recent content in Paul Simmering on Paul Simmering&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Netlify</title>
       <link>/collection/day02/01-netlify/</link>
@@ -15,18 +15,6 @@
       <guid>/collection/day02/01-netlify/</guid>
       <description>So far, we&amp;rsquo;ve been leveraging GitHub Pages for publishing. This works great, but for blogdown we&amp;rsquo;ll start using Netlify. Let&amp;rsquo;s start RIGHT NOW with a site we&amp;rsquo;ve already built and published.
 Pre-requisites     Pick either your postcards site, or your distill site from day 01. Refresh your memory- which repository was it again?</description>
-    </item>
-    
-    <item>
-      <title>A first post</title>
-      <link>/blog/spoonful-series/01-spoonful/</link>
-      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/spoonful-series/01-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/01-spoonful.md  To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series   does this work?     or this?      Let&amp;rsquo;s start.
-beginning     middle     end     </description>
     </item>
     
     <item>
@@ -63,17 +51,6 @@ install.packages(&amp;quot;postcards&amp;quot;) Restart your R session. If you u
     </item>
     
     <item>
-      <title>A second post</title>
-      <link>/blog/spoonful-series/02-spoonful/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/spoonful-series/02-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/02-spoonful/index.md  To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series  Images in this page bundle: /blog/spoonful-series/02-spoonful/sidebar-inverse.jpg   part 2!     does this work?      now for some very cool things     more     get ready!</description>
-    </item>
-    
-    <item>
       <title>Using blogdown</title>
       <link>/collection/day02/02-blogdown/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
@@ -82,18 +59,6 @@ My content section is: blog  My layout is: single-series  Images in this page bu
       <description>Pre-requisites     First, make sure you have the latest version of the blogdown package installed from CRAN:
 install.packages(&amp;quot;blogdoown&amp;quot;) Restart your R session. If you use RStudio, use the menu item Session &amp;gt; Restart R or the associated keyboard shortcut:
  Ctrl + Shift + F10 (Windows and Linux) or Command + Shift + F10 (Mac OS).  packageVersion(&amp;quot;blogdown&amp;quot;) [1] ‘1.0’  Create GitHub repo     Online.</description>
-    </item>
-    
-    <item>
-      <title>A third post</title>
-      <link>/blog/spoonful-series/03-spoonful/</link>
-      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/spoonful-series/03-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/03-spoonful/index.markdown  Here is my R Markdown source file: blog/spoonful-series/03-spoonful/index.Rmarkdown You&#39;ll want to edit this file, then re-knit to see the changes take effect in your site preview.
- To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series  Images in this page bundle: /blog/spoonful-series/03-spoonful/featured-photo.</description>
     </item>
     
     <item>
@@ -119,155 +84,84 @@ My content section is: collection  My layout is: single-series   part 2!     doe
     </item>
     
     <item>
-      <title>Set up your social</title>
-      <link>/blog/social/</link>
-      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
+      <link>/blog/dataframes/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/social/</guid>
-      <description>There are five places where you can choose to show social icons. Here is the tl;dr:
- site header (set in config.toml), site footer (set in config.toml),  homepage (set in content/_index.md),  about page in the sidebar (set in content/about/sidebar/index.md), and  contact page (set in content/form/contact.md).  Read on to learn how to set up your social icons, and how to show/hide them.
-Configure social     Wherever you end up wanting to show your social icons, you&amp;rsquo;ll need to start by setting up the links in your site config.</description>
+      <guid>/blog/dataframes/</guid>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning.</description>
     </item>
     
     <item>
-      <title>Style your site colors</title>
-      <link>/blog/color-themes/</link>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <title>FANGMANT: Tech stock analysis with pandas</title>
+      <link>/blog/fangmant/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/color-themes/</guid>
-      <description>You can totally customize your site&amp;rsquo;s theme colors within minutes of creating a new site. Read on to find out how, and decide which of the three options meets your needs.
-Use a color theme     Hugo Apéro includes 8 built-in color themes that work &amp;ldquo;out of the box.&amp;rdquo; This means you can use a color theme to quickly customize the look of your site without needing to write any CSS.</description>
+      <guid>/blog/fangmant/</guid>
+      <description>The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their respective markets. Other common acronyms are FANG, FAANG and FANGMAN.
+In this article, I&amp;rsquo;m analyzing their stock performance from 2016 to 2021.
+Disclaimer: This article is not financial advice. It&amp;rsquo;s a data analysis for fun.
+Download with yfinance      yfinance is a Python package that downloads financial data from Yahoo!</description>
     </item>
     
     <item>
-      <title>Style your site typography</title>
-      <link>/blog/fonts/</link>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <title>AI for Social Media Monitoring at dm</title>
+      <link>/talk/bvmki2021/</link>
+      <pubDate>Thu, 25 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/fonts/</guid>
-      <description>As with color themes, you can completely customize your site&amp;rsquo;s fonts within minutes of creating a new site. How you do it depends on how much control and customization you need.
-Embedded fonts     Hugo Apéro includes 6 embedded fonts that work &amp;ldquo;out of the box.&amp;rdquo; We selected 3 serif and 3 sans-serif options that we thought looked good with this theme, in our humble opinions. All embedded fonts include real italics so you may emphasize to your heart&amp;rsquo;s content ❤️!</description>
+      <guid>/talk/bvmki2021/</guid>
+      <description>A presentation on Cosmention&amp;rsquo;s data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language models and word vectors and then dives into text classification and named entity recognition.
+Photo by Christopher Burns on Unsplash</description>
     </item>
     
     <item>
-      <title>An evergreen post</title>
-      <link>/blog/evergreen/</link>
-      <pubDate>Wed, 20 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Cosmention</title>
+      <link>/project/cosmention/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/evergreen/</guid>
-      <description>Rendering mathematical equations     Examples from the mathjax demo. But they work with katex as well.
-Rmarkdown     In .Rmarkdown documents, you can use either
-$a \ne 0$ to get inline math: \(a \ne 0\). There is no conflict with using dollar symbols regularly, because knitr automatically escapes freestanding dollar symbols.
-And you can use
-$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$ to get a math paragraph:</description>
+      <guid>/project/cosmention/</guid>
+      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.
+I am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and is now in use at dm, the largest drug store chain in Europe.
+I presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.</description>
     </item>
     
     <item>
-      <title>A campfire</title>
-      <link>/talk/campfire/</link>
-      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/project/stakex/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/talk/campfire/</guid>
-      <description>I&amp;rsquo;m really excited to give this talk! Stay tuned for video and slides.</description>
+      <guid>/project/stakex/</guid>
+      <description>StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:
+ methods for gathering public data on relevant stakeholders building a network based on sociological theory analyzing the network through use of force-based layout algorithms and centrality statistics extracting valuable insights for customers  To learn more about the method, see the talk by Thomas Perry and me or check the methods section of the demo app.</description>
     </item>
     
     <item>
-      <title>Using panelsets</title>
-      <link>/blog/seedling/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/talk/comes2020/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/seedling/</guid>
-      <description>Courtesy of panelset.js by Garrick Aden-Buie, from his xaringanExtra package: https://pkg.garrickadenbuie.com/xaringanExtra/#/panelset
-For example, this panelset:
-Hello! 👋 hello
- Goodbye 💨 goodbye
-  Was created by combining this theme&amp;rsquo;s panelset and panel shortcodes:
-{{&amp;lt; panelset class=&amp;#34;greetings&amp;#34; &amp;gt;}} {{&amp;lt; panel name=&amp;#34;Hello! :wave:&amp;#34; &amp;gt;}} hello {{&amp;lt; /panel &amp;gt;}} {{&amp;lt; panel name=&amp;#34;Goodbye :dash:&amp;#34; &amp;gt;}} goodbye {{&amp;lt; /panel &amp;gt;}} {{&amp;lt; /panelset &amp;gt;}} You could also revert to HTML as well. For example, this panelset:</description>
+      <guid>/talk/comes2020/</guid>
+      <description>Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
+Photo by Alina Grubnyak on Unsplash</description>
     </item>
     
     <item>
-      <title>A seedling</title>
-      <link>/talk/second-seedling/</link>
-      <pubDate>Fri, 01 Jan 2021 14:15:59 -0600</pubDate>
+      <title>Exploring echarts4r</title>
+      <link>/blog/echarts4r/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/talk/second-seedling/</guid>
+      <guid>/blog/echarts4r/</guid>
+      <description>As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R.</description>
+    </item>
+    
+    <item>
+      <title>R Shiny for Interactive Data Visualization – A Case Study</title>
+      <link>/talk/gor2019/</link>
+      <pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/gor2019/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>An Rmarkdown post</title>
-      <link>/blog/rmarkdown/</link>
-      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/rmarkdown/</guid>
-      <description> Air quality     with(airquality, boxplot(Temp ~ Month)) with(airquality, plot(Ozone ~ Temp)) mlev &amp;lt;- levels(with(airquality, as.factor(Month))) with(airquality, plot(Ozone ~ Temp, pch = as.numeric(mlev), col = mlev)) </description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/blog/2020-12-01-r-rmarkdown/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      
-      <guid>/blog/2020-12-01-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>A seedling</title>
-      <link>/talk/seedling/</link>
-      <pubDate>Mon, 13 Jan 2020 14:15:59 -0600</pubDate>
-      
-      <guid>/talk/seedling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tachyons for Style</title>
-      <link>/project/giraffes/</link>
-      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/giraffes/</guid>
-      <description>Tachyons is a design system that allows you to design gorgeous interfaces in the browser with little effort.      Because Speed     Building this static site generator theme was the first time I used an Atomic (or Functional) CSS system like Tachyons. It&amp;rsquo;s a design system that provides very small (which means fast) CSS modules that you can use in your HTML. So, rather than writing every line of CSS, you apply the style you need as you write your HTML with easy to understand shorthand class names.</description>
-    </item>
-    
-    <item>
-      <title>CSS Grid Scaffold</title>
-      <link>/blog/css-grid-scaffold/</link>
-      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/css-grid-scaffold/</guid>
-      <description>“Grid is the very first CSS module created specifically to solve the layout problems we&amp;rsquo;ve all been hacking our way around for as long as we&amp;rsquo;ve been making websites.”     — Chris House, A Complete Guide to CSS Grid Layout 1
- Overview     Since I began building websites in Y2K, I&amp;rsquo;ve lost count how many times the phrase &amp;ldquo;&amp;hellip;there&amp;rsquo;s got to be a better way to do this&amp;rdquo; has passed my lips.</description>
-    </item>
-    
-    <item>
-      <title>Palmer Penguins</title>
-      <link>/project/penguins/</link>
-      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/penguins/</guid>
-      <description>“Grid is the very first CSS module created specifically to solve the layout problems we&amp;rsquo;ve all been hacking our way around for as long as we&amp;rsquo;ve been making websites.”     — Chris House, A Complete Guide to CSS Grid Layout 1
- Since I began building websites in Y2K, I&amp;rsquo;ve lost count how many times the phrase &amp;ldquo;&amp;hellip;there&amp;rsquo;s got to be a better way to do this&amp;rdquo; has passed my lips.</description>
-    </item>
-    
-    <item>
-      <title>Bakeoff</title>
-      <link>/project/bakeoff/</link>
-      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/bakeoff/</guid>
-      <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
-    </item>
-    
-    <item>
-      <title>Built-in Contact Form</title>
-      <link>/blog/built-in-contact-form/</link>
-      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/built-in-contact-form/</guid>
-      <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
     </item>
     
     <item>
@@ -295,6 +189,64 @@ Formspree requires a (free) account and new form to be set up. The link is made 
 (20px) 1rem
 (16px) .875rem
 (14px)     Type Samples Head&amp;shy;line Sub&amp;shy;head&amp;shy;line Level 1 Heading One page to rule them all...well, not really. This page displays sample typography and page elements to illustrate their style. Things like headings and paragraphs showing the beautiful type scale, form elements, tabular data, and image layouts just to name a few.</description>
+    </item>
+    
+    <item>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation.</title>
+      <link>/talk/researchplus2018/</link>
+      <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/researchplus2018/</guid>
+      <description>A presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI&amp;rsquo;s lack of reciprocity, and potential problems in value alignment.</description>
+    </item>
+    
+    <item>
+      <title>Global Patent Explorer</title>
+      <link>/project/gpexp/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/gpexp/</guid>
+      <description>Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. It visualizes the results of a paper on natural language processing on patent texts:
+ D.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html
+ This tool lets users map and visualize inventive and innovative activity around the globe.</description>
+    </item>
+    
+    <item>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation</title>
+      <link>/project/masterthesis/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/masterthesis/</guid>
+      <description>My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.
+Current AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker.</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/concordi2017/</link>
+      <pubDate>Wed, 27 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/concordi2017/</guid>
+      <description>Photo by Joan Oger on Unsplash</description>
+    </item>
+    
+    <item>
+      <title>Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model</title>
+      <link>/talk/emaee2017/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/emaee2017/</guid>
+      <description>Product life-cycles in markets for innovative products are shortening, con- sumers rapidly upgrade from one product generation to the next and demand constant technical improvement. Firms are racing against each other and the consumers’ rising ex- pectations. This study uses an agent-based simulation model to analyze the dynamics of innovation and imitation strategies in this new type of market from the firm perspective. Firms use pure and mixed strategies to achieve maximum profitability over the life-cycle of a market for a new product category.</description>
+    </item>
+    
+    <item>
+      <title>Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?</title>
+      <link>/project/bachelorthesis/</link>
+      <pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>/project/bachelorthesis/</guid>
+      <description>I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
+Photo by Justus Menke on Unsplash</description>
     </item>
     
     <item>

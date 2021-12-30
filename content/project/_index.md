@@ -1,9 +1,9 @@
 ---
-title: A Project Portfolio To Grow
-description: "Give your projects a place to live online."
-author: "The R Markdown Team @RStudio"
+title: Project portfolio
+description: "Public facing projects I've lead or been a major contributor to"
+author: "Paul Simmering"
 show_post_thumbnail: true
-show_author_byline: true
+show_author_byline: false
 show_post_date: false
 show_button_links: false
 # for listing page layout
@@ -23,7 +23,7 @@ sidebar:
 
 # set up common front matter for all individual pages inside project/
 cascade:    
-  show_author_byline: true
+  show_author_byline: false
   show_post_date: true
   show_comments: false # see site config to choose Disqus or Utterances
   # for single-sidebar layout only

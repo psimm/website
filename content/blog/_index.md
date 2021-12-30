@@ -1,11 +1,11 @@
 ---
-title: A Blog That Works
+title: Data science blog
 description: |
-  My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosphy or project management.
+  My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosophy or project management.
 author: "Paul Simmering"
 show_post_thumbnail: true
 thumbnail_left: true # for list-sidebar only
-show_author_byline: true
+show_author_byline: false
 show_post_date: true
 show_button_links: false
 # for listing page layout
@@ -15,9 +15,9 @@ layout: list-sidebar # list, list-sidebar, list-grid
 sidebar: 
   title: Data science blog
   description: |
-    My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosphy or project management.
+    My articles are typically about new libraries and services that I try out. Occasionally I discuss data science philosophy or project management. Illustration by <a href="https://unsplash.com/@sonance">Viktor Forgacs</a> on <a href="https://unsplash.com/photos/7C5N8yLaeDI">Unsplash</a>
     
-  author: "Paul Simmering"
+  author: ""
   text_link_label: Subscribe via RSS
   text_link_url: /index.xml
   show_sidebar_adunit: false # show ad container
@@ -25,7 +25,7 @@ sidebar:
 # set up common front matter for all pages inside blog/
 cascade:
   author: "Paul Simmering"
-  show_author_byline: true
+  show_author_byline: false
   show_post_date: true
   show_comments: true # see site config to choose Disqus or Utterances
   # for single-sidebar layout

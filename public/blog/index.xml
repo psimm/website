@@ -1,107 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>A Blog That Works on Paul Simmering&#39;s blog</title>
+    <title>Data science blog on Paul Simmering&#39;s blog</title>
     <link>/blog/</link>
-    <description>Recent content in A Blog That Works on Paul Simmering&#39;s blog</description>
+    <description>Recent content in Data science blog on Paul Simmering&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Set up your social</title>
-      <link>/blog/social/</link>
-      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
+      <link>/blog/dataframes/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/social/</guid>
-      <description>There are five places where you can choose to show social icons. Here is the tl;dr:
- site header (set in config.toml), site footer (set in config.toml),  homepage (set in content/_index.md),  about page in the sidebar (set in content/about/sidebar/index.md), and  contact page (set in content/form/contact.md).  Read on to learn how to set up your social icons, and how to show/hide them.
-Configure social     Wherever you end up wanting to show your social icons, you&amp;rsquo;ll need to start by setting up the links in your site config.</description>
+      <guid>/blog/dataframes/</guid>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning.</description>
     </item>
     
     <item>
-      <title>Style your site colors</title>
-      <link>/blog/color-themes/</link>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <title>FANGMANT: Tech stock analysis with pandas</title>
+      <link>/blog/fangmant/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/color-themes/</guid>
-      <description>You can totally customize your site&amp;rsquo;s theme colors within minutes of creating a new site. Read on to find out how, and decide which of the three options meets your needs.
-Use a color theme     Hugo Apéro includes 8 built-in color themes that work &amp;ldquo;out of the box.&amp;rdquo; This means you can use a color theme to quickly customize the look of your site without needing to write any CSS.</description>
+      <guid>/blog/fangmant/</guid>
+      <description>The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their respective markets. Other common acronyms are FANG, FAANG and FANGMAN.
+In this article, I&amp;rsquo;m analyzing their stock performance from 2016 to 2021.
+Disclaimer: This article is not financial advice. It&amp;rsquo;s a data analysis for fun.
+Download with yfinance      yfinance is a Python package that downloads financial data from Yahoo!</description>
     </item>
     
     <item>
-      <title>Style your site typography</title>
-      <link>/blog/fonts/</link>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Exploring echarts4r</title>
+      <link>/blog/echarts4r/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/fonts/</guid>
-      <description>As with color themes, you can completely customize your site&amp;rsquo;s fonts within minutes of creating a new site. How you do it depends on how much control and customization you need.
-Embedded fonts     Hugo Apéro includes 6 embedded fonts that work &amp;ldquo;out of the box.&amp;rdquo; We selected 3 serif and 3 sans-serif options that we thought looked good with this theme, in our humble opinions. All embedded fonts include real italics so you may emphasize to your heart&amp;rsquo;s content ❤️!</description>
-    </item>
-    
-    <item>
-      <title>An evergreen post</title>
-      <link>/blog/evergreen/</link>
-      <pubDate>Wed, 20 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/evergreen/</guid>
-      <description>Rendering mathematical equations     Examples from the mathjax demo. But they work with katex as well.
-Rmarkdown     In .Rmarkdown documents, you can use either
-$a \ne 0$ to get inline math: \(a \ne 0\). There is no conflict with using dollar symbols regularly, because knitr automatically escapes freestanding dollar symbols.
-And you can use
-$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$ to get a math paragraph:</description>
-    </item>
-    
-    <item>
-      <title>Using panelsets</title>
-      <link>/blog/seedling/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/seedling/</guid>
-      <description>Courtesy of panelset.js by Garrick Aden-Buie, from his xaringanExtra package: https://pkg.garrickadenbuie.com/xaringanExtra/#/panelset
-For example, this panelset:
-Hello! 👋 hello
- Goodbye 💨 goodbye
-  Was created by combining this theme&amp;rsquo;s panelset and panel shortcodes:
-{{&amp;lt; panelset class=&amp;#34;greetings&amp;#34; &amp;gt;}} {{&amp;lt; panel name=&amp;#34;Hello! :wave:&amp;#34; &amp;gt;}} hello {{&amp;lt; /panel &amp;gt;}} {{&amp;lt; panel name=&amp;#34;Goodbye :dash:&amp;#34; &amp;gt;}} goodbye {{&amp;lt; /panel &amp;gt;}} {{&amp;lt; /panelset &amp;gt;}} You could also revert to HTML as well. For example, this panelset:</description>
-    </item>
-    
-    <item>
-      <title>An Rmarkdown post</title>
-      <link>/blog/rmarkdown/</link>
-      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/rmarkdown/</guid>
-      <description> Air quality     with(airquality, boxplot(Temp ~ Month)) with(airquality, plot(Ozone ~ Temp)) mlev &amp;lt;- levels(with(airquality, as.factor(Month))) with(airquality, plot(Ozone ~ Temp, pch = as.numeric(mlev), col = mlev)) </description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/blog/2020-12-01-r-rmarkdown/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      
-      <guid>/blog/2020-12-01-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>CSS Grid Scaffold</title>
-      <link>/blog/css-grid-scaffold/</link>
-      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/css-grid-scaffold/</guid>
-      <description>“Grid is the very first CSS module created specifically to solve the layout problems we&amp;rsquo;ve all been hacking our way around for as long as we&amp;rsquo;ve been making websites.”     — Chris House, A Complete Guide to CSS Grid Layout 1
- Overview     Since I began building websites in Y2K, I&amp;rsquo;ve lost count how many times the phrase &amp;ldquo;&amp;hellip;there&amp;rsquo;s got to be a better way to do this&amp;rdquo; has passed my lips.</description>
-    </item>
-    
-    <item>
-      <title>Built-in Contact Form</title>
-      <link>/blog/built-in-contact-form/</link>
-      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/built-in-contact-form/</guid>
-      <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
+      <guid>/blog/echarts4r/</guid>
+      <description>As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R.</description>
     </item>
     
   </channel>

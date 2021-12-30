@@ -6,88 +6,76 @@
     <description>Recent content in R on Paul Simmering&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A first post</title>
-      <link>/blog/spoonful-series/01-spoonful/</link>
-      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
+      <link>/blog/dataframes/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/spoonful-series/01-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/01-spoonful.md  To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series   does this work?     or this?      Let&amp;rsquo;s start.
-beginning     middle     end     </description>
+      <guid>/blog/dataframes/</guid>
+      <description>I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning.</description>
     </item>
     
     <item>
-      <title>A second post</title>
-      <link>/blog/spoonful-series/02-spoonful/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Cosmention</title>
+      <link>/project/cosmention/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>/blog/spoonful-series/02-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/02-spoonful/index.md  To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series  Images in this page bundle: /blog/spoonful-series/02-spoonful/sidebar-inverse.jpg   part 2!     does this work?      now for some very cool things     more     get ready!</description>
+      <guid>/project/cosmention/</guid>
+      <description>An AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.
+I am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and is now in use at dm, the largest drug store chain in Europe.
+I presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.</description>
     </item>
     
     <item>
-      <title>A third post</title>
-      <link>/blog/spoonful-series/03-spoonful/</link>
-      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/project/stakex/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/spoonful-series/03-spoonful/</guid>
-      <description>Hi, I&#39;m the here-bot cat! Use me to find your way in your website.
-Here I am: content/blog/spoonful-series/03-spoonful/index.markdown  Here is my R Markdown source file: blog/spoonful-series/03-spoonful/index.Rmarkdown You&#39;ll want to edit this file, then re-knit to see the changes take effect in your site preview.
- To remove me, delete this line inside that file: {{&amp;lt; here &amp;gt;}}
-My content section is: blog  My layout is: single-series  Images in this page bundle: /blog/spoonful-series/03-spoonful/featured-photo.</description>
+      <guid>/project/stakex/</guid>
+      <description>StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:
+ methods for gathering public data on relevant stakeholders building a network based on sociological theory analyzing the network through use of force-based layout algorithms and centrality statistics extracting valuable insights for customers  To learn more about the method, see the talk by Thomas Perry and me or check the methods section of the demo app.</description>
     </item>
     
     <item>
-      <title>A Spoonful of Hugo</title>
-      <link>/blog/spoonful-series/</link>
-      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Exploring echarts4r</title>
+      <link>/blog/echarts4r/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/spoonful-series/</guid>
-      <description>** No content below YAML for the series _index. This file is a leaf bundle, and provides settings for the listing page layout and sidebar content.**</description>
+      <guid>/blog/echarts4r/</guid>
+      <description>As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R.</description>
     </item>
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/blog/2020-12-01-r-rmarkdown/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      <title>Global Patent Explorer</title>
+      <link>/project/gpexp/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2020-12-01-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/project/gpexp/</guid>
+      <description>Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. It visualizes the results of a paper on natural language processing on patent texts:
+ D.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html
+ This tool lets users map and visualize inventive and innovative activity around the globe.</description>
     </item>
     
     <item>
-      <title>Tachyons for Style</title>
-      <link>/project/giraffes/</link>
-      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
+      <title>Human and AI Decision Making in a Game of Innovation and Imitation</title>
+      <link>/project/masterthesis/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/project/giraffes/</guid>
-      <description>Tachyons is a design system that allows you to design gorgeous interfaces in the browser with little effort.      Because Speed     Building this static site generator theme was the first time I used an Atomic (or Functional) CSS system like Tachyons. It&amp;rsquo;s a design system that provides very small (which means fast) CSS modules that you can use in your HTML. So, rather than writing every line of CSS, you apply the style you need as you write your HTML with easy to understand shorthand class names.</description>
+      <guid>/project/masterthesis/</guid>
+      <description>My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.
+Current AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker.</description>
     </item>
     
     <item>
-      <title>Palmer Penguins</title>
-      <link>/project/penguins/</link>
-      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      <title>Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?</title>
+      <link>/project/bachelorthesis/</link>
+      <pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>/project/penguins/</guid>
-      <description>“Grid is the very first CSS module created specifically to solve the layout problems we&amp;rsquo;ve all been hacking our way around for as long as we&amp;rsquo;ve been making websites.”     — Chris House, A Complete Guide to CSS Grid Layout 1
- Since I began building websites in Y2K, I&amp;rsquo;ve lost count how many times the phrase &amp;ldquo;&amp;hellip;there&amp;rsquo;s got to be a better way to do this&amp;rdquo; has passed my lips.</description>
-    </item>
-    
-    <item>
-      <title>Bakeoff</title>
-      <link>/project/bakeoff/</link>
-      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/project/bakeoff/</guid>
-      <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
+      <guid>/project/bachelorthesis/</guid>
+      <description>I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
+Photo by Justus Menke on Unsplash</description>
     </item>
     
   </channel>

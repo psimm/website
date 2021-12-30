@@ -6,49 +6,85 @@
     <description>Recent content in Tags on Paul Simmering&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>style</title>
-      <link>/tags/style/</link>
-      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Finance</title>
+      <link>/tags/finance/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/style/</guid>
+      <guid>/tags/finance/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>hugo-site</title>
-      <link>/tags/hugo-site/</link>
-      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Performance</title>
+      <link>/tags/performance/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/hugo-site/</guid>
+      <guid>/tags/performance/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>plot</title>
-      <link>/tags/plot/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      <title>pipeline, NLP</title>
+      <link>/tags/pipeline-nlp/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/plot/</guid>
+      <guid>/tags/pipeline-nlp/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>R Markdown</title>
-      <link>/tags/r-markdown/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      <title>Visualization</title>
+      <link>/tags/visualization/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r-markdown/</guid>
+      <guid>/tags/visualization/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>regression</title>
-      <link>/tags/regression/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      <title>echarts</title>
+      <link>/tags/echarts/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/regression/</guid>
+      <guid>/tags/echarts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>echarts4r</title>
+      <link>/tags/echarts4r/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/echarts4r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>data-visualization</title>
+      <link>/tags/data-visualization/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-visualization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Game</title>
+      <link>/tags/game/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/game/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Market research</title>
+      <link>/tags/market-research/</link>
+      <pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/market-research/</guid>
       <description></description>
     </item>
     

@@ -1,9 +1,9 @@
 ---
 title: "Paul Simmering"
 subtitle: "Full stack data scientist"
-description: "Sit down, relax, and get to know Hugo Apéro. Built on top of Blogophonic, we wanted to create a polished Hugo theme with the right features for a true personal website. We set out to create a theme that is a pleasure to learn, and one that helps others get to know you better. It is more than a blog, with flexible custom layouts that help you introduce yourself online."
+description: "I'm a data scientist working on natural language processing, cloud and interactive data visualization. I'm the lead developer of the AI-powered social media monitoring tool [Cosmention](https://www.cosmention.com). The best way to contact me is via direct message on Twitter or LinkedIn."
 images:
-  - img/revoir.jpg
+  - img/portrait.jpeg
 image_left: true
 text_align_left: false
 show_social_links: true # specify social accounts in site config

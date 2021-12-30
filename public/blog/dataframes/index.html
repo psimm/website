@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.91.0" />
+<title>Data frame wars: Choosing a Python dataframe library as a dplyr user | Paul Simmering&#39;s blog</title>
+
+
+<meta property="twitter:site" content="@paul_simmering">
+<meta property="twitter:creator" content="@paul_simmering">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user">
+
+
+<meta property="og:site_name" content="Paul Simmering&#39;s blog">
+<meta property="og:title" content="Data frame wars: Choosing a Python dataframe library as a dplyr user | Paul Simmering&#39;s blog">
+<meta property="og:description" content="A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user" />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="/blog/dataframes/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="/blog/dataframes/featured.jpg" >
+        <meta property="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="/blog/dataframes/featured.jpg" >
+    
+    
+  <meta itemprop="name" content="Data frame wars: Choosing a Python dataframe library as a dplyr user">
+<meta itemprop="description" content="I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python than for R.
+Adopting Python means making choices on which libraries to invest time into learning."><meta itemprop="datePublished" content="2021-12-20T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-12-20T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3780"><meta itemprop="image" content="/blog/dataframes/featured.jpg">
+<meta itemprop="keywords" content="Performance," />
+  
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.5477c20f89738a32763391bbc2f43dbdfc2db0e7faba550c86cac92c99efa6b6.css" integrity="sha256-VHfCD4lzijJ2M5G7wvQ9vfwtsOf6ulUMhsrJLJnvprY=" media="screen">
+  
+  
+  <script src="/panelset.min.078a92db9bd3228df502db3d9e0453c3cf3d910abe3f8deca0ad196c7071ad41.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.ebeea774bd0288585efac7936c4997143f5f93209741bdc1e2efb2a12e19563d.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="/" title="Home">
+      <img src="/img/blogophonic-mark-dark.png" class="dib db-l h2 w-auto" alt="Paul Simmering&#39;s blog">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/blog/" title="Blog">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/talk/" title="Talks">Talks</a>
+      
+      
+      <div class="dib v-mid">
+        <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/psimm" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/paul_simmering" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://de.linkedin.com/in/paulsimmering" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+      </div>
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 ph4-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Data frame wars: Choosing a Python dataframe library as a dplyr user</h1>
+        
+        
+        <p class="f7 db mv0 ttu">December 20, 2021</p>
+
+      
+
+      </header>
+      <section class="post-body pt5 pb4">
+        <script src="/blog/dataframes/index_files/core-js/shim.min.js"></script>
+<script src="/blog/dataframes/index_files/react/react.min.js"></script>
+<script src="/blog/dataframes/index_files/react/react-dom.min.js"></script>
+<script src="/blog/dataframes/index_files/reactwidget/react-tools.js"></script>
+<script src="/blog/dataframes/index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="/blog/dataframes/index_files/reactable-binding/reactable.js"></script>
+<script src="/blog/dataframes/index_files/core-js/shim.min.js"></script>
+<script src="/blog/dataframes/index_files/react/react.min.js"></script>
+<script src="/blog/dataframes/index_files/react/react-dom.min.js"></script>
+<script src="/blog/dataframes/index_files/reactwidget/react-tools.js"></script>
+<script src="/blog/dataframes/index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="/blog/dataframes/index_files/reactable-binding/reactable.js"></script>
+<p>I’m a long time R user and lately I’ve seen more and more 
+<a href="https://www.tiobe.com/tiobe-index/python/" target="_blank" rel="noopener">signals</a> that it’s worth investing into Python. I use it for NLP with 
+<a href="https://spacy.io" target="_blank" rel="noopener">spaCy</a> and to build functions on 
+<a href="https://aws.amazon.com/lambda/features/" target="_blank" rel="noopener">AWS Lambda</a>. Further, there are many more data API libraries and machine learning libraries for Python than for R.</p>
+<p>Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.</p>
+<p>Michael Chow, developer of 
+<a href="https://github.com/machow/siuba" target="_blank" rel="noopener">siuba</a>, a Python port of dplyr on top of pandas 
+<a href="https://mchow.com/posts/pandas-has-a-hard-job/" target="_blank" rel="noopener">wrote</a> describes the situation well:</p>
+<blockquote>
+<p>It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).</p>
+</blockquote>
+<p>The higher-level libraries he mentions come with a problem : There’s no universal standard.</p>
+<p>In a discussion of the polars library on Hacker News the user “civilized” put the dplyr user perspective more bluntly:</p>
+<blockquote>
+<p>In my world, anything that isn’t “identical to R’s dplyr API but faster” just isn’t quite worth switching for. There’s absolutely no contest: dplyr has the most productive API and that matters to me more than anything else.</p>
+</blockquote>
+<p>I’m more willing to compromise though, so here’s a comparison of the strongest contenders.</p>
+
+
+
+
+<h2 id="the-contenders">The contenders
+  <a href="#the-contenders"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The 
+<a href="https://h2oai.github.io/db-benchmark/" target="_blank" rel="noopener">database-like ops benchmark on H2Oai</a> is a helpful performance comparison.</p>
+<p>I’m considering these libraries:</p>
+<ol>
+<li>
+<a href="https://pandas.pydata.org" target="_blank" rel="noopener">Pandas</a>: The most commonly used library and the one with the most tutorials and Stack Overflow answers available.</li>
+<li>
+<a href="https://github.com/machow/siuba" target="_blank" rel="noopener">siuba</a>: A port of dplyr to Python, built on top of pandas. Not in the benchmark. Performance probably similar to pandas or worse due to translation.</li>
+<li>
+<a href="https://www.pola.rs" target="_blank" rel="noopener">Polars</a>: The fastest library available. According to the benchmark, it runs 3-10x faster than Pandas.</li>
+<li>
+<a href="https://www.pola.rs" target="_blank" rel="noopener">Duckdb</a>: Use an in-memory OLAP database instead of a dataframe and write SQL. In R, this can also be queried via dbplyr.</li>
+<li>
+<a href="https://ibis-project.org/docs/index.html" target="_blank" rel="noopener">ibis</a>. Backend-agnostic wrapper for pandas and SQL engines.</li>
+</ol>
+<p>There are more options. I excluded the others for these reasons:</p>
+<ul>
+<li>Slower than polars and not with a readability focus (dask, Arrow, Modin, pydatatable)</li>
+<li>Requires or is optmized for running on a remote server (Spark, ClickHouse and most other SQL databases).</li>
+<li>Not meant for OLAP (sqlite)</li>
+<li>Not in Python (DataFrames.jl)</li>
+<li>Meant for GPU (cuDF)</li>
+</ul>
+<p>The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#c34e00">library</span>(ggplot2)
+libs &lt;- <span style="color:#c34e00">data.frame</span>(
+  library = <span style="color:#c34e00">c</span>(<span style="color:#009c00">&#34;pandas&#34;</span>, <span style="color:#009c00">&#34;siuba&#34;</span>, <span style="color:#009c00">&#34;polars&#34;</span>, <span style="color:#009c00">&#34;duckdb&#34;</span>, <span style="color:#009c00">&#34;dplyr&#34;</span>, <span style="color:#009c00">&#34;data.table&#34;</span>, <span style="color:#009c00">&#34;pydatatable&#34;</span>, <span style="color:#009c00">&#34;dtplyr&#34;</span>, <span style="color:#009c00">&#34;tidytable&#34;</span>, <span style="color:#009c00">&#34;ibis&#34;</span>),
+  language = <span style="color:#c34e00">c</span>(<span style="color:#009c00">&#34;Python&#34;</span>, <span style="color:#009c00">&#34;Python&#34;</span>, <span style="color:#009c00">&#34;Python&#34;</span>, <span style="color:#009c00">&#34;SQL&#34;</span>, <span style="color:#009c00">&#34;R&#34;</span>, <span style="color:#009c00">&#34;R&#34;</span>, <span style="color:#009c00">&#34;Python&#34;</span>, <span style="color:#009c00">&#34;R&#34;</span>, <span style="color:#009c00">&#34;R&#34;</span>, <span style="color:#009c00">&#34;Python&#34;</span>),
+  stars = <span style="color:#c34e00">c</span>(32100, 732, 3900, 4100, 3900, 2900, 1400, 542, 285, 1600)
+)
+
+<span style="color:#c34e00">ggplot</span>(libs, <span style="color:#c34e00">aes</span>(x = <span style="color:#c34e00">reorder</span>(library, -stars), y = stars, fill = language)) +
+  <span style="color:#c34e00">geom_col</span>() + 
+  <span style="color:#c34e00">labs</span>(
+    title = <span style="color:#009c00">&#34;Pandas is by far the most popular choice&#34;</span>,
+    subtitle = <span style="color:#009c00">&#34;Comparison of Github stars on 2021-12-25&#34;</span>,
+    fill = <span style="color:#009c00">&#34;Language&#34;</span>,
+    x = <span style="color:#009c00">&#34;Library&#34;</span>,
+    y = <span style="color:#009c00">&#34;Github stars&#34;</span>
+  )
+</code></pre></div><img src="/blog/dataframes/index_files/figure-html/github_stars-1.png" width="672" />
+<p>Github stars are not a perfect proxy. For instance, dplyr is more mature than its star count suggests. Comparing the completeness of the documentation and tutorials for dplyr and polars reveals that it’s a day and night difference.</p>
+<p>With the quantitative comparison out of the way, here’s a qualitative comparison of the Python packages. I’m speaking of my personal opinion of these packages - not a general comparison. My reference is my current use of 
+<a href="https://dplyr.tidyverse.org" target="_blank" rel="noopener">dplyr</a> in R. When I need more performance, I use 
+<a href="https://github.com/markfairbanks/tidytable" target="_blank" rel="noopener">tidytable</a> to get most of the speed of data.table with the grammar of dplyr and eager evaluation. Another alternative is 
+<a href="https://github.com/tidyverse/dtplyr" target="_blank" rel="noopener">dtplyr</a>, which translates dplyr to data.table with lazy evaluation. I also use 
+<a href="https://dbplyr.tidyverse.org" target="_blank" rel="noopener">dbplyr</a>, which translates dplyr to SQL.</p>
+<p>I’ll compare the libraries by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarize. I’ll use the nycflights13 dataset, which is featured in Hadley Wickham’s 
+<a href="https://r4ds.had.co.nz/transform.html" target="_blank" rel="noopener">R for Data Science</a>.</p>
+
+
+
+
+<h2 id="dplyr-reference-in-r">dplyr: Reference in R
+  <a href="#dplyr-reference-in-r"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Let’s start with a reference implementation in dplyr. The dataset is available as a package, so I skip the CSV import.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#c34e00">library</span>(dplyr, warn.conflicts = <span style="color:#00f">FALSE</span>)
+<span style="color:#c34e00">library</span>(nycflights13)
+<span style="color:#c34e00">library</span>(reactable)
+
+<span style="color:#f00;font-style:italic"># Take a look at the tables</span>
+<span style="color:#c34e00">reactable</span>(<span style="color:#c34e00">head</span>(flights, 10))
+</code></pre></div><div id="htmlwidget-1" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],"month":[1,1,1,1,1,1,1,1,1,1],"day":[1,1,1,1,1,1,1,1,1,1],"dep_time":[517,533,542,544,554,554,555,557,557,558],"sched_dep_time":[515,529,540,545,600,558,600,600,600,600],"dep_delay":[2,4,2,-1,-6,-4,-5,-3,-3,-2],"arr_time":[830,850,923,1004,812,740,913,709,838,753],"sched_arr_time":[819,830,850,1022,837,728,854,723,846,745],"arr_delay":[11,20,33,-18,-25,12,19,-14,-8,8],"carrier":["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA"],"flight":[1545,1714,1141,725,461,1696,507,5708,79,301],"tailnum":["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA"],"origin":["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA"],"dest":["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD"],"air_time":[227,227,160,183,116,150,158,53,140,138],"distance":[1400,1416,1089,1576,762,719,1065,229,944,733],"hour":[5,5,5,5,6,5,6,6,6,6],"minute":[15,29,40,45,0,58,0,0,0,0],"time_hour":["2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T05:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00","2013-01-01T06:00:00"]},"columns":[{"accessor":"year","name":"year","type":"numeric"},{"accessor":"month","name":"month","type":"numeric"},{"accessor":"day","name":"day","type":"numeric"},{"accessor":"dep_time","name":"dep_time","type":"numeric"},{"accessor":"sched_dep_time","name":"sched_dep_time","type":"numeric"},{"accessor":"dep_delay","name":"dep_delay","type":"numeric"},{"accessor":"arr_time","name":"arr_time","type":"numeric"},{"accessor":"sched_arr_time","name":"sched_arr_time","type":"numeric"},{"accessor":"arr_delay","name":"arr_delay","type":"numeric"},{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"flight","name":"flight","type":"numeric"},{"accessor":"tailnum","name":"tailnum","type":"character"},{"accessor":"origin","name":"origin","type":"character"},{"accessor":"dest","name":"dest","type":"character"},{"accessor":"air_time","name":"air_time","type":"numeric"},{"accessor":"distance","name":"distance","type":"numeric"},{"accessor":"hour","name":"hour","type":"numeric"},{"accessor":"minute","name":"minute","type":"numeric"},{"accessor":"time_hour","name":"time_hour","type":"Date"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"0fe230bb41adb4c97e1205322b49f222","key":"0fe230bb41adb4c97e1205322b49f222"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#c34e00">reactable</span>(<span style="color:#c34e00">head</span>(airlines, 10))
+</code></pre></div><div id="htmlwidget-2" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"accessor":"carrier","name":"carrier","type":"character"},{"accessor":"name","name":"name","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"08ac76438f639beb63f40296e9c2c3c3","key":"08ac76438f639beb63f40296e9c2c3c3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>The <code>flights</code> tables has 336776 rows, one for each flight of an airplane. The <code>airlines</code> table has 16 rows, one for each airline mapping the full name of the company to a code.</p>
+<p>Let’s find the airline with the highest arrival delays in January 2013.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">flights |&gt;
+  <span style="color:#c34e00">filter</span>(year == 2013, month == 1, !<span style="color:#c34e00">is.na</span>(arr_delay)) |&gt; 
+  <span style="color:#c34e00">mutate</span>(arr_delay = <span style="color:#c34e00">replace</span>(arr_delay, arr_delay &lt; 0, 0)) |&gt;
+  <span style="color:#c34e00">left_join</span>(airlines, by = <span style="color:#009c00">&#34;carrier&#34;</span>) |&gt;
+  <span style="color:#c34e00">group_by</span>(airline = name) |&gt;
+  <span style="color:#c34e00">summarise</span>(flights = <span style="color:#c34e00">n</span>(), mean_delay = <span style="color:#c34e00">mean</span>(arr_delay)) |&gt; 
+  <span style="color:#c34e00">arrange</span>(<span style="color:#c34e00">desc</span>(mean_delay))
+</code></pre></div><pre><code>## # A tibble: 16 × 3
+##    airline                     flights mean_delay
+##    &lt;chr&gt;                         &lt;int&gt;      &lt;dbl&gt;
+##  1 SkyWest Airlines Inc.             1     107   
+##  2 Hawaiian Airlines Inc.           31      48.8 
+##  3 ExpressJet Airlines Inc.       3964      29.6 
+##  4 Frontier Airlines Inc.           59      23.9 
+##  5 Mesa Airlines Inc.               39      20.4 
+##  6 Endeavor Air Inc.              1480      19.3 
+##  7 Alaska Airlines Inc.             62      17.6 
+##  8 Envoy Air                      2203      14.3 
+##  9 Southwest Airlines Co.          985      13.0 
+## 10 JetBlue Airways                4413      12.9 
+## 11 United Air Lines Inc.          4590      11.9 
+## 12 American Airlines Inc.         2724      11.0 
+## 13 AirTran Airways Corporation     324       9.95
+## 14 US Airways Inc.                1554       9.11
+## 15 Delta Air Lines Inc.           3655       8.07
+## 16 Virgin America                  314       3.17
+</code></pre>
+<p>Some values in <code>arr_delay</code> are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don’t want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.</p>
+<p>I export the flights and airlines tables to CSV to hand them over to Python.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data.table::<span style="color:#c34e00">fwrite</span>(flights, <span style="color:#009c00">&#34;flights.csv&#34;</span>, row.names = <span style="color:#00f">FALSE</span>)
+data.table::<span style="color:#c34e00">fwrite</span>(airlines, <span style="color:#009c00">&#34;airlines.csv&#34;</span>, row.names = <span style="color:#00f">FALSE</span>)
+</code></pre></div>
+
+
+
+<h2 id="pandas-most-popular">Pandas: Most popular
+  <a href="#pandas-most-popular"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The following sections follow a pattern: read in from CSV, then build a query.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> pandas <span style="color:#00f">as</span> pd
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+flights_pd = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_pd = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><p><code>pandas.read_csv</code> reads the header and conveniently infers the column types.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(flights_pd
+  .query(<span style="color:#009c00">&#34;year == 2013 &amp; month == 1 &amp; arr_delay.notnull()&#34;</span>)
+  .assign(arr_delay = flights_pd.arr_delay.clip(lower = 0))
+  .merge(airlines_pd, how = <span style="color:#009c00">&#34;left&#34;</span>, on = <span style="color:#009c00">&#34;carrier&#34;</span>)
+  .rename(columns = {<span style="color:#009c00">&#34;name&#34;</span>: <span style="color:#009c00">&#34;airline&#34;</span>})
+  .groupby(<span style="color:#009c00">&#34;airline&#34;</span>)
+  .agg(flights = (<span style="color:#009c00">&#34;airline&#34;</span>, <span style="color:#009c00">&#34;count&#34;</span>), mean_delay = (<span style="color:#009c00">&#34;arr_delay&#34;</span>, <span style="color:#009c00">&#34;mean&#34;</span>))
+  .sort_values(by = <span style="color:#009c00">&#34;mean_delay&#34;</span>, ascending = <span style="color:#00f">False</span>))
+</code></pre></div><pre><code>##                              flights  mean_delay
+## airline                                         
+## SkyWest Airlines Inc.              1  107.000000
+## Hawaiian Airlines Inc.            31   48.774194
+## ExpressJet Airlines Inc.        3964   29.642785
+## Frontier Airlines Inc.            59   23.881356
+## Mesa Airlines Inc.                39   20.410256
+## Endeavor Air Inc.               1480   19.321622
+## Alaska Airlines Inc.              62   17.645161
+## Envoy Air                       2203   14.303677
+## Southwest Airlines Co.           985   12.964467
+## JetBlue Airways                 4413   12.919329
+## United Air Lines Inc.           4590   11.851852
+## American Airlines Inc.          2724   10.953377
+## AirTran Airways Corporation      324    9.953704
+## US Airways Inc.                 1554    9.111326
+## Delta Air Lines Inc.            3655    8.070315
+## Virgin America                   314    3.165605
+</code></pre>
+<p>I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.</p>
+<p>Here, the <code>query()</code> function is slightly awkward with the long string argument. The <code>groupby</code> doesn’t allow renaming on the fly like dplyr, though I don’t consider that a real drawback. Perhaps it’s clearer to rename explicitly anyway.</p>
+<p>Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The <code>clip</code> function used here is one such example. One difference to dplyr is that pandas uses its own methods <code>.mean()</code>, rather than using external ones such as <code>base::mean()</code>. That means using custom functions instead carries a 
+<a href="https://stackoverflow.com/a/26812998" target="_blank" rel="noopener">performance penalty</a>.</p>
+<p>As we’ll see later, pandas is the backend for siuba and ibis, which boil down to pandas code.</p>
+<p>One difference to all other discussed solutions is that pandas uses a 
+<a href="https://www.sharpsightlabs.com/blog/pandas-index/" target="_blank" rel="noopener">row index</a>. Base R also has this with row names, but the tidyverse and tibbles have largely removed them from common use. I never missed row names. At the times I had to work with them in pandas they were more confusing than helpful. The documentation of polars puts it more bluntly:</p>
+<blockquote>
+<p>No index. They are not needed. Not having them makes things easier. Convince me otherwise</p>
+</blockquote>
+<p>That’s quite passive aggressive, but I do agree and wish pandas didn’t have it.</p>
+
+
+
+
+<h2 id="siuba-dplyr-in-python">siuba: dplyr in Python
+  <a href="#siuba-dplyr-in-python"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> siuba <span style="color:#00f">as</span> si
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+flights_si = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_si = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><p>As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(
+  flights_si
+    &gt;&gt; si.filter(
+      si._.year == 2013,
+      si._.month == 1,
+      si._.arr_delay.notnull()
+    )
+    &gt;&gt; si.mutate(arr_delay = si._.arr_delay.clip(lower = 0))
+    &gt;&gt; si.left_join(si._, airlines_si, on = <span style="color:#009c00">&#34;carrier&#34;</span>)
+    &gt;&gt; si.rename(airline = si._.name)
+    &gt;&gt; si.group_by(si._.airline)
+    &gt;&gt; si.summarize(
+        flights = si._.airline.count(),
+        mean_delay = si._.arr_delay.mean()
+    )
+    &gt;&gt; si.arrange(-si._.mean_delay)
+)
+</code></pre></div><pre><code>##                         airline  flights  mean_delay
+## 11        SkyWest Airlines Inc.        1  107.000000
+## 8        Hawaiian Airlines Inc.       31   48.774194
+## 6      ExpressJet Airlines Inc.     3964   29.642785
+## 7        Frontier Airlines Inc.       59   23.881356
+## 10           Mesa Airlines Inc.       39   20.410256
+## 4             Endeavor Air Inc.     1480   19.321622
+## 1          Alaska Airlines Inc.       62   17.645161
+## 5                     Envoy Air     2203   14.303677
+## 12       Southwest Airlines Co.      985   12.964467
+## 9               JetBlue Airways     4413   12.919329
+## 14        United Air Lines Inc.     4590   11.851852
+## 2        American Airlines Inc.     2724   10.953377
+## 0   AirTran Airways Corporation      324    9.953704
+## 13              US Airways Inc.     1554    9.111326
+## 3          Delta Air Lines Inc.     3655    8.070315
+## 15               Virgin America      314    3.165605
+</code></pre>
+<p>I found siuba the easiest to work with. Once I understood the <code>_</code> placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s 
+<a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with" target="_blank" rel="noopener">tidy evaluation</a> (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.</p>
+<p>It’s always possible to drop into pandas, such as for the aggregation functions which use the <code>mean()</code> and <code>count()</code> methods of the pandas series. The <code>&gt;&gt;</code> is an easy replacement for the <code>%&gt;%</code> magrittr pipe or <code>|&gt;</code> base pipe in R.</p>
+<p>The author advertises siuba like this (from the 
+<a href="https://siuba.readthedocs.io/en/latest/" target="_blank" rel="noopener">docs</a>):</p>
+<blockquote>
+<p>Siuba is a library for quick, scrappy data analysis in Python. It is a port of dplyr, tidyr, and other R Tidyverse libraries.</p>
+</blockquote>
+<p>A way for dplyr users to quickly hack away at data analysis in Python, but not meant for unsupervised production use.</p>
+
+
+
+
+<h2 id="polars-fastest">Polars: Fastest
+  <a href="#polars-fastest"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyr work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> polars <span style="color:#00f">as</span> pl
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+flights_pl = pl.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_pl = pl.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(flights_pl
+  .filter((pl.col(<span style="color:#009c00">&#34;year&#34;</span>) == 2013) &amp; (pl.col(<span style="color:#009c00">&#34;month&#34;</span>) == 1))
+  .drop_nulls(<span style="color:#009c00">&#34;arr_delay&#34;</span>)
+  .join(airlines_pl, on = <span style="color:#009c00">&#34;carrier&#34;</span>, how = <span style="color:#009c00">&#34;left&#34;</span>)
+  .with_columns(
+    [
+      pl.when(pl.col(<span style="color:#009c00">&#34;arr_delay&#34;</span>) &gt; 0)
+        .then(pl.col(<span style="color:#009c00">&#34;arr_delay&#34;</span>))
+        .otherwise(0)
+        .alias(<span style="color:#009c00">&#34;arr_delay&#34;</span>),
+      pl.col(<span style="color:#009c00">&#34;name&#34;</span>).alias(<span style="color:#009c00">&#34;airline&#34;</span>)
+    ]
+  )
+  .groupby(<span style="color:#009c00">&#34;airline&#34;</span>)
+  .agg(
+    [
+      pl.count(<span style="color:#009c00">&#34;airline&#34;</span>).alias(<span style="color:#009c00">&#34;flights&#34;</span>),
+      pl.mean(<span style="color:#009c00">&#34;arr_delay&#34;</span>).alias(<span style="color:#009c00">&#34;mean_delay&#34;</span>)
+    ]
+  )
+  .sort(<span style="color:#009c00">&#34;mean_delay&#34;</span>, reverse = <span style="color:#00f">True</span>)
+)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1 "class="dataframe ">
+<thead>
+<tr>
+<th>
+airline
+</th>
+<th>
+flights
+</th>
+<th>
+mean_delay
+</th>
+</tr>
+<tr>
+<td>
+str
+</td>
+<td>
+u32
+</td>
+<td>
+f64
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+"SkyWest Airlines Inc."
+</td>
+<td>
+1
+</td>
+<td>
+107
+</td>
+</tr>
+<tr>
+<td>
+"Hawaiian Airlines Inc."
+</td>
+<td>
+31
+</td>
+<td>
+48.774193548387096
+</td>
+</tr>
+<tr>
+<td>
+"ExpressJet Airlines Inc."
+</td>
+<td>
+3964
+</td>
+<td>
+29.642785065590314
+</td>
+</tr>
+<tr>
+<td>
+"Frontier Airlines Inc."
+</td>
+<td>
+59
+</td>
+<td>
+23.88135593220339
+</td>
+</tr>
+<tr>
+<td>
+"Mesa Airlines Inc."
+</td>
+<td>
+39
+</td>
+<td>
+20.41025641025641
+</td>
+</tr>
+<tr>
+<td>
+"Endeavor Air Inc."
+</td>
+<td>
+1480
+</td>
+<td>
+19.32162162162162
+</td>
+</tr>
+<tr>
+<td>
+"Alaska Airlines Inc."
+</td>
+<td>
+62
+</td>
+<td>
+17.64516129032258
+</td>
+</tr>
+<tr>
+<td>
+"Envoy Air"
+</td>
+<td>
+2203
+</td>
+<td>
+14.303676804357695
+</td>
+</tr>
+<tr>
+<td>
+"Southwest Airlines Co."
+</td>
+<td>
+985
+</td>
+<td>
+12.964467005076141
+</td>
+</tr>
+<tr>
+<td>
+"JetBlue Airways"
+</td>
+<td>
+4413
+</td>
+<td>
+12.919329254475414
+</td>
+</tr>
+<tr>
+<td>
+"United Air Lines Inc."
+</td>
+<td>
+4590
+</td>
+<td>
+11.851851851851851
+</td>
+</tr>
+<tr>
+<td>
+"American Airlines Inc."
+</td>
+<td>
+2724
+</td>
+<td>
+10.95337738619677
+</td>
+</tr>
+<tr>
+<td>
+"AirTran Airways Corporation"
+</td>
+<td>
+324
+</td>
+<td>
+9.953703703703704
+</td>
+</tr>
+<tr>
+<td>
+"US Airways Inc."
+</td>
+<td>
+1554
+</td>
+<td>
+9.111325611325611
+</td>
+</tr>
+<tr>
+<td>
+"Delta Air Lines Inc."
+</td>
+<td>
+3655
+</td>
+<td>
+8.0703146374829
+</td>
+</tr>
+<tr>
+<td>
+"Virgin America"
+</td>
+<td>
+314
+</td>
+<td>
+3.1656050955414012
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated <code>clip</code> function.</p>
+<p>There isn’t nearly as much help available for problems with polars as for with pandas. While the documentation is good, it can’t answer every question and lots of trial and error is needed.</p>
+<p>A comparison of polars and pandas is available in the 
+<a href="https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment" target="_blank" rel="noopener">polars documentation</a>.</p>
+
+
+
+
+<h2 id="duckdb-highly-compatible-and-easy-for-sql-users">DuckDB: Highly compatible and easy for SQL users
+  <a href="#duckdb-highly-compatible-and-easy-for-sql-users"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> duckdb
+
+con_duckdb = duckdb.connect(database = <span style="color:#009c00">&#39;:memory:&#39;</span>)
+
+<span style="color:#f00;font-style:italic"># Import from CSV</span>
+con_duckdb.execute(
+  <span style="color:#009c00">&#34;CREATE TABLE &#39;flights&#39; AS &#34;</span>
+  <span style="color:#009c00">&#34;SELECT * FROM read_csv_auto(&#39;flights.csv&#39;, header = True);&#34;</span>
+  <span style="color:#009c00">&#34;CREATE TABLE &#39;airlines&#39; AS &#34;</span>
+  <span style="color:#009c00">&#34;SELECT * FROM read_csv_auto(&#39;airlines.csv&#39;, header = True);&#34;</span>
+)
+</code></pre></div><pre><code>## &lt;duckdb.DuckDBPyConnection object at 0x121b25bb0&gt;
+</code></pre>
+<p>DuckDB’s <code>read_csv_auto()</code> works just like the csv readers in Python.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">con_duckdb.execute(
+  <span style="color:#009c00">&#34;WITH flights_clipped AS ( &#34;</span>
+  <span style="color:#009c00">&#34;SELECT carrier, CASE WHEN arr_delay &gt; 0 THEN arr_delay ELSE 0 END AS arr_delay &#34;</span>
+  <span style="color:#009c00">&#34;FROM flights &#34;</span>
+  <span style="color:#009c00">&#34;WHERE year = 2013 AND month = 1 AND arr_delay IS NOT NULL&#34;</span>
+  <span style="color:#009c00">&#34;)&#34;</span>
+  <span style="color:#009c00">&#34;SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay &#34;</span>
+  <span style="color:#009c00">&#34;FROM flights_clipped &#34;</span>
+  <span style="color:#009c00">&#34;LEFT JOIN airlines ON flights_clipped.carrier = airlines.carrier &#34;</span>
+  <span style="color:#009c00">&#34;GROUP BY name &#34;</span>
+  <span style="color:#009c00">&#34;ORDER BY mean_delay DESC &#34;</span>
+).fetchdf()
+</code></pre></div><pre><code>##                         airline  flights  mean_delay
+## 0         SkyWest Airlines Inc.        1  107.000000
+## 1        Hawaiian Airlines Inc.       31   48.774194
+## 2      ExpressJet Airlines Inc.     3964   29.642785
+## 3        Frontier Airlines Inc.       59   23.881356
+## 4            Mesa Airlines Inc.       39   20.410256
+## 5             Endeavor Air Inc.     1480   19.321622
+## 6          Alaska Airlines Inc.       62   17.645161
+## 7                     Envoy Air     2203   14.303677
+## 8        Southwest Airlines Co.      985   12.964467
+## 9               JetBlue Airways     4413   12.919329
+## 10        United Air Lines Inc.     4590   11.851852
+## 11       American Airlines Inc.     2724   10.953377
+## 12  AirTran Airways Corporation      324    9.953704
+## 13              US Airways Inc.     1554    9.111326
+## 14         Delta Air Lines Inc.     3655    8.070315
+## 15               Virgin America      314    3.165605
+</code></pre>
+<p>The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.</p>
+<p>DuckDB can also operate directly on a pandas dataframe. The SQL code is portable to R, C, C++, Java and other programming languages the duckdb has 
+<a href="https://duckdb.org/docs/api/overview" target="_blank" rel="noopener">APIs</a>. It’s also portable when the logic is taken to a DB like 
+<a href="https://www.postgresql.org" target="_blank" rel="noopener">Postgres</a>, or 
+<a href="https://clickhouse.com" target="_blank" rel="noopener">Clickhouse</a>, or is ported to an ETL framework like 
+<a href="https://github.com/dbt-labs/dbt-core" target="_blank" rel="noopener">DBT</a>.</p>
+<p>This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating SQL translates well to other situations. SQL has been around for more than 50 years - learning SQL is future-proofing a career.</p>
+<p>While these are big plusses, duckdb isn’t so convenient for interactive data exploration. SQL isn’t as composeable. Composing SQL queries requires many common table expressions (CTEs, <code>WITH x AS (SELECT ...)</code>). Reusing them for other queries is not as easy as with Python. SQL is typically less expressive than Python. It lacks shorthands and it’s awkward when there are many columns. It’s also harder to write custom functions in SQL than in R or Python. This is the motivation for using libraries like pandas and dplyr. But SQL can actually do a surprising amount of things, as database expert Haki Benita explained in a 
+<a href="https://hakibenita.com/sql-for-data-analysis" target="_blank" rel="noopener">detailed article</a>.</p>
+<p>Or in short, from the 
+<a href="https://ibis-project.org" target="_blank" rel="noopener">documentation</a> of ibis:</p>
+<blockquote>
+<p>SQL is widely used and very convenient when writing simple queries. But as the complexity of operations grow, SQL can become very difficult to deal with.</p>
+</blockquote>
+<p>Then, there’s the issue of how to actually write the SQL code. Writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like 
+<a href="https://www.jetbrains.com/pycharm/" target="_blank" rel="noopener">PyCharm</a> and 
+<a href="https://www.jetbrains.com/dataspell/" target="_blank" rel="noopener">DataSpell</a> do). The other option is writing <code>.sql</code> that have placeholders for parameters. That’s cleaner and allows using a linter, but is inconvenient for interactive use.</p>
+<p>SQL is inherently lazily executed, because the query planner needs to take the whole query into account before starting computation. This enables performance gains. For interactive use, lazy evaluation is less convenient, because one can’t see the intermediate results at each step. Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.</p>
+<p>There is a 
+<a href="https://github.com/duckdb/duckdb/blob/master/examples/python/duckdb-python.py" target="_blank" rel="noopener">programmatic way to construct queries</a> for duckdb, designed to provide a 
+<a href="https://github.com/duckdb/duckdb/issues/302" target="_blank" rel="noopener">dbplyr alternative</a> in Python. Unfortunately its documentation is sparse.</p>
+<p>Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.</p>
+
+
+
+
+<h2 id="ibis-lingua-franca-in-python">ibis: Lingua franca in Python
+  <a href="#ibis-lingua-franca-in-python"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The goal of ibis is to provide a universal language for working with data frames in Python, regardless of the backend that is used. It’s tagline is: <em>Write your analytics code once, run in everywhere</em>. This is similar to how dplyr can use SQL as a backend with dbplyr and data.table with dtplyr.</p>
+<p>Among others, Ibis supports pandas, PostgreSQL and SQLite as backends. Unfortunately duckdb is not an available backend, because the authors of duckdb have 
+<a href="https://github.com/duckdb/duckdb/issues/302" target="_blank" rel="noopener">decided against</a> building on ibis.</p>
+<p>The ibis project aims to bridge the gap between the needs of interactive data analysis and the capabilities of SQL, which I have detailed in the previous section on duckdb.</p>
+<p>For the test drive, I’ll use the 
+<a href="https://ibis-project.org/docs/backends/pandas.html" target="_blank" rel="noopener">pandas backend</a>, meaning that the ibis code is translated to pandas operations, similar to how siuba is translated to pandas.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">import</span> ibis
+ibis.options.interactive = <span style="color:#00f">True</span>
+
+<span style="color:#f00;font-style:italic"># Import from CSV into pandas</span>
+flights_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;flights.csv&#34;</span>)
+airlines_ib_csv = pd.read_csv(<span style="color:#009c00">&#34;airlines.csv&#34;</span>)
+
+<span style="color:#f00;font-style:italic"># Connect ibis to pandas</span>
+con_ibis = ibis.pandas.connect(
+  {
+    <span style="color:#009c00">&#39;flights&#39;</span>: flights_ib_csv,
+    <span style="color:#009c00">&#39;airlines&#39;</span>: airlines_ib_csv
+  }
+)
+
+<span style="color:#f00;font-style:italic"># Checkout the tables</span>
+flights_ib = con_ibis.table(<span style="color:#009c00">&#34;flights&#34;</span>)
+airlines_ib = con_ibis.table(<span style="color:#009c00">&#34;airlines&#34;</span>)
+</code></pre></div><p>Non-interactive ibis means that queries are evaluated lazily.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(
+  flights_ib
+    .filter(
+      (flights_ib.year == 2013) &amp; 
+      (flights_ib.month == 1) &amp;
+      (flights_ib.arr_delay.notnull())
+    )
+    .group_by(<span style="color:#009c00">&#34;carrier&#34;</span>)
+    .aggregate([
+      flights_ib[<span style="color:#009c00">&#34;carrier&#34;</span>].count().name(<span style="color:#009c00">&#34;flights&#34;</span>),
+      flights_ib[<span style="color:#009c00">&#34;arr_delay&#34;</span>].mean().name(<span style="color:#009c00">&#34;mean_delay&#34;</span>)
+    ])
+    .sort_by(ibis.desc(<span style="color:#009c00">&#34;mean_delay&#34;</span>))
+)
+</code></pre></div><pre><code>##    carrier  flights  mean_delay
+## 0       OO        1  107.000000
+## 1       HA       31   27.483871
+## 2       EV     3964   25.160192
+## 3       F9       59   21.830508
+## 4       YV       39   13.769231
+## 5       9E     1480   10.207432
+## 6       AS       62    8.967742
+## 7       MQ     2203    7.883795
+## 8       WN      985    5.886294
+## 9       B6     4413    4.717199
+## 10      FL      324    3.317901
+## 11      UA     4590    3.175599
+## 12      US     1554    1.431145
+## 13      AA     2724    0.982379
+## 14      DL     3655   -4.404651
+## 15      VX      314  -15.280255
+</code></pre>
+<p>Building the pipeline in ibis was the most difficult out of the tested libraries. The primary reason is that it was difficult to find help. For that reason I left the ibis pipeline incomplete. The clipping of the <code>arr_delay</code> to 0 and the join to <code>airlines</code> are missing.</p>
+<p>I ran into multiple issues:</p>
+<ul>
+<li>An error in the predicates argument of <code>join</code> when the tables share a column name. Here, it was the column that the join operates on, so I don’t see why an error is raised.</li>
+<li>Due to the lazy evaluation, is is required to have a <code>materialize</code> step after the join.</li>
+<li>The need to “register” the pandas data frames in ibis rather than operating directly on them as duckdb can</li>
+<li>I didn’t find documentation indicating how to refer to an other column in a <code>case</code> statement</li>
+</ul>
+<p>Ibis objects don’t play nice with other Python functions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">max(flights_pd[<span style="color:#009c00">&#34;arr_delay&#34;</span>]) <span style="color:#f00;font-style:italic"># 1272.0</span>
+<span style="color:#f00;font-style:italic"># max(flights_ib.arr_delay) # TypeError: &#39;FloatingColumn&#39; object is not iterable</span>
+</code></pre></div><pre><code>## 1272.0
+</code></pre>
+<p>And the 
+<a href="https://ibis-project.org/docs/user_guide/udf.html" target="_blank" rel="noopener">documentation</a> warns:</p>
+<blockquote>
+<p>UDFs [User defined functions] are a complex topic. The UDF API is provisional and subject to change.</p>
+</blockquote>
+<p>Googling and StackOverflow was of little help, only very careful reading of the API docs got me there. Issues like that go away once the user has gained familiarity with the library, but they’ll still remain for new teammates.</p>
+<p>The general promise of ibis is amazing: run on everything like SQL, but with the composition and expressiveness of Python. It just seems rough around the edges and with limited help available.</p>
+
+
+
+
+<h2 id="conclusion">Conclusion
+  <a href="#conclusion"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>It’s not a clear-cut choice. None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with 
+<a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with" target="_blank" rel="noopener">tidy evaluation</a>, letting users refer to columns in a data frame by their names (<code>colname</code>) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like <code>{{ }}</code> and <code>:=</code>.</p>
+<p>My appreciation for dplyr (and the closely associated tidyr) grew during this research. Not only is it a widely accepted standard like pandas, it can also be used as a translation layer for backends like SQL databases (including duckdb), data.table, and Spark. All while having the most elegant and flexible syntax available.</p>
+<p>Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. I find the use of an index inconvenient, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.</p>
+<p>Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.</p>
+<p>Related articles:</p>
+<ul>
+<li>
+<a href="https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/" target="_blank" rel="noopener">Polars: the fastest DataFrame library you’ve never heard of</a></li>
+<li>
+<a href="https://mchow.com/posts/2020-02-11-dplyr-in-python/" target="_blank" rel="noopener">What would it take to recreate dplyr in python?</a></li>
+<li>
+<a href="https://mchow.com/posts/pandas-has-a-hard-job/" target="_blank" rel="noopener">Pandas has a hard job (and does it well)</a></li>
+<li>
+<a href="https://bensstats.wordpress.com/2021/09/14/pythonmusings-6-dplyr-in-python-first-impressions-of-the-siuba-%e5%b0%8f%e5%b7%b4-module/" target="_blank" rel="noopener">dplyr in Python? First impressions of the siuba module</a></li>
+<li>
+<a href="https://towardsdatascience.com/an-overview-of-pythons-datatable-package-5d3a97394ee9" target="_blank" rel="noopener">An Overview of Python’s Datatable package</a></li>
+<li>
+<a href="https://news.ycombinator.com/item?id=24531085" target="_blank" rel="noopener">Discussion of DuckDB on Hacker News</a></li>
+<li>
+<a href="https://news.ycombinator.com/item?id=29584698" target="_blank" rel="noopener">Discussion of Polars on Hacker News</a></li>
+<li>
+<a href="https://hakibenita.com/sql-for-data-analysis" target="_blank" rel="noopener">Practical SQL for Data Analysis</a></li>
+</ul>
+<p>Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+
+        
+        <details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">December 20, 2021</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">18 minute read, 3780 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="/categories/r">R</a>  <a href="/categories/python">Python</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="/tags/performance">Performance</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+  </dl>
+</details>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+  
+  
+  
+    <a class="next dtc pl2 tr v-top fw6"
+    href="/blog/fangmant/">FANGMANT: Tech stock analysis with pandas &rarr;</a>
+  
+</div>
+
+      </footer>
+    </article>
+    
+      
+<div class="post-comments pa0 pa4-l mt4">
+
+</div>
+
+
+    
+  </section>
+</main>
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+  <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2021 Paul Simmering, Germany
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/psimm" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/paul_simmering" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://de.linkedin.com/in/paulsimmering" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/impressum/" title="Impressum">Impressum</a>
+      
+    </div>
+  </nav>
+  
+    <script>
+
+    var i, text, code, codes = document.getElementsByTagName('code');
+    for (let i = 0; i < codes.length;) {
+      code = codes[i];
+      if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+        text = code.textContent;
+        if (/^\$[^$]/.test(text) && /[^$]\$$/.test(text)) {
+          text = text.replace(/^\$/, '\\(').replace(/\$$/, '\\)');
+          code.textContent = text;
+        }
+        if (/^\\\((.|\s)+\\\)$/.test(text) ||
+            /^\\\[(.|\s)+\\\]$/.test(text) ||
+            /^\$(.|\s)+\$$/.test(text) ||
+            /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+          code.outerHTML = code.innerHTML;  
+          continue;
+        }
+      }
+      i++;
+    }
+</script>
+
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js" integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+
+
+
+    
+  
+  
+</footer>
+
+      </div>
+    </body>
+</html>

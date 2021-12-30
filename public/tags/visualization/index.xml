@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visualization on Paul Simmering&#39;s blog</title>
+    <link>/tags/visualization/</link>
+    <description>Recent content in Visualization on Paul Simmering&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/visualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>StakeX - Organizational Networks from Web Research</title>
+      <link>/project/stakex/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/project/stakex/</guid>
+      <description>StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:
+ methods for gathering public data on relevant stakeholders building a network based on sociological theory analyzing the network through use of force-based layout algorithms and centrality statistics extracting valuable insights for customers  To learn more about the method, see the talk by Thomas Perry and me or check the methods section of the demo app.</description>
+    </item>
+    
+  </channel>
+</rss>
