@@ -1,12 +1,16 @@
 {
   "R": {
-    "Version": "4.1.2",
+    "Version": "4.1.0",
     "Repositories": [
       {
         "Name": "CRAN",
         "URL": "https://cran.rstudio.com"
       }
     ]
+  },
+  "Python": {
+    "Version": "3.8.12",
+    "Type": "virtualenv"
   },
   "Packages": {
     "MASS": {
@@ -562,10 +566,5 @@
       "Repository": "CRAN",
       "Hash": "2826c5d9efb0a88f657c7a679c7106db"
     }
-  },
-  "Python": {
-    "Version": "3.8.2",
-    "Type": "virtualenv",
-    "Name": "./renv/python/virtualenvs/renv-python-3.8"
   }
 }
