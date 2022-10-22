@@ -1,0 +1,233 @@
+---
+title: "Tidy Tuesday: analyzing yarns with polars"
+excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user"
+slug: "yarn"
+author: "Paul Simmering"
+date: "2022-10-22"
+categories: ["polars", "plotly", "TidyTuesday", "Python"]
+---
+
+In this article, I'm taking the Python data frame library [polars](https://www.pola.rs) for a spin. Polars is a [super fast](https://www.pola.rs/benchmarks.html) alternative to pandas, implemented in Rust. It also has a leaner interface and doesn't need an index column. To learn more about how it compares to other data frame libraries, see my article about [data frames](/blog/dataframes/).
+
+I'm analyzing a dataset about yarns from the knitting website [Ravelry](https://www.ravelry.com). You can find the dataset on [Github](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-10-11).
+
+It lists 100,000 yarns, with information about the yarn's name, brand, weight and rating by Ravelry users.
+
+First, let's load the data and have a look at it. I load the data directly from the Github repository.
+
+```{python}
+import urllib.request
+import os
+filename = "yarn.csv"
+if not os.path.exists(filename):
+    url = "https://raw.githubusercontent.com/rfordatascience/tidytuesday/6830f858fd0e87af47dfa1ecc7043b7c05f85e69/data/2022/2022-10-11/yarn.csv"
+    urllib.request.urlretrieve(url, "yarn.csv")
+```  
+
+Now I have a CSV file on disk. I can load it into a polars DataFrame. Here, I've specified the column types manually, so polars doesn't have to guess them.
+
+```{python}
+import polars as pl
+
+yarn = pl.read_csv(
+    file="yarn.csv",
+    has_header=True,
+    null_values=["NA"],
+    ignore_errors=True,
+    dtypes={
+        "discontinued": pl.Boolean,
+        "gauge_divisor": pl.Int32,
+        "grams": pl.Int32,
+        "id": pl.Int32,
+        "machine_washable": pl.Boolean,
+        "max_gauge": pl.Float64,
+        "min_gauge": pl.Float64,
+        "name": pl.Utf8,
+        "permalink": pl.Utf8,
+        "rating_average": pl.Float64,
+        "rating_count": pl.Int32,
+        "rating_total": pl.Int32,
+        "texture": pl.Utf8,
+        "thread_size": pl.Utf8,
+        "wpi": pl.Int32,
+        "yardage": pl.Int32,
+        "yarn_company_name": pl.Utf8,
+        "yarn_weight_crochet_gauge": pl.Float64,
+        "yarn_weight_id": pl.Int32,
+        "yarn_weight_knit_gauge": pl.Float64,
+        "yarn_weight_name": pl.Utf8,
+        "yarn_weight_ply": pl.Int32,
+        "yarn_weight_wpi": pl.Int32,
+        "texture_clean": pl.Utf8,
+    }
+)
+yarn.head(10)
+```
+
+The `pl.DataFrame.describe()` method gives a quick overview of the data.
+
+```{python}
+yarn.describe()
+```
+
+## Check for missing values
+
+A good first step in any exploratory data analysis is to check for missing values. Here, I'd like to know the percentage of missing values per column. The `pl.DataFrame.describe()` method already gives the number of missing values. I use `.transpose()` to turn the columns into rows, so I can use the `pl.DataFrame.with_column()` method to add a new column with the percentage of missing values.
+
+```{python}
+(
+    yarn
+    .describe()
+    .filter(pl.col("describe") == "null_count")
+    .drop("describe")
+    .transpose(
+        include_header=True,
+        column_names=["null_count"],
+    )
+    .with_column(pl.col("null_count").cast(pl.Float64)) # str -> float
+    .with_column(
+        (pl.col("null_count") / yarn.shape[0]).alias("null_pct")
+    )
+    .sort(pl.col("null_pct"), reverse=True)
+)
+```  
+
+Some columns have close to 100% missing values, these won't be useful for further analysis.
+
+## Discontinued yarns
+
+The column boolean column "discontinued" indicates whether a manufacturer has stopped producing a yarn. This sparked a question: are unpopular yarns more likely to be discontinued?
+
+Let's see a boxplot of the rating average for discontinued and non-discontinued yarns. I visualize the data with [plotly express](https://plotly.com/python/plotly-express/). It can't handle polars DataFrames, so I convert it to a pandas DataFrame first, using the `pl.DataFrame.to_pandas()` method.
+
+```{python}
+discontinued_df = (
+    yarn
+    .select([
+        "discontinued",
+        "rating_average",
+    ])
+    .drop_nulls()
+)
+
+import plotly.express as px
+fig = px.box(
+    data_frame=discontinued_df.to_pandas(),
+    x="discontinued",
+    y="rating_average",
+    title="Rating Average by Discontinued",
+    color="discontinued",
+)
+fig.show()
+
+```
+
+The boxplot shows that discontinued yarns (True, in red) indeed have a lower rating than non-discontinued yarns. But is this difference statistically significant? I can use a [t-test](https://en.wikipedia.org/wiki/Student%27s_t-test) to find out. `scipy.stats` has a function for this. I'm choosing a two sample t-test, because I'm comparing two groups and I'm using a two-sided test because I don't want to rule out that the discontinued yarns have a higher rating than the non-discontinued yarns.
+
+Here, I use the `pl.Series.to_numpy()` method to convert the polars Series to a numpy array.
+
+```{python}
+from scipy.stats import ttest_ind
+ttest_ind(
+    a = discontinued_df.filter(pl.col("discontinued") == True).select("rating_average").to_numpy(),
+    b = discontinued_df.filter(pl.col("discontinued") == False).select("rating_average").to_numpy()
+)
+```
+
+So yes, the result is statistically significant. The p-value is very small, so we can reject the null hypothesis that the two groups have the same rating average.
+
+## Most popular yarn companies
+
+Let's have a closer look at the yarn companies. I aggregate the data frame by yarn company and calculate a number of statistics about them.
+
+```{python}
+companies = (
+    yarn
+    .groupby("yarn_company_name")
+    .agg([
+        pl.count().alias("yarns"),
+        pl.mean("rating_average").alias("mean_rating_average"),
+        pl.sum("rating_count").alias("total_ratings"),
+    ])
+    .filter(pl.col("total_ratings") > 499)
+    .sort(pl.col("total_ratings"), reverse=True)
+)
+companies
+```
+
+The table shows brands with at least 500 ratings on Ravelry. Lion Brand stands out with a particularly low average rating of 3.98, whereas madelinetosh scores an average rating of 4.73.
+
+## Yarn weights
+
+My girlfriend, who is a passionate knitter, tells me that gauge weight is the most important factor for a knitting project. It determines the thickness and size of the finished product. It's associated with the yarn_weight_ply, which is the number of threads combined to a yarn.
+
+Which gauge sizes are most popular, based on the number of yarns available?
+
+```{python}
+(
+    yarn
+    .groupby(["yarn_weight_name", "yarn_weight_ply"])
+    .agg([
+        pl.count().alias("yarns"),
+    ])
+    .drop_nulls()
+    .sort(pl.col("yarns"), reverse=True)
+)
+```
+
+The "Fingering" weight, a regular yarn for knitting, is the most popular gauge weight. According to my girlfriend, it's particularly popular in Scandinavia.
+
+The yardage, weight and thickness of yarn is expressed with multiple metrics. Let's see the correlation between them to better understand their meanings. Polars doesn't have a built-in function to get the correlation between all columns. The `pl.pearson_corr()` function can be used to calculate the correlation between two columns. I convert it to a pandas DataFrame to use its `corr()` method.
+
+```{python}
+corr = (
+    yarn
+    .select([
+        "yardage",
+        "grams",
+        "machine_washable",
+        "max_gauge",
+        "min_gauge",
+        "yarn_weight_ply",
+        "yarn_weight_knit_gauge",
+        "yarn_weight_wpi",
+    ])
+    .drop_nulls()
+    .to_pandas()
+    .corr()
+)
+
+# Visualize as a heatmap using plotly
+
+import plotly.io as pio
+import plotly.graph_objects as go
+
+pio.templates.default = "plotly_white"
+
+# Only show the upper triangle of the correlation matrix
+# Set the diagonal and lower triangle to NaN
+import numpy as np
+mask = np.triu(np.ones_like(corr, dtype=bool))
+
+fig = go.Figure()
+fig.add_trace(go.Heatmap(
+    z=corr.mask(mask),
+    x=corr.columns,
+    y=corr.columns,
+    colorscale=px.colors.diverging.RdBu,
+    zmin=-1,
+    zmax=1
+))
+```
+
+The correlation matrix shows some facts about yarns:
+
+- Long yarns (high yardage) makes the yarn ball heavier (high grams)
+- High ply yarns are typically sold in shorter yardage
+- High ply yarns are less commonly mashine washable
+- The maximum and minimum gauge are in a small range of one another, depending on the yarn weight
+- A thick yarn (high ply, high WPI (wraps per inch)) means fewer stitches fit into the gauge
+
+And that's it! I hope you've enjoyed this analysis of the Ravelry yarn data. If you want to learn more about polars, check out the [documentation](https://pola-rs.github.io/polars-book/) and the [GitHub repository](https:://github.com/pola-rs/polars).
+
+Photo by <a href="https://unsplash.com/@mrafonso1976?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Margarida Afonso</a> on <a href="https://unsplash.com/s/photos/yarn?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
