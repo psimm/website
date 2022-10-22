@@ -7,7 +7,7 @@ date: "2022-10-22"
 categories: ["polars", "plotly", "TidyTuesday", "Python"]
 ---
 
-In this article, I'm taking the Python data frame library [polars](https://www.pola.rs) for a spin. Polars is a [super fast](https://www.pola.rs/benchmarks.html) alternative to pandas, implemented in Rust. It also has a leaner interface and doesn't need an index column.
+In this article, I'm taking the Python data frame library [polars](https://www.pola.rs) for a spin. Polars is a [super fast](https://www.pola.rs/benchmarks.html) alternative to pandas, implemented in Rust. It also has a leaner interface and doesn't need an index column. To learn more about how it compares to other data frame libraries, see my article about [data frames](/blog/dataframes/).
 
 I'm analyzing a dataset about yarns from the knitting website [Ravelry](https://www.ravelry.com). You can find the dataset on [Github](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-10-11).
 
@@ -229,3 +229,5 @@ The correlation matrix shows some facts about yarns:
 - A thick yarn (high ply, high WPI (wraps per inch)) means fewer stitches fit into the gauge
 
 And that's it! I hope you've enjoyed this analysis of the Ravelry yarn data. If you want to learn more about polars, check out the [documentation](https://pola-rs.github.io/polars-book/) and the [GitHub repository](https:://github.com/pola-rs/polars).
+
+Photo by <a href="https://unsplash.com/@mrafonso1976?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Margarida Afonso</a> on <a href="https://unsplash.com/s/photos/yarn?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
