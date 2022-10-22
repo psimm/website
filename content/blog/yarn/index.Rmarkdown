@@ -1,6 +1,6 @@
 ---
 title: "Tidy Tuesday: analyzing yarns with polars"
-excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user"
+excerpt: "An analysis of the yarns dataset from Raverly using the polars data frame library"
 slug: "yarn"
 author: "Paul Simmering"
 date: "2022-10-22"
