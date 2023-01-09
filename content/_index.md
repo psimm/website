@@ -1,7 +1,7 @@
 ---
 title: "Paul Simmering"
 subtitle: "Full stack data scientist"
-description: "I'm a data scientist working on natural language processing, cloud and interactive data visualization. I'm the lead developer of the AI-powered social media monitoring tool [Cosmention](https://www.cosmention.com). The best way to contact me is via direct message on Twitter or LinkedIn."
+description: "I'm a data scientist working on natural language processing, cloud and data warehouses. The best way to contact me is via direct message on Twitter or LinkedIn."
 images:
   - img/portrait.jpeg
 image_left: true
