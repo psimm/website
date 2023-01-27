@@ -59,6 +59,8 @@ def get_tweets(term: str, count: int, since_id: str = None) -> list[dict]:
 
 To optimally use [Twitter's API limits](https://developer.twitter.com/en/docs/twitter-api/rate-limits), we want to only fetch tweets that we don't have yet. That is done using the `since_id` parameter. The `since_id` is the id of the last tweet that we fetched. We can save this id to a file, and use it as the `since_id` parameter in the next call to `get_tweets()`.
 
+In addition to short term limits, the Twitter API [caps data collection](https://developer.twitter.com/en/docs/twitter-api/tweet-caps) to 500k Tweets per month with Essential access and 2m Tweets per month with Elevated access. 
+
 ## Saving Twitter data to S3
 
 For a long term project, data should be saved to secure cloud storage, such as [AWS S3](https://aws.amazon.com/s3/). From there, it could be analyzed using a data lake engine like [AWS Athena](https://aws.amazon.com/athena/), or loaded into a data warehouse.
