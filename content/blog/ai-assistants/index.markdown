@@ -36,7 +36,7 @@ As an example, running "Improve this code" on a selection of text will send it t
 
 As a data scientist on a small team, I wear many hats, from machine learning engineer to cloud architect. Consequently, I often have to work with languages, libraries and tools that  I don't have much experience with.
 
-Here are 5 tasks I worked on in the last weeks and my evaluation of how much AI tools have helped me.
+Here are 5 tasks I worked on in the last few weeks and my evaluation of how much AI tools have helped me.
 
 ### 1. Writing a Python script to evaluate a model
 
@@ -48,13 +48,13 @@ Usefulness: 5/5
 
 ### 2. Defining AWS infrastructure using Terraform
 
-Next, a colleague and me set up a database migration using [AWS Database Migration Service](https://aws.amazon.com/dms/) (DMS), set up via [Terraform](https://www.terraform.io). I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don't actually exist in AWS DMS. Overall, it was more confusing than helpful.
+Next, a colleague and I set up a database migration using [AWS Database Migration Service](https://aws.amazon.com/dms/) (DMS), set up via [Terraform](https://www.terraform.io). I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don't actually exist in AWS DMS. Overall, it was more confusing than helpful.
 
 Usefulness: 1/5
 
 ### 3. Creating, testing and documenting models in dbt
 
-Third, I created, tested, and documented models in [dbt](https://www.getdbt.com). Copilot made writing SQL for the models faster and was especially good at speeding up my workflow of documenting those models in the `schema.yml` files. However, since it didn't know the database schema, it hallucinated tables and columns that don't exist. GPT-4 was useful for thinking through the deployment of [dbt-core](https://github.com/dbt-labs/dbt-core) on AWS ECS, especially the use of environment variables and the `project.yml` config file.
+I created, tested, and documented models in [dbt](https://www.getdbt.com). Copilot made writing SQL for the models faster and was especially good at speeding up my workflow of documenting those models in the `schema.yml` files. However, since it didn't know the database schema, it hallucinated tables and columns that don't exist. GPT-4 was useful for thinking through the deployment of [dbt-core](https://github.com/dbt-labs/dbt-core) on AWS ECS, especially the use of environment variables and the `project.yml` config file.
 
 Usefulness: 3/5
 
@@ -66,7 +66,7 @@ Usefulness: 4/5
 
 ### 5. Choosing a dashboard tool
 
-Fifth, a new project required building a dashboard, and it was my task to evaluate tools based on features, usability, and price. I tested many GUI-based tools (Metabase, Superset, Tableau, PowerBI and others). GPT-4 could list relevant decision criteria but couldn't make the decision for me. It wasn't useful as an information source because of the knowledge cutoff in 2021.
+A new project required building a dashboard, and it was my task to evaluate tools based on features, usability, and price. I tested many GUI-based tools (Metabase, Superset, Tableau, PowerBI and others). GPT-4 could list relevant decision criteria but couldn't make the decision for me. It wasn't useful as an information source because of the knowledge cutoff in 2021.
 
 ![Dashboard](dashboard.png)
 
