@@ -118,7 +118,7 @@ enableEmoji = true
     
   # Configure footer  
   [[menu.footer]]
-    name = "Impressum"
-    title = "Impressum"
-    url = "/impressum/"
+    name = "Imprint"
+    title = "Imprint"
+    url = "/imprint/"
     weight = 1
