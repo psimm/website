@@ -48,7 +48,7 @@ Usefulness: 5/5
 
 ### 2. Defining AWS infrastructure using Terraform
 
-Next, a colleague and me set up a database migration using AWS Database Migration Service (DMS) using Terraform. I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don't actually exist in AWS DMS. Overall, it was more confusing than helpful.
+Next, a colleague and me set up a database migration using [AWS Database Migration Service](https://aws.amazon.com/dms/) (DMS), set up via [Terraform](https://www.terraform.io). I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don't actually exist in AWS DMS. Overall, it was more confusing than helpful.
 
 Usefulness: 1/5
 
