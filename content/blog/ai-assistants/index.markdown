@@ -109,5 +109,6 @@ While the hype it peaking, it's still early days for the technology. Today's too
 
 - Larger context windows enable models to take more information into account: GPT-4 supports up to 32k tokens, whereas GPT-3.5 was limited to 4k
 - Plugins and chains via [ChatGPT plugins](https://openai.com/blog/chatgpt-plugins) and the [langchain](https://github.com/hwchase17/langchain) library. These give models access to the browser, [Wolfram Alpha](https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/) and more
+- Let models store context information and access data via [LlamaIndex](https://gpt-index.readthedocs.io/en/latest/index.html)
 - Integration into more developer tasks, such as pull requests via [Github Copilot X](https://github.com/features/preview/copilot-x)
 - Agents that recursively call GPT-4, see [Auto-GPT](https://github.com/Torantulino/Auto-GPT)
