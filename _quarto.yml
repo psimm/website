@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Paul Simmering"
+  site-url: "https://simmering.dev"
   search: true
   navbar:
     right:
