@@ -1,7 +1,6 @@
 ---
 title: "Twitter API data collector with Modal"
 excerpt: "Building and deploying an automated Twitter data collector in just 100 lines of code"
-slug: "modal-twitter"
 author: "Paul Simmering"
 date: "2023-01-26"
 categories: ["Python"]

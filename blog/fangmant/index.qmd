@@ -1,7 +1,6 @@
 ---
 title: "FANGMANT: Tech stock analysis with pandas"
 excerpt: "An analysis of FANGMANT tech stock performance 2016-2021 with yfinance and pandas."
-slug: "fangmant"
 author: "Paul Simmering"
 date: "2021-12-27"
 categories: ["Python"]
