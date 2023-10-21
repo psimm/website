@@ -8,8 +8,6 @@ tags: ["Twitter", "Modal", "Cloud"]
 image: "image.jpg"
 ---
 
-![Twitter API data collector with Modal](featured.jpg)
-
 In this article, I'll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I'll focus on the technical aspects of building a Twitter data collector.
 
 Note: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.

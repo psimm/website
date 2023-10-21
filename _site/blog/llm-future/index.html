@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
-<meta name="dcterms.date" content="2019-03-08">
+<meta name="dcterms.date" content="2023-10-21">
 
-<title>Paul Simmering - R Shiny for Interactive Data Visualization – A Case Study</title>
+<title>Paul Simmering - Future Directions for Large Language Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,78 +121,133 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Future Directions for Large Language Models</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">machine learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 21, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">R Shiny for Interactive Data Visualization – A Case Study</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">conference</div>
-  </div>
-  </div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Paul Simmering </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 8, 2019</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
+<p>Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.</p>
+<p>In this post I’ll discuss 9 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years.</p>
+<blockquote class="blockquote">
+<p>Prediction is very difficult, especially about the future. - Niels Bohr</p>
+</blockquote>
+<section id="calling-apis" class="level2">
+<h2 class="anchored" data-anchor-id="calling-apis">Calling APIs</h2>
+<p>By calling APIs, LLMs can become actors in the real world.</p>
+<p>Some examples of what can be done via API calls:</p>
+<ul>
+<li>Provision a server</li>
+<li>Send an email</li>
+<li>Post a tweet</li>
+<li>Buy a product and have it shipped</li>
+<li>Operate a smart home device (lights, thermostat, lock, etc.)</li>
+<li>Control a robot (vacuum, drone, etc.)</li>
+<li>Send a task to a human worker via a crowdsourcing platform</li>
+</ul>
+<p>As capabilities expand, the need for policy and regulation on this topic rises.</p>
+</section>
+<section id="better-assistants" class="level2">
+<h2 class="anchored" data-anchor-id="better-assistants">Better assistants</h2>
+<p>Siri feels rather underpowered compared to ChatGPT Plus. I expect that to change in the next few years so that phone voice assistants will be able to reliably do more than just set a timer or call a contact.</p>
+<p>What sets Siri, Alexa and Google Assistant apart from ChatGPT is that they can control the phone. They can open apps, make calls, and send messages and are deeply integrated into the phone’s operating system. While ChatGPT, especially ChatGPT Plus is much smarter, it’s trapped in an app.</p>
+<p>A phone assistant with ChatGPT’s smarts, integration with the phone’s operating system and the ability to call functions would be a game changer.</p>
+<p>In addition to assistants, I expect to see LLMs become a standard part of many apps, as Microsoft 365, Notion, Photoshop and others have done.</p>
+</section>
+<section id="llm-agents" class="level2">
+<h2 class="anchored" data-anchor-id="llm-agents">LLM Agents</h2>
+<p>Currently common uses of LLMs primarily treat the model as a source of information and copywriter.</p>
+<p>A more powerful approach is to treat the model as an agent with a task. <a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT</a> and <a href="https://github.com/yoheinakajima/babyagi">BabyAGI</a> are frameworks for this.</p>
+<p>In this approach, the LLM is part of a larger AI system:</p>
+<ul>
+<li>A human provides a directive</li>
+<li>The directive is commited to memory, such as a text file or database</li>
+<li>The LLM is called with the directive as input, along with the current state of the system and available choices</li>
+<li>The LLM can call copies of itself recursively to work on subtasks (e.g.&nbsp;“look up a term on Wikipedia”, “find a photo on Unsplash”)</li>
+<li>This continues until the task is achieved and the LLM returns a result</li>
+</ul>
+<p>The combination of LLM reasoning, recursive calls, memory and the ability to call APIs makes this approach very powerful.</p>
+<p>However, real results have fizzled for these reasons:</p>
+<ul>
+<li>Never ending loops</li>
+<li>Needing too much babysitting to be useful, basically doing the easy part of any task and leaving the hard part to humans</li>
+<li>Producing generic, lame results</li>
+<li>Trouble with parsing information on the web</li>
+</ul>
+<p>The potential is incredible, but there’s still a lot of work to be done.</p>
+</section>
+<section id="a-ceiling-on-the-bigger-is-better-trend" class="level2">
+<h2 class="anchored" data-anchor-id="a-ceiling-on-the-bigger-is-better-trend">A ceiling on the “bigger is better” trend</h2>
+<p>GPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters. Will the bigger = better and more data = better trends continue? In text, the answer is probably no. GPT-4 was trained on almost all human text available on the internet. In terms of volume, there’s not much more text to train on.</p>
+<p>An alternative to getting even more text is to improve the quality of the text used for training. Common crawl, a major component of GPT-4’s training data, is full of spam and low quality content. With less noise, models may also need fewer parameters to achieve the same performance.</p>
+</section>
+<section id="multimodal-models" class="level2">
+<h2 class="anchored" data-anchor-id="multimodal-models">Multimodal models</h2>
+<p>While model’s are hitting the limit on text, there’s still a massive amount of images, video and audio available on the internet waiting to be used for training. Multimodal models, meaning models that can process multiple types of data, are already here. The addition of <a href="https://openai.com/blog/chatgpt-can-now-see-hear-and-speak">image recognition</a> to ChatGPT has unlocked a new level of capabilities, such as interpreting diagrams, assisting blind people or diagnosing repair issues.</p>
+</section>
+<section id="multilingual-or-non-english-llms" class="level2">
+<h2 class="anchored" data-anchor-id="multilingual-or-non-english-llms">Multilingual or non-English LLMs</h2>
+<p>Current LLMs work best on English text. While other languages work decently with OpenAI’s GPT models, performance in open source models like Llama 2 is lacking.</p>
+<p>The economic incentive to train LLMs on non-English text is hugel As an example, I’m excited about the recent publication of <a href="https://laion.ai/blog/leo-lm/">LeoLM</a>, a German LLM and the ongoing <a href="https://txt.cohere.com/aya-multilingual/">AYA project</a> by Cohere.</p>
+<p>Besides the models themselves, tokenization could benefit from a multilingual approach. As the majority of training data is in English and other languages that use the English alphabet, tokenization is optimized for those languages. This leads to a situation where Chinese, Arabic and other languages that use different alphabets are tokenized less efficiently and at <a href="https://denyslinkov.medium.com/why-is-gpt-3-15-77x-more-expensive-for-certain-languages-2b19a4adc4bc">higher cost</a>.</p>
+</section>
+<section id="edge-computing-and-efficiency" class="level2">
+<h2 class="anchored" data-anchor-id="edge-computing-and-efficiency">Edge computing and efficiency</h2>
+<p>The deployment of LLMs is currently held back by their compute demands. Running models like Llama 2 7B requires a top of the line GPU and larger models like Llama 2 70B require a GPU cluster. So typically LLMs are deployed on cloud servers rather than on edge devices.</p>
+<p>Developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, sparse matrices, pruning, and distillation. The <a href="https://hanlab.mit.edu">MIT HAN lab</a> in particular is taking a lead on this.</p>
+<p>I expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops, at lower cost and without the privacy concerns of the cloud. Apple’s recent announcement of better text prediction in <a href="https://www.apple.com/newsroom/2023/06/ios-17-makes-iphone-more-personal-and-intuitive/">iOS 17</a> by using a transformer model on device is an example of this trend, though the model isn’t large enough to be considered an LLM.</p>
+</section>
+<section id="efficient-training-of-specialized-models" class="level2">
+<h2 class="anchored" data-anchor-id="efficient-training-of-specialized-models">Efficient training of specialized models</h2>
+<p>In <a href="https://explosion.ai/blog/against-llm-maximalism">Against LLM maximalism</a>, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks, citing speed, cost, observeability, lack of modularity and measurement difficulties as reasons. He argues that smaller models trained on specialized data are often a better choice.</p>
+<p>In economic terms, running a 1.7T parameter model on a GPU cluster when a 10M parameter model on a CPU would do the job is wasteful.</p>
+<p>But it’s not an either or situation: LLMs can be used to accelerate the training of specialized models. I’m excited about Explosion AI’s development on integrating LLM produced labels into labeling with <a href="https://prodi.gy/docs/large-language-models">Prodigy</a> and expect to see similar developments in other labeling tools.</p>
+<p>Rather than LLMs replacing specialized models, I expect to see them used to accelerate the training of specialized model and an overall increase in the number of models in production.</p>
+</section>
+<section id="conclusion-hype-to-quiet-productivity" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-hype-to-quiet-productivity">Conclusion: Hype to quiet productivity</h2>
+<blockquote class="blockquote">
+<p>AI is whatever hasn’t been done yet. - Larry Tesler</p>
+</blockquote>
+<p>In the long run, I expec that LLMs will follow the <a href="https://en.wikipedia.org/wiki/AI_effect">AI effect</a> similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users.</p>
 
-</header>
 
-<table class="table">
-<tbody>
-<tr class="odd">
-<td>🗓️ Event</td>
-<td><a href="https://www.dgof.de/event/general-online-research-2019-gor-19/">General Online Research 2019</a></td>
-</tr>
-<tr class="even">
-<td>📅 Date</td>
-<td>8 March 2019</td>
-</tr>
-<tr class="odd">
-<td>📍 Location</td>
-<td>Cologne, Germany</td>
-</tr>
-<tr class="even">
-<td>📥 Materials</td>
-<td><a href="gor_2019_simmering.pdf">Slides (PDF)</a></td>
-</tr>
-<tr class="odd">
-<td>💻 App</td>
-<td><a href="https://psim.shinyapps.io/patent">Patent Explorer</a></td>
-</tr>
-</tbody>
-</table>
-<p>An overview of R Shiny by example of an app I developed for display patent statistics</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Patent Explorer</figcaption>
-</figure>
-</div>
-
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

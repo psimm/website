@@ -151,7 +151,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nproductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
+    "text": "Future Directions for Large Language Models\n\n\n\n\n\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nproductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/ai-assistants/index.html",
@@ -299,6 +299,76 @@
     "title": "Tidy Tuesday: analyzing yarns with polars",
     "section": "Yarn weights",
     "text": "Yarn weights\nMy girlfriend, who is a passionate knitter, tells me that gauge weight is the most important factor for a knitting project. It determines the thickness and size of the finished product. It’s associated with the yarn_weight_ply, which is the number of threads combined to a yarn.\nWhich gauge sizes are most popular, based on the number of yarns available?\n\n(\n    yarn.groupby([\"yarn_weight_name\", \"yarn_weight_ply\"])\n    .agg(\n        [\n            pl.count().alias(\"yarns\"),\n        ]\n    )\n    .drop_nulls()\n    .sort(pl.col(\"yarns\"), descending=True)\n)\n\n/var/folders/y6/r4nd18014svggynr61y82m4w0000gn/T/ipykernel_14323/155294860.py:2: DeprecationWarning:\n\n`groupby` is deprecated. It has been renamed to `group_by`.\n\n\n\n\nshape: (9, 3)\n\n\n\nyarn_weight_name\nyarn_weight_ply\nyarns\n\n\nstr\ni32\nu32\n\n\n\n\n\"Fingering\"\n4\n26004\n\n\n\"DK\"\n8\n15686\n\n\n\"Aran\"\n10\n9292\n\n\n\"Worsted\"\n10\n9156\n\n\n\"Sport\"\n5\n8464\n\n\n\"Lace\"\n2\n7504\n\n\n\"Bulky\"\n12\n7324\n\n\n\"Light Fingerin…\n3\n6478\n\n\n\"Cobweb\"\n1\n712\n\n\n\n\n\n\nThe “Fingering” weight, a regular yarn for knitting, is the most popular gauge weight. According to my girlfriend, it’s particularly popular in Scandinavia.\nThe yardage, weight and thickness of yarn is expressed with multiple metrics. Let’s see the correlation between them to better understand their meanings. Polars doesn’t have a built-in function to get the correlation between all columns. The pl.pearson_corr() function can be used to calculate the correlation between two columns. I convert it to a pandas DataFrame to use its corr() method.\n\ncorr = (\n    yarn.select(\n        [\n            \"yardage\",\n            \"grams\",\n            \"machine_washable\",\n            \"max_gauge\",\n            \"min_gauge\",\n            \"yarn_weight_ply\",\n            \"yarn_weight_knit_gauge\",\n            \"yarn_weight_wpi\",\n        ]\n    )\n    .drop_nulls()\n    .to_pandas()\n    .corr()\n)\n\n# Visualize as a heatmap using plotly\n\nimport plotly.io as pio\nimport plotly.graph_objects as go\n\npio.templates.default = \"plotly_white\"\n\n# Only show the upper triangle of the correlation matrix\n# Set the diagonal and lower triangle to NaN\nimport numpy as np\n\nmask = np.triu(np.ones_like(corr, dtype=bool))\n\nfig = go.Figure()\nfig.add_trace(\n    go.Heatmap(\n        z=corr.mask(mask),\n        x=corr.columns,\n        y=corr.columns,\n        colorscale=px.colors.diverging.RdBu,\n        zmin=-1,\n        zmax=1,\n    )\n)\n\n\n                                                \n\n\nThe correlation matrix shows some facts about yarns:\n\nLong yarns (high yardage) makes the yarn ball heavier (high grams)\nHigh ply yarns are typically sold in shorter yardage\nHigh ply yarns are less commonly mashine washable\nThe maximum and minimum gauge are in a small range of one another, depending on the yarn weight\nA thick yarn (high ply, high WPI (wraps per inch)) means fewer stitches fit into the gauge\n\nAnd that’s it! I hope you’ve enjoyed this analysis of the Ravelry yarn data. If you want to learn more about polars, check out the documentation and the GitHub repository.\nPhoto by Margarida Afonso on Unsplash"
+  },
+  {
+    "objectID": "blog/llm-future/index.html",
+    "href": "blog/llm-future/index.html",
+    "title": "Future Directions for Large Language Models",
+    "section": "",
+    "text": "Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.\nIn this post I’ll discuss 9 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#calling-apis",
+    "href": "blog/llm-future/index.html#calling-apis",
+    "title": "Future Directions for Large Language Models",
+    "section": "Calling APIs",
+    "text": "Calling APIs\nBy calling APIs, LLMs can become actors in the real world.\nSome examples of what can be done via API calls:\n\nProvision a server\nSend an email\nPost a tweet\nBuy a product and have it shipped\nOperate a smart home device (lights, thermostat, lock, etc.)\nControl a robot (vacuum, drone, etc.)\nSend a task to a human worker via a crowdsourcing platform\n\nAs capabilities expand, the need for policy and regulation on this topic rises."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#better-assistants",
+    "href": "blog/llm-future/index.html#better-assistants",
+    "title": "Future Directions for Large Language Models",
+    "section": "Better assistants",
+    "text": "Better assistants\nSiri feels rather underpowered compared to ChatGPT Plus. I expect that to change in the next few years so that phone voice assistants will be able to reliably do more than just set a timer or call a contact.\nWhat sets Siri, Alexa and Google Assistant apart from ChatGPT is that they can control the phone. They can open apps, make calls, and send messages and are deeply integrated into the phone’s operating system. While ChatGPT, especially ChatGPT Plus is much smarter, it’s trapped in an app.\nA phone assistant with ChatGPT’s smarts, integration with the phone’s operating system and the ability to call functions would be a game changer.\nIn addition to assistants, I expect to see LLMs become a standard part of many apps, as Microsoft 365, Notion, Photoshop and others have done."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#llm-agents",
+    "href": "blog/llm-future/index.html#llm-agents",
+    "title": "Future Directions for Large Language Models",
+    "section": "LLM Agents",
+    "text": "LLM Agents\nCurrently common uses of LLMs primarily treat the model as a source of information and copywriter.\nA more powerful approach is to treat the model as an agent with a task. AutoGPT and BabyAGI are frameworks for this.\nIn this approach, the LLM is part of a larger AI system:\n\nA human provides a directive\nThe directive is commited to memory, such as a text file or database\nThe LLM is called with the directive as input, along with the current state of the system and available choices\nThe LLM can call copies of itself recursively to work on subtasks (e.g. “look up a term on Wikipedia”, “find a photo on Unsplash”)\nThis continues until the task is achieved and the LLM returns a result\n\nThe combination of LLM reasoning, recursive calls, memory and the ability to call APIs makes this approach very powerful.\nHowever, real results have fizzled for these reasons:\n\nNever ending loops\nNeeding too much babysitting to be useful, basically doing the easy part of any task and leaving the hard part to humans\nProducing generic, lame results\nTrouble with parsing information on the web\n\nThe potential is incredible, but there’s still a lot of work to be done."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#a-ceiling-on-the-bigger-is-better-trend",
+    "href": "blog/llm-future/index.html#a-ceiling-on-the-bigger-is-better-trend",
+    "title": "Future Directions for Large Language Models",
+    "section": "A ceiling on the “bigger is better” trend",
+    "text": "A ceiling on the “bigger is better” trend\nGPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters. Will the bigger = better and more data = better trends continue? In text, the answer is probably no. GPT-4 was trained on almost all human text available on the internet. In terms of volume, there’s not much more text to train on.\nAn alternative to getting even more text is to improve the quality of the text used for training. Common crawl, a major component of GPT-4’s training data, is full of spam and low quality content. With less noise, models may also need fewer parameters to achieve the same performance."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#multimodal-models",
+    "href": "blog/llm-future/index.html#multimodal-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Multimodal models",
+    "text": "Multimodal models\nWhile model’s are hitting the limit on text, there’s still a massive amount of images, video and audio available on the internet waiting to be used for training. Multimodal models, meaning models that can process multiple types of data, are already here. The addition of image recognition to ChatGPT has unlocked a new level of capabilities, such as interpreting diagrams, assisting blind people or diagnosing repair issues."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#multilingual-or-non-english-llms",
+    "href": "blog/llm-future/index.html#multilingual-or-non-english-llms",
+    "title": "Future Directions for Large Language Models",
+    "section": "Multilingual or non-English LLMs",
+    "text": "Multilingual or non-English LLMs\nCurrent LLMs work best on English text. While other languages work decently with OpenAI’s GPT models, performance in open source models like Llama 2 is lacking.\nThe economic incentive to train LLMs on non-English text is hugel As an example, I’m excited about the recent publication of LeoLM, a German LLM and the ongoing AYA project by Cohere.\nBesides the models themselves, tokenization could benefit from a multilingual approach. As the majority of training data is in English and other languages that use the English alphabet, tokenization is optimized for those languages. This leads to a situation where Chinese, Arabic and other languages that use different alphabets are tokenized less efficiently and at higher cost."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#edge-computing-and-efficiency",
+    "href": "blog/llm-future/index.html#edge-computing-and-efficiency",
+    "title": "Future Directions for Large Language Models",
+    "section": "Edge computing and efficiency",
+    "text": "Edge computing and efficiency\nThe deployment of LLMs is currently held back by their compute demands. Running models like Llama 2 7B requires a top of the line GPU and larger models like Llama 2 70B require a GPU cluster. So typically LLMs are deployed on cloud servers rather than on edge devices.\nDevelopers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, sparse matrices, pruning, and distillation. The MIT HAN lab in particular is taking a lead on this.\nI expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops, at lower cost and without the privacy concerns of the cloud. Apple’s recent announcement of better text prediction in iOS 17 by using a transformer model on device is an example of this trend, though the model isn’t large enough to be considered an LLM."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#efficient-training-of-specialized-models",
+    "href": "blog/llm-future/index.html#efficient-training-of-specialized-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Efficient training of specialized models",
+    "text": "Efficient training of specialized models\nIn Against LLM maximalism, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks, citing speed, cost, observeability, lack of modularity and measurement difficulties as reasons. He argues that smaller models trained on specialized data are often a better choice.\nIn economic terms, running a 1.7T parameter model on a GPU cluster when a 10M parameter model on a CPU would do the job is wasteful.\nBut it’s not an either or situation: LLMs can be used to accelerate the training of specialized models. I’m excited about Explosion AI’s development on integrating LLM produced labels into labeling with Prodigy and expect to see similar developments in other labeling tools.\nRather than LLMs replacing specialized models, I expect to see them used to accelerate the training of specialized model and an overall increase in the number of models in production."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#conclusion-hype-to-quiet-productivity",
+    "href": "blog/llm-future/index.html#conclusion-hype-to-quiet-productivity",
+    "title": "Future Directions for Large Language Models",
+    "section": "Conclusion: Hype to quiet productivity",
+    "text": "Conclusion: Hype to quiet productivity\n\nAI is whatever hasn’t been done yet. - Larry Tesler\n\nIn the long run, I expec that LLMs will follow the AI effect similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users."
   },
   {
     "objectID": "blog/fangmant/index.html",
@@ -473,7 +543,7 @@
     "href": "blog/modal-twitter/index.html",
     "title": "Twitter API data collector with Modal",
     "section": "",
-    "text": "Twitter API data collector with Modal\nIn this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I’ll focus on the technical aspects of building a Twitter data collector.\nNote: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.\nBy the end of this article, we’ll have a fully automated Twitter data collector that runs in the cloud. It will fetch new tweets that mention a keyword, and save them to an AWS S3 bucket as a JSON file. It’ll run every 15 minutes.\nTo run the Twitter collector for yourself, please follow the instructions in the readme of the Github repository. The code is written in Python and uses the Modal framework to automate the deployment and scheduling."
+    "text": "In this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I’ll focus on the technical aspects of building a Twitter data collector.\nNote: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.\nBy the end of this article, we’ll have a fully automated Twitter data collector that runs in the cloud. It will fetch new tweets that mention a keyword, and save them to an AWS S3 bucket as a JSON file. It’ll run every 15 minutes.\nTo run the Twitter collector for yourself, please follow the instructions in the readme of the Github repository. The code is written in Python and uses the Modal framework to automate the deployment and scheduling."
   },
   {
     "objectID": "blog/modal-twitter/index.html#getting-data-from-the-twitter-api",
