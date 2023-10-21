@@ -7,6 +7,12 @@ listing:
   categories: true
   sort-ui: false
   filter-ui: false
+  feed:
+    items: 20
+    type: full
+    title: "Paul Simmering's Blog"
+    description: "Data science, machine learning and developer productivity."
+    language: "en"
 page-layout: full
 title-block-banner: true
 ---
