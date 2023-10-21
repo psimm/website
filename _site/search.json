@@ -151,7 +151,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nproductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
+    "text": "Future Directions for Large Language Models\n\n\n\n\n\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nproductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/ai-assistants/index.html",
@@ -473,7 +473,7 @@
     "href": "blog/modal-twitter/index.html",
     "title": "Twitter API data collector with Modal",
     "section": "",
-    "text": "Twitter API data collector with Modal\nIn this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I’ll focus on the technical aspects of building a Twitter data collector.\nNote: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.\nBy the end of this article, we’ll have a fully automated Twitter data collector that runs in the cloud. It will fetch new tweets that mention a keyword, and save them to an AWS S3 bucket as a JSON file. It’ll run every 15 minutes.\nTo run the Twitter collector for yourself, please follow the instructions in the readme of the Github repository. The code is written in Python and uses the Modal framework to automate the deployment and scheduling."
+    "text": "In this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I’ll focus on the technical aspects of building a Twitter data collector.\nNote: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.\nBy the end of this article, we’ll have a fully automated Twitter data collector that runs in the cloud. It will fetch new tweets that mention a keyword, and save them to an AWS S3 bucket as a JSON file. It’ll run every 15 minutes.\nTo run the Twitter collector for yourself, please follow the instructions in the readme of the Github repository. The code is written in Python and uses the Modal framework to automate the deployment and scheduling."
   },
   {
     "objectID": "blog/modal-twitter/index.html#getting-data-from-the-twitter-api",
@@ -516,5 +516,103 @@
     "title": "About",
     "section": "",
     "text": "Hi! I’m Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.\nI’m the inventor and lead developer of Cosmention, an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm Drogerie Markt.\nThe best way to contact me is via email: paul.simmering@gmail.com.\nWhat other than data science? Here are some things I enjoy:\n\nDesign and typography. Some examples: Berkeley Graphics, iA, Stripe’s website.\nContemporary art, particularly generative art and art inspired by geometry. My favorites are Kjetil Golid, Owen Pomery and Reuben Wu.\nParks and gardens, especially Japanese gardens.\nEuro-style games, Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run.\n\nThis website is built with Quarto. The source is available on Github."
+  },
+  {
+    "objectID": "blog/llm-future/index.html",
+    "href": "blog/llm-future/index.html",
+    "title": "Future Directions for Large Language Models",
+    "section": "",
+    "text": "Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.\nIn this post I’ll discuss 9 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#llm-agents",
+    "href": "blog/llm-future/index.html#llm-agents",
+    "title": "Future Directions for Large Language Models",
+    "section": "LLM Agents",
+    "text": "LLM Agents\nCurrently common uses of LLMs primarily treat the model as a source of information and a copywriter. A more powerful approach is to treat the model as an agent that can interact with the world. AutoGPT is a framework for this approach."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#multimodal-models",
+    "href": "blog/llm-future/index.html#multimodal-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Multimodal models",
+    "text": "Multimodal models\nThe addition of image recognition to GPT-4 has unlocked a new set of applications."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#even-larger-models",
+    "href": "blog/llm-future/index.html#even-larger-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Even larger models",
+    "text": "Even larger models\nGPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters.\nIt seems likely that OpenAI or other AI labs like Meta AI will release even larger models, potentially more capable models in the next few years. They are faced with a challenge: GPT-4’s training already used almost all available text written by humans and it’s unclear whether more information can be squeezed out of it by simply increasing the model size."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#edge-computing-and-efficiency",
+    "href": "blog/llm-future/index.html#edge-computing-and-efficiency",
+    "title": "Future Directions for Large Language Models",
+    "section": "Edge computing and efficiency",
+    "text": "Edge computing and efficiency\nThe deployment of LLMs is currently held back by their compute demands. The smaller versions with 7B parameters can be squeezed onto a single A100 GPU with 40GB of memory, but the larger version with 70B parameters requires multiple GPUs. So typically LLMs are deployed on cloud servers rather than on edge devices.\nMany developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, pruning, and distillation. Thanks to those, it’s already possible to run Llama 2 on a recent MacBook, though it’s slow to predict tokens.\nI expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops. Apple’s recent announcement of better on-device text prediction in iOS 17 using a transformer model is an example of this trend, though the model isn’t large enough to be considered an LLM.\nThis brings down cost, latency, and privacy concerns. It also makes it possible to deploy LLMs in places where internet access is limited or non-existent."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#efficient-training-of-specialized-models",
+    "href": "blog/llm-future/index.html#efficient-training-of-specialized-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Efficient training of specialized models",
+    "text": "Efficient training of specialized models\nIn Against LLM maximalism, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#integration-in-user-facing-applications",
+    "href": "blog/llm-future/index.html#integration-in-user-facing-applications",
+    "title": "Future Directions for Large Language Models",
+    "section": "Integration in user-facing applications",
+    "text": "Integration in user-facing applications\nIntegration of language models in wide-ranging user-facing applications will become more seamless. In particular, I’m waiting for Apple to make Siri more useful by integrating an LLM."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#non-english-models",
+    "href": "blog/llm-future/index.html#non-english-models",
+    "title": "Future Directions for Large Language Models",
+    "section": "Non-English models",
+    "text": "Non-English models\nNon-English LLMs will become more common, making AI benefits more equitable and accessible. I’m excited about the recent publication of LeoLM, a German LLM."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#function-calling",
+    "href": "blog/llm-future/index.html#function-calling",
+    "title": "Future Directions for Large Language Models",
+    "section": "Function calling",
+    "text": "Function calling\nWith function calling, LLMs are capable of taking action. They can interact with any website and any API, which also gives them the ability to control physical devices, robots and even humans through the internet.\nA few examples of what can be done via API calls:\n\nSend an email\nPost a tweet\nProvision a server\nBuy a product\nBook a flight\nSend a task to a human worker via a crowdsourcing platform\n\nAs capabilities expand, the need for policy and regulation on this topic rises."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#better-assistants",
+    "href": "blog/llm-future/index.html#better-assistants",
+    "title": "Future Directions for Large Language Models",
+    "section": "Better assistants",
+    "text": "Better assistants\nIntegration of language models in wide-ranging user-facing applications will become more seamless. In particular, I’m waiting for Apple to make Siri more useful by integrating an LLM.\nChatGPT Plus is likely the most powerful LLM available to typical end users that don’t code."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#seamless-integration-in-software",
+    "href": "blog/llm-future/index.html#seamless-integration-in-software",
+    "title": "Future Directions for Large Language Models",
+    "section": "Seamless integration in software",
+    "text": "Seamless integration in software\nGitHub Copilot and Microsoft 365 are examples of how LLMs can be integrated into software."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#conclusion-hype-to-productivity",
+    "href": "blog/llm-future/index.html#conclusion-hype-to-productivity",
+    "title": "Future Directions for Large Language Models",
+    "section": "Conclusion: Hype to productivity",
+    "text": "Conclusion: Hype to productivity\n\nAI is whatever hasn’t been done yet. - Larry Tesler\n\nI expect that LLMs will follow the AI effect similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#conclusion-hype-to-qiet-productivity",
+    "href": "blog/llm-future/index.html#conclusion-hype-to-qiet-productivity",
+    "title": "Future Directions for Large Language Models",
+    "section": "Conclusion: Hype to qiet productivity",
+    "text": "Conclusion: Hype to qiet productivity\n\nAI is whatever hasn’t been done yet. - Larry Tesler\n\nI expect that LLMs will follow the AI effect similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#conclusion-hype-to-quiet-productivity",
+    "href": "blog/llm-future/index.html#conclusion-hype-to-quiet-productivity",
+    "title": "Future Directions for Large Language Models",
+    "section": "Conclusion: Hype to quiet productivity",
+    "text": "Conclusion: Hype to quiet productivity\n\nAI is whatever hasn’t been done yet. - Larry Tesler\n\nIn the long run, I expec that LLMs will follow the AI effect similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users."
   }
 ]

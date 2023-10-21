@@ -25,6 +25,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/llm-future/index.html",
       "/blog/ai-assistants/index.html",
       "/blog/modal-twitter/index.html",
       "/blog/skills/index.html",

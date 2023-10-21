@@ -22,3 +22,4 @@ format:
   html:
     theme: simplex
     css: styles.css
+    linkcolor: "#3478C5"

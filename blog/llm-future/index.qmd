@@ -1,0 +1,76 @@
+---
+title: "Future Directions for Large Language Models"
+author: "Paul Simmering"
+date: "2023-10-21"
+categories: ["machine learning"]
+image: "image.png"
+---
+
+Large language models (LLMs) have taken the world by storm in the last year. It's not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.
+
+In this post I'll discuss 9 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years.
+
+> Prediction is very difficult, especially about the future. - Niels Bohr
+
+## LLM Agents
+
+Currently common uses of LLMs primarily treat the model as a source of information and a copywriter. A more powerful approach is to treat the model as an agent that can interact with the world. [AutoGPT](https://news.agpt.co) is a framework for this approach.
+
+## Function calling
+
+With function calling, LLMs are capable of taking action. They can interact with any website and any API, which also gives them the ability to control physical devices, robots and even humans through the internet.
+
+A few examples of what can be done via API calls:
+
+- Send an email
+- Post a tweet
+- Provision a server
+- Buy a product
+- Book a flight
+- Send a task to a human worker via a crowdsourcing platform
+
+As capabilities expand, the need for policy and regulation on this topic rises.
+
+## Even larger models
+
+GPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters.
+
+It seems likely that OpenAI or other AI labs like Meta AI will release even larger models, potentially more capable models in the next few years. They are faced with a challenge: GPT-4's training already used almost all available text written by humans and it's unclear whether more information can be squeezed out of it by simply increasing the model size.
+
+## Multimodal models
+
+The addition of [image recognition](https://openai.com/blog/chatgpt-can-now-see-hear-and-speak) to GPT-4 has unlocked a new set of applications.
+
+## Non-English models
+
+Non-English LLMs will become more common, making AI benefits more equitable and accessible. I'm excited about the recent publication of [LeoLM](https://laion.ai/blog/leo-lm/), a German LLM.
+
+## Edge computing and efficiency
+
+The deployment of LLMs is currently held back by their compute demands. The smaller versions with 7B parameters can be [squeezed](https://infohub.delltechnologies.com/l/llama-2-inferencing-on-a-single-gpu/overview-5128/) onto a single A100 GPU with 40GB of memory, but the larger version with 70B parameters requires multiple GPUs. So typically LLMs are deployed on cloud servers rather than on edge devices.
+
+Many developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, pruning, and distillation. Thanks to those, it's already [possible](https://simonwillison.net/2023/Aug/1/llama-2-mac/) to run Llama 2 on a recent MacBook, though it's slow to predict tokens.
+
+I expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops. Apple's recent announcement of better on-device text prediction in [iOS 17](https://www.apple.com/newsroom/2023/06/ios-17-makes-iphone-more-personal-and-intuitive/) using a transformer model is an example of this trend, though the model isn't large enough to be considered an LLM.
+
+This brings down cost, latency, and privacy concerns. It also makes it possible to deploy LLMs in places where internet access is limited or non-existent. 
+
+## Efficient training of specialized models
+
+In [Against LLM maximalism](https://explosion.ai/blog/against-llm-maximalism), spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks.
+
+## Better assistants
+
+Integration of language models in wide-ranging user-facing applications will become more seamless. In particular, I'm waiting for Apple to make Siri more useful by integrating an LLM.
+
+ChatGPT Plus is likely the most powerful LLM available to typical end users that don't code.
+
+## Seamless integration in software
+
+GitHub Copilot and Microsoft 365 are examples of how LLMs can be integrated into software.
+
+## Conclusion: Hype to quiet productivity
+
+> AI is whatever hasn't been done yet. - Larry Tesler
+
+In the long run, I expec that LLMs will follow the [AI effect](https://en.wikipedia.org/wiki/AI_effect) similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users.
