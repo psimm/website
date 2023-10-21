@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2023-04-10">
+
+<title>Paul Simmering - A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html" rel="" target="">
+ <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html" rel="" target="">
+ <span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">productivity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 10, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>AI assistants like <a href="https://github.com/features/copilot">Github Copilot</a> and <a href="https://chat.openai.com">ChatGPT</a> promise breakthrough productivity improvements for developers. In this article, I’ll explore how these tools can be used in a data science workflow and evaluate their usefulness across 5 real-world tasks.</p>
+<p>The main takeaway: Assistants greatly speed up coding using common libraries, but are less helpful for other tasks that go into a successful project.</p>
+<section id="my-setup-vscode-raycast-ai" class="level2">
+<h2 class="anchored" data-anchor-id="my-setup-vscode-raycast-ai">My setup: VSCode + Raycast AI</h2>
+<p>Before we dive into the tasks, let me describe my setup. I use VSCode with Copilot and GPT-4 via <a href="https://www.raycast.com">Raycast AI</a>. Raycast AI provides a chat box that connects to GPT-4 and has a shortcut and one-tap copy of suggested code. I also have some shortcuts in Raycast AI to speed up my workflow:</p>
+<ul>
+<li>Find bugs in my code</li>
+<li>Improve this code</li>
+<li>Explain code step by step</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="raycast_commands.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Raycast Commands</figcaption>
+</figure>
+</div>
+<p>As an example, running “Improve this code” on a selection of text will send it to GPT-4, with the instruction</p>
+<blockquote class="blockquote">
+<p>Check the following code and give advice on how to make it more reliable, secure and easy to read.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="raycast_command_detail.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Raycast Commands Detail</figcaption>
+</figure>
+</div>
+</section>
+<section id="example-tasks" class="level2">
+<h2 class="anchored" data-anchor-id="example-tasks">Example tasks</h2>
+<p>As a data scientist on a small team, I wear many hats, from machine learning engineer to cloud architect. Consequently, I often have to work with languages, libraries and tools that I don’t have much experience with.</p>
+<p>Here are 5 tasks I worked on in the last few weeks and my evaluation of how much AI tools have helped me.</p>
+<section id="writing-a-python-script-to-evaluate-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="writing-a-python-script-to-evaluate-a-model">1. Writing a Python script to evaluate a model</h3>
+<p>The first task was to write a Python script to evaluate <a href="https://learn.microsoft.com/en-us/azure/cognitive-services/language-service/personally-identifiable-information/how-to-call">Azure’s PII redaction API</a> on a dataset of social media posts containing PII. The task mainly involved writing pandas code to load data and calculate metrics. Copilot was helpful in speeding up the process by suggesting entire sections of code that I could use without modifications.</p>
+<p>Usefulness: 5/5</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pandas.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Pandas</figcaption>
+</figure>
+</div>
+</section>
+<section id="defining-aws-infrastructure-using-terraform" class="level3">
+<h3 class="anchored" data-anchor-id="defining-aws-infrastructure-using-terraform">2. Defining AWS infrastructure using Terraform</h3>
+<p>Next, a colleague and I set up a database migration using <a href="https://aws.amazon.com/dms/">AWS Database Migration Service (DMS)</a>, set up via <a href="https://www.terraform.io/">Terraform</a>. I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don’t actually exist in AWS DMS. Overall, it was more confusing than helpful.</p>
+<p>Usefulness: 1/5</p>
+</section>
+<section id="creating-testing-and-documenting-models-in-dbt" class="level3">
+<h3 class="anchored" data-anchor-id="creating-testing-and-documenting-models-in-dbt">3. Creating, testing and documenting models in dbt</h3>
+<p>I created, tested, and documented models in <a href="https://www.getdbt.com/">dbt</a>. Copilot made writing SQL for the models faster and was especially good at speeding up my workflow of documenting those models in the schema.yml files. However, since it didn’t know the database schema, it hallucinated tables and columns that don’t exist. GPT-4 was useful for thinking through the deployment of dbt-core on AWS ECS, especially the use of environment variables and the project.yml config file.</p>
+<p>Usefulness: 3/5</p>
+</section>
+<section id="adjusting-a-web-scraper-in-javascript" class="level3">
+<h3 class="anchored" data-anchor-id="adjusting-a-web-scraper-in-javascript">4. Adjusting a web scraper in JavaScript</h3>
+<p>For the next task, I heavily relied on GPT-4. I had to adjust a web scraper to cover a different path of the target website. The scraper is written in JavaScript, which I’m not familiar with. Here, the “explain step-by-step” shortcut was helpful. GPT-4 was like an expert JS dev patiently explaining the code line by line. However, GPT-4 couldn’t see the target website and didn’t have access to the website’s html. Copying it over was tedious. I found it easier to use the <a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb">SelectorGadget</a> Chrome extension to find relevant CSS selectors.</p>
+<p>Usefulness: 4/5</p>
+</section>
+<section id="choosing-a-dashboard-tool" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-a-dashboard-tool">5. Choosing a dashboard tool</h3>
+<p>A new project required building a dashboard, and it was my task to evaluate tools based on features, usability, and price. I tested many GUI-based tools (Metabase, Superset, Tableau, PowerBI and others). GPT-4 could list relevant decision criteria but couldn’t make the decision for me. It wasn’t useful as an information source because of the knowledge cutoff in 2021.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dashboard.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Dashboard</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="takeaways">10 Takeaways</h2>
+<ul>
+<li>Copilot and GPT-4 are at their best helping to write code in commonly used libraries like pandas.</li>
+<li>As text-based models, Copilot and GPT-4 provide better help for code (text) based apps than GUIs.</li>
+<li>AI assistants are at their best in small projects with a low number of files, ideally just one notebook.</li>
+<li>They are ideal for working on simple tasks in languages that you’re not familiar with.</li>
+<li>The models don’t have the context of your project, company, and client, which are critical for more strategic decisions.</li>
+<li>There’s no good tooling for showing GPT-4 data frames or tables in SQL. This limitation means it can’t contribute to the interpretation.</li>
+<li>The 2021 training data cutoff for GPT-4 diminishes its usefulness for information retrieval.</li>
+<li>Rubber duck debugging is an effective technique for overcoming blocks. Now we have v2 with a duck that can reply. Chatting with GPT-4 about programming challenges helped me.</li>
+<li>LLMs are best for delegating details, so you can focus on the bigger picture. Knowing what and how to ask is critical and being aware of typical sources of hallucinations.</li>
+<li>GPT-4 currently can’t run a non-trivial data science project by itself. It’s more independent than Copilot but not good enough to be an autopilot.</li>
+</ul>
+</section>
+<section id="differentiating-yourself-as-a-data-scientist-in-an-ai-future" class="level2">
+<h2 class="anchored" data-anchor-id="differentiating-yourself-as-a-data-scientist-in-an-ai-future">Differentiating yourself as a data scientist in an AI-future</h2>
+<p>So what sets a successful data scientist apart in a world with powerful AI assistants?</p>
+<ul>
+<li>Understanding of the domain and business</li>
+<li>Building trust with clients</li>
+<li>Identifying the right questions to work on and the best format to report answers</li>
+<li>Systems design and overview of the project</li>
+<li>Detect hallucinations of AI models</li>
+</ul>
+<p><strong>Knowing how to code</strong> is not enough to differentiate oneself.</p>
+</section>
+<section id="early-on-the-long-arc-of-innovation" class="level2">
+<h2 class="anchored" data-anchor-id="early-on-the-long-arc-of-innovation">Early on the long arc of innovation</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="arcs.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Long Arc of Innovation</figcaption>
+</figure>
+</div>
+<p>While the hype it peaking, it’s still early days for the technology. Today’s tools are like black and white TV in the 1960s and the future will bring tools equivalent to OLED 4k TVs. In the next few months already, we’ll see better models thanks to:</p>
+<ul>
+<li>Larger context windows enable models to take more information into account: GPT-4 supports up to 32k tokens, whereas GPT-3.5 was limited to 4k</li>
+<li>Plugins and chains via <a href="https://openai.com/blog/chatgpt-plugins">ChatGPT plugins</a> and the <a href="https://github.com/hwchase17/langchain">langchain</a> library. These give models access to the browser, <a href="https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/">Wolfram Alpha</a> and more</li>
+<li>Let models store context information and access data via LlamaIndex Integration into more developer tasks, such as pull requests via <a href="https://github.com/features/preview/copilot-x">Github Copilot X</a></li>
+<li>Agents that recursively call GPT-4, see <a href="https://github.com/Torantulino/Auto-GPT">Auto-GPT</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><a href="imprint.html">Imprint</a> | This website does not use cookies.</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
