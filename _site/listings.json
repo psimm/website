@@ -25,13 +25,13 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/ai-assistants/index.html",
-      "/posts/twitter_collector/index.html",
-      "/posts/devskill/index.html",
-      "/posts/yarn/index.html",
-      "/posts/fangmant/index.html",
-      "/posts/dataframes/index.html",
-      "/posts/echarts4r/index.html"
+      "/blog/ai-assistants/index.html",
+      "/blog/twitter_collector/index.html",
+      "/blog/devskill/index.html",
+      "/blog/yarn/index.html",
+      "/blog/fangmant/index.html",
+      "/blog/dataframes/index.html",
+      "/blog/echarts4r/index.html"
     ]
   }
 ]
