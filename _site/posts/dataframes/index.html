@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2021-12-20">
+
+<title>Paul Simmering - Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="../../site_libs/react-17.0.0/react.min.js"></script>
+<script src="../../site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+<script src="../../site_libs/reactable-binding-0.4.4/reactable.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html" rel="" target="">
+ <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html" rel="" target="">
+ <span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Data frame wars: Choosing a Python dataframe library as a dplyr user</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 20, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I’m a long time R user and lately I’ve seen more and more <a href="https://www.tiobe.com/tiobe-index/python/">signals</a> that it’s worth investing into Python. I use it for NLP with <a href="https://spacy.io">spaCy</a> and to build functions on <a href="https://aws.amazon.com/lambda/features/">AWS Lambda</a>. Further, there are many more data API libraries and machine learning libraries for Python than for R.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This article was written at the end of 2021 with the latest versions of the libraries and the number of Github stars at that time.</p>
+</div>
+</div>
+<p>Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.</p>
+<p>Michael Chow, developer of <a href="https://github.com/machow/siuba">siuba</a>, a Python port of dplyr on top of pandas <a href="https://mchow.com/posts/pandas-has-a-hard-job/">wrote</a> describes the situation well:</p>
+<blockquote class="blockquote">
+<p>It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).</p>
+</blockquote>
+<p>The higher-level libraries he mentions come with a problem : There’s no universal standard.</p>
+<p>In a discussion of the polars library on Hacker News the user “civilized” put the dplyr user perspective more bluntly:</p>
+<blockquote class="blockquote">
+<p>In my world, anything that isn’t “identical to R’s dplyr API but faster” just isn’t quite worth switching for. There’s absolutely no contest: dplyr has the most productive API and that matters to me more than anything else.</p>
+</blockquote>
+<p>I’m more willing to compromise though, so here’s a comparison of the strongest contenders.</p>
+<section id="the-contenders" class="level2">
+<h2 class="anchored" data-anchor-id="the-contenders">The contenders</h2>
+<p>The <a href="https://h2oai.github.io/db-benchmark/">database-like ops benchmark on H2Oai</a> is a helpful performance comparison.</p>
+<p>I’m considering these libraries:</p>
+<ol type="1">
+<li><a href="https://pandas.pydata.org">Pandas</a>: The most commonly used library and the one with the most tutorials and Stack Overflow answers available.</li>
+<li><a href="https://github.com/machow/siuba">siuba</a>: A port of dplyr to Python, built on top of pandas. Not in the benchmark. Performance probably similar to pandas or worse due to translation.</li>
+<li><a href="https://www.pola.rs">Polars</a>: The fastest library available. According to the benchmark, it runs 3-10x faster than Pandas.</li>
+<li><a href="https://www.pola.rs">Duckdb</a>: Use an in-memory OLAP database instead of a dataframe and write SQL. In R, this can also be queried via dbplyr.</li>
+<li><a href="https://ibis-project.org/docs/index.html">ibis</a>. Backend-agnostic wrapper for pandas and SQL engines.</li>
+</ol>
+<p>There are more options. I excluded the others for these reasons:</p>
+<ul>
+<li>Slower than polars and not with a readability focus (dask, Arrow, Modin, pydatatable)</li>
+<li>Requires or is optmized for running on a remote server (Spark, ClickHouse and most other SQL databases).</li>
+<li>Not meant for OLAP (sqlite)</li>
+<li>Not in Python (DataFrames.jl)</li>
+<li>Meant for GPU (cuDF)</li>
+</ul>
+</section>
+<section id="github-stars-as-a-proxy-for-popularity" class="level2">
+<h2 class="anchored" data-anchor-id="github-stars-as-a-proxy-for-popularity">Github stars as a proxy for popularity</h2>
+<p>The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>libs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">library =</span> <span class="fu">c</span>(<span class="st">"pandas"</span>, <span class="st">"siuba"</span>, <span class="st">"polars"</span>, <span class="st">"duckdb"</span>, <span class="st">"dplyr"</span>, <span class="st">"data.table"</span>, <span class="st">"pydatatable"</span>, <span class="st">"dtplyr"</span>, <span class="st">"tidytable"</span>, <span class="st">"ibis"</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">language =</span> <span class="fu">c</span>(<span class="st">"Python"</span>, <span class="st">"Python"</span>, <span class="st">"Python"</span>, <span class="st">"SQL"</span>, <span class="st">"R"</span>, <span class="st">"R"</span>, <span class="st">"Python"</span>, <span class="st">"R"</span>, <span class="st">"R"</span>, <span class="st">"Python"</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">stars =</span> <span class="fu">c</span>(<span class="dv">32100</span>, <span class="dv">732</span>, <span class="dv">3900</span>, <span class="dv">4100</span>, <span class="dv">3900</span>, <span class="dv">2900</span>, <span class="dv">1400</span>, <span class="dv">542</span>, <span class="dv">285</span>, <span class="dv">1600</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(libs, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(library, <span class="sc">-</span>stars), <span class="at">y =</span> stars, <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Pandas is by far the most popular choice"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Comparison of Github stars on 2021-12-25"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"Language"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Library"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Github stars"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/github_stars-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Github stars are not a perfect proxy. For instance, dplyr is more mature than its star count suggests. Comparing the completeness of the documentation and tutorials for dplyr and polars reveals that it’s a day and night difference.</p>
+<p>With the quantitative comparison out of the way, here’s a qualitative comparison of the Python packages. I’m speaking of my personal opinion of these packages - not a general comparison. My reference is my current use of <a href="https://dplyr.tidyverse.org">dplyr</a> in R. When I need more performance, I use <a href="https://github.com/markfairbanks/tidytable">tidytable</a> to get most of the speed of data.table with the grammar of dplyr and eager evaluation. Another alternative is <a href="https://github.com/tidyverse/dtplyr">dtplyr</a>, which translates dplyr to data.table with lazy evaluation. I also use <a href="https://dbplyr.tidyverse.org">dbplyr</a>, which translates dplyr to SQL.</p>
+<p>I’ll compare the libraries by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarize. I’ll use the nycflights13 dataset, which is featured in Hadley Wickham’s <a href="https://r4ds.had.co.nz/transform.html">R for Data Science</a>.</p>
+</section>
+<section id="dplyr-reference-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="dplyr-reference-in-r">dplyr: Reference in R</h2>
+<p>Let’s start with a reference implementation in dplyr. The dataset is available as a package, so I skip the CSV import.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr, <span class="at">warn.conflicts =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the tables</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(flights, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a14a5dbd40c2020dbd29" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a14a5dbd40c2020dbd29">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],"month":[1,1,1,1,1,1,1,1,1,1],"day":[1,1,1,1,1,1,1,1,1,1],"dep_time":[517,533,542,544,554,554,555,557,557,558],"sched_dep_time":[515,529,540,545,600,558,600,600,600,600],"dep_delay":[2,4,2,-1,-6,-4,-5,-3,-3,-2],"arr_time":[830,850,923,1004,812,740,913,709,838,753],"sched_arr_time":[819,830,850,1022,837,728,854,723,846,745],"arr_delay":[11,20,33,-18,-25,12,19,-14,-8,8],"carrier":["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA"],"flight":[1545,1714,1141,725,461,1696,507,5708,79,301],"tailnum":["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA"],"origin":["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA"],"dest":["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD"],"air_time":[227,227,160,183,116,150,158,53,140,138],"distance":[1400,1416,1089,1576,762,719,1065,229,944,733],"hour":[5,5,5,5,6,5,6,6,6,6],"minute":[15,29,40,45,0,58,0,0,0,0],"time_hour":["2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z"]},"columns":[{"id":"year","name":"year","type":"numeric"},{"id":"month","name":"month","type":"numeric"},{"id":"day","name":"day","type":"numeric"},{"id":"dep_time","name":"dep_time","type":"numeric"},{"id":"sched_dep_time","name":"sched_dep_time","type":"numeric"},{"id":"dep_delay","name":"dep_delay","type":"numeric"},{"id":"arr_time","name":"arr_time","type":"numeric"},{"id":"sched_arr_time","name":"sched_arr_time","type":"numeric"},{"id":"arr_delay","name":"arr_delay","type":"numeric"},{"id":"carrier","name":"carrier","type":"character"},{"id":"flight","name":"flight","type":"numeric"},{"id":"tailnum","name":"tailnum","type":"character"},{"id":"origin","name":"origin","type":"character"},{"id":"dest","name":"dest","type":"character"},{"id":"air_time","name":"air_time","type":"numeric"},{"id":"distance","name":"distance","type":"numeric"},{"id":"hour","name":"hour","type":"numeric"},{"id":"minute","name":"minute","type":"numeric"},{"id":"time_hour","name":"time_hour","type":"Date"}],"dataKey":"efb7087d9e2b5bd5b3155062bf174300"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(airlines, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a54d826816f9ad542104" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a54d826816f9ad542104">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"id":"carrier","name":"carrier","type":"character"},{"id":"name","name":"name","type":"character"}],"dataKey":"f306daa08a2136046ead72a665ae9011"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The <code>flights</code> tables has 336776 rows, one for each flight of an airplane. The <code>airlines</code> table has 16 rows, one for each airline mapping the full name of the company to a code.</p>
+<p>Let’s find the airline with the highest arrival delays in January 2013.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2013</span>, month <span class="sc">==</span> <span class="dv">1</span>, <span class="sc">!</span><span class="fu">is.na</span>(arr_delay)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">arr_delay =</span> <span class="fu">replace</span>(arr_delay, arr_delay <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(airlines, <span class="at">by =</span> <span class="st">"carrier"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">airline =</span> name) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">flights =</span> <span class="fu">n</span>(), <span class="at">mean_delay =</span> <span class="fu">mean</span>(arr_delay)) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_delay))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 3
+   airline                     flights mean_delay
+   &lt;chr&gt;                         &lt;int&gt;      &lt;dbl&gt;
+ 1 SkyWest Airlines Inc.             1     107   
+ 2 Hawaiian Airlines Inc.           31      48.8 
+ 3 ExpressJet Airlines Inc.       3964      29.6 
+ 4 Frontier Airlines Inc.           59      23.9 
+ 5 Mesa Airlines Inc.               39      20.4 
+ 6 Endeavor Air Inc.              1480      19.3 
+ 7 Alaska Airlines Inc.             62      17.6 
+ 8 Envoy Air                      2203      14.3 
+ 9 Southwest Airlines Co.          985      13.0 
+10 JetBlue Airways                4413      12.9 
+11 United Air Lines Inc.          4590      11.9 
+12 American Airlines Inc.         2724      11.0 
+13 AirTran Airways Corporation     324       9.95
+14 US Airways Inc.                1554       9.11
+15 Delta Air Lines Inc.           3655       8.07
+16 Virgin America                  314       3.17</code></pre>
+</div>
+</div>
+<p>Some values in <code>arr_delay</code> are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don’t want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.</p>
+<p>I export the flights and airlines tables to CSV to hand them over to Python.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to temporary files</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>flights_path <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".csv"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>airlines_path <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".csv"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>data.table<span class="sc">::</span><span class="fu">fwrite</span>(flights, flights_path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>data.table<span class="sc">::</span><span class="fu">fwrite</span>(airlines, airlines_path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To access the file from Python, the path is handed over:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hand over the path from R</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>flights_path <span class="op">=</span> r[<span class="st">"flights_path"</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>airlines_path <span class="op">=</span> r[<span class="st">"airlines_path"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For more details on how this works with the reticulate package, check this <a href="#%20See%20https://rstudio.github.io/reticulate/articles/calling_python.html">documentation</a>.</p>
+</section>
+<section id="pandas-most-popular" class="level2">
+<h2 class="anchored" data-anchor-id="pandas-most-popular">Pandas: Most popular</h2>
+<p>The following sections follow a pattern: read in from CSV, then build a query.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import from CSV</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>flights_pd <span class="op">=</span> pd.read_csv(flights_path)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>airlines_pd <span class="op">=</span> pd.read_csv(airlines_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>pandas.read_csv</code> reads the header and conveniently infers the column types.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    flights_pd.query(<span class="st">"year == 2013 &amp; month == 1 &amp; arr_delay.notnull()"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    .assign(arr_delay<span class="op">=</span>flights_pd.arr_delay.clip(lower<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    .merge(airlines_pd, how<span class="op">=</span><span class="st">"left"</span>, on<span class="op">=</span><span class="st">"carrier"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    .rename(columns<span class="op">=</span>{<span class="st">"name"</span>: <span class="st">"airline"</span>})</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"airline"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    .agg(flights<span class="op">=</span>(<span class="st">"airline"</span>, <span class="st">"count"</span>), mean_delay<span class="op">=</span>(<span class="st">"arr_delay"</span>, <span class="st">"mean"</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(by<span class="op">=</span><span class="st">"mean_delay"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             flights  mean_delay
+airline                                         
+SkyWest Airlines Inc.              1  107.000000
+Hawaiian Airlines Inc.            31   48.774194
+ExpressJet Airlines Inc.        3964   29.642785
+Frontier Airlines Inc.            59   23.881356
+Mesa Airlines Inc.                39   20.410256
+Endeavor Air Inc.               1480   19.321622
+Alaska Airlines Inc.              62   17.645161
+Envoy Air                       2203   14.303677
+Southwest Airlines Co.           985   12.964467
+JetBlue Airways                 4413   12.919329
+United Air Lines Inc.           4590   11.851852
+American Airlines Inc.          2724   10.953377
+AirTran Airways Corporation      324    9.953704
+US Airways Inc.                 1554    9.111326
+Delta Air Lines Inc.            3655    8.070315
+Virgin America                   314    3.165605</code></pre>
+</div>
+</div>
+<p>I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.</p>
+<p>Here, the <code>query()</code> function is slightly awkward with the long string argument. The <code>groupby</code> doesn’t allow renaming on the fly like dplyr, though I don’t consider that a real drawback. Perhaps it’s clearer to rename explicitly anyway.</p>
+<p>Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The <code>clip</code> function used here is one such example. One difference to dplyr is that pandas uses its own methods <code>.mean()</code>, rather than using external ones such as <code>base::mean()</code>. That means using custom functions instead carries a <a href="https://stackoverflow.com/a/26812998">performance penalty</a>.</p>
+<p>As we’ll see later, pandas is the backend for siuba and ibis, which boil down to pandas code.</p>
+<p>One difference to all other discussed solutions is that pandas uses a <a href="https://www.sharpsightlabs.com/blog/pandas-index/">row index</a>. Base R also has this with row names, but the tidyverse and tibbles have largely removed them from common use. I never missed row names. At the times I had to work with them in pandas they were more confusing than helpful. The documentation of polars puts it more bluntly:</p>
+<blockquote class="blockquote">
+<p>No index. They are not needed. Not having them makes things easier. Convince me otherwise</p>
+</blockquote>
+<p>That’s quite passive aggressive, but I do agree and wish pandas didn’t have it.</p>
+</section>
+<section id="siuba-dplyr-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="siuba-dplyr-in-python">siuba: dplyr in Python</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> siuba <span class="im">as</span> si</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import from CSV</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>flights_si <span class="op">=</span> pd.read_csv(r[<span class="st">"flights_path"</span>])</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>airlines_si <span class="op">=</span> pd.read_csv(r[<span class="st">"airlines_path"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    flights_si</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.<span class="bu">filter</span>(si._.year <span class="op">==</span> <span class="dv">2013</span>, si._.month <span class="op">==</span> <span class="dv">1</span>, si._.arr_delay.notnull())</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.mutate(arr_delay<span class="op">=</span>si._.arr_delay.clip(lower<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.left_join(si._, airlines_si, on<span class="op">=</span><span class="st">"carrier"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.rename(airline<span class="op">=</span>si._.name)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.group_by(si._.airline)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.summarize(flights<span class="op">=</span>si._.airline.count(), mean_delay<span class="op">=</span>si._.arr_delay.mean())</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;</span> si.arrange(<span class="op">-</span>si._.mean_delay)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        airline  flights  mean_delay
+11        SkyWest Airlines Inc.        1  107.000000
+8        Hawaiian Airlines Inc.       31   48.774194
+6      ExpressJet Airlines Inc.     3964   29.642785
+7        Frontier Airlines Inc.       59   23.881356
+10           Mesa Airlines Inc.       39   20.410256
+4             Endeavor Air Inc.     1480   19.321622
+1          Alaska Airlines Inc.       62   17.645161
+5                     Envoy Air     2203   14.303677
+12       Southwest Airlines Co.      985   12.964467
+9               JetBlue Airways     4413   12.919329
+14        United Air Lines Inc.     4590   11.851852
+2        American Airlines Inc.     2724   10.953377
+0   AirTran Airways Corporation      324    9.953704
+13              US Airways Inc.     1554    9.111326
+3          Delta Air Lines Inc.     3655    8.070315
+15               Virgin America      314    3.165605</code></pre>
+</div>
+</div>
+<p>I found siuba the easiest to work with. Once I understood the <code>_</code> placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with">tidy evaluation</a> (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.</p>
+<p>It’s always possible to drop into pandas, such as for the aggregation functions which use the <code>mean()</code> and <code>count()</code> methods of the pandas series. The <code>&gt;&gt;</code> is an easy replacement for the <code>%&gt;%</code> magrittr pipe or <code>|&gt;</code> base pipe in R.</p>
+<p>The author advertises siuba like this (from the <a href="https://siuba.readthedocs.io/en/latest/">docs</a>):</p>
+<blockquote class="blockquote">
+<p>Siuba is a library for quick, scrappy data analysis in Python. It is a port of dplyr, tidyr, and other R Tidyverse libraries.</p>
+</blockquote>
+<p>A way for dplyr users to quickly hack away at data analysis in Python, but not meant for unsupervised production use.</p>
+</section>
+<section id="polars-fastest" class="level2">
+<h2 class="anchored" data-anchor-id="polars-fastest">Polars: Fastest</h2>
+<p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyr work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import from CSV</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>flights_pl <span class="op">=</span> pl.read_csv(flights_path)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>airlines_pl <span class="op">=</span> pl.read_csv(airlines_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    flights_pl.<span class="bu">filter</span>((pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2013</span>) <span class="op">&amp;</span> (pl.col(<span class="st">"month"</span>) <span class="op">==</span> <span class="dv">1</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    .drop_nulls(<span class="st">"arr_delay"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .join(airlines_pl, on<span class="op">=</span><span class="st">"carrier"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    .with_columns(</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>            pl.when(pl.col(<span class="st">"arr_delay"</span>) <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>            .then(pl.col(<span class="st">"arr_delay"</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>            .otherwise(<span class="dv">0</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>            .alias(<span class="st">"arr_delay"</span>),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            pl.col(<span class="st">"name"</span>).alias(<span class="st">"airline"</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"airline"</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        [pl.count(<span class="st">"airline"</span>).alias(<span class="st">"flights"</span>), pl.mean(<span class="st">"arr_delay"</span>).alias(<span class="st">"mean_delay"</span>)]</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"mean_delay"</span>, descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (16, 3)</small>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">airline</th>
+<th data-quarto-table-cell-role="th">flights</th>
+<th data-quarto-table-cell-role="th">mean_delay</th>
+</tr>
+<tr class="odd">
+<th>str</th>
+<th>u32</th>
+<th>f64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"SkyWest Airlin…</td>
+<td>1</td>
+<td>107.0</td>
+</tr>
+<tr class="even">
+<td>"Hawaiian Airli…</td>
+<td>31</td>
+<td>48.774194</td>
+</tr>
+<tr class="odd">
+<td>"ExpressJet Air…</td>
+<td>3964</td>
+<td>29.642785</td>
+</tr>
+<tr class="even">
+<td>"Frontier Airli…</td>
+<td>59</td>
+<td>23.881356</td>
+</tr>
+<tr class="odd">
+<td>"Mesa Airlines …</td>
+<td>39</td>
+<td>20.410256</td>
+</tr>
+<tr class="even">
+<td>"Endeavor Air I…</td>
+<td>1480</td>
+<td>19.321622</td>
+</tr>
+<tr class="odd">
+<td>"Alaska Airline…</td>
+<td>62</td>
+<td>17.645161</td>
+</tr>
+<tr class="even">
+<td>"Envoy Air"</td>
+<td>2203</td>
+<td>14.303677</td>
+</tr>
+<tr class="odd">
+<td>"Southwest Airl…</td>
+<td>985</td>
+<td>12.964467</td>
+</tr>
+<tr class="even">
+<td>"JetBlue Airway…</td>
+<td>4413</td>
+<td>12.919329</td>
+</tr>
+<tr class="odd">
+<td>"United Air Lin…</td>
+<td>4590</td>
+<td>11.851852</td>
+</tr>
+<tr class="even">
+<td>"American Airli…</td>
+<td>2724</td>
+<td>10.953377</td>
+</tr>
+<tr class="odd">
+<td>"AirTran Airway…</td>
+<td>324</td>
+<td>9.953704</td>
+</tr>
+<tr class="even">
+<td>"US Airways Inc…</td>
+<td>1554</td>
+<td>9.111326</td>
+</tr>
+<tr class="odd">
+<td>"Delta Air Line…</td>
+<td>3655</td>
+<td>8.070315</td>
+</tr>
+<tr class="even">
+<td>"Virgin America…</td>
+<td>314</td>
+<td>3.165605</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated <code>clip</code> function.</p>
+<p>There isn’t nearly as much help available for problems with polars as for with pandas. While the documentation is good, it can’t answer every question and lots of trial and error is needed.</p>
+<p>A comparison of polars and pandas is available in the <a href="https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment">polars documentation</a>.</p>
+</section>
+<section id="duckdb-highly-compatible-and-easy-for-sql-users" class="level2">
+<h2 class="anchored" data-anchor-id="duckdb-highly-compatible-and-easy-for-sql-users">DuckDB: Highly compatible and easy for SQL users</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>con_duckdb <span class="op">=</span> duckdb.<span class="ex">connect</span>(database<span class="op">=</span><span class="st">":memory:"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Import from CSV</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>con_duckdb.execute(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CREATE TABLE 'flights' AS "</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"SELECT * FROM read_csv_auto('</span><span class="sc">{</span>flights_path<span class="sc">}</span><span class="ss">', header = True);"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CREATE TABLE 'airlines' AS "</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"SELECT * FROM read_csv_auto('</span><span class="sc">{</span>airlines_path<span class="sc">}</span><span class="ss">', header = True);"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection object at 0x17d2497f0&gt;</code></pre>
+</div>
+</div>
+<p>DuckDB’s <code>read_csv_auto()</code> works just like the csv readers in Python.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>con_duckdb.execute(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"WITH flights_clipped AS ( "</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT carrier, CASE WHEN arr_delay &gt; 0 THEN arr_delay ELSE 0 END AS arr_delay "</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FROM flights "</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"WHERE year = 2013 AND month = 1 AND arr_delay IS NOT NULL"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">")"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FROM flights_clipped "</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LEFT JOIN airlines ON flights_clipped.carrier = airlines.carrier "</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GROUP BY name "</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ORDER BY mean_delay DESC "</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>).fetchdf()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        airline  flights  mean_delay
+0         SkyWest Airlines Inc.        1  107.000000
+1        Hawaiian Airlines Inc.       31   48.774194
+2      ExpressJet Airlines Inc.     3964   29.642785
+3        Frontier Airlines Inc.       59   23.881356
+4            Mesa Airlines Inc.       39   20.410256
+5             Endeavor Air Inc.     1480   19.321622
+6          Alaska Airlines Inc.       62   17.645161
+7                     Envoy Air     2203   14.303677
+8        Southwest Airlines Co.      985   12.964467
+9               JetBlue Airways     4413   12.919329
+10        United Air Lines Inc.     4590   11.851852
+11       American Airlines Inc.     2724   10.953377
+12  AirTran Airways Corporation      324    9.953704
+13              US Airways Inc.     1554    9.111326
+14         Delta Air Lines Inc.     3655    8.070315
+15               Virgin America      314    3.165605</code></pre>
+</div>
+</div>
+<p>The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.</p>
+<p>DuckDB can also operate directly on a pandas dataframe. The SQL code is portable to R, C, C++, Java and other programming languages the duckdb has <a href="https://duckdb.org/docs/api/overview">APIs</a>. It’s also portable when the logic is taken to a DB like <a href="https://www.postgresql.org">Postgres</a>, or <a href="https://clickhouse.com">Clickhouse</a>, or is ported to an ETL framework like <a href="https://github.com/dbt-labs/dbt-core">DBT</a>.</p>
+<p>This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating SQL translates well to other situations. SQL has been around for more than 50 years - learning SQL is future-proofing a career.</p>
+<p>While these are big plusses, duckdb isn’t so convenient for interactive data exploration. SQL isn’t as composeable. Composing SQL queries requires many common table expressions (CTEs, <code>WITH x AS (SELECT ...)</code>). Reusing them for other queries is not as easy as with Python. SQL is typically less expressive than Python. It lacks shorthands and it’s awkward when there are many columns. It’s also harder to write custom functions in SQL than in R or Python. This is the motivation for using libraries like pandas and dplyr. But SQL can actually do a surprising amount of things, as database expert Haki Benita explained in a <a href="https://hakibenita.com/sql-for-data-analysis">detailed article</a>.</p>
+<p>Or in short, from the <a href="https://ibis-project.org">documentation</a> of ibis:</p>
+<blockquote class="blockquote">
+<p>SQL is widely used and very convenient when writing simple queries. But as the complexity of operations grow, SQL can become very difficult to deal with.</p>
+</blockquote>
+<p>Then, there’s the issue of how to actually write the SQL code. Writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> and <a href="https://www.jetbrains.com/dataspell/">DataSpell</a> do). The other option is writing <code>.sql</code> that have placeholders for parameters. That’s cleaner and allows using a linter, but is inconvenient for interactive use.</p>
+<p>SQL is inherently lazily executed, because the query planner needs to take the whole query into account before starting computation. This enables performance gains. For interactive use, lazy evaluation is less convenient, because one can’t see the intermediate results at each step. Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.</p>
+<p>There is a <a href="https://github.com/duckdb/duckdb/blob/master/examples/python/duckdb-python.py">programmatic way to construct queries</a> for duckdb, designed to provide a <a href="https://github.com/duckdb/duckdb/issues/302">dbplyr alternative</a> in Python. Unfortunately its documentation is sparse.</p>
+<p>Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.</p>
+</section>
+<section id="ibis-lingua-franca-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="ibis-lingua-franca-in-python">ibis: Lingua franca in Python</h2>
+<p>The goal of ibis is to provide a universal language for working with data frames in Python, regardless of the backend that is used. It’s tagline is: <em>Write your analytics code once, run in everywhere</em>. This is similar to how dplyr can use SQL as a backend with dbplyr and data.table with dtplyr.</p>
+<p>Among others, Ibis supports pandas, PostgreSQL and SQLite as backends. Unfortunately duckdb is not an available backend, because the authors of duckdb have <a href="https://github.com/duckdb/duckdb/issues/302">decided against</a> building on ibis.</p>
+<p>The ibis project aims to bridge the gap between the needs of interactive data analysis and the capabilities of SQL, which I have detailed in the previous section on duckdb.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>UPDATE October 2023</strong></p>
+<ul>
+<li>Duckdb is now a supported backend (along with many more). So performance is going to be very similar to duckdb.</li>
+<li>Directly load/save data</li>
+<li><code>join()</code>, <code>clip()</code>, and <code>case()</code> are well-supported</li>
+<li>Ibis is much more popular and now very actively maintained. There are more examples, better documentation, and community. Still definitely less than pandas, but perhaps comparable to polars.</li>
+</ul>
+<p>Thanks to <a href="https://github.com/psimm/website/issues/10#issuecomment-1767099439">NickCrews</a> for providing this update, including the following code example.</p>
+</div>
+</div>
+<p>For the test drive, I’ll use the <a href="https://ibis-project.org/docs/backends/duckdb.html">duckdb backend</a>, meaning that the ibis code is translated to duckdb operations, similar to how siuba is translated to pandas. This gives ibis the blazing speed of duckdb.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ibis</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ibis <span class="im">import</span> _</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>flights_ib_csv <span class="op">=</span> pd.read_csv(flights_path)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>airlines_ib_csv <span class="op">=</span> pd.read_csv(airlines_path)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>ibis.options.interactive <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>flights_ib <span class="op">=</span> ibis.read_csv(flights_path)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>airlines_ib <span class="op">=</span> ibis.read_csv(airlines_path)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>flights_ib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>┏━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━┓
+┃ year  ┃ month ┃ day   ┃ dep_time ┃ sched_dep_time ┃ dep_delay ┃ arr_time ┃ … ┃
+┡━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━┩
+│ int64 │ int64 │ int64 │ int64    │ int64          │ int64     │ int64    │ … │
+├───────┼───────┼───────┼──────────┼────────────────┼───────────┼──────────┼───┤
+│  2013 │     1 │     1 │      517 │            515 │         2 │      830 │ … │
+│  2013 │     1 │     1 │      533 │            529 │         4 │      850 │ … │
+│  2013 │     1 │     1 │      542 │            540 │         2 │      923 │ … │
+│  2013 │     1 │     1 │      544 │            545 │        -1 │     1004 │ … │
+│  2013 │     1 │     1 │      554 │            600 │        -6 │      812 │ … │
+│  2013 │     1 │     1 │      554 │            558 │        -4 │      740 │ … │
+│  2013 │     1 │     1 │      555 │            600 │        -5 │      913 │ … │
+│  2013 │     1 │     1 │      557 │            600 │        -3 │      709 │ … │
+│  2013 │     1 │     1 │      557 │            600 │        -3 │      838 │ … │
+│  2013 │     1 │     1 │      558 │            600 │        -2 │      753 │ … │
+│     … │     … │     … │        … │              … │         … │        … │ … │
+└───────┴───────┴───────┴──────────┴────────────────┴───────────┴──────────┴───┘</code></pre>
+</div>
+</div>
+<p>Non-interactive ibis means that queries are evaluated lazily.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    flights_ib.<span class="bu">filter</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            _.year <span class="op">==</span> <span class="dv">2013</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            _.month <span class="op">==</span> <span class="dv">1</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            _.arr_delay.notnull(),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    .join(airlines_ib, <span class="st">"carrier"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    .select(arr_delay<span class="op">=</span>_.arr_delay.clip(lower<span class="op">=</span><span class="dv">0</span>), airline<span class="op">=</span>_.name)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"airline"</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    .agg(flights<span class="op">=</span>_.count(), mean_delay<span class="op">=</span>_.arr_delay.mean())</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    .order_by(_.mean_delay.desc())</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ airline                  ┃ flights ┃ mean_delay ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ string                   │ int64   │ float64    │
+├──────────────────────────┼─────────┼────────────┤
+│ SkyWest Airlines Inc.    │       1 │ 107.000000 │
+│ Hawaiian Airlines Inc.   │      31 │  48.774194 │
+│ ExpressJet Airlines Inc. │    3964 │  29.642785 │
+│ Frontier Airlines Inc.   │      59 │  23.881356 │
+│ Mesa Airlines Inc.       │      39 │  20.410256 │
+│ Endeavor Air Inc.        │    1480 │  19.321622 │
+│ Alaska Airlines Inc.     │      62 │  17.645161 │
+│ Envoy Air                │    2203 │  14.303677 │
+│ Southwest Airlines Co.   │     985 │  12.964467 │
+│ JetBlue Airways          │    4413 │  12.919329 │
+│ …                        │       … │          … │
+└──────────────────────────┴─────────┴────────────┘</code></pre>
+</div>
+</div>
+<p>The syntax looks quite similar to dplyr and the versatility of interchangeable backends is remarkable. In the first version of this article, ibis was lacking in documentation and had some rough edges in the API, but these were improved in the meantime.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>It’s not a clear-cut choice. None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with">tidy evaluation</a>, letting users refer to columns in a data frame by their names (<code>colname</code>) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like <code>{{ }}</code> and <code>:=</code>.</p>
+<p>My appreciation for dplyr (and the closely associated tidyr) grew during this research. Not only is it a widely accepted standard like pandas, it can also be used as a translation layer for backends like SQL databases (including duckdb), data.table, and Spark. All while having the most elegant and flexible syntax available.</p>
+<p>Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. I find the use of an index inconvenient, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.</p>
+<p>Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.</p>
+<p>Related articles:</p>
+<ul>
+<li><a href="https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/">Polars: the fastest DataFrame library you’ve never heard of</a></li>
+<li><a href="https://mchow.com/posts/2020-02-11-dplyr-in-python/">What would it take to recreate dplyr in python?</a></li>
+<li><a href="https://mchow.com/posts/pandas-has-a-hard-job/">Pandas has a hard job (and does it well)</a></li>
+<li><a href="https://bensstats.wordpress.com/2021/09/14/pythonmusings-6-dplyr-in-python-first-impressions-of-the-siuba-小巴-module/">dplyr in Python? First impressions of the siuba module</a></li>
+<li><a href="https://towardsdatascience.com/an-overview-of-pythons-datatable-package-5d3a97394ee9">An Overview of Python’s Datatable package</a></li>
+<li><a href="https://news.ycombinator.com/item?id=24531085">Discussion of DuckDB on Hacker News</a></li>
+<li><a href="https://news.ycombinator.com/item?id=29584698">Discussion of Polars on Hacker News</a></li>
+<li><a href="https://hakibenita.com/sql-for-data-analysis">Practical SQL for Data Analysis</a></li>
+</ul>
+<p>Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><a href="imprint.html">Imprint</a> | This website does not use cookies.</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
