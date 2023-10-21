@@ -1,0 +1,306 @@
+---
+title: "Dataset Size vs. Label Correctness: What is more important for training a model?"
+author: "Paul Simmering"
+date: "2023-10-22"
+categories: ["machine learning"]
+image: "image.png"
+---
+
+Human labeled data is a common source of training data for machine learning models. However, the quality of the labels can vary greatly, whether due to different interpretations of the task by different labelers, the inherent difficulty of the task or hasty labeling.
+
+For an organization looking to improve a model, they may either choose to re-label part of the data or collect more data. But how can they decide which option is better? I trained the same model 100 times on different amounts of data with different amounts of label noise to find out.
+
+I'll use the IMDB movie review dataset as an example and train a transformer model to predict the sentiment of a movie review. To illustrate the tradeoffs between label correctness and dataset size, I'll artificially introduce label noise into the dataset and then compare the performance of models trained on different amounts of data with different amounts of label noise.
+
+This article loosely follows the [HuggingFace tutorial](https://huggingface.co/course/chapter1/3?fw=pt) on training a sentiment classifier, with the addition of the dataset size and label noise experiments.
+
+## Quick overview of the IMDB Movie Review Dataset
+
+It's a dataset of 50,000 movie reviews from [IMDB](https://www.imdb.com), labeled as positive (1) or negative (0). The dataset is split into 25,000 training and 25,000 test reviews. Let's load it from [HuggingFace](https://huggingface.co/datasets/imdb) and have a look:
+
+```{python}
+# | warnings: false
+from datasets import load_dataset
+
+imdb = load_dataset("imdb")
+imdb["train"].to_pandas().head(3)
+```
+
+And the balanced label distribution in the training set:
+
+```{python}
+imdb["train"].to_pandas()["label"].value_counts()
+```
+
+## Setup: Dataset size and label noise
+
+### Experiment grid
+
+The next step is to define a grid of combinations of dataset size and label noise. As the actual accuracy achieved isn't the main point of this experiment, and many models have to be trained, I'll not use the full dataset. The dataset size will range from 1000 to 10,000 and the label noise (the percentage of labels that are flipped) will range from 0 to 25%.
+
+```{python}
+import numpy as np
+from itertools import product
+
+dataset_sizes = np.arange(1000, 10001, 1000)
+noise_levels = np.arange(0, 0.25, 0.025)
+
+combinations = list(product(dataset_sizes, noise_levels))
+print(f"Number of combinations: {len(combinations)}")
+```
+
+### Dataset subsampling
+
+To reduce compute time, I'll subsample the training dataset to 10,000 and the test dataset to 2,000, while maintaining the balanced label distribution.
+
+```{python}
+from datasets import concatenate_datasets, Dataset
+
+
+def subsample_hf_dataset(dataset: Dataset, max_size: int):
+    # Shuffle dataset
+    dataset = dataset.shuffle(seed=42)
+
+    # Separate datasets with labels 0 and 1
+    dataset_label_0 = dataset.filter(lambda example: example["label"] == 0)
+    dataset_label_1 = dataset.filter(lambda example: example["label"] == 1)
+
+    # Subsample datasets
+    subsampled_dataset_label_0 = dataset_label_0.select(range(max_size // 2))
+    subsampled_dataset_label_1 = dataset_label_1.select(range(max_size // 2))
+
+    # Concatenate subsampled datasets
+    return concatenate_datasets(
+        [subsampled_dataset_label_0, subsampled_dataset_label_1]
+    )
+
+
+imdb_train = subsample_hf_dataset(imdb["train"], 10000)
+imdb_test = subsample_hf_dataset(imdb["train"], 2000)
+
+```
+
+### Preprocessing
+
+The transformer model expects the input to be tokenized and encoded. I'll use the [DistilBERT tokenizer](https://huggingface.co/distilbert-base-uncased) for this.
+
+```{python}
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+
+
+def preprocess_function(examples):
+    return tokenizer(examples["text"], truncation=True)
+
+
+tokenized_train = imdb_train.map(preprocess_function, batched=True)
+tokenized_test = imdb_test.map(preprocess_function, batched=True)
+```
+
+Next, convert the datasets to PyTorch tensors and pad the sequences to the same length.
+
+```{python}
+from transformers import DataCollatorWithPadding
+
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+```
+
+### Make some noise
+
+To introduce label noise, I'll randomly flip the labels of a certain percentage of the training set. Again, I'll leave the balance of the labels intact.
+
+```{python}
+from random import sample, seed
+
+
+def flip_labels(dataset: Dataset, noise_level: float):
+    # make the operation deterministic
+    seed(42)
+
+    # get number of labels to flip
+    n = int(len(dataset) * noise_level)
+    n_by_class = n // 2
+
+    # get indices of labels to flip
+    neg_indices = [i for i, example in enumerate(dataset) if example["label"] == 0]
+    pos_indices = [i for i, example in enumerate(dataset) if example["label"] == 1]
+
+    selected_neg_indices = sample(neg_indices, n_by_class)
+    selected_pos_indices = sample(pos_indices, n_by_class)
+
+    # combine indices
+    indices_to_flip = selected_neg_indices + selected_pos_indices
+
+    # function to apply to flip the labels
+    def flip_labels_function(example, idx: int):
+        # flip the label if index is in the selected indices
+        # this is not the fastest way to do this, but it's easy to understand
+        if idx in indices_to_flip:
+            example["label"] = 1 if example["label"] == 0 else 0
+        return example
+
+    # apply function to flip the labels
+    return dataset.map(flip_labels_function, with_indices=True)
+
+
+```
+
+This function will be used later in a loop.
+
+## Training the model
+
+First, we download a pre-trained transformer model that has not been fine-tuned for sentiment classification yet. One of the most commonly used models is [DistilBERT](https://huggingface.co/distilbert-base-uncased), a smaller, more efficient version of [BERT](https://huggingface.co/bert-base-uncased).
+
+```{python}
+from transformers import AutoModelForSequenceClassification
+import torch
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    "distilbert-base-uncased", num_labels=2
+)
+```
+
+Next, let's the training arguments.
+
+```{python}
+from transformers import TrainingArguments
+
+train_args = TrainingArguments(
+    learning_rate=2e-5,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=16,
+    num_train_epochs=2,
+    weight_decay=0.01,
+    output_dir="./results",
+)
+```
+
+After training, we'll evaluate the model on the test set. The evaluation metric is accuracy.
+
+```{python}
+from datasets import load_metric
+
+
+def compute_metrics(eval_pred):
+    load_accuracy = load_metric("accuracy")
+
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    accuracy = load_accuracy.compute(predictions=predictions, references=labels)[
+        "accuracy"
+    ]
+    return {"accuracy": accuracy}
+
+
+```
+
+Finally, we have all the pieces to run the experiment. Let's put them together in an experiment function.
+
+```{python}
+from transformers import Trainer
+import time
+
+
+def train_and_evaluate(dataset_size: int, noise_level: float) -> dict:
+    train_sub = subsample_hf_dataset(tokenized_train, dataset_size)
+    train_sub = flip_labels(train_sub, noise_level)
+
+    trainer = Trainer(
+        model=model,
+        args=train_args,
+        train_dataset=train_sub,
+        eval_dataset=tokenized_test,
+        tokenizer=tokenizer,
+        data_collator=data_collator,
+        compute_metrics=compute_metrics,
+    )
+
+    train_start = time.time()
+    trainer.train()
+    train_time = time.time() - train_start
+
+    evaluation = trainer.evaluate()
+
+    evaluation.update(
+        {
+            "dataset_size": dataset_size,
+            "noise_level": noise_level,
+            "train_time": train_time,
+        }
+    )
+
+    return evaluation
+
+
+```
+
+We'll loop over all combinations of dataset size and label noise.
+
+Training so many models can take a while, so we'll add a progress bar. We'll also save the results to disk so we can stop and resume the experiment.
+
+```{python}
+from pathlib import Path
+from tqdm import tqdm
+import pandas as pd
+
+results_path = Path("./results.csv")
+if results_path.exists():
+    results = pd.read_csv(results_path)
+else:
+    results = pd.DataFrame()
+
+
+def check_if_already_trained(dataset_size: int, noise_level: float):
+    return any(
+        (results["dataset_size"] == dataset_size)
+        & (results["noise_level"] == noise_level)
+    )
+
+
+for dataset_size, noise_level in tqdm(combinations):
+    if check_if_already_trained(dataset_size, noise_level):
+        continue
+
+    evaluation = train_and_evaluate(dataset_size, noise_level)
+
+    results = pd.concat([results, pd.DataFrame([evaluation])])
+
+    with open(results_path, "w") as f:
+        pd.DataFrame(results).to_csv(f, index=False)
+```
+
+## Results
+
+```{python}
+import plotly.express as px
+
+df = pd.read_csv(results_path)
+
+df["noise_level"] = df["noise_level"] * 100
+
+fig = px.density_heatmap(
+    df,
+    x="dataset_size",
+    y="noise_level",
+    z="eval_accuracy",
+    color_continuous_scale="Viridis",
+    nbinsx=10,
+    nbinsy=10,
+    labels={
+        "eval_accuracy": "Accuracy",
+        "dataset_size": "Dataset size",
+        "noise_level": "Incorrect labels (%)",
+    },
+    title="Accuracy by dataset size and label noise",
+)
+
+fig.update_yaxes(tickformat=".0%")
+fig.update_coloraxes(
+    colorbar_title="Accuracy",
+)
+
+fig.show()
+```
+
+## Conclusion
