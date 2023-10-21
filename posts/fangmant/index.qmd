@@ -1,0 +1,230 @@
+---
+title: "FANGMANT: Tech stock analysis with pandas"
+excerpt: "An analysis of FANGMANT tech stock performance 2016-2021 with yfinance and pandas."
+slug: "fangmant"
+author: "Paul Simmering"
+date: "2021-12-27"
+categories: ["Python"]
+tags: ["Finance"]
+image: "image.jpg"
+---
+
+The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their respective markets. Other common acronyms are FANG, FAANG and FANGMAN.
+
+In this article, I'm analyzing their stock performance from 2016 to 2021.
+
+Disclaimer: This article is not financial advice. It's a data analysis for fun.
+
+## Download with yfinance
+
+[yfinance](https://github.com/ranaroussi/yfinance) is a Python package that downloads financial data from Yahoo! Finance. It does not require an API key or other authentication. It's meant for personal use and research.
+
+```{r, echo = FALSE}
+library(reticulate)
+library(reactable)
+library(echarts4r)
+```
+
+```{python}
+import yfinance as yf
+import pandas as pd
+import numpy as np
+from pathlib import Path
+```
+
+```{python tickers}
+tickers = [
+  "FB",   # Meta / Facebook
+  "AAPL", # Apple
+  "NFLX", # Netflix
+  "GOOG", # Alphabet / Google
+  "MSFT", # Microsoft
+  "AMZN", # Amazon
+  "NVDA", # Nvidia
+  "TSLA",  # Tesla,
+  "URTH" # MSCI World
+]
+```
+
+**Download historical prices from Yahoo! Finance by Ticker Symbol.**
+
+In addition to the FANGMANT Tickers, I added [URTH](https://finance.yahoo.com/quote/urth/) for the MSCI World, a broad index ETF that includes more than 1600 individual stocks from 23 developed countries. It also includes the FANGMANT stocks, along with the stocks of the companies with the highest market capitalization across all industries.
+
+The data is saved as a pickled pandas data frame, so it doesn't have to be downloaded again. The pickle format maintains the index and multi-level structure of the data frame, which would be lost in the CSV format.
+
+```{python download}
+# Save as a file to avoid having to download again
+data_path = Path("data.pkl")
+
+if data_path.is_file():
+  data_imported = pd.read_pickle(data_path)
+else: 
+  data_imported = yf.download(
+    tickers = " ".join(tickers),
+    period = "5y",
+    interval = "1d",
+    group_by = "ticker",
+    auto_adjust = True,
+    prepost = False,
+    threads = True,
+    proxy = None
+  )
+  
+  data_imported.to_pickle(data_path)
+  
+data_imported
+```
+
+The pandas data frame has multi-level columns. Each ticker symbol (FB, AAPL, ...) is a column which has the Open, High, Low and Close as sub-columns. This data structure is hard to work with. [StackOverflow](https://stackoverflow.com/a/63107801) conveniently has an answer to the exact issue. I went with the option of turning the wide data frame into a long data frame with a Ticker column.
+
+```{python long}
+data = data_imported.stack(level=0).rename_axis(["Date", "Ticker"]).reset_index(level=1)
+data
+```
+
+The [stack](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html) method puts first level (0) column names into the index. This pivots the data frame, going from a wide format (one row per day) to a long format (one row per day per ticker). [rename_axis](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename_axis.html) gives names to the index columns. [reset_index](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html) changes the custom index with two columns (Date and Ticker) to the default index, which is a DatetimeIndex on the Date column.
+
+```{python}
+data.index
+start_time = data.index[0]
+end_time = data.index[-1]
+```
+
+The first data point is at `r py$start_time` and the last one is at `r py$end_time`.
+
+## Returns
+
+Let's calculate the returns of each stock for each year. I'll use the Close prices for each day. I'll also add the [volatility](https://tinytrader.io/how-to-calculate-historical-price-volatility-with-python/) as a measure of investment risk.
+
+```{python agg_fun}
+def growth(series: pd.Series) -> float:
+  return series[-1]  / series[0] - 1
+
+def volatility(series: pd.Series, n_days: int = 252) -> pd.Series:
+  returns = np.log(series / series.shift(-1))
+  daily_std = np.std(returns)
+  std = daily_std * n_days ** 0.5
+  return(std)
+```
+
+```{python}
+aggregated = (data
+  .assign(Year = data.index.year)
+  .query("Year >= 2017")
+  .groupby(["Ticker", "Year"])
+  .agg(
+    growth = ("Close", growth),
+    volatility = ("Close", volatility),
+    trading_days = ("Close", "count"),
+    first = ("Close", "first"),
+    last = ("Close", "last"),
+    high = ("Close", "max"),
+    low = ("Close", "min")
+  )
+).reset_index()
+```
+
+I use the [reactable](https://glin.github.io/reactable/) R package to build an interactive results table as an htmlwidget. Thanks to [reticulate](https://rstudio.github.io/reticulate/), the handover from Python to R is seamless. The Python dataframe is available as `py$aggregated`. One small drawback: the R representation doesn't include the multi index created by the group by operation in Python, which is why I used `reset_index`.
+
+```{r growth_reactable}
+# Define function for conditional styling of cells
+colors <- function(value) {
+  if (value > 0) {
+    color <- "green"
+  } else if (value < 0) {
+    color <- "red"
+  } else {
+    color <- "#777"
+  }
+  list(color = color, fontWeight = "bold")
+}
+
+reactable(
+  data = py$aggregated,
+  compact = TRUE,
+  highlight = TRUE,
+  showSortable = TRUE,
+  defaultSorted = "Ticker",
+  columns = list(
+    growth = colDef(
+      name = "Growth", 
+      style = colors, 
+      format = colFormat(percent = TRUE, digits = 2)
+    ),
+    volatility = colDef(name = "Volatility", format = colFormat(digits = 2)),
+    trading_days = colDef(name = "Trading Days"),
+    last = colDef(name = "Last", format = colFormat(digits = 2)),
+    first = colDef(name = "First", format = colFormat(digits = 2)),
+    high = colDef(name = "High", format = colFormat(digits = 2)),
+    low = colDef(name = "Low", format = colFormat(digits = 2))
+  ),
+  columnGroups = list(
+    colGroup(
+      name = "Stock Price in USD", 
+      columns = c("first", "last", "high" ,"low")
+    )
+  )
+)
+```
+Sorting by year reveals that 2018 was a rather bad year for FANGMANT. Apple, Facebook, Nvidia and Google lost in value. But it wasn't universal: Amazon, Microsoft, Tesla and Netflix rose. The MSCI World took a 9.25% dive.
+
+## Stock performance over time
+
+To visualize the stock developments over time, they have to be scaled to the same initial level. Otherwise, all we'd see is the difference in the price of each individual stock.
+
+First, I export the data to R.
+
+```{python}
+data_chart = (data
+  .filter(items = ["Ticker", "Date", "Close"])
+  .reset_index()
+)
+```
+
+The grouped mutate operation is much easier to do in dplyr than in pandas.
+
+For visualization, I use [echarts4r](https://echarts4r.john-coene.com), which I wrote about in a [previous article](/blog/echarts4r).
+
+```{r}
+py$data_chart |>
+  group_by(Ticker) |>
+  dplyr::mutate(Close = Close / Close[1]) |>
+  e_charts(x = Date) |>
+  e_line(serie = Close, symbol = "none") |>
+  e_tooltip(trigger = "axis") |>
+  e_axis_labels(y = "Value (indexed)")
+```
+
+**Click on the Ticker names to hide individual series. This rescales the axes and allows more detailed views of all time series.**
+
+Tesla had the strongest performance, thanks to the amazing 720% growth in 2020. The second winner is Nvidia, which recently experience a strong rise. The MSCI World grew at a comparatively stop but steady pace, yet still reached 204% of its initial valuation.
+
+## Growth vs volatility
+
+Stronger growth opportunities typically come at the cost of increased risk. To check how true this is among FANGMANT and the MSCI World as a reference, I plot the yearly returns and volatilities in a scatterplot.
+
+```{r scatter}
+py$aggregated |>
+  dplyr::mutate(type = ifelse(Ticker == "URTH", "MSCI World ETF", "Individual FANGMANT stock")) |>
+  group_by(type) |>
+  e_charts(x = growth) |>
+  e_scatter(
+    serie = volatility,
+    symbol_size = 10
+  ) |>
+  e_axis_labels(x = "Return", y = "Volatility")
+```
+
+In line with theory, the individual stocks have higher volatility than the ETF. There's a tradeoff between returns and stability. 
+
+According to the classic [Markowitz model](https://en.wikipedia.org/wiki/Markowitz_model), I'd expect that an analysis that includes more stocks (not just the most famous tech stocks) would show that the average return of stocks is the same as that of the MSCI World, but at a higher volatility. Therefore, it would be better to hold the MSCI World than picking random individual stocks as it is at the [efficient frontier](https://en.wikipedia.org/wiki/Efficient_frontier).
+
+## Conclusion
+
+FANGMANT performed amazingly well in the last 5 years and outperformed the MSCI world. While the MSCI World doubled in 5 years, Facebook, the worst of the FANGMANT performers, tripled in value. 
+
+Contrary to other industries, FANGMANT and the tech stocks as a whole were not affected by the pandemic. This also stabilized the MSCI World, which had a dip but recovered within months.
+
+Will FANGMANT continue to outperform the MSCI World? Hundreds of thousands of analysts are trying to figure it out. According to the [efficient market hypothesis](https://en.wikipedia.org/wiki/Efficient-market_hypothesis), all information is already priced in, including expected future developments (new inventions, products, management practices, consumption cycles). An investor without inside information can't predict the future price. But the theory isn't without [criticism](https://en.wikipedia.org/wiki/Efficient-market_hypothesis#Criticism).
+
+Photo by <a href="https://unsplash.com/@nampoh?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Maxim Hopman</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

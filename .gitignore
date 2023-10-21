@@ -1,4 +1,6 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+_environment*
+/.quarto/
+/_site/
+/_*.local
+.venv
+.DS_Store

@@ -1,0 +1,17 @@
+---
+title: "texttunnel Python package texttunnel"
+date: 2023-09-21
+author: "Paul Simmering and Paavo Huoviala"
+draft: false
+categories:
+  - Python
+  - LLMs
+  - Machine Learning
+image: "image.png"
+---
+
+texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.
+
+The package is MIT-licensed and available on [Github](https://github.com/qagentur/texttunnel) and [PyPi](https://pypi.org/project/texttunnel/).
+
+An introduction with a business use case is available on the [Q Insight Agency blog](https://teamq.de/blog/144/texttunnel).

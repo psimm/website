@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "website"
+version = "0.1.0"
+description = ""
+authors = ["Paul Simmering <paul.simmering@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.5"
+nbformat = "^5.9.2"
+black = "^23.10.0"
+polars = "^0.19.9"
+ibis = "^3.2.0"
+siuba = "^0.4.4"
+duckdb = "^0.9.1"
+yfinance = "^0.2.31"
+ibis-framework = {extras = ["duckdb"], version = "^7.0.0"}
+nbclient = "^0.8.0"
+ipykernel = "^6.25.2"
+plotly = "^5.17.0"
+scipy = "^1.11.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

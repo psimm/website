@@ -1,0 +1,21 @@
+---
+title: "Human and AI Decision Making in a Game of Innovation and Imitation"
+date: 2018-09-13
+event: "Research Plus by DGOF"
+event_url: https://www.marktforschung.de/aktuelles/marktforschung/research-plus-in-koeln/
+author: "Paul Simmering"
+draft: false
+categories:
+  - symposium
+image: "image.png"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [Research Plus by DGOF](https://www.marktforschung.de/aktuelles/marktforschung/research-plus-in-koeln/)|
+| 📅 Date | 13 September 2018 |
+| 📍 Location | Cologne, Germany |
+| 📥 Materials | [Slides (PDF)](researchplus2018.pdf) |
+| 💻 App | [Business Game](https://psimm.shinyapps.io/business_game) |
+
+A presentation of the research project I conducted at Aalborg University for my [master thesis](/projects/masterthesis/). I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI's lack of reciprocity, and potential problems in value alignment.

@@ -1,0 +1,24 @@
+project:
+  type: website
+
+website:
+  title: "Paul Simmering"
+  search: true
+  navbar:
+    right:
+      - about.qmd
+      - index.qmd
+      - projects.qmd
+      - talks.qmd
+      - icon: github
+        href: https://github.com/psimm
+      - icon: twitter
+        href: https://twitter.com/paul_simmering
+      - icon: linkedin
+        href: https://www.linkedin.com/in/paulsimmering
+  page-footer: |
+    <a href="imprint.html">Imprint</a> | This website does not use cookies.
+format:
+  html:
+    theme: simplex
+    css: styles.css

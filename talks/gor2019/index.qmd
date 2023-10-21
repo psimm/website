@@ -1,0 +1,21 @@
+---
+title: "R Shiny for Interactive Data Visualization – A Case Study"
+date: 2019-03-08
+author: "Paul Simmering"
+location: "Cologne, Germany"
+categories:
+  - conference
+image: "image.png"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [General Online Research 2019](https://www.dgof.de/event/general-online-research-2019-gor-19/)|
+| 📅 Date | 8 March 2019 |
+| 📍 Location | Cologne, Germany |
+| 📥 Materials | [Slides (PDF)](gor_2019_simmering.pdf) |
+| 💻 App | [Patent Explorer](https://psim.shinyapps.io/patent) |
+
+An overview of R Shiny by example of an app I developed for display patent statistics
+
+![Patent Explorer](image.png)

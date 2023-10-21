@@ -1,0 +1,23 @@
+---
+title: "StakeX - Organizational Networks from Web Research"
+date: 2020-09-28
+author: "Thomas Perry and Paul Simmering"
+location: "Heidelberg, Germany"
+categories:
+  - symposium
+draft: false
+image: "image.jpg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [Content Meets Structure 2020](https://www.gesis.org/forschung/tagungen-und-konferenzen/veranstaltungsarchiv/konferenzen/content-meets-structure) |
+| 📅 Date | 28 September 2020 |
+| 📍 Location | Heidelberg, Germany |
+| 📥 Materials | [Slides (PDF)](perry_simmering_comes_2020.pdf) |
+| 🌐 App | [StakeX](https://teamqapp.de/shiny/stakex_operativ/) |
+
+Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
+
+Photo by <a href="https://unsplash.com/@alinnnaaaa?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Alina Grubnyak</a> on <a href="https://unsplash.com/s/photos/network?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
