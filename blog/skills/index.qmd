@@ -1,7 +1,6 @@
 ---
 title: "Investing in data science skills for the long run"
 excerpt: "Future-proof your career by learning skills that last"
-slug: "skills"
 author: "Paul Simmering"
 date: "2023-01-09"
 categories: ["advice"]

@@ -1,7 +1,6 @@
 ---
 title: "Data frame wars: Choosing a Python dataframe library as a dplyr user"
 excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the perspective of a dplyr user"
-slug: "dataframes"
 author: "Paul Simmering"
 date: "2021-12-20"
 categories: ["R", "Python"]

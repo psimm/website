@@ -1,6 +1,5 @@
 ---
 title: "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow"
-slug: "ai-assistants"
 author: "Paul Simmering"
 date: "2023-04-10"
 categories: ["productivity"]
