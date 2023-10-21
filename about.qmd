@@ -7,6 +7,7 @@ about:
     - icon: twitter
       text: Twitter
       href: https://twitter.com/paul_simmering
+
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/paulsimmering
@@ -20,8 +21,15 @@ about:
 
 Hi! I'm Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.
 
-I’m the inventor and lead developer of [Cosmention](https://cosmention.com), an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm.
+I’m the inventor and lead developer of [Cosmention](https://cosmention.com), an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm Drogerie Markt.
 
 The best way to contact me is via email: [paul.simmering@gmail.com](mailto:paul.simmering@gmail.com).
+
+What other than data science? Here are some things I enjoy:
+
+- Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
+- Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/projects).
+- Parks and gardens, especially Japanese gardens.
+- [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run.
 
 This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website).
