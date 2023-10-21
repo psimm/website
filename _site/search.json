@@ -312,7 +312,7 @@
     "href": "blog/llm-future/index.html#llm-agents",
     "title": "Future Directions for Large Language Models",
     "section": "LLM Agents",
-    "text": "LLM Agents\nCurrently common uses of LLMs primarily treat the model as a source of information and a copywriter. A more powerful approach is to treat the model as an agent that can interact with the world. AutoGPT is a framework for this approach."
+    "text": "LLM Agents\nCurrently common uses of LLMs primarily treat the model as a source of information and copywriter.\nA more powerful approach is to treat the model as an agent with a task. AutoGPT and BabyAGI are frameworks for this.\nIn this approach, the LLM is part of a larger AI system:\n\nA human provides a directive\nThe directive is commited to memory, such as a text file or database\nThe LLM is called with the directive as input, along with the current state of the system and available choices\nThe LLM can call copies of itself recursively to work on subtasks (e.g. “look up a term on Wikipedia”, “find a photo on Unsplash”)\nThis continues until the task is achieved and the LLM returns a result\n\nThe combination of LLM reasoning, recursive calls, memory and the ability to call APIs makes this approach very powerful.\nHowever, real results have fizzled for these reasons:\n\nNever ending loops\nNeeding too much babysitting to be useful, basically doing the easy part of any task and leaving the hard part to humans\nProducing generic, lame results\nTrouble with parsing information on the web\n\nThe potential is incredible, but there’s still a lot of work to be done."
   },
   {
     "objectID": "blog/llm-future/index.html#function-calling",
@@ -333,7 +333,7 @@
     "href": "blog/llm-future/index.html#multimodal-models",
     "title": "Future Directions for Large Language Models",
     "section": "Multimodal models",
-    "text": "Multimodal models\nThe addition of image recognition to GPT-4 has unlocked a new set of applications."
+    "text": "Multimodal models\nWhile model’s are hitting the limit on text, there’s still a massive amount of images, video and audio available on the internet waiting to be used for training. Multimodal models, meaning models that can process multiple types of data, are already here. The addition of image recognition to ChatGPT has unlocked a new level of capabilities, such as interpreting diagrams, assisting blind people or diagnosing repair issues."
   },
   {
     "objectID": "blog/llm-future/index.html#non-english-models",
@@ -347,21 +347,21 @@
     "href": "blog/llm-future/index.html#edge-computing-and-efficiency",
     "title": "Future Directions for Large Language Models",
     "section": "Edge computing and efficiency",
-    "text": "Edge computing and efficiency\nThe deployment of LLMs is currently held back by their compute demands. The smaller versions with 7B parameters can be squeezed onto a single A100 GPU with 40GB of memory, but the larger version with 70B parameters requires multiple GPUs. So typically LLMs are deployed on cloud servers rather than on edge devices.\nMany developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, pruning, and distillation. Thanks to those, it’s already possible to run Llama 2 on a recent MacBook, though it’s slow to predict tokens.\nI expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops. Apple’s recent announcement of better on-device text prediction in iOS 17 using a transformer model is an example of this trend, though the model isn’t large enough to be considered an LLM.\nThis brings down cost, latency, and privacy concerns. It also makes it possible to deploy LLMs in places where internet access is limited or non-existent."
+    "text": "Edge computing and efficiency\nThe deployment of LLMs is currently held back by their compute demands. Running models like Llama 2 7B requires a top of the line GPU and larger models like Llama 2 70B require a GPU cluster. So typically LLMs are deployed on cloud servers rather than on edge devices.\nDevelopers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, sparse matrices, pruning, and distillation. The MIT HAN lab in particular is taking a lead on this.\nI expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops, at lower cost and without the privacy concerns of the cloud. Apple’s recent announcement of better text prediction in iOS 17 by using a transformer model on device is an example of this trend, though the model isn’t large enough to be considered an LLM."
   },
   {
     "objectID": "blog/llm-future/index.html#efficient-training-of-specialized-models",
     "href": "blog/llm-future/index.html#efficient-training-of-specialized-models",
     "title": "Future Directions for Large Language Models",
     "section": "Efficient training of specialized models",
-    "text": "Efficient training of specialized models\nIn Against LLM maximalism, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks."
+    "text": "Efficient training of specialized models\nIn Against LLM maximalism, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks, citing speed, cost, observeability, lack of modularity and measurement difficulties as reasons. He argues that smaller models trained on specialized data are often a better choice.\nIn economic terms, running a 1.7T parameter model on a GPU cluster when a 10M parameter model on a CPU would do the job is wasteful.\nBut it’s not an either or situation: LLMs can be used to accelerate the training of specialized models. I’m excited about Explosion AI’s development on integrating LLM produced labels into labeling with Prodigy and expect to see similar developments in other labeling tools.\nRather than LLMs replacing specialized models, I expect to see them used to accelerate the training of specialized model and an overall increase in the number of models in production."
   },
   {
     "objectID": "blog/llm-future/index.html#better-assistants",
     "href": "blog/llm-future/index.html#better-assistants",
     "title": "Future Directions for Large Language Models",
     "section": "Better assistants",
-    "text": "Better assistants\nIntegration of language models in wide-ranging user-facing applications will become more seamless. In particular, I’m waiting for Apple to make Siri more useful by integrating an LLM.\nChatGPT Plus is likely the most powerful LLM available to typical end users that don’t code."
+    "text": "Better assistants\nSiri feels rather underpowered compared to ChatGPT Plus. I expect that to change in the next few years so that phone voice assistants will be able to reliably do more than just set a timer or call a contact.\nWhat sets Siri, Alexa and Google Assistant apart from ChatGPT is that they can control the phone. They can open apps, make calls, and send messages and are deeply integrated into the phone’s operating system. While ChatGPT, especially ChatGPT Plus is much smarter, it’s trapped in an app.\nA phone assistant with ChatGPT’s smarts, integration with the phone’s operating system and the ability to call functions would be a game changer.\nIn addition to assistants, I expect to see LLMs become a standard part of many apps, as Microsoft 365, Notion, Photoshop and others have done."
   },
   {
     "objectID": "blog/llm-future/index.html#seamless-integration-in-software",
@@ -593,5 +593,26 @@
     "title": "About",
     "section": "",
     "text": "Hi! I’m Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.\nI’m the inventor and lead developer of Cosmention, an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm Drogerie Markt.\nThe best way to contact me is via email: paul.simmering@gmail.com.\nWhat other than data science? Here are some things I enjoy:\n\nDesign and typography. Some examples: Berkeley Graphics, iA, Stripe’s website.\nContemporary art, particularly generative art and art inspired by geometry. My favorites are Kjetil Golid, Owen Pomery and Reuben Wu.\nParks and gardens, especially Japanese gardens.\nEuro-style games, Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run.\n\nThis website is built with Quarto. The source is available on Github."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#a-ceiling-on-the-bigger-is-better-trend",
+    "href": "blog/llm-future/index.html#a-ceiling-on-the-bigger-is-better-trend",
+    "title": "Future Directions for Large Language Models",
+    "section": "A ceiling on the “bigger is better” trend",
+    "text": "A ceiling on the “bigger is better” trend\nGPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters. Will the bigger = better and more data = better trends continue? In text, the answer is probably no. GPT-4 was trained on almost all human text available on the internet. In terms of volume, there’s not much more text to train on.\nAn alternative to getting even more text is to improve the quality of the text used for training. Common crawl, a major component of GPT-4’s training data, is full of spam and low quality content. With less noise, models may also need fewer parameters to achieve the same performance."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#multilingual-or-non-english-llms",
+    "href": "blog/llm-future/index.html#multilingual-or-non-english-llms",
+    "title": "Future Directions for Large Language Models",
+    "section": "Multilingual or non-English LLMs",
+    "text": "Multilingual or non-English LLMs\nCurrent LLMs work best on English text. While other languages work decently with OpenAI’s GPT models, performance in open source models like Llama 2 is lacking.\nThe economic incentive to train LLMs on non-English text is hugel As an example, I’m excited about the recent publication of LeoLM, a German LLM and the ongoing AYA project by Cohere.\nBesides the models themselves, tokenization could benefit from a multilingual approach. As the majority of training data is in English and other languages that use the English alphabet, tokenization is optimized for those languages. This leads to a situation where Chinese, Arabic and other languages that use different alphabets are tokenized less efficiently and at higher cost."
+  },
+  {
+    "objectID": "blog/llm-future/index.html#calling-apis",
+    "href": "blog/llm-future/index.html#calling-apis",
+    "title": "Future Directions for Large Language Models",
+    "section": "Calling APIs",
+    "text": "Calling APIs\nBy calling APIs, LLMs can become actors in the real world.\nSome examples of what can be done via API calls:\n\nProvision a server\nSend an email\nPost a tweet\nBuy a product and have it shipped\nOperate a smart home device (lights, thermostat, lock, etc.)\nControl a robot (vacuum, drone, etc.)\nSend a task to a human worker via a crowdsourcing platform\n\nAs capabilities expand, the need for policy and regulation on this topic rises."
   }
 ]
