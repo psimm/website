@@ -466,7 +466,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "Twitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
+    "text": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nproductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nadvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\npolars\n\n\nplotly\n\n\nTidyTuesday\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -474,5 +474,47 @@
     "title": "About",
     "section": "",
     "text": "Hi! I’m Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.\nI’m the inventor and lead developer of Cosmention, an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm.\nThe best way to contact me is via email: paul.simmering@gmail.com.\nThis website is built with Quarto. The source is available on Github."
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html",
+    "href": "posts/ai-assistants/index.html",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "",
+    "text": "AI assistants like Github Copilot and ChatGPT promise breakthrough productivity improvements for developers. In this article, I’ll explore how these tools can be used in a data science workflow and evaluate their usefulness across 5 real-world tasks.\nThe main takeaway: Assistants greatly speed up coding using common libraries, but are less helpful for other tasks that go into a successful project."
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html#my-setup-vscode-raycast-ai",
+    "href": "posts/ai-assistants/index.html#my-setup-vscode-raycast-ai",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "My setup: VSCode + Raycast AI",
+    "text": "My setup: VSCode + Raycast AI\nBefore we dive into the tasks, let me describe my setup. I use VSCode with Copilot and GPT-4 via Raycast AI. Raycast AI provides a chat box that connects to GPT-4 and has a shortcut and one-tap copy of suggested code. I also have some shortcuts in Raycast AI to speed up my workflow:\n\nFind bugs in my code\nImprove this code\nExplain code step by step\n\n\n\n\nRaycast Commands\n\n\nAs an example, running “Improve this code” on a selection of text will send it to GPT-4, with the instruction\n\nCheck the following code and give advice on how to make it more reliable, secure and easy to read.\n\n\n\n\nRaycast Commands Detail"
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html#example-tasks",
+    "href": "posts/ai-assistants/index.html#example-tasks",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "Example tasks",
+    "text": "Example tasks\nAs a data scientist on a small team, I wear many hats, from machine learning engineer to cloud architect. Consequently, I often have to work with languages, libraries and tools that I don’t have much experience with.\nHere are 5 tasks I worked on in the last few weeks and my evaluation of how much AI tools have helped me.\n\n1. Writing a Python script to evaluate a model\nThe first task was to write a Python script to evaluate Azure’s PII redaction API on a dataset of social media posts containing PII. The task mainly involved writing pandas code to load data and calculate metrics. Copilot was helpful in speeding up the process by suggesting entire sections of code that I could use without modifications.\nUsefulness: 5/5\n\n\n\nPandas\n\n\n\n\n2. Defining AWS infrastructure using Terraform\nNext, a colleague and I set up a database migration using AWS Database Migration Service (DMS), set up via Terraform. I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don’t actually exist in AWS DMS. Overall, it was more confusing than helpful.\nUsefulness: 1/5\n\n\n3. Creating, testing and documenting models in dbt\nI created, tested, and documented models in dbt. Copilot made writing SQL for the models faster and was especially good at speeding up my workflow of documenting those models in the schema.yml files. However, since it didn’t know the database schema, it hallucinated tables and columns that don’t exist. GPT-4 was useful for thinking through the deployment of dbt-core on AWS ECS, especially the use of environment variables and the project.yml config file.\nUsefulness: 3/5\n\n\n4. Adjusting a web scraper in JavaScript\nFor the next task, I heavily relied on GPT-4. I had to adjust a web scraper to cover a different path of the target website. The scraper is written in JavaScript, which I’m not familiar with. Here, the “explain step-by-step” shortcut was helpful. GPT-4 was like an expert JS dev patiently explaining the code line by line. However, GPT-4 couldn’t see the target website and didn’t have access to the website’s html. Copying it over was tedious. I found it easier to use the SelectorGadget Chrome extension to find relevant CSS selectors.\nUsefulness: 4/5\n\n\n5. Choosing a dashboard tool\nA new project required building a dashboard, and it was my task to evaluate tools based on features, usability, and price. I tested many GUI-based tools (Metabase, Superset, Tableau, PowerBI and others). GPT-4 could list relevant decision criteria but couldn’t make the decision for me. It wasn’t useful as an information source because of the knowledge cutoff in 2021.\n\n\n\nDashboard"
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html#takeaways",
+    "href": "posts/ai-assistants/index.html#takeaways",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "10 Takeaways",
+    "text": "10 Takeaways\n\nCopilot and GPT-4 are at their best helping to write code in commonly used libraries like pandas.\nAs text-based models, Copilot and GPT-4 provide better help for code (text) based apps than GUIs.\nAI assistants are at their best in small projects with a low number of files, ideally just one notebook.\nThey are ideal for working on simple tasks in languages that you’re not familiar with.\nThe models don’t have the context of your project, company, and client, which are critical for more strategic decisions.\nThere’s no good tooling for showing GPT-4 data frames or tables in SQL. This limitation means it can’t contribute to the interpretation.\nThe 2021 training data cutoff for GPT-4 diminishes its usefulness for information retrieval.\nRubber duck debugging is an effective technique for overcoming blocks. Now we have v2 with a duck that can reply. Chatting with GPT-4 about programming challenges helped me.\nLLMs are best for delegating details, so you can focus on the bigger picture. Knowing what and how to ask is critical and being aware of typical sources of hallucinations.\nGPT-4 currently can’t run a non-trivial data science project by itself. It’s more independent than Copilot but not good enough to be an autopilot."
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html#differentiating-yourself-as-a-data-scientist-in-an-ai-future",
+    "href": "posts/ai-assistants/index.html#differentiating-yourself-as-a-data-scientist-in-an-ai-future",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "Differentiating yourself as a data scientist in an AI-future",
+    "text": "Differentiating yourself as a data scientist in an AI-future\nSo what sets a successful data scientist apart in a world with powerful AI assistants?\n\nUnderstanding of the domain and business\nBuilding trust with clients\nIdentifying the right questions to work on and the best format to report answers\nSystems design and overview of the project\nDetect hallucinations of AI models\n\nKnowing how to code is not enough to differentiate oneself."
+  },
+  {
+    "objectID": "posts/ai-assistants/index.html#early-on-the-long-arc-of-innovation",
+    "href": "posts/ai-assistants/index.html#early-on-the-long-arc-of-innovation",
+    "title": "A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow",
+    "section": "Early on the long arc of innovation",
+    "text": "Early on the long arc of innovation\n\n\n\nLong Arc of Innovation\n\n\nWhile the hype it peaking, it’s still early days for the technology. Today’s tools are like black and white TV in the 1960s and the future will bring tools equivalent to OLED 4k TVs. In the next few months already, we’ll see better models thanks to:\n\nLarger context windows enable models to take more information into account: GPT-4 supports up to 32k tokens, whereas GPT-3.5 was limited to 4k\nPlugins and chains via ChatGPT plugins and the langchain library. These give models access to the browser, Wolfram Alpha and more\nLet models store context information and access data via LlamaIndex Integration into more developer tasks, such as pull requests via Github Copilot X\nAgents that recursively call GPT-4, see Auto-GPT"
   }
 ]

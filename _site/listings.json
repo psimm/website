@@ -25,6 +25,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/ai-assistants/index.html",
       "/posts/twitter_collector/index.html",
       "/posts/devskill/index.html",
       "/posts/yarn/index.html",
