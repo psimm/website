@@ -11,7 +11,889 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Fri, 20 Oct 2023 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 21 Oct 2023 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Dataset Size vs. Label Correctness: What is more important for training a model?</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/correctness-vs-size/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Data labeled by analysts is a common source of training data for machine learning models. However, the quality of the labels can vary greatly, whether due to different interpretations of the task by different analysts, the inherent difficulty of the task or careless work.</p>
+<p>For an organization looking to improve a model, they may either choose to re-label part of the data or collect more data. But how can they decide which option is better? I trained the same model 100 times on different number of examples with different amounts of label noise to find out.</p>
+<p>I’ll use the IMDB movie review dataset as an example and train a transformer model to predict the sentiment of a movie review. This article loosely follows the <a href="https://huggingface.co/course/chapter1/3?fw=pt">HuggingFace tutorial</a> on training a sentiment classifier.</p>
+<section id="quick-overview-of-the-imdb-movie-review-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="quick-overview-of-the-imdb-movie-review-dataset">Quick overview of the IMDB Movie Review Dataset</h2>
+<p>It’s a dataset of 50,000 movie reviews from <a href="https://www.imdb.com">IMDB</a>, labeled as positive (1) or negative (0). The dataset is split into 25,000 training and 25,000 test reviews. Let’s load it from <a href="https://huggingface.co/datasets/imdb">HuggingFace</a> and have a look:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> load_dataset</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">imdb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_dataset(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"imdb"</span>)</span>
+<span id="cb1-4">imdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>].to_pandas().head(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">text</th>
+<th data-quarto-table-cell-role="th">label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>I rented I AM CURIOUS-YELLOW from my video sto...</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>"I Am Curious: Yellow" is a risible and preten...</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>If only to avoid making this type of film in t...</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>And the balanced label distribution in the training set:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">imdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>].to_pandas()[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>].value_counts()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>label
+0    12500
+1    12500
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="setup-dataset-size-and-label-noise" class="level2">
+<h2 class="anchored" data-anchor-id="setup-dataset-size-and-label-noise">Setup: Dataset size and label noise</h2>
+<section id="experiment-grid" class="level3">
+<h3 class="anchored" data-anchor-id="experiment-grid">Experiment grid</h3>
+<p>The next step is to define a grid of combinations of dataset size and label noise. As the actual accuracy achieved isn’t the main point of this experiment, and many models have to be trained, I’ll not use the full dataset. The dataset size will range from 1000 to 5,000 examples and the label noise (the percentage of labels that are flipped) will range from 0 to 25%.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb4-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> itertools <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> product</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">dataset_sizes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.arange(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5001</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>)</span>
+<span id="cb4-5">noise_levels <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.arange(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.025</span>)</span>
+<span id="cb4-6"></span>
+<span id="cb4-7">combinations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(product(dataset_sizes, noise_levels))</span>
+<span id="cb4-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Number of combinations: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(combinations)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of combinations: 50</code></pre>
+</div>
+</div>
+</section>
+<section id="dataset-subsampling" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-subsampling">Dataset subsampling</h3>
+<p>On each run, I’ll subsample the training set to the desired size. To keep the balance of the labels intact, I’ll subsample the positive and negative examples separately and then concatenate them. To reduce time spent on evaluating the model, I’ll also subsample the test set to 2,000 examples.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> concatenate_datasets, Dataset</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"></span>
+<span id="cb6-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> subsample_hf_dataset(dataset: Dataset, max_size: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>):</span>
+<span id="cb6-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Shuffle dataset</span></span>
+<span id="cb6-6">    dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset.shuffle(seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb6-7"></span>
+<span id="cb6-8">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Separate datasets with labels 0 and 1</span></span>
+<span id="cb6-9">    dataset_label_0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">lambda</span> example: example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb6-10">    dataset_label_1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">lambda</span> example: example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb6-11"></span>
+<span id="cb6-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Subsample datasets</span></span>
+<span id="cb6-13">    subsampled_dataset_label_0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset_label_0.select(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(max_size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb6-14">    subsampled_dataset_label_1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset_label_1.select(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(max_size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb6-15"></span>
+<span id="cb6-16">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Concatenate subsampled datasets</span></span>
+<span id="cb6-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> concatenate_datasets(</span>
+<span id="cb6-18">        [subsampled_dataset_label_0, subsampled_dataset_label_1]</span>
+<span id="cb6-19">    )</span>
+<span id="cb6-20"></span>
+<span id="cb6-21"></span>
+<span id="cb6-22">imdb_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> subsample_hf_dataset(imdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>], <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(dataset_sizes))</span>
+<span id="cb6-23">imdb_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> subsample_hf_dataset(imdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>], <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span>)</span></code></pre></div>
+</div>
+</section>
+<section id="preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing">Preprocessing</h3>
+<p>The transformer model expects the input to be tokenized and encoded. I’ll use the <a href="https://huggingface.co/distilbert-base-uncased">DistilBERT tokenizer</a> for this.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> AutoTokenizer</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">tokenizer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> AutoTokenizer.from_pretrained(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"distilbert-base-uncased"</span>)</span>
+<span id="cb7-4"></span>
+<span id="cb7-5"></span>
+<span id="cb7-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> preprocess_function(examples):</span>
+<span id="cb7-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> tokenizer(examples[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>], truncation<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb7-8"></span>
+<span id="cb7-9"></span>
+<span id="cb7-10">tokenized_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> imdb_train.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(preprocess_function, batched<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb7-11">tokenized_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> imdb_test.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(preprocess_function, batched<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+</div>
+<p>Next, convert the datasets to PyTorch tensors and pad the sequences to the same length.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> DataCollatorWithPadding</span>
+<span id="cb8-2"></span>
+<span id="cb8-3">data_collator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataCollatorWithPadding(tokenizer<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tokenizer)</span></code></pre></div>
+</div>
+</section>
+<section id="make-some-noise" class="level3">
+<h3 class="anchored" data-anchor-id="make-some-noise">Make some noise</h3>
+<p>To introduce label noise, I’ll randomly flip the labels of a certain percentage of the training set. Again, I’ll leave the balance of the labels intact.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> sample, seed</span>
+<span id="cb9-2"></span>
+<span id="cb9-3"></span>
+<span id="cb9-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> flip_labels(dataset: Dataset, noise_level: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>):</span>
+<span id="cb9-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make the operation deterministic</span></span>
+<span id="cb9-6">    seed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb9-7"></span>
+<span id="cb9-8">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get number of labels to flip</span></span>
+<span id="cb9-9">    n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(dataset) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> noise_level)</span>
+<span id="cb9-10">    n_by_class <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb9-11"></span>
+<span id="cb9-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get indices of labels to flip</span></span>
+<span id="cb9-13">    neg_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i, example <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(dataset) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb9-14">    pos_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i, example <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(dataset) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb9-15"></span>
+<span id="cb9-16">    selected_neg_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sample(neg_indices, n_by_class)</span>
+<span id="cb9-17">    selected_pos_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sample(pos_indices, n_by_class)</span>
+<span id="cb9-18"></span>
+<span id="cb9-19">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># combine indices</span></span>
+<span id="cb9-20">    indices_to_flip <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> selected_neg_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> selected_pos_indices</span>
+<span id="cb9-21"></span>
+<span id="cb9-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># function to apply to flip the labels</span></span>
+<span id="cb9-23">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> flip_labels_function(example, idx: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>):</span>
+<span id="cb9-24">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flip the label if index is in the selected indices</span></span>
+<span id="cb9-25">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># this is not the fastest way to do this, but it's easy to understand</span></span>
+<span id="cb9-26">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> idx <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> indices_to_flip:</span>
+<span id="cb9-27">            example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb9-28">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> example</span>
+<span id="cb9-29"></span>
+<span id="cb9-30">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># apply function to flip the labels</span></span>
+<span id="cb9-31">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> dataset.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(flip_labels_function, with_indices<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+</div>
+<p>This function will be used later in a loop.</p>
+</section>
+</section>
+<section id="training-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="training-the-model">Training the model</h2>
+<p>First, we download a pre-trained transformer model that has not been fine-tuned for sentiment classification yet. One of the most commonly used models is <a href="https://huggingface.co/distilbert-base-uncased">DistilBERT</a>, a smaller, more efficient version of <a href="https://huggingface.co/bert-base-uncased">BERT</a>.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> AutoModelForSequenceClassification</span>
+<span id="cb10-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> torch</span>
+<span id="cb10-3"></span>
+<span id="cb10-4">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> AutoModelForSequenceClassification.from_pretrained(</span>
+<span id="cb10-5">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"distilbert-base-uncased"</span>, num_labels<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb10-6">)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Some weights of DistilBertForSequenceClassification were not initialized from the model checkpoint at distilbert-base-uncased and are newly initialized: ['pre_classifier.weight', 'pre_classifier.bias', 'classifier.weight', 'classifier.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.</code></pre>
+</div>
+</div>
+<p>Next, let’s set the training arguments.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> TrainingArguments</span>
+<span id="cb12-2"></span>
+<span id="cb12-3">train_args <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TrainingArguments(</span>
+<span id="cb12-4">    learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2e-5</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how fast the model learns</span></span>
+<span id="cb12-5">    per_device_train_batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many training examples are processed at once</span></span>
+<span id="cb12-6">    per_device_eval_batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many test examples are processed at once</span></span>
+<span id="cb12-7">    num_train_epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many times the model sees the training data</span></span>
+<span id="cb12-8">    weight_decay<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how much the model is penalized for being complex</span></span>
+<span id="cb12-9">    output_dir<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./results"</span>,</span>
+<span id="cb12-10">)</span></code></pre></div>
+</div>
+<p>After training, we’ll evaluate the model on the test set. The evaluation metric is accuracy.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> load_metric</span>
+<span id="cb13-2"></span>
+<span id="cb13-3"></span>
+<span id="cb13-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> compute_metrics(eval_pred):</span>
+<span id="cb13-5">    load_accuracy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_metric(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"accuracy"</span>)</span>
+<span id="cb13-6"></span>
+<span id="cb13-7">    logits, labels <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> eval_pred</span>
+<span id="cb13-8">    predictions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.argmax(logits, axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb13-9">    accuracy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_accuracy.compute(predictions<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>predictions, references<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>labels)[</span>
+<span id="cb13-10">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"accuracy"</span></span>
+<span id="cb13-11">    ]</span>
+<span id="cb13-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> {<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"accuracy"</span>: accuracy}</span></code></pre></div>
+</div>
+<p>Finally, we have all the pieces to run the experiment. Let’s put them together in an experiment function.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Trainer</span>
+<span id="cb14-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> time</span>
+<span id="cb14-3"></span>
+<span id="cb14-4"></span>
+<span id="cb14-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> train_and_evaluate(dataset_size: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, noise_level: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>:</span>
+<span id="cb14-6">    train_sub <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> subsample_hf_dataset(tokenized_train, dataset_size)</span>
+<span id="cb14-7">    train_sub <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> flip_labels(train_sub, noise_level)</span>
+<span id="cb14-8"></span>
+<span id="cb14-9">    trainer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Trainer(</span>
+<span id="cb14-10">        model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>model,</span>
+<span id="cb14-11">        args<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>train_args,</span>
+<span id="cb14-12">        train_dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>train_sub,</span>
+<span id="cb14-13">        eval_dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tokenized_test,</span>
+<span id="cb14-14">        tokenizer<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tokenizer,</span>
+<span id="cb14-15">        data_collator<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>data_collator,</span>
+<span id="cb14-16">        compute_metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>compute_metrics,</span>
+<span id="cb14-17">    )</span>
+<span id="cb14-18"></span>
+<span id="cb14-19">    train_start <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> time.time()</span>
+<span id="cb14-20">    trainer.train()</span>
+<span id="cb14-21">    train_time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> time.time() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> train_start</span>
+<span id="cb14-22"></span>
+<span id="cb14-23">    evaluation <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> trainer.evaluate()</span>
+<span id="cb14-24"></span>
+<span id="cb14-25">    evaluation.update(</span>
+<span id="cb14-26">        {</span>
+<span id="cb14-27">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dataset_size"</span>: dataset_size,</span>
+<span id="cb14-28">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"noise_level"</span>: noise_level,</span>
+<span id="cb14-29">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train_time"</span>: train_time,</span>
+<span id="cb14-30">        }</span>
+<span id="cb14-31">    )</span>
+<span id="cb14-32"></span>
+<span id="cb14-33">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> evaluation</span></code></pre></div>
+</div>
+<p>Finally, we can run the experiment and save the results to a CSV file.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb15-2"></span>
+<span id="cb15-3">results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame()</span>
+<span id="cb15-4"></span>
+<span id="cb15-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> dataset_size, noise_level <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> combinations:</span>
+<span id="cb15-6">    evaluation <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_and_evaluate(dataset_size, noise_level)</span>
+<span id="cb15-7">    results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.concat([results, pd.DataFrame([evaluation])])</span>
+<span id="cb15-8"></span>
+<span id="cb15-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(results_path, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"w"</span>) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> f:</span>
+<span id="cb15-10">        pd.DataFrame(results).to_csv(f, index<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span></code></pre></div>
+</div>
+<p>Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I’ve combined the code in a <a href="https://github.com/psimm/website/blog/correctness-vs-size/train.py">Python script</a> that parallelizes the experiment on <a href="https://modal.com">Modal</a> using 10 A10G GPUs. Training cost was about $3 for 50 runs, which fits easily into the $30 monthly free tier.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Let’s plot the accuracy achieved by the model for each combination of dataset size and label noise.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb16-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb16-3"></span>
+<span id="cb16-4">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./results_from_modal.csv"</span>)</span>
+<span id="cb16-5"></span>
+<span id="cb16-6">fig <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> px.density_heatmap(</span>
+<span id="cb16-7">    df,</span>
+<span id="cb16-8">    x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train_size"</span>,</span>
+<span id="cb16-9">    y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"noise_level"</span>,</span>
+<span id="cb16-10">    z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"eval_accuracy"</span>,</span>
+<span id="cb16-11">    range_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],</span>
+<span id="cb16-12">    nbinsx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb16-13">    nbinsy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb16-14">    color_continuous_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Viridis"</span>,</span>
+<span id="cb16-15">    labels<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>{</span>
+<span id="cb16-16">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"eval_accuracy"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Accuracy"</span>,</span>
+<span id="cb16-17">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train_size"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dataset size"</span>,</span>
+<span id="cb16-18">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"noise_level"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Incorrect labels (%)"</span>,</span>
+<span id="cb16-19">    },</span>
+<span id="cb16-20">    title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Accuracy by dataset size and label noise"</span>,</span>
+<span id="cb16-21">)</span>
+<span id="cb16-22"></span>
+<span id="cb16-23">fig.update_xaxes(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5000</span>])</span>
+<span id="cb16-24">fig.update_yaxes(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span>], tickformat<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".0%"</span>)</span>
+<span id="cb16-25">fig.update_coloraxes(</span>
+<span id="cb16-26">    colorbar_title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Accuracy"</span>,</span>
+<span id="cb16-27">)</span>
+<span id="cb16-28"></span>
+<span id="cb16-29">fig.show()</span></code></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>                            <div id="22683c36-28c6-4a2c-8c68-7aa9a84099da" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("22683c36-28c6-4a2c-8c68-7aa9a84099da")) {                    Plotly.newPlot(                        "22683c36-28c6-4a2c-8c68-7aa9a84099da",                        [{"coloraxis":"coloraxis","histfunc":"sum","hovertemplate":"Dataset size=%{x}\u003cbr\u003eIncorrect labels (%)=%{y}\u003cbr\u003esum of Accuracy=%{z}\u003cextra\u003e\u003c\u002fextra\u003e","name":"","nbinsx":5,"nbinsy":5,"x":[1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,5000,5000,5000,5000,5000,5000,5000,5000,5000,5000],"xaxis":"x","xbingroup":"x","y":[0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225],"yaxis":"y","ybingroup":"y","z":[0.857,0.863,0.846,0.85,0.795,0.855,0.855,0.858,0.839,0.845,0.877,0.873,0.87,0.866,0.869,0.863,0.873,0.86,0.87,0.865,0.882,0.875,0.876,0.874,0.868,0.878,0.872,0.866,0.864,0.858,0.891,0.886,0.883,0.891,0.874,0.878,0.877,0.874,0.865,0.862,0.891,0.889,0.885,0.888,0.883,0.875,0.877,0.869,0.875,0.88],"type":"histogram2d"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Dataset size"},"range":[1000,5000]},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Incorrect labels (%)"},"range":[0,0.25],"tickformat":".0%"},"coloraxis":{"colorbar":{"title":{"text":"Accuracy"}},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"cmin":0.5,"cmax":1},"legend":{"tracegroupgap":0},"title":{"text":"Accuracy by dataset size and label noise"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('22683c36-28c6-4a2c-8c68-7aa9a84099da');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+
+
+</section>
+
+ ]]></description>
+  <category>machine learning</category>
+  <guid>https://simmering.dev/blog/correctness-vs-size/index.html</guid>
+  <pubDate>Sat, 21 Oct 2023 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/correctness-vs-size/image.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>Future Directions for Large Language Models</title>
   <dc:creator>Paul Simmering</dc:creator>
