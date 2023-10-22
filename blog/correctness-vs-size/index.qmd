@@ -3,7 +3,7 @@ title: "Dataset Size vs. Label Correctness: What is more important for training 
 author: "Paul Simmering"
 date: "2023-10-22"
 categories: ["machine learning"]
-image: "image.png"
+image: "image.jpg"
 ---
 
 Data labeled by analysts is a common source of training data for machine learning models. However, the quality of the labels can vary greatly, whether due to different interpretations of the task by different analysts, the inherent difficulty of the task or careless work.
@@ -174,7 +174,7 @@ train_args = TrainingArguments(
 )
 ```
 
-After training, we'll evaluate the model on the test set. The evaluation metric is accuracy.
+After training, we'll evaluate the model on the test set. The evaluation metric is accuracy, the percentage of correctly classified examples.
 
 ```{python}
 from datasets import load_metric
@@ -256,35 +256,86 @@ Note that this loop runs slowly unless you have a GPU available. Rather than act
 Let's plot the accuracy achieved by the model for each combination of dataset size and label noise.
 
 ```{python}
+import plotly.graph_objects as go
 import pandas as pd
-import plotly.express as px
 
 df = pd.read_csv("./results_from_modal.csv")
 
-fig = px.density_heatmap(
-    df,
-    x="train_size",
-    y="noise_level",
-    z="eval_accuracy",
-    range_color=[0.5, 1],
-    nbinsx=5,
-    nbinsy=5,
-    color_continuous_scale="Viridis",
-    labels={
-        "eval_accuracy": "Accuracy",
-        "train_size": "Dataset size",
-        "noise_level": "Incorrect labels (%)",
-    },
-    title="Accuracy by dataset size and label noise",
+# Pivot the dataframe
+pivot_df = df.pivot(index="train_size", columns="noise_level", values="eval_accuracy")
+
+# Create text for hover tooltip
+hover_text = [
+    [
+        f"Training examples: {y}<br>Noise level: {x}<br>Accuracy: {z}"
+        for x, z in zip(pivot_df.columns, row)
+    ]
+    for y, row in zip(pivot_df.index, pivot_df.values)
+]
+
+fig = go.Figure(
+    data=go.Heatmap(
+        z=pivot_df.values,
+        x=pivot_df.columns.values,
+        y=pivot_df.index.values,
+        hovertext=hover_text,
+        hoverinfo="text",
+        colorscale="Viridis",
+        colorbar=dict(title="Accuracy"),
+    )
 )
 
-fig.update_xaxes(range=[1000, 5000])
-fig.update_yaxes(range=[0, 0.25], tickformat=".0%")
-fig.update_coloraxes(
-    colorbar_title="Accuracy",
+fig.update_layout(
+    xaxis_title="Noise Level",
+    yaxis_title="Training Examples",
 )
 
 fig.show()
+
 ```
 
+The heatmap is interactive, so you can hover over the cells to see the exact accuracy achieved for each combination of dataset size and label noise.
+
+What can we learn from this plot?
+
+- The accuracy increases with the number of training examples, as expected.
+- Accuracy decreases with increasing label noise, as expected.
+- Even with a noise level of 0.25, the model can still achieve an accuracy of 0.88 with 5,000 training examples. This demonstrates a robustness to label noise.
+- Training a model is a stochastic process, so the accuracy varies between runs. This is especially true for small datasets. One run in particular stands out as a bad outlier.
+
+How can number of examples and noise level be traded off? Let's find out with a regression model.
+
+```{python}
+import statsmodels.formula.api as smf
+
+# Transform train_size to 1000s
+df["train_size_1k"] = df["train_size"] / 1000
+
+# Transform noise level to percentage
+df["noise_level_pct"] = df["noise_level"] * 100
+
+# Transform accuracy to percentage
+df["eval_accuracy_pct"] = df["eval_accuracy"] * 100
+
+model = smf.ols("eval_accuracy_pct ~ train_size_1k + noise_level_pct", data=df).fit()
+
+# Extract the coefficients, p-values and confidence intervals.
+pd.DataFrame(
+    {
+        "coef": model.params,
+        "p_value": model.pvalues,
+        "conf_int_lower": model.conf_int()[0],
+        "conf_int_upper": model.conf_int()[1],
+    }
+)
+```
+
+The regression model provides coefficients that estimate the importance of each variable. All are significant at the 0.01 level.
+
+In this simplified model, each percentage point of noise is worth as much as 11,000 examples. Note that the confidence intervals are quite wide and that the model's logic is failing at the extremes, e.g. a model with 0 examples wouldn't be able to achieve a baseline accuracy of 85%.
+
 ## Conclusion
+
+In this article, I've shown how to train a model on different amounts of data with different amounts of label noise. The results show that the model is rather robust to label noise, meaning that more data can make up for a certain amount of label noise. That doesn't mean that label noise is not a problem, but that prioritizing data collection over label correction can be a viable strategy.
+
+One drawback of this experiment is that it only considers a single popular model and a single dataset. It would be interesting to see if the results generalize to other models and datasets.
