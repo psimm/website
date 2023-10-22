@@ -12,6 +12,10 @@ For an organization looking to improve a model, they may either choose to re-lab
 
 I'll use the IMDB movie review dataset as an example and train a transformer model to predict the sentiment of a movie review. This article loosely follows the [HuggingFace tutorial](https://huggingface.co/course/chapter1/3?fw=pt) on training a sentiment classifier.
 
+::: {.callout-note}
+To run the large number of experiments, I used [Modal](https://modal.com), a serverless compute platform. The code snippets in this article are simplified and use subsampling to be able to run on a laptop. The full experiment code is available on [GitHub](https://github.com/psimm/website/blog/correctness-vs-size/train.py).
+:::
+
 ## Quick overview of the IMDB Movie Review Dataset
 
 It's a dataset of 50,000 movie reviews from [IMDB](https://www.imdb.com), labeled as positive (1) or negative (0). The dataset is split into 25,000 training and 25,000 test reviews. Let's load it from [HuggingFace](https://huggingface.co/datasets/imdb) and have a look:
@@ -249,7 +253,9 @@ for dataset_size, noise_level in combinations:
         pd.DataFrame(results).to_csv(f, index=False)
 ```
 
-Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I've combined the code in a [Python script](https://github.com/psimm/website/blog/correctness-vs-size/train.py) that parallelizes the experiment on [Modal](https://modal.com) using 10 A10G GPUs. Training cost was about $3 for 50 runs, which fits easily into the $30 monthly free tier.
+::: {.callout-note}
+Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I've combined the code in a [Python script](https://github.com/psimm/website/blog/correctness-vs-size/train.py) that parallelizes the experiment on [Modal](https://modal.com) using 10 A10G GPUs. In addition, that script features a wider range of dataset sizes and label noise levels and doesn't subsample the test set. All further code snippets in this article are based on the results from that script.
+:::
 
 ## Results
 
@@ -311,21 +317,19 @@ import statsmodels.formula.api as smf
 # Transform train_size to 1000s
 df["train_size_1k"] = df["train_size"] / 1000
 
-# Transform noise level to percentage
+# Transform noise and accuracy to percentages
 df["noise_level_pct"] = df["noise_level"] * 100
-
-# Transform accuracy to percentage
 df["eval_accuracy_pct"] = df["eval_accuracy"] * 100
 
+# Fit a model and extract coefficients
 model = smf.ols("eval_accuracy_pct ~ train_size_1k + noise_level_pct", data=df).fit()
 
-# Extract the coefficients, p-values and confidence intervals.
 pd.DataFrame(
     {
-        "coef": model.params,
-        "p_value": model.pvalues,
-        "conf_int_lower": model.conf_int()[0],
-        "conf_int_upper": model.conf_int()[1],
+        "Coefficient": model.params,
+        "P-Value": model.pvalues,
+        "Conf. Int. Lower": model.conf_int()[0],
+        "Conf. Int. Upper": model.conf_int()[1],
     }
 )
 ```

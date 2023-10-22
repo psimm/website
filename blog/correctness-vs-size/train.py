@@ -2,6 +2,7 @@ import time
 from functools import partial
 from itertools import product
 from random import sample, seed
+from typing import Tuple
 
 import modal
 import numpy as np
@@ -14,6 +15,23 @@ from transformers import (
     Trainer,
     TrainingArguments,
 )
+
+stub = modal.Stub(
+    "correctness-vs-size",
+    image=modal.Image.debian_slim()
+    .apt_install("git")
+    .pip_install(
+        "torch",
+        "transformers",
+        "transformers[torch]",
+        "datasets",
+        "wandb",
+        "scikit-learn",  # for metrics
+    ),
+)
+
+# Create volume to share model and datasets between experiments
+stub.volume = modal.Volume.new()
 
 
 def subsample_hf_dataset(dataset: Dataset, max_size: int):
@@ -81,16 +99,6 @@ def flip_labels(dataset: Dataset, noise_level: float):
     return dataset.map(flip_labels_function, with_indices=True)
 
 
-def load_model(device: str = "cuda"):
-    model = AutoModelForSequenceClassification.from_pretrained(
-        "distilbert-base-uncased", num_labels=2
-    ).to(
-        device
-    )  # use GPU on Modal
-
-    return model
-
-
 train_args = TrainingArguments(
     learning_rate=2e-5,  # how fast the model learns
     per_device_train_batch_size=16,  # how many training examples are processed at once
@@ -112,109 +120,102 @@ def compute_metrics(eval_pred):
     return {"accuracy": accuracy}
 
 
-stub = modal.Stub(
-    "correctness-vs-size",
-    image=modal.Image.debian_slim()
-    .apt_install("git")
-    .pip_install(
-        "torch",
-        "transformers",
-        "transformers[torch]",
-        "datasets",
-        "scikit-learn",  # for metrics
-    ),
+@stub.function(
+    concurrency_limit=10,  # max GPU concurrency allowed in free tier
+    volumes={"/root/experiment": stub.volume},
+    gpu="A10G",
+    secret=modal.Secret.from_name("wandb"),
+    timeout=15 * 60,
 )
+def run_experiment(
+    train_size: int,
+    noise_level: float,
+):
+    # Load model and datasets
+    print("Loading model")
+    model = AutoModelForSequenceClassification.from_pretrained("/root/experiment/model")
+    model.to("cuda")
 
+    print("Loading datasets")
+    tokenized_train = Dataset.from_parquet("/root/experiment/tokenized_train.parquet")
+    tokenized_test = Dataset.from_parquet("/root/experiment/tokenized_test.parquet")
 
-@stub.cls(gpu="A10G")
-class Experiment:
-    def __init__(
-        self,
-        train_size: int,
-        test_size: int,
-        noise_level: float,
-        train_args,
-        compute_metrics,
-    ):
-        self.train_size = train_size
-        self.test_size = test_size
-        self.noise_level = noise_level
-        self.compute_metrics = compute_metrics
-        self.train_args = train_args
-        self.model = load_model("cuda")
-        self.tokenizer = load_tokenizer()
-        self.data_collator = load_collator(self.tokenizer)
+    # subsample and flip labels in training dataset
+    tokenized_train_sub = subsample_hf_dataset(tokenized_train, train_size)
+    flipped_tokenized_train_sub = flip_labels(tokenized_train_sub, noise_level)
 
-    def load_data(self):
-        # load data
-        imdb = load_dataset("imdb")
+    tokenizer = load_tokenizer()
+    data_collator = load_collator(tokenizer)
 
-        # tokenize texts
-        tokenized_train = tokenize_dataset(self.tokenizer, imdb["train"])
-        tokenized_test = tokenize_dataset(self.tokenizer, imdb["test"])
-
-        # subsample and flip labels
-        self.train_sub = subsample_hf_dataset(tokenized_train, self.train_size)
-        self.train_sub = flip_labels(self.train_sub, self.noise_level)
-        self.test_sub = subsample_hf_dataset(tokenized_test, self.test_size)
-
-    def setup_trainer(self):
-        self.trainer = Trainer(
-            model=self.model,
-            args=train_args,
-            train_dataset=self.train_sub,
-            eval_dataset=self.test_sub,
-            tokenizer=self.tokenizer,
-            data_collator=self.data_collator,
-            compute_metrics=compute_metrics,
-        )
-
-    def train_and_evaluate(self):
-        train_start = time.time()
-        self.trainer.train()
-        train_time = time.time() - train_start
-
-        evaluation = self.trainer.evaluate()
-
-        evaluation.update(
-            {
-                "train_size": self.train_size,
-                "test_size": self.test_size,
-                "noise_level": self.noise_level,
-                "train_time": train_time,
-            }
-        )
-
-        return evaluation
-
-    @modal.method()
-    def run(self):
-        self.load_data()
-        self.setup_trainer()
-        evaluation = self.train_and_evaluate()
-
-        return evaluation
-
-
-@stub.function(concurrency_limit=5)
-def run_experiment(train_size: int, noise_level: float):
-    experiment = Experiment(
-        train_size=train_size,
-        test_size=1000,
-        noise_level=noise_level,
-        train_args=train_args,
+    # Training
+    trainer = Trainer(
+        model=model,
+        args=train_args,
+        train_dataset=flipped_tokenized_train_sub,
+        eval_dataset=tokenized_test,
+        tokenizer=tokenizer,
+        data_collator=data_collator,
         compute_metrics=compute_metrics,
     )
-    evaluation = experiment.run.remote()
 
-    print(evaluation)
+    import wandb
+
+    wandb.init(project="correctness-vs-size")
+
+    train_start = time.time()
+    trainer.train()
+    train_time = time.time() - train_start
+
+    evaluation = trainer.evaluate()
+
+    evaluation.update(
+        {
+            "train_size": train_size,
+            "test_size": trainer.eval_dataset.num_rows,
+            "noise_level": noise_level,
+            "train_time": train_time,
+        }
+    )
+
+    wandb.log(evaluation)
+
+    wandb.finish()
+
     return evaluation
 
 
-@stub.local_entrypoint()
-def main():
-    train_sizes = np.arange(1000, 5001, 1000)
-    noise_levels = np.arange(0, 0.25, 0.025)
+def load_and_tokenize_dataset() -> Tuple[Dataset, Dataset]:
+    imdb = load_dataset("imdb")
+    tokenizer = load_tokenizer()
+
+    tokenized_train = tokenize_dataset(tokenizer, imdb["train"])
+    tokenized_test = tokenize_dataset(tokenizer, imdb["test"])
+
+    # Convert to pandas to avoid caching issues
+    return tokenized_train, tokenized_test
+
+
+@stub.function(volumes={"/root/experiment": stub.volume}, timeout=24 * 60 * 60)
+def run_experiment_set(train_sizes, noise_levels, test_size) -> list:
+    # Do steps that are common to all experiments
+    tokenized_train, tokenized_test = load_and_tokenize_dataset()
+
+    # Subsample test dataset to decrease evaluation time
+    if not test_size == len(tokenized_test):
+        tokenized_test = subsample_hf_dataset(tokenized_test, test_size)
+
+    model = AutoModelForSequenceClassification.from_pretrained(
+        "distilbert-base-uncased", num_labels=2
+    )
+
+    # Share model and tokenized datasets between experiments
+    model.save_pretrained("/root/experiment/model")
+    tokenized_train.to_parquet("/root/experiment/tokenized_train.parquet")
+    tokenized_test.to_parquet("/root/experiment/tokenized_test.parquet")
+
+    stub.volume.commit()  # persist changes
+
+    print("Saved model and datasets to volume")
 
     combinations = list(product(train_sizes, noise_levels))
     print(f"Number of combinations: {len(combinations)}")
@@ -223,6 +224,19 @@ def main():
 
     for evaluation in run_experiment.starmap(combinations):
         results.append(evaluation)
+
+    return results
+
+
+@stub.local_entrypoint()
+def main():
+    # Define experiment parameters
+    train_sizes = np.arange(1000, 15001, 1000)
+    noise_levels = np.arange(0, 0.26, 0.025)
+    test_size = 10000
+
+    # Run experiments
+    results = run_experiment_set.remote(train_sizes, noise_levels, test_size)
 
     # Write results to file
     results_df = pd.DataFrame(results)

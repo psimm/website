@@ -3,3 +3,4 @@ _environment*
 /_*.local
 .venv
 .DS_Store
+*.pyc
