@@ -2,15 +2,9 @@
 title: "Large Language Models for Aspect-Based Sentiment Analysis"
 date: 2023-09-21
 author: "Paul Simmering and Paavo Huoviala"
-location: "Kassel, Germany"
 categories:
   - conference
 draft: false
-links:
-- icon: slideshare
-  icon_pack: fab
-  name: Slides
-  url: /talk/gor2023/
 image: "image.png"
 ---
 
