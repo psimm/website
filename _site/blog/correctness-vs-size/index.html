@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2023-10-22">
+
+<title>Paul Simmering - Dataset Size vs.&nbsp;Label Correctness: What is more important for training a model?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.26.0.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html" rel="" target="">
+ <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html" rel="" target="">
+ <span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Dataset Size vs.&nbsp;Label Correctness: What is more important for training a model?</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">machine learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 22, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><img src="image.png" class="img-fluid"></p>
+<p>Data labeled by analysts is a common source of training data for machine learning models. However, the quality of the labels can vary greatly, whether due to different interpretations of the task by different analysts, the inherent difficulty of the task or careless work.</p>
+<p>For an organization looking to improve a model, they may either choose to re-label part of the data or collect more data. But how can they decide which option is better? I trained the same model 100 times on different number of examples with different amounts of label noise to find out.</p>
+<p>I’ll use the IMDB movie review dataset as an example and train a transformer model to predict the sentiment of a movie review. This article loosely follows the <a href="https://huggingface.co/course/chapter1/3?fw=pt">HuggingFace tutorial</a> on training a sentiment classifier.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To run the large number of experiments, I used <a href="https://modal.com">Modal</a>, a serverless compute platform. The code snippets in this article are simplified and use subsampling to be able to run on a laptop. The full experiment code is available on <a href="https://github.com/psimm/website/blog/correctness-vs-size/train.py">GitHub</a>.</p>
+</div>
+</div>
+<section id="quick-overview-of-the-imdb-movie-review-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="quick-overview-of-the-imdb-movie-review-dataset">Quick overview of the IMDB Movie Review Dataset</h2>
+<p>It’s a dataset of 50,000 movie reviews from <a href="https://www.imdb.com">IMDB</a>, labeled as positive (1) or negative (0). The dataset is split into 25,000 training and 25,000 test reviews. Let’s load it from <a href="https://huggingface.co/datasets/imdb">HuggingFace</a> and have a look:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>imdb <span class="op">=</span> load_dataset(<span class="st">"imdb"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>imdb[<span class="st">"train"</span>].to_pandas().head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">text</th>
+<th data-quarto-table-cell-role="th">label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>I rented I AM CURIOUS-YELLOW from my video sto...</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>"I Am Curious: Yellow" is a risible and preten...</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>If only to avoid making this type of film in t...</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>And the balanced label distribution in the training set:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>imdb[<span class="st">"train"</span>].to_pandas()[<span class="st">"label"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>label
+0    12500
+1    12500
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="setup-dataset-size-and-label-noise" class="level2">
+<h2 class="anchored" data-anchor-id="setup-dataset-size-and-label-noise">Setup: Dataset size and label noise</h2>
+<section id="experiment-grid" class="level3">
+<h3 class="anchored" data-anchor-id="experiment-grid">Experiment grid</h3>
+<p>The next step is to define a grid of combinations of dataset size and label noise. As the actual accuracy achieved isn’t the main point of this experiment, and many models have to be trained, I’ll not use the full dataset. The dataset size will range from 1000 to 5,000 examples and the label noise (the percentage of labels that are flipped) will range from 0 to 25%.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dataset_sizes <span class="op">=</span> np.arange(<span class="dv">1000</span>, <span class="dv">5001</span>, <span class="dv">1000</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>noise_levels <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.025</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>combinations <span class="op">=</span> <span class="bu">list</span>(product(dataset_sizes, noise_levels))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of combinations: </span><span class="sc">{</span><span class="bu">len</span>(combinations)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of combinations: 50</code></pre>
+</div>
+</div>
+</section>
+<section id="dataset-subsampling" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-subsampling">Dataset subsampling</h3>
+<p>On each run, I’ll subsample the training set to the desired size. To keep the balance of the labels intact, I’ll subsample the positive and negative examples separately and then concatenate them. To reduce time spent on evaluating the model, I’ll also subsample the test set to 2,000 examples.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> concatenate_datasets, Dataset</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> subsample_hf_dataset(dataset: Dataset, max_size: <span class="bu">int</span>):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shuffle dataset</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    dataset <span class="op">=</span> dataset.shuffle(seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Separate datasets with labels 0 and 1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    dataset_label_0 <span class="op">=</span> dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> example: example[<span class="st">"label"</span>] <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    dataset_label_1 <span class="op">=</span> dataset.<span class="bu">filter</span>(<span class="kw">lambda</span> example: example[<span class="st">"label"</span>] <span class="op">==</span> <span class="dv">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Subsample datasets</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    subsampled_dataset_label_0 <span class="op">=</span> dataset_label_0.select(<span class="bu">range</span>(max_size <span class="op">//</span> <span class="dv">2</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    subsampled_dataset_label_1 <span class="op">=</span> dataset_label_1.select(<span class="bu">range</span>(max_size <span class="op">//</span> <span class="dv">2</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Concatenate subsampled datasets</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> concatenate_datasets(</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        [subsampled_dataset_label_0, subsampled_dataset_label_1]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>imdb_train <span class="op">=</span> subsample_hf_dataset(imdb[<span class="st">"train"</span>], <span class="bu">max</span>(dataset_sizes))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>imdb_test <span class="op">=</span> subsample_hf_dataset(imdb[<span class="st">"train"</span>], <span class="dv">2000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing">Preprocessing</h3>
+<p>The transformer model expects the input to be tokenized and encoded. I’ll use the <a href="https://huggingface.co/distilbert-base-uncased">DistilBERT tokenizer</a> for this.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"distilbert-base-uncased"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_function(examples):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tokenizer(examples[<span class="st">"text"</span>], truncation<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>tokenized_train <span class="op">=</span> imdb_train.<span class="bu">map</span>(preprocess_function, batched<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>tokenized_test <span class="op">=</span> imdb_test.<span class="bu">map</span>(preprocess_function, batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, convert the datasets to PyTorch tensors and pad the sequences to the same length.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> DataCollatorWithPadding</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data_collator <span class="op">=</span> DataCollatorWithPadding(tokenizer<span class="op">=</span>tokenizer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-some-noise" class="level3">
+<h3 class="anchored" data-anchor-id="make-some-noise">Make some noise</h3>
+<p>To introduce label noise, I’ll randomly flip the labels of a certain percentage of the training set. Again, I’ll leave the balance of the labels intact.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> sample, seed</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flip_labels(dataset: Dataset, noise_level: <span class="bu">float</span>):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make the operation deterministic</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    seed(<span class="dv">42</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get number of labels to flip</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(dataset) <span class="op">*</span> noise_level)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    n_by_class <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get indices of labels to flip</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    neg_indices <span class="op">=</span> [i <span class="cf">for</span> i, example <span class="kw">in</span> <span class="bu">enumerate</span>(dataset) <span class="cf">if</span> example[<span class="st">"label"</span>] <span class="op">==</span> <span class="dv">0</span>]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    pos_indices <span class="op">=</span> [i <span class="cf">for</span> i, example <span class="kw">in</span> <span class="bu">enumerate</span>(dataset) <span class="cf">if</span> example[<span class="st">"label"</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    selected_neg_indices <span class="op">=</span> sample(neg_indices, n_by_class)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    selected_pos_indices <span class="op">=</span> sample(pos_indices, n_by_class)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># combine indices</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    indices_to_flip <span class="op">=</span> selected_neg_indices <span class="op">+</span> selected_pos_indices</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># function to apply to flip the labels</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> flip_labels_function(example, idx: <span class="bu">int</span>):</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># flip the label if index is in the selected indices</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># this is not the fastest way to do this, but it's easy to understand</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> idx <span class="kw">in</span> indices_to_flip:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>            example[<span class="st">"label"</span>] <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> example[<span class="st">"label"</span>] <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> example</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply function to flip the labels</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dataset.<span class="bu">map</span>(flip_labels_function, with_indices<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This function will be used later in a loop.</p>
+</section>
+</section>
+<section id="training-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="training-the-model">Training the model</h2>
+<p>First, we download a pre-trained transformer model that has not been fine-tuned for sentiment classification yet. One of the most commonly used models is <a href="https://huggingface.co/distilbert-base-uncased">DistilBERT</a>, a smaller, more efficient version of <a href="https://huggingface.co/bert-base-uncased">BERT</a>.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForSequenceClassification</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distilbert-base-uncased"</span>, num_labels<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Some weights of DistilBertForSequenceClassification were not initialized from the model checkpoint at distilbert-base-uncased and are newly initialized: ['pre_classifier.bias', 'pre_classifier.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.</code></pre>
+</div>
+</div>
+<p>Next, let’s set the training arguments.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> TrainingArguments</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>train_args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">2e-5</span>,  <span class="co"># how fast the model learns</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span><span class="dv">16</span>,  <span class="co"># how many training examples are processed at once</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    per_device_eval_batch_size<span class="op">=</span><span class="dv">16</span>,  <span class="co"># how many test examples are processed at once</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span><span class="dv">2</span>,  <span class="co"># how many times the model sees the training data</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    weight_decay<span class="op">=</span><span class="fl">0.01</span>,  <span class="co"># how much the model is penalized for being complex</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"./results"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After training, we’ll evaluate the model on the test set. The evaluation metric is accuracy, the percentage of correctly classified examples.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_metric</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_metrics(eval_pred):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    load_accuracy <span class="op">=</span> load_metric(<span class="st">"accuracy"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    logits, labels <span class="op">=</span> eval_pred</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> np.argmax(logits, axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> load_accuracy.compute(predictions<span class="op">=</span>predictions, references<span class="op">=</span>labels)[</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"accuracy"</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"accuracy"</span>: accuracy}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we have all the pieces to run the experiment. Let’s put them together in an experiment function.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> Trainer</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_and_evaluate(dataset_size: <span class="bu">int</span>, noise_level: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    train_sub <span class="op">=</span> subsample_hf_dataset(tokenized_train, dataset_size)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    train_sub <span class="op">=</span> flip_labels(train_sub, noise_level)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    trainer <span class="op">=</span> Trainer(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        args<span class="op">=</span>train_args,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        train_dataset<span class="op">=</span>train_sub,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        eval_dataset<span class="op">=</span>tokenized_test,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        tokenizer<span class="op">=</span>tokenizer,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        data_collator<span class="op">=</span>data_collator,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        compute_metrics<span class="op">=</span>compute_metrics,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    train_start <span class="op">=</span> time.time()</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    trainer.train()</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    train_time <span class="op">=</span> time.time() <span class="op">-</span> train_start</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    evaluation <span class="op">=</span> trainer.evaluate()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    evaluation.update(</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">"dataset_size"</span>: dataset_size,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"noise_level"</span>: noise_level,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">"train_time"</span>: train_time,</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> evaluation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we can run the experiment and save the results to a CSV file.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset_size, noise_level <span class="kw">in</span> combinations:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    evaluation <span class="op">=</span> train_and_evaluate(dataset_size, noise_level)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> pd.concat([results, pd.DataFrame([evaluation])])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(results_path, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        pd.DataFrame(results).to_csv(f, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I’ve combined the code in a <a href="https://github.com/psimm/website/blog/correctness-vs-size/train.py">Python script</a> that parallelizes the experiment on <a href="https://modal.com">Modal</a> using up to 20 A10G GPUs in parallel. In addition, that script features a wider range of dataset sizes and label noise levels and doesn’t subsample the test set. All further code snippets in this article are based on the results from that script.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="modal.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Training in Modal</figcaption>
+</figure>
+</div>
+<p>The total cost was $30. This fit into the free tier of Modal.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Let’s plot the accuracy achieved by the model for each combination of dataset size and label noise.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"./results_from_modal.csv"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot the dataframe</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>pivot_df <span class="op">=</span> df.pivot(index<span class="op">=</span><span class="st">"train_size"</span>, columns<span class="op">=</span><span class="st">"noise_level"</span>, values<span class="op">=</span><span class="st">"eval_accuracy"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create text for hover tooltip</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>hover_text <span class="op">=</span> [</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Training examples: </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">&lt;br&gt;Noise level: </span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">&lt;br&gt;Accuracy: </span><span class="sc">{</span>z<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> x, z <span class="kw">in</span> <span class="bu">zip</span>(pivot_df.columns, row)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> y, row <span class="kw">in</span> <span class="bu">zip</span>(pivot_df.index, pivot_df.values)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure(</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>go.Heatmap(</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        z<span class="op">=</span>pivot_df.values,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>pivot_df.columns.values,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>pivot_df.index.values,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        hovertext<span class="op">=</span>hover_text,</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        hoverinfo<span class="op">=</span><span class="st">"text"</span>,</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>        colorscale<span class="op">=</span><span class="st">"Viridis"</span>,</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        colorbar<span class="op">=</span><span class="bu">dict</span>(title<span class="op">=</span><span class="st">"Accuracy"</span>),</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">"Noise Level"</span>,</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">"Training Examples"</span>,</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>                            <div id="81822be4-7f48-49f0-8fb5-d5ff2c194092" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("81822be4-7f48-49f0-8fb5-d5ff2c194092")) {                    Plotly.newPlot(                        "81822be4-7f48-49f0-8fb5-d5ff2c194092",                        [{"colorbar":{"title":{"text":"Accuracy"}},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"hoverinfo":"text","hovertext":[["Training examples: 1000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.8746","Training examples: 1000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.8741","Training examples: 1000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.8745","Training examples: 1000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.8816","Training examples: 1000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.8721","Training examples: 1000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.868","Training examples: 1000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.872","Training examples: 1000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8762","Training examples: 1000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8722","Training examples: 1000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8646","Training examples: 1000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8494"],["Training examples: 2000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9005","Training examples: 2000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.8972","Training examples: 2000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.8937","Training examples: 2000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.8889","Training examples: 2000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.8879","Training examples: 2000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.8879","Training examples: 2000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8857","Training examples: 2000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8816","Training examples: 2000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8806","Training examples: 2000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8806","Training examples: 2000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8774"],["Training examples: 3000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9029","Training examples: 3000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9017","Training examples: 3000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9001","Training examples: 3000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.8922","Training examples: 3000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.8904","Training examples: 3000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.8958","Training examples: 3000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8967","Training examples: 3000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.892","Training examples: 3000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8875","Training examples: 3000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8838","Training examples: 3000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8799"],["Training examples: 4000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9094","Training examples: 4000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.906","Training examples: 4000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9018","Training examples: 4000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9007","Training examples: 4000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.899","Training examples: 4000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.8963","Training examples: 4000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8934","Training examples: 4000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8907","Training examples: 4000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.889","Training examples: 4000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8852","Training examples: 4000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8855"],["Training examples: 5000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9121","Training examples: 5000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9091","Training examples: 5000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.907","Training examples: 5000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9066","Training examples: 5000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9033","Training examples: 5000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.8979","Training examples: 5000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8989","Training examples: 5000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8952","Training examples: 5000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8909","Training examples: 5000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8882","Training examples: 5000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8889"],["Training examples: 6000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9141","Training examples: 6000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9117","Training examples: 6000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9098","Training examples: 6000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9078","Training examples: 6000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9055","Training examples: 6000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9029","Training examples: 6000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8985","Training examples: 6000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8985","Training examples: 6000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8962","Training examples: 6000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.89","Training examples: 6000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8822"],["Training examples: 7000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9161","Training examples: 7000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9149","Training examples: 7000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.913","Training examples: 7000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9115","Training examples: 7000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.906","Training examples: 7000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9069","Training examples: 7000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.8996","Training examples: 7000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.897","Training examples: 7000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8968","Training examples: 7000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8884","Training examples: 7000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8879"],["Training examples: 8000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9166","Training examples: 8000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9174","Training examples: 8000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9129","Training examples: 8000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9125","Training examples: 8000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.91","Training examples: 8000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.91","Training examples: 8000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9047","Training examples: 8000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.9056","Training examples: 8000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8988","Training examples: 8000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8927","Training examples: 8000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.89"],["Training examples: 9000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9208","Training examples: 9000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9193","Training examples: 9000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9174","Training examples: 9000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9124","Training examples: 9000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9093","Training examples: 9000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9061","Training examples: 9000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.906","Training examples: 9000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.904","Training examples: 9000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.9006","Training examples: 9000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8943","Training examples: 9000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8946"],["Training examples: 10000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9229","Training examples: 10000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9196","Training examples: 10000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9187","Training examples: 10000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.915","Training examples: 10000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9117","Training examples: 10000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9089","Training examples: 10000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9069","Training examples: 10000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.9068","Training examples: 10000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.9047","Training examples: 10000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8995","Training examples: 10000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8985"],["Training examples: 11000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9206","Training examples: 11000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9207","Training examples: 11000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.921","Training examples: 11000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9147","Training examples: 11000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9119","Training examples: 11000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9094","Training examples: 11000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9085","Training examples: 11000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.8989","Training examples: 11000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8992","Training examples: 11000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8933","Training examples: 11000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8924"],["Training examples: 12000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9231","Training examples: 12000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.921","Training examples: 12000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9192","Training examples: 12000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9157","Training examples: 12000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9125","Training examples: 12000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9116","Training examples: 12000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.908","Training examples: 12000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.908","Training examples: 12000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.9044","Training examples: 12000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.9024","Training examples: 12000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8962"],["Training examples: 13000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.924","Training examples: 13000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9223","Training examples: 13000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9217","Training examples: 13000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9166","Training examples: 13000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9139","Training examples: 13000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9093","Training examples: 13000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9054","Training examples: 13000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.9011","Training examples: 13000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.8969","Training examples: 13000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.8969","Training examples: 13000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8913"],["Training examples: 14000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9249","Training examples: 14000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9229","Training examples: 14000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9177","Training examples: 14000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9167","Training examples: 14000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9157","Training examples: 14000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9099","Training examples: 14000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9087","Training examples: 14000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.9041","Training examples: 14000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.9054","Training examples: 14000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.9023","Training examples: 14000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8971"],["Training examples: 15000\u003cbr\u003eNoise level: 0.0\u003cbr\u003eAccuracy: 0.9257","Training examples: 15000\u003cbr\u003eNoise level: 0.025\u003cbr\u003eAccuracy: 0.9239","Training examples: 15000\u003cbr\u003eNoise level: 0.05\u003cbr\u003eAccuracy: 0.9218","Training examples: 15000\u003cbr\u003eNoise level: 0.075\u003cbr\u003eAccuracy: 0.9183","Training examples: 15000\u003cbr\u003eNoise level: 0.1\u003cbr\u003eAccuracy: 0.9186","Training examples: 15000\u003cbr\u003eNoise level: 0.125\u003cbr\u003eAccuracy: 0.9136","Training examples: 15000\u003cbr\u003eNoise level: 0.15\u003cbr\u003eAccuracy: 0.9145","Training examples: 15000\u003cbr\u003eNoise level: 0.175\u003cbr\u003eAccuracy: 0.9092","Training examples: 15000\u003cbr\u003eNoise level: 0.2\u003cbr\u003eAccuracy: 0.9086","Training examples: 15000\u003cbr\u003eNoise level: 0.225\u003cbr\u003eAccuracy: 0.9029","Training examples: 15000\u003cbr\u003eNoise level: 0.25\u003cbr\u003eAccuracy: 0.8986"]],"x":[0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.25],"y":[1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000],"z":[[0.8746,0.8741,0.8745,0.8816,0.8721,0.868,0.872,0.8762,0.8722,0.8646,0.8494],[0.9005,0.8972,0.8937,0.8889,0.8879,0.8879,0.8857,0.8816,0.8806,0.8806,0.8774],[0.9029,0.9017,0.9001,0.8922,0.8904,0.8958,0.8967,0.892,0.8875,0.8838,0.8799],[0.9094,0.906,0.9018,0.9007,0.899,0.8963,0.8934,0.8907,0.889,0.8852,0.8855],[0.9121,0.9091,0.907,0.9066,0.9033,0.8979,0.8989,0.8952,0.8909,0.8882,0.8889],[0.9141,0.9117,0.9098,0.9078,0.9055,0.9029,0.8985,0.8985,0.8962,0.89,0.8822],[0.9161,0.9149,0.913,0.9115,0.906,0.9069,0.8996,0.897,0.8968,0.8884,0.8879],[0.9166,0.9174,0.9129,0.9125,0.91,0.91,0.9047,0.9056,0.8988,0.8927,0.89],[0.9208,0.9193,0.9174,0.9124,0.9093,0.9061,0.906,0.904,0.9006,0.8943,0.8946],[0.9229,0.9196,0.9187,0.915,0.9117,0.9089,0.9069,0.9068,0.9047,0.8995,0.8985],[0.9206,0.9207,0.921,0.9147,0.9119,0.9094,0.9085,0.8989,0.8992,0.8933,0.8924],[0.9231,0.921,0.9192,0.9157,0.9125,0.9116,0.908,0.908,0.9044,0.9024,0.8962],[0.924,0.9223,0.9217,0.9166,0.9139,0.9093,0.9054,0.9011,0.8969,0.8969,0.8913],[0.9249,0.9229,0.9177,0.9167,0.9157,0.9099,0.9087,0.9041,0.9054,0.9023,0.8971],[0.9257,0.9239,0.9218,0.9183,0.9186,0.9136,0.9145,0.9092,0.9086,0.9029,0.8986]],"type":"heatmap"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Noise Level"}},"yaxis":{"title":{"text":"Training Examples"}}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('81822be4-7f48-49f0-8fb5-d5ff2c194092');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>The heatmap is interactive, so you can hover over the cells to see the exact accuracy achieved for each combination of dataset size and label noise.</p>
+<p>What can we learn from this plot?</p>
+<ul>
+<li>The accuracy increases with the number of training examples, as expected.</li>
+<li>Accuracy decreases with increasing label noise, as expected.</li>
+<li>Even with a noise level of 0.25, the model can still achieve an accuracy of 0.88 with 5,000 training examples. This demonstrates a robustness to label noise.</li>
+<li>Training a model is a stochastic process, so the accuracy varies between runs. This is especially true for small datasets. One run in particular stands out as a bad outlier.</li>
+</ul>
+<p>How can number of examples and noise level be traded off? Let’s find out with a regression model.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform train_size to 1000s</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"train_size_1k"</span>] <span class="op">=</span> df[<span class="st">"train_size"</span>] <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform noise and accuracy to percentages</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"noise_level_pct"</span>] <span class="op">=</span> df[<span class="st">"noise_level"</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"eval_accuracy_pct"</span>] <span class="op">=</span> df[<span class="st">"eval_accuracy"</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a model and extract coefficients</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">"eval_accuracy_pct ~ train_size_1k + noise_level_pct"</span>, data<span class="op">=</span>df).fit()</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Coefficient"</span>: model.params,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"P-Value"</span>: model.pvalues,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Conf. Int. Lower"</span>: model.conf_int()[<span class="dv">0</span>],</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Conf. Int. Upper"</span>: model.conf_int()[<span class="dv">1</span>],</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Coefficient</th>
+<th data-quarto-table-cell-role="th">P-Value</th>
+<th data-quarto-table-cell-role="th">Conf. Int. Lower</th>
+<th data-quarto-table-cell-role="th">Conf. Int. Upper</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>89.683593</td>
+<td>2.109041e-288</td>
+<td>89.446360</td>
+<td>89.920826</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">train_size_1k</td>
+<td>0.226422</td>
+<td>3.696455e-49</td>
+<td>0.205562</td>
+<td>0.247282</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">noise_level_pct</td>
+<td>-0.103253</td>
+<td>3.439962e-40</td>
+<td>-0.114654</td>
+<td>-0.091853</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The regression model provides coefficients that estimate the importance of each variable. All are significant at the 0.01 level.</p>
+<p>In this simplified model, each percentage point of noise is worth as much as 11,000 examples. Note that the confidence intervals are quite wide and that the model’s logic is failing at the extremes, e.g.&nbsp;a model with 0 examples wouldn’t be able to achieve a baseline accuracy of 85%.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this article, I’ve shown how to train a model on different amounts of data with different amounts of label noise. The results show that the model is rather robust to label noise, meaning that more data can make up for a certain amount of label noise. That doesn’t mean that label noise is not a problem, but that prioritizing data collection over label correction can be a viable strategy.</p>
+<p>One drawback of this experiment is that it only considers a single popular model and a single dataset. It would be interesting to see if the results generalize to other models and datasets.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><a href="imprint.html">Imprint</a> | <a href="privacy.html">Privacy policy</a> | This website doesn’t use cookies.</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
