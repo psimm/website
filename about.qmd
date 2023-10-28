@@ -7,10 +7,9 @@ about:
     - icon: twitter
       text: Twitter
       href: https://twitter.com/paul_simmering
-
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com/paulsimmering
+      href: https://linkedin.com/in/paulsimmering
     - icon: github
       text: Github
       href: https://github.com/psimm
@@ -27,9 +26,9 @@ The best way to contact me is via email: [paul.simmering@gmail.com](mailto:paul.
 
 What other than data science? Here are some things I enjoy:
 
-- Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
 - Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/projects).
 - Parks and gardens, especially Japanese gardens.
+- Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
 - [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run.
 
 This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website).
