@@ -66,11 +66,11 @@
   </url>
   <url>
     <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2023-10-28T06:47:07.728Z</lastmod>
+    <lastmod>2023-10-28T06:59:52.071Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2023-10-28T06:47:08.836Z</lastmod>
+    <lastmod>2023-10-28T08:44:40.093Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
@@ -106,7 +106,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/correctness-vs-size/index.html</loc>
-    <lastmod>2023-10-28T06:47:15.696Z</lastmod>
+    <lastmod>2023-10-28T07:39:55.692Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
@@ -115,5 +115,9 @@
   <url>
     <loc>https://simmering.dev/privacy.html</loc>
     <lastmod>2023-10-28T06:47:16.512Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</loc>
+    <lastmod>2023-10-28T08:44:39.318Z</lastmod>
   </url>
 </urlset>

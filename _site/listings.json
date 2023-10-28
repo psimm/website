@@ -26,7 +26,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/blog/correctness-vs-size/index.html",
+      "/blog/dataset-size-vs-correctness/index.html",
       "/blog/llm-future/index.html",
       "/blog/ai-assistants/index.html",
       "/blog/modal-twitter/index.html",

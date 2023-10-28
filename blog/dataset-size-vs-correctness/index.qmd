@@ -1,16 +1,50 @@
 ---
 title: "Dataset Size vs. Label Correctness: What is more important for training a model?"
 author: "Paul Simmering"
-date: "2023-10-22"
+date: "2023-10-28"
 categories: ["machine learning"]
-image: "image.jpg"
+image: "scale.png"
+format:
+    html:
+        mermaid: 
+          theme: neutral
 ---
+
+![Illustration created with DALL·E 3](scale-wide.png)
 
 Data labeled by analysts is a common source of training data for machine learning models. However, the quality of the labels can vary greatly, whether due to different interpretations of the task by different analysts, the inherent difficulty of the task or careless work.
 
 For an organization looking to improve a model, they may either choose to re-label part of the data or collect more data. But how can they decide which option is better? I trained the same model 100 times on different number of examples with different amounts of label noise to find out.
 
 I'll use the IMDB movie review dataset as an example and train a transformer model to predict the sentiment of a movie review. This article loosely follows the [HuggingFace tutorial](https://huggingface.co/course/chapter1/3?fw=pt) on training a sentiment classifier.
+
+Here's an overview of the steps I'll take:
+
+```{mermaid}
+flowchart LR
+  A([Movie reviews]) --> B[Training set]
+    A --> C[Test set]
+    subgraph "Experiment"
+      B --> D[Subsample]
+      D --> E[Add label noise]
+      E --> F[Finetune]
+      H[Pretrained Model] --> F
+      F --> G[Finetuned Model]
+      G --> I[Evaluate]
+    end
+    C --> I
+    I --> J[Compare Accuracies]
+
+```
+
+1. Split the movie reviews into a training and test set.
+2. Run experiments. For each combination of dataset size and label noise:
+    1. Subsample the training set to the desired size.
+    2. Flip a certain percentage of labels to introduce label noise.
+    3. Fine-tune a pretrained transformer model on the training set.
+    4. Evaluate the fine-tuned model on the test set.
+3. Compare the accuracy achieved by the model for each combination of dataset size and label noise.
+
 
 ::: {.callout-note}
 To run the large number of experiments, I used [Modal](https://modal.com), a serverless compute platform. The code snippets in this article are simplified and use subsampling to be able to run on a laptop. The full experiment code is available on [GitHub](https://github.com/psimm/website/blog/correctness-vs-size/train.py).
@@ -237,7 +271,20 @@ def train_and_evaluate(dataset_size: int, noise_level: float) -> dict:
 
 ```
 
-Finally, we can run the experiment and save the results to a CSV file.
+This function runs a single experiment:
+
+```{mermaid}
+flowchart LR
+  A([Training set]) --> B[Subsample]
+    B --> C[Add label noise]
+    C --> D[Finetune]
+    E[Pretrained Model] --> D
+    D --> F[Finetuned Model]
+    F --> G[Evaluate]
+
+```
+
+Finally, we can run all experiments and save the results to a CSV file.
 
 ```{python}
 # | eval: false
@@ -254,8 +301,12 @@ for dataset_size, noise_level in combinations:
 ```
 
 ::: {.callout-note}
-Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I've combined the code in a [Python script](https://github.com/psimm/website/blog/correctness-vs-size/train.py) that parallelizes the experiment on [Modal](https://modal.com) using 10 A10G GPUs. In addition, that script features a wider range of dataset sizes and label noise levels and doesn't subsample the test set. All further code snippets in this article are based on the results from that script.
+Note that this loop runs slowly unless you have a GPU available. Rather than actually running the experiment in a single loop on my laptop, I've combined the code in a [Python script](https://github.com/psimm/website/blog/correctness-vs-size/train.py) that parallelizes the experiment on [Modal](https://modal.com) using up to 20 A10G GPUs in parallel. In addition, that script features a wider range of dataset sizes and label noise levels and doesn't subsample the test set. All further code snippets in this article are based on the results from that script.
 :::
+
+![Training in Modal](modal.png)
+
+The total cost was $30. This fit into the free tier of Modal.
 
 ## Results
 
@@ -305,9 +356,10 @@ The heatmap is interactive, so you can hover over the cells to see the exact acc
 What can we learn from this plot?
 
 - The accuracy increases with the number of training examples, as expected.
-- Accuracy decreases with increasing label noise, as expected.
-- Even with a noise level of 0.25, the model can still achieve an accuracy of 0.88 with 5,000 training examples. This demonstrates a robustness to label noise.
-- Training a model is a stochastic process, so the accuracy varies between runs. This is especially true for small datasets. One run in particular stands out as a bad outlier.
+- Accuracy decreases with noise level, as expected.
+- Dataset size can compensate for a certain amount of label noise.
+- Even with a noise level of 0.25, the model can still achieve an accuracy of 0.89 with 15,000 training examples. This demonstrates a robustness to label noise.
+- The task is rather easy. Even with just 1,000 examples and a noise level of 0.25, the model achieves an accuracy of 0.85.
 
 How can number of examples and noise level be traded off? Let's find out with a regression model.
 
@@ -336,7 +388,7 @@ pd.DataFrame(
 
 The regression model provides coefficients that estimate the importance of each variable. All are significant at the 0.01 level.
 
-In this simplified model, each percentage point of noise is worth as much as 11,000 examples. Note that the confidence intervals are quite wide and that the model's logic is failing at the extremes, e.g. a model with 0 examples wouldn't be able to achieve a baseline accuracy of 85%.
+In this simplified model, each percentage point of noise is worth as much as 2,000 examples. Note that the model's logic is failing at the extremes. For example a model with 0 examples wouldn't be able to achieve a baseline accuracy of 89.7% as indicated by the intercept.
 
 ## Conclusion
 
