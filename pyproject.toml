@@ -27,6 +27,10 @@ modal = "^0.55.3881"
 wandb = "^0.15.12"
 ipywidgets = "^8.1.1"
 statsmodels = "^0.14.0"
+pydantic = "^2.4.2"
+texttunnel = "^0.3.3"
+instructor = "^0.2.9"
+aiosqlite = "^0.19.0"
 
 
 [build-system]
