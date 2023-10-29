@@ -305,8 +305,7 @@ The LLM's answers could be used to power a dashboard that shows the most common 
 import plotly.express as px
 
 topic_sentiment = (
-    answers.drop_nulls()
-    .explode("topics")
+    answers.drop_nulls().explode("topics")
     # Sort for legend
     .sort(
         pl.when(pl.col("sentiment") == "POSITIVE")
@@ -390,27 +389,31 @@ The alternate pipeline with a modular approach of specialized models could look 
 
 ```{mermaid}
 graph LR
-    A([Text]) --> B[Topic Classification]
-    B --> C[Sentiment analysis]
-    C --> D[Named Entities]
+    A([Text]) --> B[Tokenization]
+    B --> C[Sentence splitting]
+    C --> D[Topic classification]
+    D --> E[Sentiment classification]
+    E --> F[NER]
 ```
+
+The tokenization and sentence splitting don't require trainable models.
 
 Explosion AI's [spaCy](https://spacy.io) package is excellent for constructing such pipelines. With the extension [spacy-llm](https://github.com/explosion/spacy-llm), it can also feature LLMs in the pipeline and [Prodigy](https://prodi.gy) integrates them into the annotation workflow.
 
 ### Advantages of multi-task prompts compared to pipelines
 
-- **Simplicity**: Only one model to deploy or call by API. That means less code, infrastructure, and documentation to maintain. It also requires less knowledge about various model architectures. The is article showed that it's possible to build a multi-task prompt pipeline with just a few lines of code.
+- **Simplicity**: No training required and only one model to deploy or call by API. That means less code, infrastructure, and documentation to maintain. It also requires less knowledge about various model architectures. The is article showed that it's possible to build a multi-task prompt pipeline with just a few lines of code. Note that spaCy also allows training a regular model to perform multiple tasks.
 - **Easy upgrading**: If the LLM gets better, all tasks benefit from it. No need to retrain specialized models. When OpenAI releases GPT-5, one could switch to it with a single line of code.
 - **Easy extension**: If we want to add a new label, we just add it to the schema and we're done. Same with adding a new task, e.g. summarization.
 - **Cheaper than chained LLM calls**: If we were to call an LLM separately for each step, we'd have to send over the text multiple times. That's more expensive than sending it once and getting all the analysis in one go. But it may still be more expensive than a chain of specialized models.
 
 ### Disadvantages of multi-task prompts compared to pipelines
 
-- **Tempts to skip validation**: Wouldn't it be nice to just trust that the LLM gets it right? Unfortunately, we can't. LLMs still suffer from hallucinations, biases, and other problems.
-- **Lack of modularity**: Can't reuse one task in another pipeline and can't use specialized models that others have trained.
-- **New error types**: JSON parsing errors, use of labels that are not in the schema.
-- **Monolithic model**: If you wish to fine-tune the LLM, it must be trained on all tasks at once. Training data must be available for all tasks. If you want to add a new task, you have to retrain the whole model.
-- **High inference cost**: Compared to efficient models like DistilBERT that comfortably run on a single GPU from a few years ago, LLMs are very expensive to run, requiring a cluster of the latest GPUs.
-- **High latency**: LLMs have to do a lot more matrix multiplication than smaller models. That means they take longer to respond, which is a problem for interactive applications.
+- **Tempts to skip validation**: Wouldn't it be nice to just trust that the LLM gets it right? Unfortunately, we can't. LLMs still suffer from hallucinations, biases, and other problems. Under time pressure, the temptation may be high to skip validation and just use the results. This may lead to wrong conclusions.
+- **Lack of modularity**: Can't reuse a just one task in another pipeline and can't use specialized models that others have trained.
+- **New error types**: JSON parsing errors and use of labels that are not in the schema.
+- **Monolithic model**: If you wish to fine-tune the LLM, you must be train it on all tasks at once. Training data must be available for all tasks. If you want to add a new task, you have to retrain the whole model.
+- **High inference cost**: Compared to efficient models like DistilBERT that comfortably run on a single GPU from a few years ago, LLMs are very expensive to run, requiring a cluster of the latest GPUs. In addition, the whole prompt has to be sent to the API in each request, adding input tokens.
+- **High latency**: LLMs have to run inputs through large and more numerous layers than smaller models. That means they take longer to respond, which is a problem for interactive applications.
 
-To conclude, I see unvalidated multi-task prompts as a tool for low-stakes exploratory work. If proper validation is added they can be viable in batch processing scenarios where simplicity is valued over modularity and computational efficiency.
+In conclusion, I see unvalidated multi-task prompts as a tool for low-stakes exploratory work. If proper validation is added they can be viable in batch processing scenarios where simplicity is valued over modularity and computational efficiency.
