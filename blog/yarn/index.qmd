@@ -3,7 +3,7 @@ title: "Tidy Tuesday: analyzing yarns with polars"
 excerpt: "An analysis of the yarns dataset from Raverly using the polars data frame library"
 author: "Paul Simmering"
 date: "2022-10-22"
-categories: ["polars", "plotly", "TidyTuesday", "Python"]
+categories: ["Python", "Tidy Tuesday"]
 image: "image.jpg"
 ---
 

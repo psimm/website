@@ -2,7 +2,7 @@
 title: "Future Directions for Large Language Models"
 author: "Paul Simmering"
 date: "2023-10-21"
-categories: ["machine learning"]
+categories: ["Machine Learning"]
 image: "image.png"
 ---
 

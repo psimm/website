@@ -2314,7 +2314,8 @@ font-style: inherit;">1</span>],</span>
 </section>
 
  ]]></description>
-  <category>machine learning</category>
+  <category>Machine Learning</category>
+  <category>Python</category>
   <guid>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</guid>
   <pubDate>Fri, 27 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/dataset-size-vs-correctness/scale.png" medium="image" type="image/png" height="144" width="144"/>
@@ -2416,7 +2417,7 @@ font-style: inherit;">1</span>],</span>
 </section>
 
  ]]></description>
-  <category>machine learning</category>
+  <category>Machine Learning</category>
   <guid>https://simmering.dev/blog/llm-future/index.html</guid>
   <pubDate>Fri, 20 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/llm-future/image.png" medium="image" type="image/png" height="81" width="144"/>
@@ -2545,7 +2546,7 @@ font-style: inherit;">1</span>],</span>
 </section>
 
  ]]></description>
-  <category>productivity</category>
+  <category>Productivity</category>
   <guid>https://simmering.dev/blog/ai-assistants/index.html</guid>
   <pubDate>Sun, 09 Apr 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/ai-assistants/image.png" medium="image" type="image/png" height="140" width="144"/>
@@ -3184,6 +3185,8 @@ font-style: inherit;">with</span> stub.run():</span>
 
  ]]></description>
   <category>Python</category>
+  <category>Cloud</category>
+  <category>Data Engineering</category>
   <guid>https://simmering.dev/blog/modal-twitter/index.html</guid>
   <pubDate>Wed, 25 Jan 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/modal-twitter/image.jpg" medium="image" type="image/jpeg"/>
@@ -3252,7 +3255,7 @@ font-style: inherit;">with</span> stub.run():</span>
 </section>
 
  ]]></description>
-  <category>advice</category>
+  <category>Advice</category>
   <guid>https://simmering.dev/blog/skills/index.html</guid>
   <pubDate>Sun, 08 Jan 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/skills/image.jpg" medium="image" type="image/jpeg"/>
@@ -4880,10 +4883,8 @@ if (outputEl) {{
 </section>
 
  ]]></description>
-  <category>polars</category>
-  <category>plotly</category>
-  <category>TidyTuesday</category>
   <category>Python</category>
+  <category>Tidy Tuesday</category>
   <guid>https://simmering.dev/blog/yarn/index.html</guid>
   <pubDate>Fri, 21 Oct 2022 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/yarn/image.jpg" medium="image" type="image/jpeg"/>

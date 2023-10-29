@@ -4,7 +4,6 @@ excerpt: "A comparison of pandas, siuba, pydatatable, polars and duckdb from the
 author: "Paul Simmering"
 date: "2021-12-20"
 categories: ["R", "Python"]
-tags: ["Performance"]
 image: "image.jpg"
 ---
 
