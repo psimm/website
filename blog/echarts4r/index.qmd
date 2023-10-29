@@ -3,7 +3,7 @@ title: "Exploring echarts4r"
 excerpt: "An overview of interactive chart types with the echarts4r package."
 author: "Paul Simmering"
 date: "2020-02-08"
-categories: ["R", "Data visualization"]
+categories: ["R", "Data Visualization"]
 image: "image.png"
 ---
 

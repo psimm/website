@@ -2,7 +2,7 @@
 title: "One-stop NLP: Multi-task prompts for LLMs"
 author: "Paul Simmering"
 date: "2023-10-29"
-categories: ["machine learning"]
+categories: ["Machine Learning", "Python"]
 image: "knife.webp"
 format:
     html:
