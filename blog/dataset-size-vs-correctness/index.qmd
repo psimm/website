@@ -46,7 +46,7 @@ flowchart LR
 The model training section loosely follows the [HuggingFace tutorial](https://huggingface.co/course/chapter1/3?fw=pt) on training a sentiment classifier.
 
 ::: {.callout-note}
-To run the large number of experiments, I used [Modal](https://modal.com), a serverless compute platform. The code snippets in this article are simplified and use subsampling to be able to run on a laptop. The full experiment code is available on [GitHub](https://github.com/psimm/website/blog/correctness-vs-size/train.py).
+To run the large number of experiments, I used [Modal](https://modal.com), a serverless compute platform. The code snippets in this article are simplified and use subsampling to be able to run on a laptop. The full experiment code is available on [GitHub](https://github.com/psimm/website/blob/master/blog/dataset-size-vs-correctness/train.py).
 :::
 
 ## Quick overview of the IMDB Movie Review Dataset
