@@ -11,7 +11,50 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sat, 28 Oct 2023 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 31 Oct 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Large language models for aspect-based sentiment analysis</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/llms-for-absa/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>A finetuned GPT-3.5 Turbo model achieves state-of-the-art performance in aspect-based sentiment analysis (ABSA). Zero-shot and few-shot settings with GPT-4 and GPT-3.5 reach decent performance too.</p>
+<p><strong>The big picture</strong>: In August, OpenAI <a href="https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates">announced</a> fine-tuning for GPT-3.5 Turbo. Fine-tuning enables the general model to be optimized for a specific task. My colleague Paavo Huoviala and me tested the performance of a fine-tuned GPT-3.5 Turbo on the <a href="https://aclanthology.org/S14-2004.pdf">SemEval 2014 Task 4</a> joint aspect term extraction and polarity classification task. We found that the model achieves state-of-the-art performance. However, this comes at the price of 1000 times more model parameters and thus increased inference cost. We also tested zero-shot and few-shot settings with GPT-4 and GPT-3.5. These models reach decent performance too, without requiring training data.</p>
+<p><strong>Learn more</strong>: My colleague Paavo Huoviala and me recently published an article on <a href="https://arxiv.org/abs/2310.18025">arXiv</a>. The related code is available on <a href="https://github.com/qagentur/absa_llm">Github</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Aspect-based sentiment analysis">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Aspect-based sentiment analysis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In contrast to regular sentiment analysis that assigns one polarity label to an entire text, aspect-based sentiment analysis (ABSA) aims to identify the polarity of individual aspects of a text. For example, in the sentence “The food was great, but the service was terrible”, ABSA would identify the aspect “food” as positive and “service” as negative.</p>
+</div>
+</div>
+<section id="implications-for-practitioners" class="level2">
+<h2 class="anchored" data-anchor-id="implications-for-practitioners">Implications for practitioners</h2>
+<ol type="1">
+<li>Fine-tuning GPT-3.5 isn’t difficult or expensive. In this case, it cost less than $30 to fine-tune on 5572 training examples.</li>
+<li>Fine-tuned large language models (LLMs) can achieve better performance in classic NLP tasks than smaller transformer models like RoBERTa.</li>
+<li>A fine-tuned model doesn’t seem to benefit from prompt engineering. This reduces the number of input tokens and thus inference cost.</li>
+<li>For ad-hoc projects, acceptable performance can be reached with just a few examples. After the proof of concept, more examples can be collected with help from the model.</li>
+</ol>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/llms-for-absa/index.html</guid>
+  <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/llms-for-absa/image.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
 <item>
   <title>One-stop NLP: Multi-task prompts for LLMs</title>
   <dc:creator>Paul Simmering</dc:creator>
