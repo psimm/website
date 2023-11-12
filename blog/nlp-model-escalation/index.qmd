@@ -8,7 +8,7 @@ image: "image.jpg"
 
 ![Image generated with DALL·E 3](image.jpg)
 
-With all the hype and breathtaking demos, it's tempting to see GPTs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to great accuracy on almost all tasks and across languages. But there's more to consider than accuracy:
+With all the hype and breathtaking demos, it's tempting to see LLMs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to great accuracy on almost all tasks and across languages. But there's more to consider than accuracy:
 
 - 🕐 **Performance**: How long does it take the model to come up with the answer?
 - 💰 **Inference cost**: How much does it cost to run the model?
@@ -35,7 +35,7 @@ To summarize:
 | Regular expressions | Very low | Millions | Next to nothing |
 | Word count statistics | Low | Millions | Next to nothing |
 | Regression models | Medium | Tens of thousands | Next to nothing |
-| Small neural nets | Medium to high | Hundreds | $0.01 or less |
+| Small neural nets | Medium to high | Hundreds | Less than a cent |
 | Transformer models | High | Dozens | Cents |
 | Large language models | Very high | Handfuls | Dollars |
 
