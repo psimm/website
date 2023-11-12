@@ -11,7 +11,108 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Tue, 31 Oct 2023 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 11 Nov 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>NLP escalation ladder: Use the simplest NLP model that does the job</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/nlp-model-escalation/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/nlp-model-escalation/image.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Image generated with DALL·E 3</figcaption>
+</figure>
+</div>
+<p>With all the hype and breathtaking demos, it’s tempting to see GPTs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to great accuracy on almost all tasks and across languages. But there’s more to consider than accuracy:</p>
+<ul>
+<li>🕐 <strong>Performance</strong>: How long does it take the model to come up with the answer?</li>
+<li>💰 <strong>Inference cost</strong>: How much does it cost to run the model?</li>
+<li>🔍 <strong>Explainability</strong>: Can you tell why the model gave a certain answer?</li>
+<li>🔗 <strong>Dependency</strong>: Which external APIs am I dependent on and how reliable are they?</li>
+<li>☁️ <strong>Deployment</strong>: How complicated is the required cloud infrastructure? Can I run the model on a smartphone or does it require a data center?</li>
+<li>🌍 <strong>Environment</strong>: How much electricity does the model consume and what’s the CO2 footprint?</li>
+</ul>
+<p>The importance of performance, cost and the environmental impact goes up with scale. At just hundreds of inference calls, they don’t really add up to much. At millions or billions of calls, they can become prohibitive.</p>
+<p>With these questions in mind, here’s a tier list of models going from “great” on these ratings to “awful”. They also increase in flexibility and a reduction in performance measured in examples per second. The numbers I give are rough and are oriented around the example task of classifying the topic of one social media post.</p>
+<ol type="1">
+<li><strong>Regular expressions</strong>: Quite a few tasks can be solved just by looking up keyword or extracting strings based on a pattern. For example, regular expressions efficiently extract phone numbers and email addresses, or one could find mentions of companies that match a manually compiled list. Millions of texts can be processed in a few seconds using regular expressions. The downside: They’re not flexible and each rule has to be manually written.</li>
+<li><strong>Word count statistics</strong>: Techniques like <a href="https://en.wikipedia.org/wiki/Tf–idf">tf-idf</a> measure the frequency of word use, providing insights about the importance of words. They are useful for search and classification with greater flexibility than regular expressions. Word counts require a tokenization pre-processing step, but once that’s done, they can also be used to analyze millions of texts in seconds.</li>
+<li><strong>Regression models</strong>: Statistical models like <a href="https://en.wikipedia.org/wiki/Logistic_regression">Logistic Regression</a> can be used to predict categories based on word count statistics. Taking a step forward in complexity, these have marginally higher resource consumption, but offer a more nuanced understanding of relationships in the text. They build further on tokenization and word count statistics and can be enhanced with word embeddings learned by neural nets. Logistic regression runs on CPUs, can be trained in seconds to minutes and can process hundreds of thousands of examples in seconds.</li>
+<li><strong>Small neural nets</strong>: Neural nets take the flexibility of logistic regression further and enable more varied outputs, such as boundaries between named entities. Using non-linear activation functions, convolution layers and dropout, they’re capable learners for a large variety of tasks. The <a href="https://spacy.io">spaCy</a> library offers such <a href="https://spacy.io/usage/models">models</a> in different sizes and for different languages. They run on CPU and can process thousands of examples in seconds.</li>
+<li><strong>Transformer models</strong>: Neural nets with an attention layer are capable of understanding word meanings in context. This provides a major boost in accuracy. Further, some transformers have been pretrained in multiple languages at once. Transformer models have been heavily optimized, resulting in efficient models like <a href="https://arxiv.org/abs/1910.01108">DistilBERT</a>. It is possible to train and run these on CPU, but a GPU will provide much better performance. They can handle hundreds of examples in seconds.</li>
+<li><strong>Large language models</strong>: GPT-3, GPT-4 and other large language models are capable of virtually any task in NLP, from translation to named entity recognition. The flexibility comes at a price: they have billions of parameters and require multiple GPUs to run. Arguably, using a pre-trained LLM without fine-tuning is simpler than any of the previous standpoints because they don’t require much knowledge of NLP techniques. LLMs are slow, even on the latest GPUs, struggling to handle more than one example per second.</li>
+</ol>
+<p>To summarize:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Flexibility</th>
+<th>Examples per second</th>
+<th>Cost per 1000 examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regular expressions</td>
+<td>Very low</td>
+<td>Millions</td>
+<td>Next to nothing</td>
+</tr>
+<tr class="even">
+<td>Word count statistics</td>
+<td>Low</td>
+<td>Millions</td>
+<td>Next to nothing</td>
+</tr>
+<tr class="odd">
+<td>Regression models</td>
+<td>Medium</td>
+<td>Tens of thousands</td>
+<td>Next to nothing</td>
+</tr>
+<tr class="even">
+<td>Small neural nets</td>
+<td>Medium to high</td>
+<td>Hundreds</td>
+<td>$0.01 or less</td>
+</tr>
+<tr class="odd">
+<td>Transformer models</td>
+<td>High</td>
+<td>Dozens</td>
+<td>Cents</td>
+</tr>
+<tr class="even">
+<td>Large language models</td>
+<td>Very high</td>
+<td>Handfuls</td>
+<td>Dollars</td>
+</tr>
+</tbody>
+</table>
+<p>CO2 footprint roughly scales with cost, driven by hardware needs and electricity consumption.</p>
+<p>When thinking through a problem, try to find the simplest solution that does the job.</p>
+<p>There’s one more level to this: Some of the complex models can help train the simpler ones. For example, one could get labels for a classification task from GPT-4 and then train a smaller DistilBERT model on the data. Or, one could use the tf-idf statistic to find words that are typical for class and train a logistic regression model that only takes the presence of these words as inputs. There are many paths, and in a large scale project, it’s worth exploring them.</p>
+<p>Related articles:</p>
+<ul>
+<li><a href="https://explosion.ai/blog/against-llm-maximalism">Against LLM maximalism</a></li>
+<li><a href="&quot;/blog/one-stop-nlp&quot;">One-stop NLP: Multi-task prompts for LLMs</a></li>
+</ul>
+
+
+
+ ]]></description>
+  <category>Machine learning</category>
+  <category>Advice</category>
+  <guid>https://simmering.dev/blog/nlp-model-escalation/index.html</guid>
+  <pubDate>Sat, 11 Nov 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/nlp-model-escalation/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Large language models for aspect-based sentiment analysis</title>
   <dc:creator>Paul Simmering</dc:creator>
