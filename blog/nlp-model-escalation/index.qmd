@@ -1,0 +1,51 @@
+---
+title: "NLP escalation ladder: Use the simplest NLP model that does the job"
+author: "Paul Simmering"
+date: "2023-11-12"
+categories: ["Machine learning", "Advice"]
+image: "image.jpg"
+---
+
+![Image generated with DALL·E 3](image.jpg)
+
+With all the hype and breathtaking demos, it's tempting to see GPTs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to great accuracy on almost all tasks and across languages. But there's more to consider than accuracy:
+
+- 🕐 **Performance**: How long does it take the model to come up with the answer?
+- 💰 **Inference cost**: How much does it cost to run the model?
+- 🔍 **Explainability**: Can you tell why the model gave a certain answer?
+- 🔗 **Dependency**: Which external APIs am I dependent on and how reliable are they?
+- ☁️ **Deployment**: How complicated is the required cloud infrastructure? Can I run the model on a smartphone or does it require a data center?
+- 🌍 **Environment**: How much electricity does the model consume and what's the CO2 footprint?
+
+The importance of performance, cost and the environmental impact goes up with scale. At just hundreds of inference calls, they don't really add up to much. At millions or billions of calls, they can become prohibitive.
+
+With these questions in mind, here's a tier list of models going from "great" on these ratings to "awful". They also increase in flexibility and a reduction in performance measured in examples per second. The numbers I give are rough and are oriented around the example task of classifying the topic of one social media post.
+
+1. **Regular expressions**: Quite a few tasks can be solved just by looking up keyword or extracting strings based on a pattern. For example, regular expressions efficiently extract phone numbers and email addresses, or one could find mentions of companies that match a manually compiled list. Millions of texts can be processed in a few seconds using regular expressions. The downside: They're not flexible and each rule has to be manually written.
+2. **Word count statistics**: Techniques like [tf-idf](https://en.wikipedia.org/wiki/Tf–idf) measure the frequency of word use, providing insights about the importance of words. They are useful for search and classification with greater flexibility than regular expressions. Word counts require a tokenization pre-processing step, but once that's done, they can also be used to analyze millions of texts in seconds.
+3. **Regression models**: Statistical models like [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression) can be used to predict categories based on word count statistics. Taking a step forward in complexity, these have marginally higher resource consumption, but offer a more nuanced understanding of relationships in the text. They build further on tokenization and word count statistics and can be enhanced with word embeddings learned by neural nets. Logistic regression runs on CPUs, can be trained in seconds to minutes and can process hundreds of thousands of examples in seconds.
+4. **Small neural nets**: Neural nets take the flexibility of logistic regression further and enable more varied outputs, such as boundaries between named entities. Using non-linear activation functions, convolution layers and dropout, they're capable learners for a large variety of tasks. The [spaCy](https://spacy.io) library offers such [models](https://spacy.io/usage/models) in different sizes and for different languages. They run on CPU and can process thousands of examples in seconds.
+5. **Transformer models**: Neural nets with an attention layer are capable of understanding word meanings in context. This provides a major boost in accuracy. Further, some transformers have been pretrained in multiple languages at once. Transformer models have been heavily optimized, resulting in efficient models like [DistilBERT](https://arxiv.org/abs/1910.01108). It is possible to train and run these on CPU, but a GPU will provide much better performance. They can handle hundreds of examples in seconds.
+6. **Large language models**: GPT-3, GPT-4 and other large language models are capable of virtually any task in NLP, from translation to named entity recognition. The flexibility comes at a price: they have billions of parameters and require multiple GPUs to run. Arguably, using a pre-trained LLM without fine-tuning is simpler than any of the previous standpoints because they don't require much knowledge of NLP techniques. LLMs are slow, even on the latest GPUs, struggling to handle more than one example per second.
+
+To summarize:
+
+| Model | Flexibility | Examples per second | Cost per 1000 examples |
+| --- | --- | --- | --- |
+| Regular expressions | Very low | Millions | Next to nothing |
+| Word count statistics | Low | Millions | Next to nothing |
+| Regression models | Medium | Tens of thousands | Next to nothing |
+| Small neural nets | Medium to high | Hundreds | $0.01 or less |
+| Transformer models | High | Dozens | Cents |
+| Large language models | Very high | Handfuls | Dollars |
+
+CO2 footprint roughly scales with cost, driven by hardware needs and electricity consumption.
+
+When thinking through a problem, try to find the simplest solution that does the job.
+
+There's one more level to this: Some of the complex models can help train the simpler ones. For example, one could get labels for a classification task from GPT-4 and then train a smaller DistilBERT model on the data. Or, one could use the tf-idf statistic to find words that are typical for class and train a logistic regression model that only takes the presence of these words as inputs. There are many paths, and in a large scale project, it's worth exploring them.
+
+Related articles:
+
+- [Against LLM maximalism](https://explosion.ai/blog/against-llm-maximalism)
+- [One-stop NLP: Multi-task prompts for LLMs]("/blog/one-stop-nlp")
