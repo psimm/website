@@ -387,7 +387,7 @@ pd.DataFrame(
 
 The regression model provides coefficients that estimate the importance of each variable. All are significant at the 0.01 level.
 
-In this simplified model, each percentage point of noise is worth as much as 2,000 examples. Let's imagine a scenario: You have 10,000 labels with a noise level of 10%. You could either correct 100 labels or collect 2,000 more labels to get the same approximate accuracy improvement. The hard part is figuring out which labels are incorrect. If you can't do that without checking every label manually, it may be more economical to collect more data.
+In this simplified model, each percentage point of noise is worth as much as 500 examples. Let's imagine a scenario: You have 10,000 labels with a noise level of 10%. You could either correct 100 labels or collect 500 more labels to get the same approximate accuracy improvement. The hard part is figuring out which labels are incorrect. If you can't do that without checking every label manually, it may be more economical to collect more data.
 
 Note that the model's logic is failing at the extremes. For example a model with 0 examples wouldn't be able to achieve a baseline accuracy of 89.7% as indicated by the intercept.
 
