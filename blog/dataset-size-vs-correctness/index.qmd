@@ -389,10 +389,13 @@ The regression model provides coefficients that estimate the importance of each 
 
 In this simplified model, each percentage point of noise is worth as much as 500 examples. Let's imagine a scenario: You have 10,000 labels with a noise level of 10%. You could either correct 100 labels or collect 500 more labels to get the same approximate accuracy improvement. The hard part is figuring out which labels are incorrect. If you can't do that without checking every label manually, it may be more economical to collect more data.
 
-Note that the model's logic is failing at the extremes. For example a model with 0 examples wouldn't be able to achieve a baseline accuracy of 89.7% as indicated by the intercept.
+Note that the regression's logic is failing at the extremes. For example a model with 0 examples wouldn't be able to achieve a baseline accuracy of 89.7% as indicated by the intercept.
 
 ## Conclusion
 
-In this article, I've shown how to train a model on different amounts of data with different amounts of label noise. The results show that the model is rather robust to label noise, meaning that more data can make up for a certain amount of label noise. That doesn't mean that label noise is not a problem, but that prioritizing data collection over label correction can be a viable strategy.
+In this article, I've trained a sentiment analysis model on different amounts of data with different amounts of label noise. The results show that the model is rather robust to label noise, meaning that more data can make up for a certain amount of label noise. That doesn't mean that label noise is not a problem, but that prioritizing data collection over label correction can be a viable strategy.
 
-One drawback of this experiment is that it only considers a single popular model and a single dataset. It would be interesting to see if the results generalize to other models and datasets.
+One drawback of this experiment is that it only considers a single model and a single dataset. It would be interesting to see if the results generalize to other models and datasets.
+
+Further reading:
+Zhu, Dawei, et al. "Is BERT robust to label noise? A study on learning with noisy labels in text classification." [arXiv preprint arXiv:2204.09371](https://arxiv.org/pdf/2204.09371.pdf)(2022).
