@@ -22,15 +22,7 @@ data science much complex. many thing go wrong, invisible to grug
 
 complexity bad, make grug's brain hurt and cause mistakes that bite grug later
 
-big brain data scientists always make new complexity
-
-- big brain models
-- pipeline tools
-- databases
-- things to put in cloud
-- way to bring data to business shamans
-
-every day new shiny things to learn that promise make life better and less complexity but really make more complexity. many duds but also some gems!
+some complexity necessary to solve business problem. that is grug's job. but grug must not add complexity that not needed
 
 ## Data quality
 
