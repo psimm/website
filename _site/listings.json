@@ -26,6 +26,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/data-grug/index.html",
       "/blog/nlp-model-escalation/index.html",
       "/blog/llms-for-absa/index.html",
       "/blog/one-stop-nlp/index.html",
