@@ -6,9 +6,9 @@ categories: ["Advice"]
 image: "grug.png"
 ---
 
-[The Grug Brained Developer](https://grugbrain.dev) is a funny essay on software development best practices. The lessons resonated with me. This is my own version, geared towards data professionals.
+[The Grug Brained Developer](https://grugbrain.dev) is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.
 
-![Grug and the Demons](grug.png)
+![grug and the demons](grug.png)
 
 ## Introduction
 
@@ -18,9 +18,9 @@ grug data scientist not understand all but try many thing and fail and learn and
 
 ## Complexity bad in data science too
 
-data science much complex. many thing go wrong and invisible to grug
+data science much complex. many thing go wrong, invisible to grug
 
-complexity bad, make grug's brain hurt and cause many mistakes that bite grug later
+complexity bad, make grug's brain hurt and cause mistakes that bite grug later
 
 big brain data scientists always make new complexity
 
@@ -36,31 +36,27 @@ every day new shiny things to learn that promise make life better and less compl
 
 data quality most important. if data bad, model bad. if model bad, prediction bad. if prediction bad, business bad, so no shiny rocks for grug
 
-bad data is demon of data sciencing. it is sneaky demon that hides in data and makes grug look bad or worse, give bad info to business shamans. many shiny rocks lost to bad data
+bad data is demon of data sciencing. is sneaky demon that hides in data and makes grug look bad, or worse, give bad info to business shamans. many shiny rocks lost to bad data
 
 grug likes being close to data. but big brain data tools hide data and make it hard for grug to look at tables. grug like to look at tables. grug finds problems in data by looking at tables
 
-grug work in data warehouse many years and when grug smells a stink, grug look at tables and find problem. when grug ignores stink and not look at tables, grug always regret
+grug work in data warehouse for years and when grug smells a stink, grug look at tables and find problem. when grug ignores stink and not look at tables, grug always regret
 
-but projects have many tables and grug busy. so grug must automate look at tables
+but projects have many tables and grug busy. so grug must automate look at tables. data quality framework check if data is missing, is in wrong format, or is out of range and if foreign keys are valid
 
-so grug use data quality framework to check if data is missing, is in wrong format, or is out of range and if foreign keys are valid
-
-best guarantee comes from enforced constraints in database. constraints always vigilant and never allow bad data. Constraints always on guard and never sleep
+best guarantee comes from enforced constraints in database. constraints always on guard and never sleep
 
 but analytics databases are too lazy to enforce constraints. so grug must use data quality framework to check data. grug not like this but best grug can do
 
 ## Data problem needs data solution
 
-many data sciencing use complex methods to fix problem that is in data
-
-for example, many grugs use complex methods to fix problem of missing data. but  better to fix problem of missing data at source
+grugs tempted to use complex methods to fix problem of missing data and other stink. but  better to fix at source
 
 if data is bad, fix data
 
 say again: *if data is bad, fix data*
 
-to fix data grugs need talk other grugs and business shamans. much wait. but must endure and fix data. tempting, use code to fix. very bad idea
+to fix data, grugs need talk other grugs and business shamans. much wait. but must endure and fix data. tempting, use code to fix. very bad idea
 
 ## Counting things
 
@@ -70,19 +66,19 @@ counting easy to do and fit into brain
 
 ## Visualization
 
-bar chart is grug's best friend forever. grug can make bar chart of anything. easy for business shamans and grug to understand.
+bar chart is grug's best friend forever. grug can make bar chart of anything. easy for business shamans and grug to understand
 
-complex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity.
+complex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity
 
-pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. but when pie has many slices, grug must say no.
+pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. when pie has many slices, grug must say no
 
 ## Machine learning
 
-machine learning is powerful tool and unlocker of many shiny rocks. grug also understands that is not magic and not always best tool for job
+machine learning is powerful tool and unlocker of many shiny rocks. grug understands is not magic and not always best tool for job
 
 big brains use complex machine learning models to solve problem that can be solved with simple model. like to show off big brain
 
-this very bad because big model cost many shiny rocks for train and run. grug can't look into big model to see what it is doing and grug can't explain big model to business shamans
+this very bad because big model cost many shiny rocks for train and run. grug can't look into big model to see what is doing and grug can't explain big model to business shamans
 
 some hard problem can only be solved with big model. then grug must use big model
 
@@ -100,7 +96,7 @@ data exploration and model experimentation is more fun when machine goes brrrr r
 
 caching grug's #2 best friend. grug ask for same thing many times. indexing also good friend
 
-development in cloud twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!
+cloud development twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!
 
 ## Expanding the grug brain
 
@@ -116,7 +112,7 @@ always need data quality and visualization and model evaluation. these are basic
 
 to get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals
 
-some grug identify themselves by their tools. grug is wary of this. grug is grug, not Spark grug  or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use
+some grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug  or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use
 
 ## Conclusion
 
