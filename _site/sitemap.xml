@@ -66,11 +66,11 @@
   </url>
   <url>
     <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2023-11-01T15:52:56.076Z</lastmod>
+    <lastmod>2023-12-09T15:07:25.607Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2023-11-21T07:45:52.250Z</lastmod>
+    <lastmod>2023-12-09T15:05:47.025Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
@@ -127,5 +127,9 @@
   <url>
     <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
     <lastmod>2023-11-21T07:45:54.232Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/data-grug/index.html</loc>
+    <lastmod>2023-12-09T15:05:46.046Z</lastmod>
   </url>
 </urlset>

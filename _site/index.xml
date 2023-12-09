@@ -11,7 +11,110 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sat, 11 Nov 2023 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 08 Dec 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>The Grug Brained Data Scientist</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/data-grug/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://grugbrain.dev">The Grug Brained Developer</a> is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/data-grug/grug.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">grug and the demons</figcaption>
+</figure>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>this collection of data science thoughts. good for young grugs that liked The Grug Brained Developer and now want more into data</p>
+<p>grug data scientist not understand all but try many thing and fail and learn and do better over time and share what not awful</p>
+</section>
+<section id="complexity-bad-in-data-science-too" class="level2">
+<h2 class="anchored" data-anchor-id="complexity-bad-in-data-science-too">Complexity bad in data science too</h2>
+<p>data science much complex. many thing go wrong, invisible to grug</p>
+<p>complexity bad, make grug’s brain hurt and cause mistakes that bite grug later</p>
+<p>big brain data scientists always make new complexity</p>
+<ul>
+<li>big brain models</li>
+<li>pipeline tools</li>
+<li>databases</li>
+<li>things to put in cloud</li>
+<li>way to bring data to business shamans</li>
+</ul>
+<p>every day new shiny things to learn that promise make life better and less complexity but really make more complexity. many duds but also some gems!</p>
+</section>
+<section id="data-quality" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality">Data quality</h2>
+<p>data quality most important. if data bad, model bad. if model bad, prediction bad. if prediction bad, business bad, so no shiny rocks for grug</p>
+<p>bad data is demon of data sciencing. is sneaky demon that hides in data and makes grug look bad, or worse, give bad info to business shamans. many shiny rocks lost to bad data</p>
+<p>grug likes being close to data. but big brain data tools hide data and make it hard for grug to look at tables. grug like to look at tables. grug finds problems in data by looking at tables</p>
+<p>grug work in data warehouse for years and when grug smells a stink, grug look at tables and find problem. when grug ignores stink and not look at tables, grug always regret</p>
+<p>but projects have many tables and grug busy. so grug must automate look at tables. data quality framework check if data is missing, is in wrong format, or is out of range and if foreign keys are valid</p>
+<p>best guarantee comes from enforced constraints in database. constraints always on guard and never sleep</p>
+<p>but analytics databases are too lazy to enforce constraints. so grug must use data quality framework to check data. grug not like this but best grug can do</p>
+</section>
+<section id="data-problem-needs-data-solution" class="level2">
+<h2 class="anchored" data-anchor-id="data-problem-needs-data-solution">Data problem needs data solution</h2>
+<p>grugs tempted to use complex methods to fix problem of missing data and other stink. but better to fix at source</p>
+<p>if data is bad, fix data</p>
+<p>say again: <em>if data is bad, fix data</em></p>
+<p>to fix data, grugs need talk other grugs and business shamans. much wait. but must endure and fix data. tempting, use code to fix. very bad idea</p>
+</section>
+<section id="counting-things" class="level2">
+<h2 class="anchored" data-anchor-id="counting-things">Counting things</h2>
+<p>grug like to count things. when data quality nice, counting things already good enough to make business shamans happy. grug can count anything: users, orders, clicks, shiny rocks collected and more. grug can also separate counting by time, location, and other things</p>
+<p>counting easy to do and fit into brain</p>
+</section>
+<section id="visualization" class="level2">
+<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
+<p>bar chart is grug’s best friend forever. grug can make bar chart of anything. easy for business shamans and grug to understand</p>
+<p>complex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity</p>
+<p>pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. when pie has many slices, grug must say no</p>
+</section>
+<section id="machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning">Machine learning</h2>
+<p>machine learning is powerful tool and unlocker of many shiny rocks. grug understands is not magic and not always best tool for job</p>
+<p>big brains use complex machine learning models to solve problem that can be solved with simple model. like to show off big brain</p>
+<p>this very bad because big model cost many shiny rocks for train and run. grug can’t look into big model to see what is doing and grug can’t explain big model to business shamans</p>
+<p>some hard problem can only be solved with big model. then grug must use big model</p>
+<p>grug likes reproducible model training and evaluation. grug and colleagues need to retrain models and compare. easy to forget settings and which data was used. brain limited. better to have tool that logs everything</p>
+<p>last few years many big model change grug’s life. grug can now do things that grug could not before. big brains work very fast to make big model better and better. grug very happy about this and grug hope big brains keep doing this</p>
+<p>grug prepares for new big model to change. grug knows: model come and go. model is not forever. new model will come and make old model look bad</p>
+</section>
+<section id="performance-and-productivity" class="level2">
+<h2 class="anchored" data-anchor-id="performance-and-productivity">Performance and productivity</h2>
+<p>when grug has to wait for model to train or database to query, grug gets bored and grug’s brain wanders. bad for grug’s productivity. make business shamans impatient too</p>
+<p>data exploration and model experimentation is more fun when machine goes brrrr rather than when machine goes zzzzz. so when slow, grug uses performance profiling tools to find bottleneck</p>
+<p>caching grug’s #2 best friend. grug ask for same thing many times. indexing also good friend</p>
+<p>cloud development twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!</p>
+</section>
+<section id="expanding-the-grug-brain" class="level2">
+<h2 class="anchored" data-anchor-id="expanding-the-grug-brain">Expanding the grug brain</h2>
+<p>grug’s brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn</p>
+<p>popular data shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but some tools are actually good. so grug must choose wisely</p>
+<p>learn evergreen skills - always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for long time more. many new toys use SQL so grug can use SQL with new toys</p>
+<p>grug wants to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing</p>
+<p>always need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good</p>
+<p>to get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals</p>
+<p>some grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>good data better than complex pipeline</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Advice</category>
+  <guid>https://simmering.dev/blog/data-grug/index.html</guid>
+  <pubDate>Fri, 08 Dec 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/data-grug/grug.png" medium="image" type="image/png" height="82" width="144"/>
+</item>
 <item>
   <title>NLP escalation ladder: Use the simplest NLP model that does the job</title>
   <dc:creator>Paul Simmering</dc:creator>

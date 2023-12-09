@@ -158,7 +158,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "NLP escalation ladder: Use the simplest NLP model that does the job\n\n\n\n\n\n\n\nMachine Learning\n\n\nAdvice\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nLarge language models for aspect-based sentiment analysis\n\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nOne-stop NLP: Multi-task prompts for LLMs\n\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nDataset Size vs. Label Correctness: What is more important for training a model?\n\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 28, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFuture Directions for Large Language Models\n\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nProductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\nCloud\n\n\nData Engineering\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\nPython\n\n\nTidy Tuesday\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
+    "text": "The Grug Brained Data Scientist\n\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nNLP escalation ladder: Use the simplest NLP model that does the job\n\n\n\n\n\n\n\nMachine Learning\n\n\nAdvice\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nLarge language models for aspect-based sentiment analysis\n\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nOne-stop NLP: Multi-task prompts for LLMs\n\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nDataset Size vs. Label Correctness: What is more important for training a model?\n\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nOct 28, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFuture Directions for Large Language Models\n\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\n\nProductivity\n\n\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\n\nPython\n\n\nCloud\n\n\nData Engineering\n\n\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\n\nPython\n\n\nTidy Tuesday\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n  \n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\n\nR\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/ai-assistants/index.html",
@@ -726,5 +726,103 @@
     "title": "NLP escalation ladder: Use the simplest NLP model that does the job",
     "section": "",
     "text": "Image generated with DALL·E 3\n\n\nWith all the hype and breathtaking demos, it’s tempting to see LLMs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to great accuracy on almost all tasks and across languages. But there’s more to consider than accuracy:\n\n🕐 Performance: How long does it take the model to come up with the answer?\n💰 Inference cost: How much does it cost to run the model?\n🔍 Explainability: Can you tell why the model gave a certain answer?\n🔗 Dependency: Which external APIs am I dependent on and how reliable are they?\n☁️ Deployment: How complicated is the required cloud infrastructure? Can I run the model on a smartphone or does it require a data center?\n🌍 Environment: How much electricity does the model consume and what’s the CO2 footprint?\n\nThe importance of performance, cost and the environmental impact goes up with scale. At just hundreds of inference calls, they don’t really add up to much. At millions or billions of calls, they can become prohibitive.\nWith these questions in mind, here’s a tier list of models going from “great” on these ratings to “awful”. They also increase in flexibility and a reduction in performance measured in examples per second. The numbers I give are rough and are oriented around the example task of classifying the topic of one social media post.\n\nRegular expressions: Quite a few tasks can be solved just by looking up keyword or extracting strings based on a pattern. For example, regular expressions efficiently extract phone numbers and email addresses, or one could find mentions of companies that match a manually compiled list. Millions of texts can be processed in a few seconds using regular expressions. The downside: They’re not flexible and each rule has to be manually written.\nWord count statistics: Techniques like tf-idf measure the frequency of word use, providing insights about the importance of words. They are useful for search and classification with greater flexibility than regular expressions. Word counts require a tokenization pre-processing step, but once that’s done, they can also be used to analyze millions of texts in seconds.\nRegression models: Statistical models like Logistic Regression can be used to predict categories based on word count statistics. Taking a step forward in complexity, these have marginally higher resource consumption, but offer a more nuanced understanding of relationships in the text. They build further on tokenization and word count statistics and can be enhanced with word embeddings learned by neural nets. Logistic regression runs on CPUs, can be trained in seconds to minutes and can process hundreds of thousands of examples in seconds.\nSmall neural nets: Neural nets take the flexibility of logistic regression further and enable more varied outputs, such as boundaries between named entities. Using non-linear activation functions, convolution layers and dropout, they’re capable learners for a large variety of tasks. The spaCy library offers such models in different sizes and for different languages. They run on CPU and can process thousands of examples in seconds.\nTransformer models: Neural nets with an attention layer are capable of understanding word meanings in context. This provides a major boost in accuracy. Further, some transformers have been pretrained in multiple languages at once. Transformer models have been heavily optimized, resulting in efficient models like DistilBERT. It is possible to train and run these on CPU, but a GPU will provide much better performance. They can handle hundreds of examples in seconds.\nLarge language models: GPT-3, GPT-4 and other large language models are capable of virtually any task in NLP, from translation to named entity recognition. The flexibility comes at a price: they have billions of parameters and require multiple GPUs to run. Arguably, using a pre-trained LLM without fine-tuning is simpler than any of the previous standpoints because they don’t require much knowledge of NLP techniques. LLMs are slow, even on the latest GPUs, struggling to handle more than one example per second.\n\nTo summarize:\n\n\n\nModel\nFlexibility\nExamples per second\nCost per 1000 examples\n\n\n\n\nRegular expressions\nVery low\nMillions\nNext to nothing\n\n\nWord count statistics\nLow\nMillions\nNext to nothing\n\n\nRegression models\nMedium\nTens of thousands\nNext to nothing\n\n\nSmall neural nets\nMedium to high\nHundreds\nLess than a cent\n\n\nTransformer models\nHigh\nDozens\nCents\n\n\nLarge language models\nVery high\nHandfuls\nDollars\n\n\n\nCO2 footprint roughly scales with cost, driven by hardware needs and electricity consumption.\nWhen thinking through a problem, try to find the simplest solution that does the job.\nThere’s one more level to this: Some of the complex models can help train the simpler ones. For example, one could get labels for a classification task from GPT-4 and then train a smaller DistilBERT model on the data. Or, one could use the tf-idf statistic to find words that are typical for class and train a logistic regression model that only takes the presence of these words as inputs. There are many paths, and in a large scale project, it’s worth exploring them.\nRelated articles:\n\nAgainst LLM maximalism\nOne-stop NLP: Multi-task prompts for LLMs"
+  },
+  {
+    "objectID": "blog/data-grug/index.html",
+    "href": "blog/data-grug/index.html",
+    "title": "The Grug Brained Data Scientist",
+    "section": "",
+    "text": "The Grug Brained Developer is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals."
+  },
+  {
+    "objectID": "blog/data-grug/index.html#introduction",
+    "href": "blog/data-grug/index.html#introduction",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Introduction",
+    "text": "Introduction\nthis collection of data science thoughts. good for young grugs that liked The Grug Brained Developer and now want more into data\ngrug data scientist not understand all but try many thing and fail and learn and do better over time and share what not awful"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#complexity-bad-in-data-science-too",
+    "href": "blog/data-grug/index.html#complexity-bad-in-data-science-too",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Complexity bad in data science too",
+    "text": "Complexity bad in data science too\ndata science much complex. many thing go wrong, invisible to grug\ncomplexity bad, make grug’s brain hurt and cause mistakes that bite grug later\nbig brain data scientists always make new complexity\n\nbig brain models\npipeline tools\ndatabases\nthings to put in cloud\nway to bring data to business shamans\n\nevery day new shiny things to learn that promise make life better and less complexity but really make more complexity. many duds but also some gems!"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#conclusion",
+    "href": "blog/data-grug/index.html#conclusion",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Conclusion",
+    "text": "Conclusion\ngood data better than complex pipeline"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#dont-fix-with-complexity-what-can-be-fixed-with-data",
+    "href": "blog/data-grug/index.html#dont-fix-with-complexity-what-can-be-fixed-with-data",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Don’t fix with complexity what can be fixed with data",
+    "text": "Don’t fix with complexity what can be fixed with data\nmany data methods use complex methods to fix problem that is actually in data.\nfor example, many data scientist use complex methods to fix problem of missing data. but often better to fix problem of missing data at source.\ngrug think: if data is bad, fix data, not try to fix with complex method. complex method often make problem worse."
+  },
+  {
+    "objectID": "blog/data-grug/index.html#data-quality",
+    "href": "blog/data-grug/index.html#data-quality",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Data quality",
+    "text": "Data quality\ndata quality most important. if data bad, model bad. if model bad, prediction bad. if prediction bad, business bad, so no shiny rocks for grug\nbad data is demon of data sciencing. is sneaky demon that hides in data and makes grug look bad, or worse, give bad info to business shamans. many shiny rocks lost to bad data\ngrug likes being close to data. but big brain data tools hide data and make it hard for grug to look at tables. grug like to look at tables. grug finds problems in data by looking at tables\ngrug work in data warehouse for years and when grug smells a stink, grug look at tables and find problem. when grug ignores stink and not look at tables, grug always regret\nbut projects have many tables and grug busy. so grug must automate look at tables. data quality framework check if data is missing, is in wrong format, or is out of range and if foreign keys are valid\nbest guarantee comes from enforced constraints in database. constraints always on guard and never sleep\nbut analytics databases are too lazy to enforce constraints. so grug must use data quality framework to check data. grug not like this but best grug can do"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#data-problem-needs-data-solution",
+    "href": "blog/data-grug/index.html#data-problem-needs-data-solution",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Data problem needs data solution",
+    "text": "Data problem needs data solution\ngrugs tempted to use complex methods to fix problem of missing data and other stink. but better to fix at source\nif data is bad, fix data\nsay again: if data is bad, fix data\nto fix data, grugs need talk other grugs and business shamans. much wait. but must endure and fix data. tempting, use code to fix. very bad idea"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#keeping-up",
+    "href": "blog/data-grug/index.html#keeping-up",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Keeping up",
+    "text": "Keeping up\ngrug’s brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn.\npopular shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but grug has also seen that some new toys are the real deal and actually do make life better.\nso grug must choose wisely.\nlearn evergreen skills is always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for shiny rock collection for decades more. many new toys use SQL so grug can use SQL with new toys.\ngrug wants T-shaped brain. grug wants to know basics of many things and aspires to big brain in one thing.\nalways need basic data engineering and visualization and model evaluation. cloud also good. to make more shiny rocks, grug must also be good at one more thing, like model sorcery or huge data organization or business shaman rituals."
+  },
+  {
+    "objectID": "blog/data-grug/index.html#machine-learning",
+    "href": "blog/data-grug/index.html#machine-learning",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Machine learning",
+    "text": "Machine learning\nmachine learning is powerful tool and unlocker of many shiny rocks. grug understands is not magic and not always best tool for job\nbig brains use complex machine learning models to solve problem that can be solved with simple model. like to show off big brain\nthis very bad because big model cost many shiny rocks for train and run. grug can’t look into big model to see what is doing and grug can’t explain big model to business shamans\nsome hard problem can only be solved with big model. then grug must use big model\ngrug likes reproducible model training and evaluation. grug and colleagues need to retrain models and compare. easy to forget settings and which data was used. brain limited. better to have tool that logs everything\nlast few years many big model change grug’s life. grug can now do things that grug could not before. big brains work very fast to make big model better and better. grug very happy about this and grug hope big brains keep doing this\ngrug prepares for new big model to change. grug knows: model come and go. model is not forever. new model will come and make old model look bad"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#developing-the-grug-brain",
+    "href": "blog/data-grug/index.html#developing-the-grug-brain",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Developing the grug brain",
+    "text": "Developing the grug brain\ngrug’s brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn.\npopular shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but grug has also seen that some new toys are the real deal and actually do make life better.\nso grug must choose wisely.\nlearn evergreen skills is always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for shiny rock collection for decades more. many new toys use SQL so grug can use SQL with new toys.\ngrug wants T-shaped brain. grug wants to know basics of many things and aspires to big brain in one thing.\nalways need basic data engineering and visualization and model evaluation. cloud also good. to make more shiny rocks, grug must also be good at one more thing, like model sorcery or huge data organization or business shaman rituals."
+  },
+  {
+    "objectID": "blog/data-grug/index.html#expanding-the-grug-brain",
+    "href": "blog/data-grug/index.html#expanding-the-grug-brain",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Expanding the grug brain",
+    "text": "Expanding the grug brain\ngrug’s brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn\npopular data shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but some tools are actually good. so grug must choose wisely\nlearn evergreen skills - always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for long time more. many new toys use SQL so grug can use SQL with new toys\ngrug wants to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing\nalways need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good\nto get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals\nsome grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#counting-things",
+    "href": "blog/data-grug/index.html#counting-things",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Counting things",
+    "text": "Counting things\ngrug like to count things. when data quality nice, counting things already good enough to make business shamans happy. grug can count anything: users, orders, clicks, shiny rocks collected and more. grug can also separate counting by time, location, and other things\ncounting easy to do and fit into brain"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#visualization",
+    "href": "blog/data-grug/index.html#visualization",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Visualization",
+    "text": "Visualization\nbar chart is grug’s best friend forever. grug can make bar chart of anything. easy for business shamans and grug to understand\ncomplex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity\npie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. when pie has many slices, grug must say no"
+  },
+  {
+    "objectID": "blog/data-grug/index.html#performance-and-productivity",
+    "href": "blog/data-grug/index.html#performance-and-productivity",
+    "title": "The Grug Brained Data Scientist",
+    "section": "Performance and productivity",
+    "text": "Performance and productivity\nwhen grug has to wait for model to train or database to query, grug gets bored and grug’s brain wanders. bad for grug’s productivity. make business shamans impatient too\ndata exploration and model experimentation is more fun when machine goes brrrr rather than when machine goes zzzzz. so when slow, grug uses performance profiling tools to find bottleneck\ncaching grug’s #2 best friend. grug ask for same thing many times. indexing also good friend\ncloud development twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!"
   }
 ]
