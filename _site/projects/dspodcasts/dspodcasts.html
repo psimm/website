@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2023-12-09">
 
-<title>Paul Simmering - Projects</title>
+<title>Paul Simmering - DS Podcasts Dashboard</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,40 +60,13 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -103,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Paul Simmering</span>
     </a>
   </div>
@@ -114,19 +87,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./projects.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../projects.html" rel="" target="">
  <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./talks.html" rel="" target="">
+    <a class="nav-link" href="../../talks.html" rel="" target="">
  <span class="menu-text">Talks</span></a>
   </li>  
   <li class="nav-item compact">
@@ -161,14 +134,31 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
-</div>
+<h1 class="title">DS Podcasts Dashboard</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Audio</div>
+    <div class="quarto-category">Dashboard</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paul Simmering </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 9, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -176,192 +166,36 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>Streamlit app to display analytics for data science podcasts. See the dashboard <a href="https://dspodcasts.streamlit.app/">here</a>. The dashboard is updated daily based on new transcripts of the podcasts.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+A[Podcast RSS Feeds] --&gt; B[S3 Bucket]
+B --&gt; C[Transcription]
+C --&gt; D[Named Entity Recognition]
+D --&gt; E[Dashboard]
+</pre>
+</div>
+</div>
+</div>
+</div>
+<p>Code available on <a href="https://github.com/psimm/podcasts_analysis">Github</a>.</p>
+<p>Tech stack:</p>
+<ul>
+<li>Dashboard built and hosted with <a href="https://streamlit.io">Streamlit</a></li>
+<li>Visualization with <a href="https://plotly.com">Plotly</a></li>
+<li>Data collection using <a href="https://github.com/kurtmckee/feedparser">feedparser</a></li>
+<li>Transcription with OpenAI’s <a href="https://huggingface.co/spaces/openai/whisper">Whisper</a> model</li>
+<li>Named entity recognition with <a href="https://spacy.io">spaCy</a></li>
+<li>Computation and orchestration with <a href="https://modal.com">Modal</a></li>
+<li>Data stored on <a href="https://aws.amazon.com/s3/">AWS S3</a></li>
+</ul>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Python,Audio,Dashboard" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1702113388491" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/dspodcasts/dspodcasts.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/dspodcasts/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-DS Podcasts Dashboard
-</h5>
-<div class="card-text listing-description">
-Streamlit app to display analytics for data science podcasts. See the dashboard here. The dashboard is updated daily based on new transcripts of the podcasts.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Dec 9, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="Python,LLMs,Machine Learning" data-listing-date-sort="1695247200000" data-listing-file-modified-sort="1697880672963" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/texttunnel/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/texttunnel/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-texttunnel Python package texttunnel
-</h5>
-<div class="card-text listing-description">
-texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering and Paavo Huoviala
-</div>
-<div class="listing-date">
-Sep 21, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="R,Python,AWS,Shiny,Machine Learning" data-listing-date-sort="1616968800000" data-listing-file-modified-sort="1697880672938" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/cosmention/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/cosmention/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Cosmention
-</h5>
-<div class="card-text listing-description">
-Cosmention is an…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Mar 29, 2021
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="Shiny,R,Network analysis" data-listing-date-sort="1601416800000" data-listing-file-modified-sort="1697880672948" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/stakex/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/stakex/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-StakeX - Organizational Networks from Web Research
-</h5>
-<div class="card-text listing-description">
-StakeX is a…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Sep 30, 2020
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="R,Shiny,Network-analysis" data-listing-date-sort="1530396000000" data-listing-file-modified-sort="1697880672944" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/gpexp/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/gpexp/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Global Patent Explorer
-</h5>
-<div class="card-text listing-description">
-Freeelance work for Aalborg University, commissioned by Assoc. Prof.&nbsp;Daniel S. Hain and Assoc. Prof.&nbsp;Roman Jurowetzki. The Shiny App visualizes the results of a paper on…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Jul 1, 2018
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="Shiny,R,Machine learning" data-listing-date-sort="1517439600000" data-listing-file-modified-sort="1697880672945" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<a href="./projects/masterthesis/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/masterthesis/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Human and AI Decision Making in a Game of Innovation and Imitation
-</h5>
-<div class="card-text listing-description">
-My master thesis investigates the use of artificial…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Feb 1, 2018
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="R,Regression analysis,Survey" data-listing-date-sort="1438725600000" data-listing-file-modified-sort="1697880672933" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="./projects/bachelorthesis/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./projects/bachelorthesis/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?
-</h5>
-<div class="card-text listing-description">
-I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Aug 5, 2015
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

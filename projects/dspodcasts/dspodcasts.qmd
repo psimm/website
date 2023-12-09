@@ -1,0 +1,38 @@
+---
+title: "DS Podcasts Dashboard"
+subtitle: ""
+date: 2023-12-09
+author: "Paul Simmering"
+draft: false
+categories:
+  - Python
+  - Audio
+  - Dashboard
+image: "image.png"
+format:
+    html:
+        mermaid: 
+          theme: neutral
+---
+
+Streamlit app to display analytics for data science podcasts. See the dashboard [here](https://dspodcasts.streamlit.app/). The dashboard is updated daily based on new transcripts of the podcasts.
+
+```{mermaid}
+graph LR
+A[Podcast RSS Feeds] --> B[S3 Bucket]
+B --> C[Transcription]
+C --> D[Named Entity Recognition]
+D --> E[Dashboard]
+```
+
+Code available on [Github](https://github.com/psimm/podcasts_analysis).
+
+Tech stack:
+
+- Dashboard built and hosted with [Streamlit](https://streamlit.io)
+- Visualization with [Plotly](https://plotly.com)
+- Data collection using [feedparser](https://github.com/kurtmckee/feedparser)
+- Transcription with OpenAI's [Whisper](https://huggingface.co/spaces/openai/whisper) model
+- Named entity recognition with [spaCy](https://spacy.io)
+- Computation and orchestration with [Modal](https://modal.com)
+- Data stored on [AWS S3](https://aws.amazon.com/s3/)

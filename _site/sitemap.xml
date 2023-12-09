@@ -66,7 +66,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2023-11-01T15:52:56.076Z</lastmod>
+    <lastmod>2023-12-09T09:16:29.511Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
@@ -127,5 +127,13 @@
   <url>
     <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
     <lastmod>2023-11-21T07:45:54.232Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/dspodcasts.html</loc>
+    <lastmod>2023-12-09T09:10:18.813Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/dspodcasts/dspodcasts.html</loc>
+    <lastmod>2023-12-09T11:55:17.557Z</lastmod>
   </url>
 </urlset>
