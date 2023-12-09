@@ -8,7 +8,7 @@ image: "grug.png"
 
 [The Grug Brained Developer](https://grugbrain.dev) is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.
 
-![grug and the demons](grug.png)
+![grug and the demons - made with DALL-E](grug.png)
 
 ## Introduction
 
