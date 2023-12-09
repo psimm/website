@@ -74,49 +74,49 @@ bar chart is grug's best friend forever. grug can make bar chart of anything. ea
 
 complex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity.
 
-pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when chart has few slices, it's ok. but when chart has many slices, grug must say no.
+pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. but when pie has many slices, grug must say no.
 
 ## Machine learning
 
 machine learning is powerful tool and unlocker of many shiny rocks. grug also understands that is not magic and not always best tool for job
 
-many big brain data scientists use complex machine learning models to solve problem that can be solved with simple model. maybe big brain data scientists like to show off big brain
+big brains use complex machine learning models to solve problem that can be solved with simple model. like to show off big brain
 
-this very bad because big model cost many shiny rocks to train and many shiny rocks to run. grug can't look into big model to see what it is doing and grug can't explain big model to business shamans. grug also can't explain big model to grug's self. grug prefer simple model that fits in grug's brain
+this very bad because big model cost many shiny rocks for train and run. grug can't look into big model to see what it is doing and grug can't explain big model to business shamans
 
-some hard problems can only be solved with a big model. then grug must use big model
+some hard problem can only be solved with big model. then grug must use big model
 
-with any models, grug likes reproducible model training and evaluation. grug and colleagues need to retrain models and compare. easy to forget settings and which data was used. better to have tool that logs everything
+grug likes reproducible model training and evaluation. grug and colleagues need to retrain models and compare. easy to forget settings and which data was used. brain limited. better to have tool that logs everything
 
-last few years many big model change grug's life. grug can now do things that grug could not do before. big brain data scientists work very fast to make big model better and better. grug very happy about this and grug hope big brain data scientists keep doing this
+last few years many big model change grug's life. grug can now do things that grug could not  before. big brains work very fast to make big model better and better. grug very happy about this and grug hope big brains keep doing this
 
-grug prepares for new big model to change. grug knows: model come and go. model is not forever and new model will come and make old model look bad
+grug prepares for new big model to change. grug knows: model come and go. model is not forever. new model will come and make old model look bad
 
 ## Performance and productivity
 
-when grug has to wait for model to train or database to query, grug gets bored and grug's brain wanders. that's bad for grug's productivity. makes business shamans become impatient too
+when grug has to wait for model to train or database to query, grug gets bored and grug's brain wanders. bad for grug's productivity. make business shamans impatient too
 
-data exploration and model experimentation is more fun when machine goes brrrr rather than when machine goes zzzzz. so when something slows down grug, grug uses performance profiling tools to find problem and fix it
+data exploration and model experimentation is more fun when machine goes brrrr rather than when machine goes zzzzz. so when slow, grug uses performance profiling tools to find bottleneck
 
-caching best friend of grug. grug ask for same thing many times. indexing also good friend
+caching grug's #2 best friend. grug ask for same thing many times. indexing also good friend
 
-development in cloud twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes 30 minutes to fix. grug look for ways to develop locally or with quick feedback loop. setup can be headache but so worth it!
+development in cloud twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!
 
 ## Expanding the grug brain
 
 grug's brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn
 
-popular shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but grug has also seen that some new toys are the real deal and actually do make life better. so grug must choose wisely
+popular data shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but some tools are actually good. so grug must choose wisely
 
-learn evergreen skills is always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for shiny rock collection for decades more. many new toys use SQL so grug can use SQL with new toys
+learn evergreen skills - always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for long time more. many new toys use SQL so grug can use SQL with new toys
 
-grug aspires to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing
+grug wants to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing
 
 always need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good
 
 to get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals
 
-some developers identify themselves by their tools. grug is wary of this. grug is data scientist, not Spark data scientist or Snowflake data scientist or AWS data scientist. when grug find new shiny rock mine, grug will use tool that other grugs use at shiny rock mine
+some grug identify themselves by their tools. grug is wary of this. grug is grug, not Spark grug  or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use
 
 ## Conclusion
 
