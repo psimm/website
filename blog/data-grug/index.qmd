@@ -3,10 +3,12 @@ title: "The Grug Brained Data Scientist"
 author: "Paul Simmering"
 date: "2023-12-09"
 categories: ["Advice"]
-image: "image.jpg"
+image: "grug.png"
 ---
 
-[The Grug Brained Developer](https://grugbrain.dev) is a humorous essay on software development best practices. I enjoyed reading it and the lessons resonated with me. I thought I would share my own version, geared towards data professionals.
+[The Grug Brained Developer](https://grugbrain.dev) is a funny essay on software development best practices. The lessons resonated with me. This is my own version, geared towards data professionals.
+
+![Grug and the Demons](grug.png)
 
 ## Introduction
 
@@ -22,24 +24,13 @@ complexity is bad because it makes grugs brain hurt and causes many mistakes tha
 
 big brain data scientists always make new way to make more complex
 
-- always new pipeline tools
-- always new big brain models
-- always new things to put in cloud
-- always new way to bring data to business shamans
+- new big brain models
+- new pipeline tools
+- new databases
+- new things to put in cloud
+- new way to bring data to business shamans
 
 every day new shiny things to learn that promise make life better and less complexity but really often make more complexity. many duds but also many gems!
-
-## Data problem needs data solution
-
-many data methods use complex methods to fix problem that is actually in data
-
-for example, many data scientist use complex methods to fix problem of missing data. but often better to fix problem of missing data at source
-
-if data is bad, fix data
-
-say again: *if data is bad, fix data*
-
-fix data often requires talking to other groups and business shamans and waiting. but must endure and fix data. tempting to just use code to fix but this often bad idea
 
 ## Data quality
 
@@ -58,6 +49,18 @@ so grug uses data quality frameworks to check if data is missing, is in wrong fo
 best guarantee comes from enforced constraints in database. constraints always vigilant and never allow dirty data. Constraints always on guard and never sleep
 
 but analytics databases are too lazy to enforce constraints. so grug must use data quality frameworks to check data. grug not like this but best grug can do
+
+## Data problem needs data solution
+
+many data methods use complex methods to fix problem that is actually in data
+
+for example, many data scientist use complex methods to fix problem of missing data. but often better to fix problem of missing data at source
+
+if data is bad, fix data
+
+say again: *if data is bad, fix data*
+
+fix data often requires talking to other groups and business shamans and waiting. but must endure and fix data. tempting to just use code to fix but this often bad idea
 
 ## Counting things
 
