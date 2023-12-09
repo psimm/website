@@ -102,7 +102,7 @@ grug wants to have brain shaped like letter T. grug wants to know basics of many
 
 always need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good
 
-to get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals
+to get more shiny rocks, grug must be extra good at one more thing, like model deepthink or huge data organization or business shaman rituals
 
 some grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug  or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use
 
