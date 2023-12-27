@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://simmering.dev/imprint.html</loc>
-    <lastmod>2023-11-01T15:52:50.559Z</lastmod>
+    <lastmod>2023-12-27T09:54:47.465Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/talks.html</loc>
@@ -70,7 +70,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2023-12-09T15:05:47.025Z</lastmod>
+    <lastmod>2023-12-27T09:52:09.523Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
@@ -122,7 +122,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/privacy.html</loc>
-    <lastmod>2023-11-01T15:53:06.335Z</lastmod>
+    <lastmod>2023-12-27T09:54:45.716Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
@@ -130,6 +130,6 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/data-grug/index.html</loc>
-    <lastmod>2023-12-09T15:05:46.046Z</lastmod>
+    <lastmod>2023-12-27T09:54:45.052Z</lastmod>
   </url>
 </urlset>
