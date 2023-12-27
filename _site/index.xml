@@ -25,7 +25,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://simmering.dev/blog/data-grug/grug.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">grug and the demons</figcaption>
+<figcaption class="figure-caption">grug and the demons - made with DALL-E</figcaption>
 </figure>
 </div>
 <section id="introduction" class="level2">
@@ -37,15 +37,7 @@
 <h2 class="anchored" data-anchor-id="complexity-bad-in-data-science-too">Complexity bad in data science too</h2>
 <p>data science much complex. many thing go wrong, invisible to grug</p>
 <p>complexity bad, make grug’s brain hurt and cause mistakes that bite grug later</p>
-<p>big brain data scientists always make new complexity</p>
-<ul>
-<li>big brain models</li>
-<li>pipeline tools</li>
-<li>databases</li>
-<li>things to put in cloud</li>
-<li>way to bring data to business shamans</li>
-</ul>
-<p>every day new shiny things to learn that promise make life better and less complexity but really make more complexity. many duds but also some gems!</p>
+<p>some complexity necessary to solve business problem. that is grug’s job. but grug must not add complexity that not needed</p>
 </section>
 <section id="data-quality" class="level2">
 <h2 class="anchored" data-anchor-id="data-quality">Data quality</h2>
@@ -99,7 +91,7 @@
 <p>learn evergreen skills - always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for long time more. many new toys use SQL so grug can use SQL with new toys</p>
 <p>grug wants to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing</p>
 <p>always need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good</p>
-<p>to get more shiny rocks, grug must be extra good at one more thing, like model sorcery or huge data organization or business shaman rituals</p>
+<p>to get more shiny rocks, grug must be extra good at one more thing, like model deepthink or huge data organization or business shaman rituals</p>
 <p>some grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use</p>
 </section>
 <section id="conclusion" class="level2">
