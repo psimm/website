@@ -31,6 +31,7 @@ pydantic = "^2.4.2"
 texttunnel = "^0.3.3"
 instructor = "^0.2.9"
 aiosqlite = "^0.19.0"
+itables = "^1.6.3"
 
 
 [build-system]

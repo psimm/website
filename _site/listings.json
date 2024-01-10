@@ -26,6 +26,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/llm-price-performance/index.html",
       "/blog/data-grug/index.html",
       "/blog/nlp-model-escalation/index.html",
       "/blog/llms-for-absa/index.html",

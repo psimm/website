@@ -1,0 +1,149 @@
+---
+title: "LLM Price Comparison"
+author: "Paul Simmering"
+date: "2024-01-26"
+categories: ["Machine Learning", "Cloud", "Economics"]
+image: "image.png"
+format:
+    html:
+        echo: false
+        fig-height: 12
+---
+
+This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/main/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
+
+Prices as of January 26, 2024.
+
+```{python}
+import polars as pl
+import plotly.express as px
+from itables import show, JavascriptCode
+
+df = (
+    pl.read_csv("data.csv")
+    .with_columns(
+        id=pl.col("provider") + "-" + pl.col("model"),
+        input_token_1m_usd=pl.col("input_token_1k_usd") * 1000,
+        output_token_1m_usd=pl.col("output_token_1k_usd") * 1000,
+        context_size_label=(pl.col("context_size") / 1000).cast(pl.Int16).cast(pl.Utf8)
+        + "k",
+        token_avg_price_1m_usd=(
+            (pl.col("input_token_1k_usd") + pl.col("output_token_1k_usd")) / 2
+        )
+        * 1000,
+    )
+    .with_columns(pl.selectors.float().round(2))
+    .sort("token_avg_price_1m_usd")
+)
+```
+
+## Price comparison
+
+```{python}
+fig = px.bar(
+    df,
+    x="token_avg_price_1m_usd",
+    y="id",
+    color="provider",
+    orientation="h",
+    custom_data=[
+        "model",
+        "provider",
+        "context_size_label",
+        "input_token_1m_usd",
+        "output_token_1m_usd",
+    ],
+)
+
+# Update hovertemplate
+fig.update_traces(
+    hovertemplate="Model: %{customdata[0]}<br>Provider: %{customdata[1]}<br>Context Size: %{customdata[2]}<br>Input Token $/1M: %{customdata[3]}<br>Output Token $/1M: %{customdata[4]}<br>Avg Price $/1M: %{x}"
+)
+
+fig.update_layout(
+    xaxis_title="$/1M tokens",
+    yaxis_title=None,
+    legend_title="Provider",
+    legend_traceorder="reversed",
+)
+
+fig.show()
+
+
+```
+
+Hover over bars to see extra information (also available in table below). The prices for input and output tokens were averaged. For AWS, the region us-east-1 was used.
+
+- Price differences are huge, with a 400x difference between the cheapest and most expensive models ($0.15 vs $60)
+- GPT-4 is the most expensive model, followed by GPT-3.5 and PaLM2
+- Prices on Azure and OpenAI are identical
+- Anyscale is the cheapest provider for large models, serving Mistral's models at lower prices than Mistral itself
+- Prices roughly reflect the number of parameters in the models, which again roughly map to their capability
+
+[Papers with Code](https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu) has a leaderboard for the MMLU (Massive Multitask Language Understanding) benchmark. The [HuggingFace OpenLLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard) offers a more detailed ranking of open source models across different benchmarks. These leaderboards don't have benchmarks for every model listed here.
+
+## Model table
+
+Click on column headers to sort. On mobile, scroll right to see all columns.
+
+```{python}
+# | column: screen
+# | out-width: 90%
+
+money_renderer = JavascriptCode("$.fn.dataTable.render.number(',', '.', 2)")
+
+show(
+    df.select(
+        "model",
+        "provider",
+        "developer",
+        "context_size_label",
+        "input_token_1m_usd",
+        "output_token_1m_usd",
+        "token_avg_price_1m_usd",
+    ).rename(
+        {
+            "provider": "Provider",
+            "developer": "Developer",
+            "model": "Model",
+            "context_size_label": "Context size",
+            "input_token_1m_usd": "Input $/1M",
+            "output_token_1m_usd": "Output $/1M",
+            "token_avg_price_1m_usd": "Avg. $/1M",
+        }
+    ),
+    columnDefs=[
+        {
+            "targets": [3, 4, 5, 6],
+            "className": "dt-right",
+        },
+        {"targets": [4, 5, 6], "render": money_renderer},
+    ],
+    order=[(6, "desc")],
+    paging=False,
+    footer=False,
+    classes="display nowrap compact",
+    dom="tpr",
+)
+```
+
+## Sources
+
+### Pricing pages
+
+-  [OpenAI Pricing](https://openai.com/pricing)
+-  [Mistral AI Pricing](https://docs.mistral.ai/platform/pricing/)
+-  [AnyScale Pricing](https://docs.endpoints.anyscale.com/pricing/)
+-  [AWS Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/)
+-  [Azure Cognitive Services - OpenAI Service Pricing](https://azure.microsoft.com/de-de/pricing/details/cognitive-services/openai-service/)
+
+### Context size information
+
+-  [Mistral AI Endpoints](https://docs.mistral.ai/platform/endpoints/)
+-  [Anthropic 100k Context Windows](https://www.anthropic.com/index/100k-context-windows)
+-  [Zephyr-7B Beta Discussion on HuggingFace](https://huggingface.co/HuggingFaceH4/zephyr-7b-beta/discussions/13)
+-  [Mistral AI Launches Platform Services](https://www.maginative.com/article/mistral-ai-launches-platform-services#:~:text=Mistral%2Dtiny%3A%20The%20most%20cost,where%20cost%20efficiency%20is%20paramount)
+-  [AWS Bedrock Cohere Command Embed](https://aws.amazon.com/bedrock/cohere-command-embed/)
+-  [AWS Marketplace – Pretrained Language Model](https://aws.amazon.com/marketplace/pp/prodview-ivk4wjg6gbr26#:~:text=Pre%2Dtrained%20language%20model%20trained,be%20at%20most%208192%20tokens)
+-  [AWS Marketplace – Top LLM models](https://aws.amazon.com/marketplace/ppprodview-irdbpdk5v5p5g#:~:text=This%20model%20has%20a%208192,among%20the%20top%20LLM%20models)
+-  [AWS Responsible Machine Learning -Titan Text](https://aws.amazon.com/machine-learning/responsible-machine-learning/titan-text/)

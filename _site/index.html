@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.340">
+<meta name="generator" content="quarto-1.4.537">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,8 +62,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -93,16 +101,43 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Paul Simmering's Blog" href="index.xml"></head>
+<link rel="alternate" type="application/rss+xml" title="Paul Simmering's Blog" href="index.xml" data-external="1"></head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Paul Simmering</span>
     </a>
@@ -114,40 +149,40 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html" rel="" target="">
- <span class="menu-text">Projects</span></a>
+    <a class="nav-link" href="./projects.html"> 
+<span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./talks.html" rel="" target="">
- <span class="menu-text">Talks</span></a>
+    <a class="nav-link" href="./talks.html"> 
+<span class="menu-text">Talks</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/psimm" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/paul_simmering" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering" rel="" target=""><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -160,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -173,7 +208,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Advice">Advice <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Cloud">Cloud <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data Engineering">Data Engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data Visualization">Data Visualization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Machine Learning">Machine Learning <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Productivity">Productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(6)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Tidy Tuesday">Tidy Tuesday <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(14)</span></div><div class="category" data-category="Advice">Advice <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Cloud">Cloud <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Data Engineering">Data Engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data Visualization">Data Visualization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Economics">Economics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Machine Learning">Machine Learning <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Productivity">Productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(6)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Tidy Tuesday">Tidy Tuesday <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -184,34 +219,72 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Advice" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1702137816415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
+<div class="quarto-post image-right" data-index="0" data-categories="Machine Learning,Cloud,Economics" data-listing-date-sort="1706223600000" data-listing-file-modified-sort="1704923024646" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="781">
 <div class="thumbnail">
-<p><a href="./blog/data-grug/index.html"> <img src="./blog/data-grug/grug.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/llm-price-performance/index.html" class="no-external"></a></p><a href="./blog/llm-price-performance/index.html" class="no-external">
+<p><img src="./blog/llm-price-performance/image.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/llm-price-performance/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/data-grug/index.html">
 <h3 class="no-anchor listing-title">
-The Grug Brained Data Scientist
+<a href="./blog/llm-price-performance/index.html" class="no-external">LLM Price Comparison</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/llm-price-performance/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Cloud'); return false;">
+Cloud
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Economics'); return false;">
+Economics
+</div>
+</div>
+<div class="listing-description">
+<a href="./blog/llm-price-performance/index.html" class="no-external">This is an overview of pricing for large language models from different developers and API providers. The dataset is available on GitHub. Prices are expressed in USD per 1…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./blog/llm-price-performance/index.html" class="no-external">
+<div class="listing-date">
+Jan 26, 2024
+</div>
+<div class="listing-author">
+Paul Simmering
 </div>
 </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Advice" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1702137816415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1070">
+<div class="thumbnail">
+<p><a href="./blog/data-grug/index.html" class="no-external"></a></p><a href="./blog/data-grug/index.html" class="no-external">
+<p><img src="./blog/data-grug/grug.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/data-grug/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./blog/data-grug/index.html" class="no-external">The Grug Brained Data Scientist</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./blog/data-grug/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Advice'); return false;">
 Advice
 </div>
 </div>
-<a href="./blog/data-grug/index.html">
 <div class="listing-description">
-The Grug Brained Developer is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.
+<a href="./blog/data-grug/index.html" class="no-external">The Grug Brained Developer is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/data-grug/index.html">
+<a href="./blog/data-grug/index.html" class="no-external">
 <div class="listing-date">
 Dec 9, 2023
 </div>
@@ -221,19 +294,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="Machine Learning,Advice" data-listing-date-sort="1699743600000" data-listing-file-modified-sort="1700552748718" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="2" data-categories="Machine Learning,Advice" data-listing-date-sort="1699743600000" data-listing-file-modified-sort="1700552748718" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="871">
 <div class="thumbnail">
-<p><a href="./blog/nlp-model-escalation/index.html"> <img src="./blog/nlp-model-escalation/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/nlp-model-escalation/index.html" class="no-external"></a></p><a href="./blog/nlp-model-escalation/index.html" class="no-external">
+<p><img src="./blog/nlp-model-escalation/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/nlp-model-escalation/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/nlp-model-escalation/index.html">
 <h3 class="no-anchor listing-title">
-NLP escalation ladder: Use the simplest NLP model that does the job
+<a href="./blog/nlp-model-escalation/index.html" class="no-external">NLP escalation ladder: Use the simplest NLP model that does the job</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/nlp-model-escalation/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
 Machine Learning
@@ -242,14 +315,12 @@ Machine Learning
 Advice
 </div>
 </div>
-<a href="./blog/nlp-model-escalation/index.html">
 <div class="listing-description">
-With all the hype and breathtaking demos, it’s tempting to see LLMs as the universal tool for…
+<a href="./blog/nlp-model-escalation/index.html" class="no-external">With all the hype and breathtaking demos, it’s tempting to see LLMs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/nlp-model-escalation/index.html">
+<a href="./blog/nlp-model-escalation/index.html" class="no-external">
 <div class="listing-date">
 Nov 12, 2023
 </div>
@@ -259,32 +330,30 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="Machine Learning" data-listing-date-sort="1698793200000" data-listing-file-modified-sort="1699356728230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="quarto-post image-right" data-index="3" data-categories="Machine Learning" data-listing-date-sort="1698793200000" data-listing-file-modified-sort="1699356728230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="287">
 <div class="thumbnail">
-<p><a href="./blog/llms-for-absa/index.html"> <img src="./blog/llms-for-absa/image.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/llms-for-absa/index.html" class="no-external"></a></p><a href="./blog/llms-for-absa/index.html" class="no-external">
+<p><img src="./blog/llms-for-absa/image.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/llms-for-absa/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/llms-for-absa/index.html">
 <h3 class="no-anchor listing-title">
-Large language models for aspect-based sentiment analysis
+<a href="./blog/llms-for-absa/index.html" class="no-external">Large language models for aspect-based sentiment analysis</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/llms-for-absa/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
 Machine Learning
 </div>
 </div>
-<a href="./blog/llms-for-absa/index.html">
 <div class="listing-description">
-A finetuned GPT-3.5…
+<a href="./blog/llms-for-absa/index.html" class="no-external">A finetuned GPT-3.5 Turbo model achieves state-of-the-art performance in aspect-based sentiment analysis (ABSA). Zero-shot and few-shot settings with GPT-4 and GPT-3.5 reach…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/llms-for-absa/index.html">
+<a href="./blog/llms-for-absa/index.html" class="no-external">
 <div class="listing-date">
 Nov 1, 2023
 </div>
@@ -294,19 +363,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="Machine Learning,Python" data-listing-date-sort="1698530400000" data-listing-file-modified-sort="1698840408229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
+<div class="quarto-post image-right" data-index="4" data-categories="Machine Learning,Python" data-listing-date-sort="1698530400000" data-listing-file-modified-sort="1698840408229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2130">
 <div class="thumbnail">
-<p><a href="./blog/one-stop-nlp/index.html"> <img src="./blog/one-stop-nlp/knife.webp" class="thumbnail-image"> </a></p>
+<p><a href="./blog/one-stop-nlp/index.html" class="no-external"></a></p><a href="./blog/one-stop-nlp/index.html" class="no-external">
+<p><img src="./blog/one-stop-nlp/knife.webp" class="thumbnail-image"></p>
+</a><p><a href="./blog/one-stop-nlp/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/one-stop-nlp/index.html">
 <h3 class="no-anchor listing-title">
-One-stop NLP: Multi-task prompts for LLMs
+<a href="./blog/one-stop-nlp/index.html" class="no-external">One-stop NLP: Multi-task prompts for LLMs</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/one-stop-nlp/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
 Machine Learning
@@ -315,14 +384,12 @@ Machine Learning
 Python
 </div>
 </div>
-<a href="./blog/one-stop-nlp/index.html">
 <div class="listing-description">
-In NLP, we often want to extract multiple pieces of information from a text. Each extraction task is typically done by one model. For…
+<a href="./blog/one-stop-nlp/index.html" class="no-external">In NLP, we often want to extract multiple pieces of information from a text. Each extraction task is typically done by one model. For example, we might want to classify the…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/one-stop-nlp/index.html">
+<a href="./blog/one-stop-nlp/index.html" class="no-external">
 <div class="listing-date">
 Oct 29, 2023
 </div>
@@ -332,19 +399,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="Machine Learning,Python" data-listing-date-sort="1698444000000" data-listing-file-modified-sort="1700467091022" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
+<div class="quarto-post image-right" data-index="5" data-categories="Machine Learning,Python" data-listing-date-sort="1698444000000" data-listing-file-modified-sort="1700467091022" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2189">
 <div class="thumbnail">
-<p><a href="./blog/dataset-size-vs-correctness/index.html"> <img src="./blog/dataset-size-vs-correctness/scale.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/dataset-size-vs-correctness/index.html" class="no-external"></a></p><a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">
+<p><img src="./blog/dataset-size-vs-correctness/scale.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/dataset-size-vs-correctness/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/dataset-size-vs-correctness/index.html">
 <h3 class="no-anchor listing-title">
-Dataset Size vs.&nbsp;Label Correctness: What is more important for training a model?
+<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">Dataset Size vs.&nbsp;Label Correctness: What is more important for training a model?</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
 Machine Learning
@@ -353,14 +420,12 @@ Machine Learning
 Python
 </div>
 </div>
-<a href="./blog/dataset-size-vs-correctness/index.html">
 <div class="listing-description">
-Supervised models are…
+<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">Supervised models are trained on labeled data. The more data, the better the model. But what if the labels are wrong? How much does the quality of the labels matter compared…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/dataset-size-vs-correctness/index.html">
+<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">
 <div class="listing-date">
 Oct 28, 2023
 </div>
@@ -370,32 +435,30 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="Machine Learning" data-listing-date-sort="1697839200000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
+<div class="quarto-post image-right" data-index="6" data-categories="Machine Learning" data-listing-date-sort="1697839200000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1133">
 <div class="thumbnail">
-<p><a href="./blog/llm-future/index.html"> <img src="./blog/llm-future/image.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/llm-future/index.html" class="no-external"></a></p><a href="./blog/llm-future/index.html" class="no-external">
+<p><img src="./blog/llm-future/image.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/llm-future/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/llm-future/index.html">
 <h3 class="no-anchor listing-title">
-Future Directions for Large Language Models
+<a href="./blog/llm-future/index.html" class="no-external">Future Directions for Large Language Models</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/llm-future/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
 Machine Learning
 </div>
 </div>
-<a href="./blog/llm-future/index.html">
 <div class="listing-description">
-Large language models (LLMs) have…
+<a href="./blog/llm-future/index.html" class="no-external">Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/llm-future/index.html">
+<a href="./blog/llm-future/index.html" class="no-external">
 <div class="listing-date">
 Oct 21, 2023
 </div>
@@ -405,32 +468,30 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="Productivity" data-listing-date-sort="1681077600000" data-listing-file-modified-sort="1698840408226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
+<div class="quarto-post image-right" data-index="7" data-categories="Productivity" data-listing-date-sort="1681077600000" data-listing-file-modified-sort="1698840408226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1007">
 <div class="thumbnail">
-<p><a href="./blog/ai-assistants/index.html"> <img src="./blog/ai-assistants/image.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/ai-assistants/index.html" class="no-external"></a></p><a href="./blog/ai-assistants/index.html" class="no-external">
+<p><img src="./blog/ai-assistants/image.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/ai-assistants/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/ai-assistants/index.html">
 <h3 class="no-anchor listing-title">
-A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow
+<a href="./blog/ai-assistants/index.html" class="no-external">A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/ai-assistants/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Productivity'); return false;">
 Productivity
 </div>
 </div>
-<a href="./blog/ai-assistants/index.html">
 <div class="listing-description">
-AI assistants like Github Copilot and ChatGPT promise breakthrough productivity improvements for developers. In this…
+<a href="./blog/ai-assistants/index.html" class="no-external">AI assistants like Github Copilot and ChatGPT promise breakthrough productivity improvements for developers. In this article, I’ll explore how these tools can be used in a…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/ai-assistants/index.html">
+<a href="./blog/ai-assistants/index.html" class="no-external">
 <div class="listing-date">
 Apr 10, 2023
 </div>
@@ -440,19 +501,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="Python,Cloud,Data Engineering" data-listing-date-sort="1674687600000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
+<div class="quarto-post image-right" data-index="8" data-categories="Python,Cloud,Data Engineering" data-listing-date-sort="1674687600000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2074">
 <div class="thumbnail">
-<p><a href="./blog/modal-twitter/index.html"> <img src="./blog/modal-twitter/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/modal-twitter/index.html" class="no-external"></a></p><a href="./blog/modal-twitter/index.html" class="no-external">
+<p><img src="./blog/modal-twitter/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/modal-twitter/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/modal-twitter/index.html">
 <h3 class="no-anchor listing-title">
-Twitter API data collector with Modal
+<a href="./blog/modal-twitter/index.html" class="no-external">Twitter API data collector with Modal</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/modal-twitter/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
 Python
@@ -464,14 +525,12 @@ Cloud
 Data Engineering
 </div>
 </div>
-<a href="./blog/modal-twitter/index.html">
 <div class="listing-description">
-In this article, I’ll show how to build a Twitter data collector in just 100…
+<a href="./blog/modal-twitter/index.html" class="no-external">In this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/modal-twitter/index.html">
+<a href="./blog/modal-twitter/index.html" class="no-external">
 <div class="listing-date">
 Jan 26, 2023
 </div>
@@ -481,32 +540,30 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="Advice" data-listing-date-sort="1673218800000" data-listing-file-modified-sort="1698840408229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="9" data-categories="Advice" data-listing-date-sort="1673218800000" data-listing-file-modified-sort="1698840408229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="963">
 <div class="thumbnail">
-<p><a href="./blog/skills/index.html"> <img src="./blog/skills/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/skills/index.html" class="no-external"></a></p><a href="./blog/skills/index.html" class="no-external">
+<p><img src="./blog/skills/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/skills/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/skills/index.html">
 <h3 class="no-anchor listing-title">
-Investing in data science skills for the long run
+<a href="./blog/skills/index.html" class="no-external">Investing in data science skills for the long run</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/skills/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Advice'); return false;">
 Advice
 </div>
 </div>
-<a href="./blog/skills/index.html">
 <div class="listing-description">
-Data science is a field that is constantly evolving and requires a lot of practice to master. Picking the right skills to focus on is critical for career development.
+<a href="./blog/skills/index.html" class="no-external">Data science is a field that is constantly evolving and requires a lot of practice to master. Picking the right skills to focus on is critical for career development.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/skills/index.html">
+<a href="./blog/skills/index.html" class="no-external">
 <div class="listing-date">
 Jan 9, 2023
 </div>
@@ -516,19 +573,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="Python,Tidy Tuesday" data-listing-date-sort="1666389600000" data-listing-file-modified-sort="1698840408230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
+<div class="quarto-post image-right" data-index="10" data-categories="Python,Tidy Tuesday" data-listing-date-sort="1666389600000" data-listing-file-modified-sort="1698840408230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1469">
 <div class="thumbnail">
-<p><a href="./blog/yarn/index.html"> <img src="./blog/yarn/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/yarn/index.html" class="no-external"></a></p><a href="./blog/yarn/index.html" class="no-external">
+<p><img src="./blog/yarn/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/yarn/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/yarn/index.html">
 <h3 class="no-anchor listing-title">
-Tidy Tuesday: analyzing yarns with polars
+<a href="./blog/yarn/index.html" class="no-external">Tidy Tuesday: analyzing yarns with polars</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/yarn/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
 Python
@@ -537,14 +594,12 @@ Python
 Tidy Tuesday
 </div>
 </div>
-<a href="./blog/yarn/index.html">
 <div class="listing-description">
-In this article, I’m taking the Python data frame library polars for a spin. Polars is a super fast alternative to pandas, implemented in Rust. It also has a leaner interface and doesn’t need an index column. To learn…
+<a href="./blog/yarn/index.html" class="no-external">In this article, I’m taking the Python data frame library polars for a spin. Polars is a super fast alternative to pandas, implemented in Rust. It also has a leaner…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/yarn/index.html">
+<a href="./blog/yarn/index.html" class="no-external">
 <div class="listing-date">
 Oct 22, 2022
 </div>
@@ -554,32 +609,30 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="Python" data-listing-date-sort="1640559600000" data-listing-file-modified-sort="1697882113491" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
+<div class="quarto-post image-right" data-index="11" data-categories="Python" data-listing-date-sort="1640559600000" data-listing-file-modified-sort="1697882113491" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1404">
 <div class="thumbnail">
-<p><a href="./blog/fangmant/index.html"> <img src="./blog/fangmant/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/fangmant/index.html" class="no-external"></a></p><a href="./blog/fangmant/index.html" class="no-external">
+<p><img src="./blog/fangmant/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/fangmant/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/fangmant/index.html">
 <h3 class="no-anchor listing-title">
-FANGMANT: Tech stock analysis with pandas
+<a href="./blog/fangmant/index.html" class="no-external">FANGMANT: Tech stock analysis with pandas</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/fangmant/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
 Python
 </div>
 </div>
-<a href="./blog/fangmant/index.html">
 <div class="listing-description">
-The acronym FANGMANT stands for Facebook, Apple, Netflix…
+<a href="./blog/fangmant/index.html" class="no-external">The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/fangmant/index.html">
+<a href="./blog/fangmant/index.html" class="no-external">
 <div class="listing-date">
 Dec 27, 2021
 </div>
@@ -589,19 +642,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="R,Python" data-listing-date-sort="1639954800000" data-listing-file-modified-sort="1698853845185" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17">
+<div class="quarto-post image-right" data-index="12" data-categories="R,Python" data-listing-date-sort="1639954800000" data-listing-file-modified-sort="1698853845185" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3237">
 <div class="thumbnail">
-<p><a href="./blog/dataframes/index.html"> <img src="./blog/dataframes/image.jpg" class="thumbnail-image"> </a></p>
+<p><a href="./blog/dataframes/index.html" class="no-external"></a></p><a href="./blog/dataframes/index.html" class="no-external">
+<p><img src="./blog/dataframes/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./blog/dataframes/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/dataframes/index.html">
 <h3 class="no-anchor listing-title">
-Data frame wars: Choosing a Python dataframe library as a dplyr user
+<a href="./blog/dataframes/index.html" class="no-external">Data frame wars: Choosing a Python dataframe library as a dplyr user</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/dataframes/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
 R
@@ -610,14 +663,12 @@ R
 Python
 </div>
 </div>
-<a href="./blog/dataframes/index.html">
 <div class="listing-description">
-I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda. Further, there are many more data API libraries and machine learning libraries for Python…
+<a href="./blog/dataframes/index.html" class="no-external">I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda.…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/dataframes/index.html">
+<a href="./blog/dataframes/index.html" class="no-external">
 <div class="listing-date">
 Dec 20, 2021
 </div>
@@ -627,19 +678,19 @@ Paul Simmering
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="R,Data Visualization" data-listing-date-sort="1581116400000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
+<div class="quarto-post image-right" data-index="13" data-categories="R,Data Visualization" data-listing-date-sort="1581116400000" data-listing-file-modified-sort="1698840408228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2415">
 <div class="thumbnail">
-<p><a href="./blog/echarts4r/index.html"> <img src="./blog/echarts4r/image.png" class="thumbnail-image"> </a></p>
+<p><a href="./blog/echarts4r/index.html" class="no-external"></a></p><a href="./blog/echarts4r/index.html" class="no-external">
+<p><img src="./blog/echarts4r/image.png" class="thumbnail-image"></p>
+</a><p><a href="./blog/echarts4r/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./blog/echarts4r/index.html">
 <h3 class="no-anchor listing-title">
-Exploring echarts4r
+<a href="./blog/echarts4r/index.html" class="no-external">Exploring echarts4r</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./blog/echarts4r/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
 R
@@ -648,14 +699,12 @@ R
 Data Visualization
 </div>
 </div>
-<a href="./blog/echarts4r/index.html">
 <div class="listing-description">
-As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R. Whereas ggplot2 and its vast extension ecosystem is clearly leading in static graphics, there is no one go-to package for interactivity. This…
+<a href="./blog/echarts4r/index.html" class="no-external">As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R. Whereas ggplot2 and its vast…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./blog/echarts4r/index.html">
+<a href="./blog/echarts4r/index.html" class="no-external">
 <div class="listing-date">
 Feb 8, 2020
 </div>
@@ -749,10 +798,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -762,8 +810,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -776,6 +833,120 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -819,6 +990,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -844,6 +1016,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -909,12 +1107,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">
       &nbsp;
     </div>   
-    <div class="nav-footer-center"><a href="imprint.html">Imprint</a> | <a href="privacy.html">Privacy policy</a> | This website doesn’t use cookies.</div>
+    <div class="nav-footer-center">
+<p><a href="./imprint.html">Imprint</a> | <a href="./privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
   </div>
 </footer>
+
 
 
 

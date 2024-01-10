@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-01-26">
+
+<title>Paul Simmering - LLM Price Comparison</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.26.0.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">LLM Price Comparison</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Machine Learning</div>
+                <div class="quarto-category">Cloud</div>
+                <div class="quarto-category">Economics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 26, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<p>This is an overview of pricing for large language models from different developers and API providers. The dataset is available on <a href="https://github.com/psimm/website/...">GitHub</a>. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the <a href="https://platform.openai.com/tokenizer">Tokenizer</a> by OpenAI.</p>
+<p>Prices as of January 26, 2024.</p>
+<section id="price-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="price-comparison">Price comparison</h2>
+<div id="43284fc8" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>                            <div id="943535ed-19a2-400d-b420-9851abd01f7c" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("943535ed-19a2-400d-b420-9851abd01f7c")) {                    Plotly.newPlot(                        "943535ed-19a2-400d-b420-9851abd01f7c",                        [{"alignmentgroup":"True","customdata":[["mistral-7b-openorca","Anyscale","32k",0.15,0.15],["mistral-7b-instruct","Anyscale","32k",0.15,0.15],["llama-guard-7b","Anyscale","4k",0.15,0.15],["llama-2-7b-chat-hf","Anyscale","4k",0.15,0.15],["llama-2-13b-chat-hf","Anyscale","4k",0.25,0.25],["mixtral-8x7b-instruct","Anyscale","128k",0.5,0.5],["llama2-70b-chat-hf","Anyscale","4k",1.0,1.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Anyscale","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Anyscale","offsetgroup":"Anyscale","orientation":"h","showlegend":true,"textposition":"auto","x":[0.15,0.15,0.15,0.15,0.25,0.5,1.0],"xaxis":"x","y":["Anyscale-mistral-7b-openorca","Anyscale-mistral-7b-instruct","Anyscale-llama-guard-7b","Anyscale-llama-2-7b-chat-hf","Anyscale-llama-2-13b-chat-hf","Anyscale-mixtral-8x7b-instruct","Anyscale-llama2-70b-chat-hf"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["mistral-7b-instruct","Mistral","32k",0.14,0.42],["mixtral-8x7b-instruct","Mistral","32k",0.6,1.8],["mistral-medium","Mistral","32k",2.5,7.5]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Mistral","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Mistral","offsetgroup":"Mistral","orientation":"h","showlegend":true,"textposition":"auto","x":[0.28,1.2,5.0],"xaxis":"x","y":["Mistral-mistral-7b-instruct","Mistral-mixtral-8x7b-instruct","Mistral-mistral-medium"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["cohere-light","AWS","4k",0.3,0.6],["llama-2-chat-13b","AWS","4k",0.75,1.0],["claude-instant","AWS","100k",0.8,2.4],["claude","AWS","100k",0.8,2.4],["titan-text-express","AWS","8k",1.2,2.3],["cohere-command","AWS","4k",1.5,2.0],["llama-2-chat-70b","AWS","4k",1.95,2.56],["jurassic-2-mid","AWS","8k",12.5,12.5],["jurassic-2-ultra","AWS","8k",18.8,18.8]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"AWS","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"AWS","offsetgroup":"AWS","orientation":"h","showlegend":true,"textposition":"auto","x":[0.45,0.88,1.6,1.6,1.75,1.75,2.26,12.5,18.8],"xaxis":"x","y":["AWS-cohere-light","AWS-llama-2-chat-13b","AWS-claude-instant","AWS-claude","AWS-titan-text-express","AWS-cohere-command","AWS-llama-2-chat-70b","AWS-jurassic-2-mid","AWS-jurassic-2-ultra"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-1106","OpenAI","16k",1.0,2.0],["gpt-3.5-turbo-turbo-instruct","OpenAI","16k",1.5,2.0],["gpt-4-1106-preview","OpenAI","128k",10.0,30.0],["gpt-4-1106-vision-preview","OpenAI","128k",10.0,30.0],["gpt-4","OpenAI","8k",30.0,60.0],["gpt-4-32k","OpenAI","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"OpenAI","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"OpenAI","offsetgroup":"OpenAI","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,1.75,20.0,20.0,45.0,90.0],"xaxis":"x","y":["OpenAI-gpt-3.5-turbo-1106","OpenAI-gpt-3.5-turbo-turbo-instruct","OpenAI-gpt-4-1106-preview","OpenAI-gpt-4-1106-vision-preview","OpenAI-gpt-4","OpenAI-gpt-4-32k"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gemini-pro","GCP","32k",1.0,2.0],["palm2","GCP","8k",2.0,2.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"GCP","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"GCP","offsetgroup":"GCP","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,2.0],"xaxis":"x","y":["GCP-gemini-pro","GCP-palm2"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-4k","Azure","4k",1.5,2.0],["gpt-3.5-turbo-16k","Azure","16k",3.0,4.0],["gpt-4-8k","Azure","8k",30.0,60.0],["gpt-4-32k","Azure","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Azure","marker":{"color":"#19d3f3","pattern":{"shape":""}},"name":"Azure","offsetgroup":"Azure","orientation":"h","showlegend":true,"textposition":"auto","x":[1.75,3.5,45.0,90.0],"xaxis":"x","y":["Azure-gpt-3.5-turbo-4k","Azure-gpt-3.5-turbo-16k","Azure-gpt-4-8k","Azure-gpt-4-32k"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"$\u002f1M tokens"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"title":{"text":"Provider"},"tracegroupgap":0,"traceorder":"reversed"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('943535ed-19a2-400d-b420-9851abd01f7c');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>Hover over bars to see extra information (also available in table below). The prices for input and output tokens were averaged. For AWS, the region us-east-1 was used.</p>
+<ul>
+<li>Price differences are huge, with a 400x difference between the cheapest and most expensive models ($0.15 vs $60)</li>
+<li>GPT-4 is the most expensive model, followed by GPT-3.5 and PaLM2</li>
+<li>Prices on Azure and OpenAI are identical</li>
+<li>Anyscale is the cheapest provider for large models, serving Mistral’s models at lower prices than Mistral itself</li>
+<li>Prices roughly reflect the number of parameters in the models, which again roughly map to their capability</li>
+</ul>
+<p><a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu">Papers with Code</a> has a leaderboard for the MMLU (Massive Multitask Language Understanding) benchmark. The <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">HuggingFace OpenLLM Leaderboard</a> offers a more detailed ranking of open source models across different benchmarks. These leaderboards don’t have benchmarks for every model listed here.</p>
+</section>
+<section id="model-table" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="model-table">Model table</h2>
+<p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
+<div id="eafba32d" class="cell page-columns page-full" data-execution_count="3">
+<div class="cell-output cell-output-display column-screen">
+<style>.itables table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.itables table th {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.itables thead input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.itables tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+</style>
+<div class="itables">
+
+<table id="e895c519-b39a-4c0e-ad6a-d61d5a20f2e7" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">Provider</th>
+<th data-quarto-table-cell-role="th">Developer</th>
+<th data-quarto-table-cell-role="th">Context size</th>
+<th data-quarto-table-cell-role="th">Input $/1M</th>
+<th data-quarto-table-cell-role="th">Output $/1M</th>
+<th data-quarto-table-cell-role="th">Avg. $/1M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Loading... (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<script type="module">
+    // Import jquery and DataTable
+    import 'https://code.jquery.com/jquery-3.6.0.min.js';
+    import dt from 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.mjs';
+    dt($);
+
+    // Define the table data
+    const data = [["mistral-7b-openorca", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["mistral-7b-instruct", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["llama-guard-7b", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-7b-chat-hf", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-13b-chat-hf", "Anyscale", "Meta", "4k", 0.25, 0.25, 0.25], ["mistral-7b-instruct", "Mistral", "Mistral", "32k", 0.14, 0.42, 0.28], ["cohere-light", "AWS", "Cohere", "4k", 0.3, 0.6, 0.45], ["mixtral-8x7b-instruct", "Anyscale", "Mistral", "128k", 0.5, 0.5, 0.5], ["llama-2-chat-13b", "AWS", "Meta", "4k", 0.75, 1.0, 0.88], ["llama2-70b-chat-hf", "Anyscale", "Meta", "4k", 1.0, 1.0, 1.0], ["mixtral-8x7b-instruct", "Mistral", "Mistral", "32k", 0.6, 1.8, 1.2], ["gpt-3.5-turbo-1106", "OpenAI", "OpenAI", "16k", 1.0, 2.0, 1.5], ["gemini-pro", "GCP", "Google", "32k", 1.0, 2.0, 1.5], ["claude-instant", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["claude", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["gpt-3.5-turbo-turbo-instruct", "OpenAI", "OpenAI", "16k", 1.5, 2.0, 1.75], ["titan-text-express", "AWS", "AWS", "8k", 1.2, 2.3, 1.75], ["cohere-command", "AWS", "Cohere", "4k", 1.5, 2.0, 1.75], ["gpt-3.5-turbo-4k", "Azure", "OpenAI", "4k", 1.5, 2.0, 1.75], ["palm2", "GCP", "Google", "8k", 2.0, 2.0, 2.0], ["llama-2-chat-70b", "AWS", "Meta", "4k", 1.95, 2.56, 2.26], ["gpt-3.5-turbo-16k", "Azure", "OpenAI", "16k", 3.0, 4.0, 3.5], ["mistral-medium", "Mistral", "Mistral", "32k", 2.5, 7.5, 5.0], ["jurassic-2-mid", "AWS", "AI21 Labs", "8k", 12.5, 12.5, 12.5], ["jurassic-2-ultra", "AWS", "AI21 Labs", "8k", 18.8, 18.8, 18.8], ["gpt-4-1106-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4-1106-vision-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4", "OpenAI", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-8k", "Azure", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-32k", "OpenAI", "OpenAI", "32k", 60.0, 120.0, 90.0], ["gpt-4-32k", "Azure", "OpenAI", "32k", 60.0, 120.0, 90.0]];
+
+    // Define the dt_args
+    let dt_args = {"columnDefs": [{"targets": [3, 4, 5, 6], "className": "dt-right"}, {"targets": [4, 5, 6], "render": $.fn.dataTable.render.number(',', '.', 2)}], "order": [[6, "desc"]], "paging": false, "dom": "tpr"};
+    dt_args["data"] = data;
+
+    $(document).ready(function () {
+        
+        $('#e895c519-b39a-4c0e-ad6a-d61d5a20f2e7').DataTable(dt_args);
+    });
+</script>
+</div>
+</div>
+</div>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<section id="pricing-pages" class="level3">
+<h3 class="anchored" data-anchor-id="pricing-pages">Pricing pages</h3>
+<ul>
+<li><a href="https://openai.com/pricing">OpenAI Pricing</a></li>
+<li><a href="https://docs.mistral.ai/platform/pricing/">Mistral AI Pricing</a></li>
+<li><a href="https://docs.endpoints.anyscale.com/pricing/">AnyScale Pricing</a></li>
+<li><a href="https://aws.amazon.com/bedrock/pricing/">AWS Bedrock Pricing</a></li>
+<li><a href="https://azure.microsoft.com/de-de/pricing/details/cognitive-services/openai-service/">Azure Cognitive Services - OpenAI Service Pricing</a></li>
+</ul>
+</section>
+<section id="context-size-information" class="level3">
+<h3 class="anchored" data-anchor-id="context-size-information">Context size information</h3>
+<ul>
+<li><a href="https://docs.mistral.ai/platform/endpoints/">Mistral AI Endpoints</a></li>
+<li><a href="https://www.anthropic.com/index/100k-context-windows">Anthropic 100k Context Windows</a></li>
+<li><a href="https://huggingface.co/HuggingFaceH4/zephyr-7b-beta/discussions/13">Zephyr-7B Beta Discussion on HuggingFace</a></li>
+<li><a href="https://www.maginative.com/article/mistral-ai-launches-platform-services#:~:text=Mistral%2Dtiny%3A%20The%20most%20cost,where%20cost%20efficiency%20is%20paramount">Mistral AI Launches Platform Services</a></li>
+<li><a href="https://aws.amazon.com/bedrock/cohere-command-embed/">AWS Bedrock Cohere Command Embed</a></li>
+<li><a href="https://aws.amazon.com/marketplace/pp/prodview-ivk4wjg6gbr26#:~:text=Pre%2Dtrained%20language%20model%20trained,be%20at%20most%208192%20tokens">AWS Marketplace – Pretrained Language Model</a></li>
+<li><a href="https://aws.amazon.com/marketplace/ppprodview-irdbpdk5v5p5g#:~:text=This%20model%20has%20a%208192,among%20the%20top%20LLM%20models">AWS Marketplace – Top LLM models</a></li>
+<li><a href="https://aws.amazon.com/machine-learning/responsible-machine-learning/titan-text/">AWS Responsible Machine Learning -Titan Text</a></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
