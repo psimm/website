@@ -6,16 +6,183 @@
       version="2.0">
 <channel>
 <title>Paul Simmering&#39;s Blog</title>
-<link>https://simmering.dev/index.html</link>
+<link>https://simmering.dev/</link>
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.3.340</generator>
-<lastBuildDate>Fri, 08 Dec 2023 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.537</generator>
+<lastBuildDate>Thu, 25 Jan 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>LLM Price Comparison</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/llm-price-performance/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is an overview of pricing for large language models from different developers and API providers. The dataset is available on <a href="https://github.com/psimm/website/...">GitHub</a>. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the <a href="https://platform.openai.com/tokenizer">Tokenizer</a> by OpenAI.</p>
+<p>Prices as of January 26, 2024.</p>
+<section id="price-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="price-comparison">Price comparison</h2>
+<div id="43284fc8" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>                            <div id="943535ed-19a2-400d-b420-9851abd01f7c" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("943535ed-19a2-400d-b420-9851abd01f7c")) {                    Plotly.newPlot(                        "943535ed-19a2-400d-b420-9851abd01f7c",                        [{"alignmentgroup":"True","customdata":[["mistral-7b-openorca","Anyscale","32k",0.15,0.15],["mistral-7b-instruct","Anyscale","32k",0.15,0.15],["llama-guard-7b","Anyscale","4k",0.15,0.15],["llama-2-7b-chat-hf","Anyscale","4k",0.15,0.15],["llama-2-13b-chat-hf","Anyscale","4k",0.25,0.25],["mixtral-8x7b-instruct","Anyscale","128k",0.5,0.5],["llama2-70b-chat-hf","Anyscale","4k",1.0,1.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Anyscale","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Anyscale","offsetgroup":"Anyscale","orientation":"h","showlegend":true,"textposition":"auto","x":[0.15,0.15,0.15,0.15,0.25,0.5,1.0],"xaxis":"x","y":["Anyscale-mistral-7b-openorca","Anyscale-mistral-7b-instruct","Anyscale-llama-guard-7b","Anyscale-llama-2-7b-chat-hf","Anyscale-llama-2-13b-chat-hf","Anyscale-mixtral-8x7b-instruct","Anyscale-llama2-70b-chat-hf"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["mistral-7b-instruct","Mistral","32k",0.14,0.42],["mixtral-8x7b-instruct","Mistral","32k",0.6,1.8],["mistral-medium","Mistral","32k",2.5,7.5]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Mistral","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Mistral","offsetgroup":"Mistral","orientation":"h","showlegend":true,"textposition":"auto","x":[0.28,1.2,5.0],"xaxis":"x","y":["Mistral-mistral-7b-instruct","Mistral-mixtral-8x7b-instruct","Mistral-mistral-medium"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["cohere-light","AWS","4k",0.3,0.6],["llama-2-chat-13b","AWS","4k",0.75,1.0],["claude-instant","AWS","100k",0.8,2.4],["claude","AWS","100k",0.8,2.4],["titan-text-express","AWS","8k",1.2,2.3],["cohere-command","AWS","4k",1.5,2.0],["llama-2-chat-70b","AWS","4k",1.95,2.56],["jurassic-2-mid","AWS","8k",12.5,12.5],["jurassic-2-ultra","AWS","8k",18.8,18.8]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"AWS","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"AWS","offsetgroup":"AWS","orientation":"h","showlegend":true,"textposition":"auto","x":[0.45,0.88,1.6,1.6,1.75,1.75,2.26,12.5,18.8],"xaxis":"x","y":["AWS-cohere-light","AWS-llama-2-chat-13b","AWS-claude-instant","AWS-claude","AWS-titan-text-express","AWS-cohere-command","AWS-llama-2-chat-70b","AWS-jurassic-2-mid","AWS-jurassic-2-ultra"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-1106","OpenAI","16k",1.0,2.0],["gpt-3.5-turbo-turbo-instruct","OpenAI","16k",1.5,2.0],["gpt-4-1106-preview","OpenAI","128k",10.0,30.0],["gpt-4-1106-vision-preview","OpenAI","128k",10.0,30.0],["gpt-4","OpenAI","8k",30.0,60.0],["gpt-4-32k","OpenAI","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"OpenAI","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"OpenAI","offsetgroup":"OpenAI","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,1.75,20.0,20.0,45.0,90.0],"xaxis":"x","y":["OpenAI-gpt-3.5-turbo-1106","OpenAI-gpt-3.5-turbo-turbo-instruct","OpenAI-gpt-4-1106-preview","OpenAI-gpt-4-1106-vision-preview","OpenAI-gpt-4","OpenAI-gpt-4-32k"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gemini-pro","GCP","32k",1.0,2.0],["palm2","GCP","8k",2.0,2.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"GCP","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"GCP","offsetgroup":"GCP","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,2.0],"xaxis":"x","y":["GCP-gemini-pro","GCP-palm2"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-4k","Azure","4k",1.5,2.0],["gpt-3.5-turbo-16k","Azure","16k",3.0,4.0],["gpt-4-8k","Azure","8k",30.0,60.0],["gpt-4-32k","Azure","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Azure","marker":{"color":"#19d3f3","pattern":{"shape":""}},"name":"Azure","offsetgroup":"Azure","orientation":"h","showlegend":true,"textposition":"auto","x":[1.75,3.5,45.0,90.0],"xaxis":"x","y":["Azure-gpt-3.5-turbo-4k","Azure-gpt-3.5-turbo-16k","Azure-gpt-4-8k","Azure-gpt-4-32k"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"$\u002f1M tokens"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"title":{"text":"Provider"},"tracegroupgap":0,"traceorder":"reversed"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('943535ed-19a2-400d-b420-9851abd01f7c');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>Hover over bars to see extra information (also available in table below). The prices for input and output tokens were averaged. For AWS, the region us-east-1 was used.</p>
+<ul>
+<li>Price differences are huge, with a 400x difference between the cheapest and most expensive models ($0.15 vs $60)</li>
+<li>GPT-4 is the most expensive model, followed by GPT-3.5 and PaLM2</li>
+<li>Prices on Azure and OpenAI are identical</li>
+<li>Anyscale is the cheapest provider for large models, serving Mistral’s models at lower prices than Mistral itself</li>
+<li>Prices roughly reflect the number of parameters in the models, which again roughly map to their capability</li>
+</ul>
+<p><a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu">Papers with Code</a> has a leaderboard for the MMLU (Massive Multitask Language Understanding) benchmark. The <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">HuggingFace OpenLLM Leaderboard</a> offers a more detailed ranking of open source models across different benchmarks. These leaderboards don’t have benchmarks for every model listed here.</p>
+</section>
+<section id="model-table" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="model-table">Model table</h2>
+<p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
+<div id="eafba32d" class="cell page-columns page-full" data-execution_count="3">
+<div class="cell-output cell-output-display column-screen">
+<style>.itables table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.itables table th {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.itables thead input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.itables tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+</style>
+<div class="itables">
+
+<table id="e895c519-b39a-4c0e-ad6a-d61d5a20f2e7" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">Provider</th>
+<th data-quarto-table-cell-role="th">Developer</th>
+<th data-quarto-table-cell-role="th">Context size</th>
+<th data-quarto-table-cell-role="th">Input $/1M</th>
+<th data-quarto-table-cell-role="th">Output $/1M</th>
+<th data-quarto-table-cell-role="th">Avg. $/1M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Loading... (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<script type="module">
+    // Import jquery and DataTable
+    import 'https://code.jquery.com/jquery-3.6.0.min.js';
+    import dt from 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.mjs';
+    dt($);
+
+    // Define the table data
+    const data = [["mistral-7b-openorca", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["mistral-7b-instruct", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["llama-guard-7b", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-7b-chat-hf", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-13b-chat-hf", "Anyscale", "Meta", "4k", 0.25, 0.25, 0.25], ["mistral-7b-instruct", "Mistral", "Mistral", "32k", 0.14, 0.42, 0.28], ["cohere-light", "AWS", "Cohere", "4k", 0.3, 0.6, 0.45], ["mixtral-8x7b-instruct", "Anyscale", "Mistral", "128k", 0.5, 0.5, 0.5], ["llama-2-chat-13b", "AWS", "Meta", "4k", 0.75, 1.0, 0.88], ["llama2-70b-chat-hf", "Anyscale", "Meta", "4k", 1.0, 1.0, 1.0], ["mixtral-8x7b-instruct", "Mistral", "Mistral", "32k", 0.6, 1.8, 1.2], ["gpt-3.5-turbo-1106", "OpenAI", "OpenAI", "16k", 1.0, 2.0, 1.5], ["gemini-pro", "GCP", "Google", "32k", 1.0, 2.0, 1.5], ["claude-instant", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["claude", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["gpt-3.5-turbo-turbo-instruct", "OpenAI", "OpenAI", "16k", 1.5, 2.0, 1.75], ["titan-text-express", "AWS", "AWS", "8k", 1.2, 2.3, 1.75], ["cohere-command", "AWS", "Cohere", "4k", 1.5, 2.0, 1.75], ["gpt-3.5-turbo-4k", "Azure", "OpenAI", "4k", 1.5, 2.0, 1.75], ["palm2", "GCP", "Google", "8k", 2.0, 2.0, 2.0], ["llama-2-chat-70b", "AWS", "Meta", "4k", 1.95, 2.56, 2.26], ["gpt-3.5-turbo-16k", "Azure", "OpenAI", "16k", 3.0, 4.0, 3.5], ["mistral-medium", "Mistral", "Mistral", "32k", 2.5, 7.5, 5.0], ["jurassic-2-mid", "AWS", "AI21 Labs", "8k", 12.5, 12.5, 12.5], ["jurassic-2-ultra", "AWS", "AI21 Labs", "8k", 18.8, 18.8, 18.8], ["gpt-4-1106-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4-1106-vision-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4", "OpenAI", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-8k", "Azure", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-32k", "OpenAI", "OpenAI", "32k", 60.0, 120.0, 90.0], ["gpt-4-32k", "Azure", "OpenAI", "32k", 60.0, 120.0, 90.0]];
+
+    // Define the dt_args
+    let dt_args = {"columnDefs": [{"targets": [3, 4, 5, 6], "className": "dt-right"}, {"targets": [4, 5, 6], "render": $.fn.dataTable.render.number(',', '.', 2)}], "order": [[6, "desc"]], "paging": false, "dom": "tpr"};
+    dt_args["data"] = data;
+
+    $(document).ready(function () {
+        
+        $('#e895c519-b39a-4c0e-ad6a-d61d5a20f2e7').DataTable(dt_args);
+    });
+</script>
+</div>
+</div>
+</div>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<section id="pricing-pages" class="level3">
+<h3 class="anchored" data-anchor-id="pricing-pages">Pricing pages</h3>
+<ul>
+<li><a href="https://openai.com/pricing">OpenAI Pricing</a></li>
+<li><a href="https://docs.mistral.ai/platform/pricing/">Mistral AI Pricing</a></li>
+<li><a href="https://docs.endpoints.anyscale.com/pricing/">AnyScale Pricing</a></li>
+<li><a href="https://aws.amazon.com/bedrock/pricing/">AWS Bedrock Pricing</a></li>
+<li><a href="https://azure.microsoft.com/de-de/pricing/details/cognitive-services/openai-service/">Azure Cognitive Services - OpenAI Service Pricing</a></li>
+</ul>
+</section>
+<section id="context-size-information" class="level3">
+<h3 class="anchored" data-anchor-id="context-size-information">Context size information</h3>
+<ul>
+<li><a href="https://docs.mistral.ai/platform/endpoints/">Mistral AI Endpoints</a></li>
+<li><a href="https://www.anthropic.com/index/100k-context-windows">Anthropic 100k Context Windows</a></li>
+<li><a href="https://huggingface.co/HuggingFaceH4/zephyr-7b-beta/discussions/13">Zephyr-7B Beta Discussion on HuggingFace</a></li>
+<li><a href="https://www.maginative.com/article/mistral-ai-launches-platform-services#:~:text=Mistral%2Dtiny%3A%20The%20most%20cost,where%20cost%20efficiency%20is%20paramount">Mistral AI Launches Platform Services</a></li>
+<li><a href="https://aws.amazon.com/bedrock/cohere-command-embed/">AWS Bedrock Cohere Command Embed</a></li>
+<li><a href="https://aws.amazon.com/marketplace/pp/prodview-ivk4wjg6gbr26#:~:text=Pre%2Dtrained%20language%20model%20trained,be%20at%20most%208192%20tokens">AWS Marketplace – Pretrained Language Model</a></li>
+<li><a href="https://aws.amazon.com/marketplace/ppprodview-irdbpdk5v5p5g#:~:text=This%20model%20has%20a%208192,among%20the%20top%20LLM%20models">AWS Marketplace – Top LLM models</a></li>
+<li><a href="https://aws.amazon.com/machine-learning/responsible-machine-learning/titan-text/">AWS Responsible Machine Learning -Titan Text</a></li>
+</ul>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <category>Cloud</category>
+  <category>Economics</category>
+  <guid>https://simmering.dev/blog/llm-price-performance/</guid>
+  <pubDate>Thu, 25 Jan 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/llm-price-performance/image.png" medium="image" type="image/png" height="106" width="144"/>
+</item>
 <item>
   <title>The Grug Brained Data Scientist</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/data-grug/index.html</link>
+  <link>https://simmering.dev/blog/data-grug/</link>
   <description><![CDATA[ 
 
 
@@ -103,14 +270,14 @@
 
  ]]></description>
   <category>Advice</category>
-  <guid>https://simmering.dev/blog/data-grug/index.html</guid>
+  <guid>https://simmering.dev/blog/data-grug/</guid>
   <pubDate>Fri, 08 Dec 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/data-grug/grug.png" medium="image" type="image/png" height="82" width="144"/>
 </item>
 <item>
   <title>NLP escalation ladder: Use the simplest NLP model that does the job</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/nlp-model-escalation/index.html</link>
+  <link>https://simmering.dev/blog/nlp-model-escalation/</link>
   <description><![CDATA[ 
 
 
@@ -204,14 +371,14 @@
  ]]></description>
   <category>Machine Learning</category>
   <category>Advice</category>
-  <guid>https://simmering.dev/blog/nlp-model-escalation/index.html</guid>
+  <guid>https://simmering.dev/blog/nlp-model-escalation/</guid>
   <pubDate>Sat, 11 Nov 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/nlp-model-escalation/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Large language models for aspect-based sentiment analysis</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/llms-for-absa/index.html</link>
+  <link>https://simmering.dev/blog/llms-for-absa/</link>
   <description><![CDATA[ 
 
 
@@ -247,14 +414,14 @@ Aspect-based sentiment analysis
 
  ]]></description>
   <category>Machine Learning</category>
-  <guid>https://simmering.dev/blog/llms-for-absa/index.html</guid>
+  <guid>https://simmering.dev/blog/llms-for-absa/</guid>
   <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/llms-for-absa/image.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
   <title>One-stop NLP: Multi-task prompts for LLMs</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/one-stop-nlp/index.html</link>
+  <link>https://simmering.dev/blog/one-stop-nlp/</link>
   <description><![CDATA[ 
 
 
@@ -1426,14 +1593,14 @@ Unvalidated model
  ]]></description>
   <category>Machine Learning</category>
   <category>Python</category>
-  <guid>https://simmering.dev/blog/one-stop-nlp/index.html</guid>
+  <guid>https://simmering.dev/blog/one-stop-nlp/</guid>
   <pubDate>Sat, 28 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/one-stop-nlp/knife.webp" medium="image" type="image/webp"/>
 </item>
 <item>
   <title>Dataset Size vs. Label Correctness: What is more important for training a model?</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</link>
+  <link>https://simmering.dev/blog/dataset-size-vs-correctness/</link>
   <description><![CDATA[ 
 
 
@@ -2557,14 +2724,14 @@ font-style: inherit;">1</span>],</span>
  ]]></description>
   <category>Machine Learning</category>
   <category>Python</category>
-  <guid>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</guid>
+  <guid>https://simmering.dev/blog/dataset-size-vs-correctness/</guid>
   <pubDate>Fri, 27 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/dataset-size-vs-correctness/scale.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
   <title>Future Directions for Large Language Models</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/llm-future/index.html</link>
+  <link>https://simmering.dev/blog/llm-future/</link>
   <description><![CDATA[ 
 
 
@@ -2659,14 +2826,14 @@ font-style: inherit;">1</span>],</span>
 
  ]]></description>
   <category>Machine Learning</category>
-  <guid>https://simmering.dev/blog/llm-future/index.html</guid>
+  <guid>https://simmering.dev/blog/llm-future/</guid>
   <pubDate>Fri, 20 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/llm-future/image.png" medium="image" type="image/png" height="81" width="144"/>
 </item>
 <item>
   <title>A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/ai-assistants/index.html</link>
+  <link>https://simmering.dev/blog/ai-assistants/</link>
   <description><![CDATA[ 
 
 
@@ -2788,14 +2955,14 @@ font-style: inherit;">1</span>],</span>
 
  ]]></description>
   <category>Productivity</category>
-  <guid>https://simmering.dev/blog/ai-assistants/index.html</guid>
+  <guid>https://simmering.dev/blog/ai-assistants/</guid>
   <pubDate>Sun, 09 Apr 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/ai-assistants/image.png" medium="image" type="image/png" height="140" width="144"/>
 </item>
 <item>
   <title>Twitter API data collector with Modal</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/modal-twitter/index.html</link>
+  <link>https://simmering.dev/blog/modal-twitter/</link>
   <description><![CDATA[ 
 
 
@@ -3428,14 +3595,14 @@ font-style: inherit;">with</span> stub.run():</span>
   <category>Python</category>
   <category>Cloud</category>
   <category>Data Engineering</category>
-  <guid>https://simmering.dev/blog/modal-twitter/index.html</guid>
+  <guid>https://simmering.dev/blog/modal-twitter/</guid>
   <pubDate>Wed, 25 Jan 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/modal-twitter/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Investing in data science skills for the long run</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/skills/index.html</link>
+  <link>https://simmering.dev/blog/skills/</link>
   <description><![CDATA[ 
 
 
@@ -3497,14 +3664,14 @@ font-style: inherit;">with</span> stub.run():</span>
 
  ]]></description>
   <category>Advice</category>
-  <guid>https://simmering.dev/blog/skills/index.html</guid>
+  <guid>https://simmering.dev/blog/skills/</guid>
   <pubDate>Sun, 08 Jan 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/skills/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Tidy Tuesday: analyzing yarns with polars</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/yarn/index.html</link>
+  <link>https://simmering.dev/blog/yarn/</link>
   <description><![CDATA[ 
 
 
@@ -5126,14 +5293,14 @@ if (outputEl) {{
  ]]></description>
   <category>Python</category>
   <category>Tidy Tuesday</category>
-  <guid>https://simmering.dev/blog/yarn/index.html</guid>
+  <guid>https://simmering.dev/blog/yarn/</guid>
   <pubDate>Fri, 21 Oct 2022 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/yarn/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>FANGMANT: Tech stock analysis with pandas</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/fangmant/index.html</link>
+  <link>https://simmering.dev/blog/fangmant/</link>
   <description><![CDATA[ 
 
 
@@ -5937,14 +6104,14 @@ font-style: inherit;">"Volatility"</span>)</span></code></pre></div>
 
  ]]></description>
   <category>Python</category>
-  <guid>https://simmering.dev/blog/fangmant/index.html</guid>
+  <guid>https://simmering.dev/blog/fangmant/</guid>
   <pubDate>Sun, 26 Dec 2021 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/fangmant/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/dataframes/index.html</link>
+  <link>https://simmering.dev/blog/dataframes/</link>
   <description><![CDATA[ 
 
 
@@ -7052,14 +7219,14 @@ font-style: inherit;">=</span>_.arr_delay.mean())</span>
  ]]></description>
   <category>R</category>
   <category>Python</category>
-  <guid>https://simmering.dev/blog/dataframes/index.html</guid>
+  <guid>https://simmering.dev/blog/dataframes/</guid>
   <pubDate>Sun, 19 Dec 2021 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/dataframes/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Exploring echarts4r</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/echarts4r/index.html</link>
+  <link>https://simmering.dev/blog/echarts4r/</link>
   <description><![CDATA[ 
 
 
@@ -8183,7 +8350,7 @@ font-style: inherit;">"Flight destinations"</span>)</span></code></pre></div>
  ]]></description>
   <category>R</category>
   <category>Data Visualization</category>
-  <guid>https://simmering.dev/blog/echarts4r/index.html</guid>
+  <guid>https://simmering.dev/blog/echarts4r/</guid>
   <pubDate>Fri, 07 Feb 2020 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/echarts4r/image.png" medium="image" type="image/png" height="112" width="144"/>
 </item>

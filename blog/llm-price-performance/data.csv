@@ -1,0 +1,32 @@
+provider,developer,model,input_token_1k_usd,output_token_1k_usd,context_size
+OpenAI,OpenAI,gpt-4,0.03,0.06,8000
+OpenAI,OpenAI,gpt-4-32k,0.06,0.12,32000
+OpenAI,OpenAI,gpt-4-1106-preview,0.01,0.03,128000
+OpenAI,OpenAI,gpt-4-1106-vision-preview,0.01,0.03,128000
+OpenAI,OpenAI,gpt-3.5-turbo-1106,0.001,0.002,16000
+OpenAI,OpenAI,gpt-3.5-turbo-turbo-instruct,0.0015,0.002,16000
+Mistral,Mistral,mistral-7b-instruct,0.00014,0.00042,32000
+Mistral,Mistral,mixtral-8x7b-instruct,0.0006,0.0018,32000
+Mistral,Mistral,mistral-medium,0.0025,0.0075,32000
+AWS,AI21 Labs,jurassic-2-mid,0.0125,0.0125,8000
+AWS,AI21 Labs,jurassic-2-ultra,0.0188,0.0188,8000
+AWS,AWS,titan-text-express,0.0012,0.0023,8000
+AWS,Anthropic,claude-instant,0.0008,0.0024,100000
+AWS,Anthropic,claude,0.0008,0.0024,100000
+AWS,Cohere,cohere-command,0.0015,0.002,4000
+AWS,Cohere,cohere-light,0.0003,0.0006,4000
+AWS,Meta,llama-2-chat-13b,0.00075,0.001,4000
+AWS,Meta,llama-2-chat-70b,0.00195,0.00256,4000
+Anyscale,Mistral,mistral-7b-openorca,0.00015,0.00015,32000
+Anyscale,Mistral,mistral-7b-instruct,0.00015,0.00015,32000
+Anyscale,Meta,llama-guard-7b,0.00015,0.00015,4000
+Anyscale,Meta,llama-2-7b-chat-hf,0.00015,0.00015,4000
+Anyscale,Meta,llama-2-13b-chat-hf,0.00025,0.00025,4000
+Anyscale,Mistral,mixtral-8x7b-instruct,0.0005,0.0005,128000
+Anyscale,Meta,llama2-70b-chat-hf,0.001,0.001,4000
+Azure,OpenAI,gpt-3.5-turbo-4k,0.0015,0.002,4000
+Azure,OpenAI,gpt-3.5-turbo-16k,0.003,0.004,16000
+Azure,OpenAI,gpt-4-8k,0.03,0.06,8000
+Azure,OpenAI,gpt-4-32k,0.06,0.12,32000
+GCP,Google,gemini-pro,0.001,0.002,32000
+GCP,Google,palm2,0.002,0.002,8000
