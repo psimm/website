@@ -10,7 +10,7 @@ format:
         fig-height: 12
 ---
 
-This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/main/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
+This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
 
 Prices as of January 26, 2024.
 
