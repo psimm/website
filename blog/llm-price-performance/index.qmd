@@ -1,7 +1,7 @@
 ---
 title: "LLM Price Comparison"
 author: "Paul Simmering"
-date: "2024-01-26"
+date: "2024-01-11"
 categories: ["Machine Learning", "Cloud", "Economics"]
 image: "image.png"
 format:
@@ -12,7 +12,7 @@ format:
 
 This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
 
-Prices as of January 26, 2024.
+Prices as of January 11, 2024.
 
 ```{python}
 import polars as pl
