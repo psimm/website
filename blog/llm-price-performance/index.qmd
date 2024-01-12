@@ -74,7 +74,7 @@ fig.show()
 
 Hover over bars to see extra information (also available in table below). The prices for input and output tokens were averaged. For AWS, the region us-east-1 was used.
 
-- Price differences are huge, with a 400x difference between the cheapest and most expensive models ($0.15 vs $60)
+- Price differences are huge, with a 600x difference between the cheapest and most expensive models ($0.15 vs $90)
 - GPT-4 is the most expensive model, followed by GPT-3.5 and PaLM2
 - Prices on Azure and OpenAI are identical
 - Anyscale is the cheapest provider for large models, serving Mistral's models at lower prices than Mistral itself
