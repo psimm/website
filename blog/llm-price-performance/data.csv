@@ -22,7 +22,7 @@ Anyscale,Mistral,mistral-7b-instruct,0.00015,0.00015,32000
 Anyscale,Meta,llama-guard-7b,0.00015,0.00015,4000
 Anyscale,Meta,llama-2-7b-chat-hf,0.00015,0.00015,4000
 Anyscale,Meta,llama-2-13b-chat-hf,0.00025,0.00025,4000
-Anyscale,Mistral,mixtral-8x7b-instruct,0.0005,0.0005,128000
+Anyscale,Mistral,mixtral-8x7b-instruct,0.0005,0.0005,32000
 Anyscale,Meta,llama2-70b-chat-hf,0.001,0.001,4000
 Azure,OpenAI,gpt-3.5-turbo-4k,0.0015,0.002,4000
 Azure,OpenAI,gpt-3.5-turbo-16k,0.003,0.004,16000
