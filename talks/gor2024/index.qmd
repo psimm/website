@@ -1,0 +1,32 @@
+---
+title: "Where do LLMs fit in NLP Pipelines?"
+date: 2024-03-09
+author: "Paul Simmering and Paavo Huoviala"
+categories:
+  - conference
+draft: false
+image: "image.jpeg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [General Online Research 2024](https://www.gor.de/wp-content/uploads/2024/02/ConferenceProceedings_2024_final.pdf)|
+| 📅 Date | 21 February 2023 |
+| 📍 Location | Cologne, Germany |
+| 📥 Materials | [Slides (PDF)](gor_2024_simmering_huoviala.pdf) |
+
+## Relevance & research question
+
+Large language models (LLMs) can perform classic tasks in natural language processing (NLP), such as text classification, sentiment analysis and named entity recognition. It is tempting to replace whole pipelines with an LLM. But the flexibility and ease of use of LLMs comes at a price: their throughput is low, they require a provider like OpenAI or one’s own GPU cluster and have high operating cost. This study aims to evaluate the practicality of LLMs in NLP pipelines by asking, “What is the optimal placement of LLMs in these pipelines when considering speed, affordability, adaptability, and project management?”.
+
+## Methods & data
+
+This study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are as- sessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models.
+
+## Results
+
+Small neural networks outperform LLMs by over 100-fold in throughput and cost-efficiency. Yet, without parameter training, LLMs attain high accuracy benchmark scores through in-context examples, making them preferable for small scale projects lacking labeled training data. They also allow flexibility of labeling schemes without retraining, which helps at the proof-of-concept stage. Further, they can be used to aid or automate the collection of labeled examples.
+
+## Added value
+
+LLMs have only recently become available for many organizations and drew new practitioners to the field. A first instinct may be to treat LLMs as a universal solution for any language problem. The aim of this study is to provide social scientists and market researchers with references that help them navigate the tradeoffs of using LLMs versus classic NLP techniques. It combines theory with benchmark results and practical experience.

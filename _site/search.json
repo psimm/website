@@ -18,7 +18,7 @@
     "href": "talks.html",
     "title": "Talks",
     "section": "",
-    "text": "GPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Where do LLMs fit in NLP Pipelines?\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nMar 9, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/texttunnel/index.html",
@@ -852,5 +852,40 @@
     "title": "LLM Price Comparison",
     "section": "Sources",
     "text": "Sources\n\nPricing pages\n\nOpenAI Pricing\nMistral AI Pricing\nAnyScale Pricing\nAWS Bedrock Pricing\nAzure Cognitive Services - OpenAI Service Pricing\n\n\n\nContext size information\n\nMistral AI Endpoints\nAnthropic 100k Context Windows\nZephyr-7B Beta Discussion on HuggingFace\nMistral AI Launches Platform Services\nAWS Bedrock Cohere Command Embed\nAWS Marketplace – Pretrained Language Model\nAWS Marketplace – Top LLM models\nAWS Responsible Machine Learning -Titan Text"
+  },
+  {
+    "objectID": "talks/gor2024/index.html",
+    "href": "talks/gor2024/index.html",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "",
+    "text": "🗓️ Event\nGeneral Online Research 2024\n\n\n📅 Date\n21 February 2023\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)"
+  },
+  {
+    "objectID": "talks/gor2024/index.html#relevance-research-question",
+    "href": "talks/gor2024/index.html#relevance-research-question",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Relevance & research question",
+    "text": "Relevance & research question\nLarge language models (LLMs) can perform classic tasks in natural language processing (NLP), such as text classification, sentiment analysis and named entity recognition. It is tempting to replace whole pipelines with an LLM. But the flexibility and ease of use of LLMs comes at a price: their throughput is low, they require a provider like OpenAI or one’s own GPU cluster and have high operating cost. This study aims to evaluate the practicality of LLMs in NLP pipelines by asking, “What is the optimal placement of LLMs in these pipelines when considering speed, affordability, adaptability, and project management?”."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#methods-data",
+    "href": "talks/gor2024/index.html#methods-data",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Methods & data",
+    "text": "Methods & data\nThis study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are as- sessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#results",
+    "href": "talks/gor2024/index.html#results",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Results",
+    "text": "Results\nSmall neural networks outperform LLMs by over 100-fold in throughput and cost-efficiency. Yet, without parameter training, LLMs attain high accuracy benchmark scores through in-context examples, making them preferable for small scale projects lacking labeled training data. They also allow flexibility of labeling schemes without retraining, which helps at the proof-of-concept stage. Further, they can be used to aid or automate the collection of labeled examples."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#added-value",
+    "href": "talks/gor2024/index.html#added-value",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Added value",
+    "text": "Added value\nLLMs have only recently become available for many organizations and drew new practitioners to the field. A first instinct may be to treat LLMs as a universal solution for any language problem. The aim of this study is to provide social scientists and market researchers with references that help them navigate the tradeoffs of using LLMs versus classic NLP techniques. It combines theory with benchmark results and practical experience."
   }
 ]
