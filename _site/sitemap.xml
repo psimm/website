@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/talks.html</loc>
-    <lastmod>2023-11-01T15:52:51.266Z</lastmod>
+    <lastmod>2023-10-21T09:31:12.963Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/projects/texttunnel/index.html</loc>
@@ -135,5 +135,9 @@
   <url>
     <loc>https://simmering.dev/blog/llm-price-performance/index.html</loc>
     <lastmod>2024-02-13T11:06:58.923Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/gor2024/index.html</loc>
+    <lastmod>2024-03-09T16:58:24.045Z</lastmod>
   </url>
 </urlset>
