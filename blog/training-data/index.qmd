@@ -1,0 +1,114 @@
+---
+title: "How to get good labeled data for NLP"
+author: "Paul Simmering"
+date: "2024-03-09"
+categories: ["Machine Learning"]
+image: "image.jpg"
+---
+
+With the focus on new LLMs, it's easy to forget that training data is still the most important factor for model performance in most NLP tasks. This article will give you an overview of how to get good labeled data for your NLP project. It's based on my 5 years of experience in the field and a review of the literature.
+
+## Training data still matters
+
+- Zero-shot and few-shot prediction with LLMs promises to let you skip the labeling and training
+- But how do you know that the labels it gives are correct?
+- Checking individual examples by hand is helpful, but not enough proof
+- Need at least a test set to evaluate on
+- Plus, finetuning still produces the most accurate models
+
+GOR model accuracy comparison
+
+Literature references
+
+## Ways to get training data
+
+I hope that I convinced you that training data is still relevant. So how to acquire it?
+
+### Public sources
+
+- [Huggingface Hub](https://huggingface.co/datasets) features more than 100,000 free datasets.
+- [Kaggle](https://www.kaggle.com/datasets)
+- [Papers with Code](https://paperswithcode.com/datasets) has more than 2000 text datasets, covering all popular NLP benchmarks.
+- [nlp-datasets Github repository](https://github.com/niderhoff/nlp-datasets) a curated list of free/ public domain NLP datasets.
+- [data.world](https://data.world/datasets/nlp) has 72 free NLP datasets.
+
+If the dataset is popular you may also find pre-trained models for it. Even if you want to use a different architecture, they can give you an idea of the accuracy you can expect to reach and the difficulty of the examples.
+
+The majority of public NLP datasets are in English. It may be possible to translate a dataset to your language. DeepL and other translation APIs make this affordable. Try it with some examples and see if the translations are good enough.
+
+### Using natural labels
+
+- Star ratings for reviews
+- Positive / negative feedback for support answers
+- Question and answer pairs, e.g. from Stack Overflow
+
+### Labeling it yourself / hire a contractor
+
+Quick advice based on 5 years of experience:
+
+- Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.
+- Discuss unclear examples and refine your annotation guide.
+- It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses. Figuring out clear rules is your number 1 priority at the start.
+- Skip the weirdest texts. They’re more likely to confuse your model than help it learn.
+- A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.
+- Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g. with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.
+- Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.
+- Figure out good labeling user experience.
+- Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.
+- Checking examples is a good use of a data scientist’s time.
+- When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.
+- Pick an annotation tool that prioritizes productivity of the labelers. It should also be easy to look at the examples that were already annotated and fix errors.
+
+In terms of data quality, you get what you pay for. When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed. You may also want to check that their workers are paid fairly and have decent working conditions.
+
+Are they going to do a better job than GPT-4? If you suspect they won’t read the next section.
+
+Paper references here.
+
+@article{tornberg2023chatgpt,
+  title={Chatgpt-4 outperforms experts and crowd workers in annotating political twitter messages with zero-shot learning},
+  author={T{\"o}rnberg, Petter},
+  journal={arXiv preprint arXiv:2304.06588},
+  year={2023}
+}
+
+@article{gilardi2023chatgpt,
+  title={ChatGPT outperforms crowd workers for text-annotation tasks},
+  author={Gilardi, Fabrizio and Alizadeh, Meysam and Kubli, Ma{\"e}l},
+  journal={Proceedings of the National Academy of Sciences},
+  volume={120},
+  number={30},
+  pages={e2305016120},
+  year={2023},
+  publisher={National Acad Sciences}
+}
+
+### Synthetic data / labels
+
+- GPT-4 with a few-shot example prompt can solve many NLP problems with decent accuracy. You can kickstart a project by letting it label examples and then training your smaller model on them.
+- You can also use your partially trained model to label examples and then ask the labelers to correct the labels rather than set them from scratch. This tends to be faster.
+
+
+## Improving your training data
+
+### Perform all standard checks
+
+- Are the predicted classes balanced, and if not, does your training and evaluation handle imbalance properly?
+- Is your training data as diverse as the data you’ll encounter in practice?
+- Do you version your data along with the trained machine learning models?
+
+### Fix errors in training data by analyzing wrong predictions
+
+A quick way to identify training examples that may be wrong is to train a model on the examples and then run inference on them. If the model gets the label wrong even after having seen it during training, the example may be wrong. The model learned the rule from the other examples, but this example doesn’t follow it. Check those examples and fix the label where necessary.
+
+### Add high-value examples
+
+Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from the anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.
+
+### Data augmentation
+
+You can squeeze more training signal out of your examples by varying them slightly while keeping the label.
+
+## Models come and go, data is forever
+
+New models are released every week and every 2-3 years we seem to have a revolution in model architecture. It can be exhausting to keep up, especially if your goal is to serve a customer need rather than conduct research. If you find yourself in this position, prioritizing training and evaluation data over modeling is a good strategy. Your labeled data will likely be compatible with any model that will come out. Even if the model doesn’t need to be trained, it’ll still be good to have an accurate evaluation dataset. By keeping your code as model-agnostic as possible you can ride the waves of new models coming out, reaping the performance improvements, with little model customization on your part. Just plug in the new model and combine it with your real treasure, the labeled data.

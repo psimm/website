@@ -10,8 +10,121 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 10 Jan 2024 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.22</generator>
+<lastBuildDate>Fri, 08 Mar 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>How to get good labeled data for NLP</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/training-data/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>With the focus on new LLMs, it’s easy to forget that training data is still the most important factor for model performance in most NLP tasks. This article will give you an overview of how to get good labeled data for your NLP project. It’s based on my 5 years of experience in the field and a review of the literature.</p>
+<section id="training-data-still-matters" class="level2">
+<h2 class="anchored" data-anchor-id="training-data-still-matters">Training data still matters</h2>
+<ul>
+<li>Zero-shot and few-shot prediction with LLMs promises to let you skip the labeling and training</li>
+<li>But how do you know that the labels it gives are correct?</li>
+<li>Checking individual examples by hand is helpful, but not enough proof</li>
+<li>Need at least a test set to evaluate on</li>
+<li>Plus, finetuning still produces the most accurate models</li>
+</ul>
+<p>GOR model accuracy comparison</p>
+<p>Literature references</p>
+</section>
+<section id="ways-to-get-training-data" class="level2">
+<h2 class="anchored" data-anchor-id="ways-to-get-training-data">Ways to get training data</h2>
+<p>I hope that I convinced you that training data is still relevant. So how to acquire it?</p>
+<section id="public-sources" class="level3">
+<h3 class="anchored" data-anchor-id="public-sources">Public sources</h3>
+<ul>
+<li><a href="https://huggingface.co/datasets">Huggingface Hub</a> features more than 100,000 free datasets.</li>
+<li><a href="https://www.kaggle.com/datasets">Kaggle</a></li>
+<li><a href="https://paperswithcode.com/datasets">Papers with Code</a> has more than 2000 text datasets, covering all popular NLP benchmarks.</li>
+<li><a href="https://github.com/niderhoff/nlp-datasets">nlp-datasets Github repository</a> a curated list of free/ public domain NLP datasets.</li>
+<li><a href="https://data.world/datasets/nlp">data.world</a> has 72 free NLP datasets.</li>
+</ul>
+<p>If the dataset is popular you may also find pre-trained models for it. Even if you want to use a different architecture, they can give you an idea of the accuracy you can expect to reach and the difficulty of the examples.</p>
+<p>The majority of public NLP datasets are in English. It may be possible to translate a dataset to your language. DeepL and other translation APIs make this affordable. Try it with some examples and see if the translations are good enough.</p>
+</section>
+<section id="using-natural-labels" class="level3">
+<h3 class="anchored" data-anchor-id="using-natural-labels">Using natural labels</h3>
+<ul>
+<li>Star ratings for reviews</li>
+<li>Positive / negative feedback for support answers</li>
+<li>Question and answer pairs, e.g.&nbsp;from Stack Overflow</li>
+</ul>
+</section>
+<section id="labeling-it-yourself-hire-a-contractor" class="level3">
+<h3 class="anchored" data-anchor-id="labeling-it-yourself-hire-a-contractor">Labeling it yourself / hire a contractor</h3>
+<p>Quick advice based on 5 years of experience:</p>
+<ul>
+<li>Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.</li>
+<li>Discuss unclear examples and refine your annotation guide.</li>
+<li>It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses. Figuring out clear rules is your number 1 priority at the start.</li>
+<li>Skip the weirdest texts. They’re more likely to confuse your model than help it learn.</li>
+<li>A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.</li>
+<li>Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g.&nbsp;with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.</li>
+<li>Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.</li>
+<li>Figure out good labeling user experience.</li>
+<li>Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.</li>
+<li>Checking examples is a good use of a data scientist’s time.</li>
+<li>When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.</li>
+<li>Pick an annotation tool that prioritizes productivity of the labelers. It should also be easy to look at the examples that were already annotated and fix errors.</li>
+</ul>
+<p>In terms of data quality, you get what you pay for. When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed. You may also want to check that their workers are paid fairly and have decent working conditions.</p>
+<p>Are they going to do a better job than GPT-4? If you suspect they won’t read the next section.</p>
+<p>Paper references here.</p>
+<p><span class="citation" data-cites="article">@article</span>{tornberg2023chatgpt, title={Chatgpt-4 outperforms experts and crowd workers in annotating political twitter messages with zero-shot learning}, author={T{"o}rnberg, Petter}, journal={arXiv preprint arXiv:2304.06588}, year={2023} }</p>
+<p><span class="citation" data-cites="article">@article</span>{gilardi2023chatgpt, title={ChatGPT outperforms crowd workers for text-annotation tasks}, author={Gilardi, Fabrizio and Alizadeh, Meysam and Kubli, Ma{"e}l}, journal={Proceedings of the National Academy of Sciences}, volume={120}, number={30}, pages={e2305016120}, year={2023}, publisher={National Acad Sciences} }</p>
+</section>
+<section id="synthetic-data-labels" class="level3">
+<h3 class="anchored" data-anchor-id="synthetic-data-labels">Synthetic data / labels</h3>
+<ul>
+<li>GPT-4 with a few-shot example prompt can solve many NLP problems with decent accuracy. You can kickstart a project by letting it label examples and then training your smaller model on them.</li>
+<li>You can also use your partially trained model to label examples and then ask the labelers to correct the labels rather than set them from scratch. This tends to be faster.</li>
+</ul>
+</section>
+</section>
+<section id="improving-your-training-data" class="level2">
+<h2 class="anchored" data-anchor-id="improving-your-training-data">Improving your training data</h2>
+<section id="perform-all-standard-checks" class="level3">
+<h3 class="anchored" data-anchor-id="perform-all-standard-checks">Perform all standard checks</h3>
+<ul>
+<li>Are the predicted classes balanced, and if not, does your training and evaluation handle imbalance properly?</li>
+<li>Is your training data as diverse as the data you’ll encounter in practice?</li>
+<li>Do you version your data along with the trained machine learning models?</li>
+</ul>
+</section>
+<section id="fix-errors-in-training-data-by-analyzing-wrong-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="fix-errors-in-training-data-by-analyzing-wrong-predictions">Fix errors in training data by analyzing wrong predictions</h3>
+<p>A quick way to identify training examples that may be wrong is to train a model on the examples and then run inference on them. If the model gets the label wrong even after having seen it during training, the example may be wrong. The model learned the rule from the other examples, but this example doesn’t follow it. Check those examples and fix the label where necessary.</p>
+</section>
+<section id="add-high-value-examples" class="level3">
+<h3 class="anchored" data-anchor-id="add-high-value-examples">Add high-value examples</h3>
+<p>Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from the anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.</p>
+</section>
+<section id="data-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="data-augmentation">Data augmentation</h3>
+<p>You can squeeze more training signal out of your examples by varying them slightly while keeping the label.</p>
+</section>
+</section>
+<section id="models-come-and-go-data-is-forever" class="level2">
+<h2 class="anchored" data-anchor-id="models-come-and-go-data-is-forever">Models come and go, data is forever</h2>
+<p>New models are released every week and every 2-3 years we seem to have a revolution in model architecture. It can be exhausting to keep up, especially if your goal is to serve a customer need rather than conduct research. If you find yourself in this position, prioritizing training and evaluation data over modeling is a good strategy. Your labeled data will likely be compatible with any model that will come out. Even if the model doesn’t need to be trained, it’ll still be good to have an accurate evaluation dataset. By keeping your code as model-agnostic as possible you can ride the waves of new models coming out, reaping the performance improvements, with little model customization on your part. Just plug in the new model and combine it with your real treasure, the labeled data.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/training-data/</guid>
+  <pubDate>Fri, 08 Mar 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/training-data/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>LLM Price Comparison</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -532,6 +645,7 @@ background-color: null;
 font-style: inherit;"># Define the labels for the different tasks</span></span>
 <span id="cb3-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> TopicLabel(Enum):</span>
 <span id="cb3-9">    ARTS <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -577,6 +691,7 @@ font-style: inherit;">"TECHNOLOGY"</span></span>
 <span id="cb3-18"></span>
 <span id="cb3-19"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> SentimentLabel(Enum):</span>
 <span id="cb3-20">    POSITIVE <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -597,6 +712,7 @@ font-style: inherit;">"NEUTRAL"</span></span>
 <span id="cb3-24"></span>
 <span id="cb3-25"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> NamedEntityLabel(Enum):</span>
 <span id="cb3-26">    PERSON <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -630,6 +746,7 @@ background-color: null;
 font-style: inherit;"># Define how named entities are represented</span></span>
 <span id="cb3-34"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> NamedEntity(BaseModel):</span>
 <span id="cb3-35">    text: <span class="bu" style="color: null;
 background-color: null;
@@ -645,6 +762,7 @@ background-color: null;
 font-style: inherit;"># we want the LLM to return</span></span>
 <span id="cb3-41"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> News(OpenAISchema):</span>
 <span id="cb3-42">    topics: List[TopicLabel]</span>
 <span id="cb3-43">    sentiment: SentimentLabel</span>
@@ -787,8 +905,10 @@ font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sum</span>([x.estimate_cost_usd() <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> requests])</span>
 <span id="cb8-2"></span>
 <span id="cb8-3"><span class="bu" style="color: null;
@@ -883,6 +1003,7 @@ background-color: null;
 font-style: inherit;"># Save to disk for later use</span></span>
 <span id="cb11-18"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
@@ -914,6 +1035,7 @@ font-style: inherit;">import</span> processor</span>
 <span id="cb12-3"></span>
 <span id="cb12-4"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
@@ -936,18 +1058,23 @@ font-style: inherit;">0</span></span>
 <span id="cb12-9"></span>
 <span id="cb12-10"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> parse(response):</span>
 <span id="cb12-11">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">global</span> parsing_errors</span>
 <span id="cb12-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">try</span>:</span>
 <span id="cb12-13">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> processor.parse_arguments(response)</span>
 <span id="cb12-14">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Exception</span>:</span>
@@ -958,6 +1085,7 @@ background-color: null;
 font-style: inherit;">1</span></span>
 <span id="cb12-16">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span></span>
@@ -967,8 +1095,10 @@ font-style: inherit;">None</span></span>
 background-color: null;
 font-style: inherit;">=</span> [parse(response) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> response <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> responses]</span>
 <span id="cb12-20"></span>
 <span id="cb12-21"><span class="bu" style="color: null;
@@ -1005,15 +1135,18 @@ font-style: inherit;">import</span> ValidationError</span>
 <span id="cb14-3"></span>
 <span id="cb14-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> validate(argument):</span>
 <span id="cb14-5">    News.model_validate(argument)</span>
 <span id="cb14-6">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> argument</span>
 <span id="cb14-7"></span>
 <span id="cb14-8"></span>
 <span id="cb14-9"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> run_validation(arguments, validation_fun):</span>
 <span id="cb14-10">    validation_errors <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1025,13 +1158,17 @@ background-color: null;
 font-style: inherit;">=</span> []</span>
 <span id="cb14-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> argument <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> arguments:</span>
 <span id="cb14-13">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> argument <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -1043,9 +1180,11 @@ background-color: null;
 font-style: inherit;">None</span>)</span>
 <span id="cb14-16">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">continue</span></span>
 <span id="cb14-17">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">try</span>:</span>
 <span id="cb14-18">            argument <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1053,6 +1192,7 @@ font-style: inherit;">=</span> validation_fun(argument)</span>
 <span id="cb14-19">            out.append(argument)</span>
 <span id="cb14-20">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">except</span> ValidationError:</span>
 <span id="cb14-21">            validation_errors <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1085,6 +1225,7 @@ font-style: inherit;"> responses"</span>)</span>
 <span id="cb14-25"></span>
 <span id="cb14-26">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> out</span>
 <span id="cb14-27"></span>
 <span id="cb14-28"></span>
@@ -1100,6 +1241,7 @@ font-style: inherit;">=</span> run_validation(arguments, validate)</span></code>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> fix_and_validate(argument):</span>
 <span id="cb16-2">    fixed_argument <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1120,14 +1262,18 @@ font-style: inherit;">"topics"</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [x <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> argument[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"topics"</span>] <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> topics]</span>
 <span id="cb16-8"></span>
 <span id="cb16-9">    entities <span class="op" style="color: #5E5E5E;
@@ -1138,12 +1284,15 @@ font-style: inherit;">list</span>(NamedEntityLabel.__members__)</span>
 <span id="cb16-10"></span>
 <span id="cb16-11">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> argument[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"named_entities"</span>] <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -1154,22 +1303,27 @@ background-color: null;
 font-style: inherit;">=</span> [</span>
 <span id="cb16-13">            x <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> argument[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"named_entities"</span>] <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> entities</span>
 <span id="cb16-14">        ]</span>
 <span id="cb16-15"></span>
 <span id="cb16-16">    validate(fixed_argument)</span>
 <span id="cb16-17">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> fixed_argument</span>
 <span id="cb16-18"></span>
 <span id="cb16-19"></span>
@@ -1187,14 +1341,19 @@ font-style: inherit;">=</span> run_validation(arguments, fix_and_validate)</span
 background-color: null;
 font-style: inherit;">=</span> [x <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> valid_arguments <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>]</span>
@@ -1414,8 +1573,10 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"count"</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> named_entities.partition_by(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>)]</span>
@@ -1476,6 +1637,7 @@ background-color: null;
 font-style: inherit;">"reversed"</span>)</span>
 <span id="cb21-26">fig.for_each_annotation(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> a: a.update(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>a.text.split(<span class="st" style="color: #20794D;
@@ -1804,6 +1966,7 @@ font-style: inherit;">import</span> concatenate_datasets, Dataset</span>
 <span id="cb6-3"></span>
 <span id="cb6-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> subsample_hf_dataset(dataset: Dataset, max_size: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>):</span>
@@ -1827,6 +1990,7 @@ font-style: inherit;">=</span> dataset.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">filter</span>(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> example: example[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
@@ -1840,6 +2004,7 @@ font-style: inherit;">=</span> dataset.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">filter</span>(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> example: example[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
@@ -1875,6 +2040,7 @@ background-color: null;
 font-style: inherit;"># Concatenate subsampled datasets</span></span>
 <span id="cb6-17">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> concatenate_datasets(</span>
 <span id="cb6-18">        [subsampled_dataset_label_0, subsampled_dataset_label_1]</span>
 <span id="cb6-19">    )</span>
@@ -1915,9 +2081,11 @@ font-style: inherit;">"distilbert-base-uncased"</span>)</span>
 <span id="cb7-5"></span>
 <span id="cb7-6"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> preprocess_function(examples):</span>
 <span id="cb7-7">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> tokenizer(examples[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"text"</span>], truncation<span class="op" style="color: #5E5E5E;
@@ -1974,6 +2142,7 @@ font-style: inherit;">import</span> sample, seed</span>
 <span id="cb9-3"></span>
 <span id="cb9-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> flip_labels(dataset: Dataset, noise_level: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">float</span>):</span>
@@ -2011,12 +2180,15 @@ font-style: inherit;"># get indices of labels to flip</span></span>
 background-color: null;
 font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i, example <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(dataset) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
@@ -2028,12 +2200,15 @@ font-style: inherit;">0</span>]</span>
 background-color: null;
 font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i, example <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(dataset) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
@@ -2063,6 +2238,7 @@ background-color: null;
 font-style: inherit;"># function to apply to flip the labels</span></span>
 <span id="cb9-23">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> flip_labels_function(example, idx: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>):</span>
@@ -2074,8 +2250,10 @@ background-color: null;
 font-style: inherit;"># this is not the fastest way to do this, but it's easy to understand</span></span>
 <span id="cb9-26">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> idx <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> indices_to_flip:</span>
 <span id="cb9-27">            example[<span class="st" style="color: #20794D;
 background-color: null;
@@ -2085,6 +2263,7 @@ font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> example[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"label"</span>] <span class="op" style="color: #5E5E5E;
@@ -2093,11 +2272,13 @@ font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span></span>
 <span id="cb9-28">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> example</span>
 <span id="cb9-29"></span>
 <span id="cb9-30">    <span class="co" style="color: #5E5E5E;
@@ -2105,6 +2286,7 @@ background-color: null;
 font-style: inherit;"># apply function to flip the labels</span></span>
 <span id="cb9-31">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> dataset.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">map</span>(flip_labels_function, with_indices<span class="op" style="color: #5E5E5E;
@@ -2209,6 +2391,7 @@ font-style: inherit;">import</span> load_metric</span>
 <span id="cb13-3"></span>
 <span id="cb13-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> compute_metrics(eval_pred):</span>
 <span id="cb13-5">    load_accuracy <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2239,6 +2422,7 @@ font-style: inherit;">"accuracy"</span></span>
 <span id="cb13-11">    ]</span>
 <span id="cb13-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> {<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"accuracy"</span>: accuracy}</span></code></pre></div>
@@ -2257,6 +2441,7 @@ font-style: inherit;">import</span> time</span>
 <span id="cb14-4"></span>
 <span id="cb14-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_and_evaluate(dataset_size: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>, noise_level: <span class="bu" style="color: null;
@@ -2329,6 +2514,7 @@ font-style: inherit;">"train_time"</span>: train_time,</span>
 <span id="cb14-32"></span>
 <span id="cb14-33">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> evaluation</span></code></pre></div>
 </div>
 <p>This function runs a single experiment:</p>
@@ -2363,8 +2549,10 @@ font-style: inherit;">=</span> pd.DataFrame()</span>
 <span id="cb15-4"></span>
 <span id="cb15-5"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> dataset_size, noise_level <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> combinations:</span>
 <span id="cb15-6">    evaluation <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2375,6 +2563,7 @@ font-style: inherit;">=</span> pd.concat([results, pd.DataFrame([evaluation])])<
 <span id="cb15-8"></span>
 <span id="cb15-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">open</span>(results_path, <span class="st" style="color: #20794D;
@@ -2479,16 +2668,20 @@ background-color: null;
 font-style: inherit;">"</span></span>
 <span id="cb16-13">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x, z <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">zip</span>(pivot_df.columns, row)</span>
 <span id="cb16-14">    ]</span>
 <span id="cb16-15">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> y, row <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">zip</span>(pivot_df.index, pivot_df.values)</span>
@@ -2996,6 +3189,7 @@ font-style: inherit;">import</span> os</span>
 <span id="cb1-3"></span>
 <span id="cb1-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_tweets(term: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>, count: <span class="bu" style="color: null;
@@ -3077,11 +3271,14 @@ font-style: inherit;"># Turn tweets object into a list of dictionaries</span></s
 background-color: null;
 font-style: inherit;">=</span> [t.AsDict() <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> tweets]</span>
 <span id="cb1-24">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> tweets_dict_list</span></code></pre></div>
 <p>To optimally use <a href="https://developer.twitter.com/en/docs/twitter-api/rate-limits">Twitter’s API limits</a>, we want to only fetch tweets that we don’t have yet. That is done using the <code>since_id</code> parameter. The <code>since_id</code> is the id of the last tweet that we fetched. We can save this id to a file, and use it as the <code>since_id</code> parameter in the next call to <code>get_tweets()</code>.</p>
 <p>In addition to short term limits, the Twitter API <a href="https://developer.twitter.com/en/docs/twitter-api/tweet-caps">caps data collection</a> to 500k Tweets per month with Essential access and 2m Tweets per month with Elevated access.</p>
@@ -3099,6 +3296,7 @@ font-style: inherit;">import</span> json</span>
 <span id="cb2-3"></span>
 <span id="cb2-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> save_tweets(filename: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>, tweets: <span class="bu" style="color: null;
@@ -3233,6 +3431,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 <p>In each run of the app, we’ll fetch the terms from S3, and save them back to S3 after we’re done. Here’s a function to fetch the terms from S3:</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_terms() <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
@@ -3275,6 +3474,7 @@ font-style: inherit;">sorted</span>(terms, key<span class="op" style="color: #5E
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> t: (t[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"timestamp_last_search"</span>], t[<span class="st" style="color: #20794D;
@@ -3282,6 +3482,7 @@ background-color: null;
 font-style: inherit;">"since_id"</span>]))</span>
 <span id="cb4-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> terms</span></code></pre></div>
 <p>After fetching tweets, we update the <code>terms.json</code> file with the <code>since_id</code> of the last tweet and upload it to S3.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
@@ -3292,6 +3493,7 @@ font-style: inherit;">import</span> datetime</span>
 <span id="cb5-2"></span>
 <span id="cb5-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> save_terms(terms: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">list</span>[<span class="bu" style="color: null;
@@ -3329,8 +3531,10 @@ font-style: inherit;">"Updated terms.json on S3"</span>)</span>
 <span id="cb5-11"></span>
 <span id="cb5-12"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> term <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> terms:</span>
 <span id="cb5-13">    get_tweets(term[<span class="st" style="color: #20794D;
 background-color: null;
@@ -3406,6 +3610,7 @@ background-color: null;
 font-style: inherit;">15</span>))</span>
 <span id="cb7-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> main():</span>
 <span id="cb7-5">    terms <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3425,8 +3630,10 @@ font-style: inherit;">.</span>join([t[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'term'</span>] <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> terms])<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">}</span><span class="ss" style="color: #20794D;
@@ -3435,8 +3642,10 @@ font-style: inherit;">"</span>)</span>
 <span id="cb7-8"></span>
 <span id="cb7-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> term <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> terms:</span>
 <span id="cb7-10">        <span class="bu" style="color: null;
 background-color: null;
@@ -3487,6 +3696,7 @@ font-style: inherit;">"_"</span>)</span>
 <span id="cb7-14"></span>
 <span id="cb7-15">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">try</span>:</span>
 <span id="cb7-16">            tweets <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3499,6 +3709,7 @@ background-color: null;
 font-style: inherit;"># maximum allowed</span></span>
 <span id="cb7-17">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Exception</span> <span class="im" style="color: #00769E;
@@ -3514,6 +3725,7 @@ background-color: null;
 font-style: inherit;">"Could not get tweets. Saving tweets collected so far."</span>)</span>
 <span id="cb7-20">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb7-21"></span>
 <span id="cb7-22">        since_id <span class="op" style="color: #5E5E5E;
@@ -3547,6 +3759,7 @@ background-color: null;
 font-style: inherit;">"twitter-api"</span>))</span>
 <span id="cb8-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_tweets()</span>
 <span id="cb8-3">    ...</span></code></pre></div>
 <p>This lets Modal recognize it as a runnable function and also tells it to supply a secret variable to it. I’ve defined the secret variable in the Modal dashboard. The <code>twitter-api</code> secret variable contains the Twitter API keys and tokens. The <code>aws-s3-access</code> secret variable contains the AWS access key and secret key for an IAM user that has access to the S3 bucket.</p>
@@ -3556,6 +3769,7 @@ font-style: inherit;">def</span> get_tweets()</span>
 <p>To run the app on Modal, we need to wrap the <code>main()</code> function in a <code>if __name__ == "__main__"</code> block. This lets us run the function from the command line. We also need to call <code>stub.run()</code> to start the stubs.</p>
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
@@ -3565,6 +3779,7 @@ background-color: null;
 font-style: inherit;">"__main__"</span>:</span>
 <span id="cb9-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> stub.run():</span>
 <span id="cb9-3">        main()</span></code></pre></div>
 <p>To run this, use <code>python app.py</code>. The execution will happen on Modal. You can see the logs in the Modal dashboard. To schedule it, run <code>modal deploy app.py</code>. Modal automatically logs the runs and informs you if there are any errors.</p>
@@ -3696,8 +3911,10 @@ background-color: null;
 font-style: inherit;">"yarn.csv"</span></span>
 <span id="cb1-5"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> os.path.exists(filename):</span>
 <span id="cb1-6">    url <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5400,12 +5617,14 @@ font-style: inherit;">"data.pkl"</span>)</span>
 <span id="cb3-3"></span>
 <span id="cb3-4"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> data_path.is_file():</span>
 <span id="cb3-5">  data_imported <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.read_pickle(data_path)</span>
 <span id="cb3-6"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>: </span>
 <span id="cb3-7">  data_imported <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5560,6 +5779,7 @@ font-style: inherit;">1</span>]</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> growth(series: pd.Series) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
@@ -5567,6 +5787,7 @@ background-color: null;
 font-style: inherit;">float</span>:</span>
 <span id="cb12-2">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> series[<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
@@ -5583,6 +5804,7 @@ font-style: inherit;">1</span></span>
 <span id="cb12-3"></span>
 <span id="cb12-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> volatility(series: pd.Series, n_days: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
@@ -5615,6 +5837,7 @@ background-color: null;
 font-style: inherit;">0.5</span></span>
 <span id="cb12-8">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span>(std)</span></code></pre></div>
 </div>
 <div class="cell">
@@ -5690,9 +5913,11 @@ font-style: inherit;"># Define function for conditional styling of cells</span><
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(value) {</span>
 <span id="cb14-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (value <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
@@ -5705,8 +5930,10 @@ background-color: null;
 font-style: inherit;">"green"</span></span>
 <span id="cb14-5">  } <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (value <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
@@ -5719,6 +5946,7 @@ background-color: null;
 font-style: inherit;">"red"</span></span>
 <span id="cb14-7">  } <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> {</span>
 <span id="cb14-8">    color <span class="ot" style="color: #003B4F;
 background-color: null;
