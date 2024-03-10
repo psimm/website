@@ -13,7 +13,7 @@ format:
 
 With the attention on new LLM releases, it's easy to forget that correctly labeled examples are still a critical factor for accuracy in most NLP tasks. I think they're the best source of competitive advantage for most teams. Labeled examples will be useful in conjunction with any model that comes out.
 
-![Gold-standard data, image generated with Midjourney](vault.png)
+![Gold-standard data, image generated with Midjourney](vault_cropped.png)
 
 High quality, human-labeled examples are aptly called "gold standard". This guide will help you accumulate and refine this treasure. It's based on my five years of experience collecting and refining labeled data for NLP projects, plus a review of the literature.
 
@@ -36,8 +36,8 @@ I hope that I convinced you that training data is still relevant. So how to acqu
 First, check if there’s a public dataset that fits your needs. Here are some places to look:
 
 - [Huggingface Hub](https://huggingface.co/datasets) features more than 100,000 free datasets.
-- [Kaggle](https://www.kaggle.com/datasets) has more than 50,000 freedatasets.
-- [Papers with Code](https://paperswithcode.com/datasets) has more than 2000 text datasets, covering all popular NLP benchmarks.
+- [Kaggle](https://www.kaggle.com/datasets) has more than 50,000 free datasets.
+- [Papers with Code](https://paperswithcode.com/datasets) has more than 2,000 text datasets, covering all popular NLP benchmarks.
 - [data.world](https://data.world/datasets/nlp) has 72 free NLP datasets.
 - [nlp-datasets Github repository](https://github.com/niderhoff/nlp-datasets) has a curated list of free NLP datasets.
 
@@ -53,7 +53,7 @@ Natural labels are signals that are already present in the data. They can be use
 - Positive / negative feedback for support answers is a signal for customer satisfaction.
 - The number of upvotes, likes and shares for social media posts is a signal for popularity.
 - The upvotes for question answers on Stack Overflow is a signal for correctness.
-- Open rate of emails is a signal for interestingness of the subject line.
+- Open rate of emails is a signal for interest of the subject line.
 
 Perhaps there is a dataset in your organization that has natural labels for the task you want to solve.
 
@@ -64,12 +64,12 @@ If you're not lucky enough to find a public dataset or natural labels, creating 
 Here are some points to consider when creating a labeled dataset, whether in a team or alone:
 
 - **Annotation guide**: Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.
-- **Iterate on the rules**: Figuring out clear rules is the number 1 priority at the start. Discuss unclear examples with the team and refine the annotation guide. It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses.
+- **Iterate on the rules**: Figuring out clear rules is the number one priority at the start. Discuss unclear examples with the team and refine the annotation guide. It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses.
 - **Skip the weirdest examples**: User generated internet content can be wild in terms of content and grammar. It can be better better to skip the weirdest examples than to try to label them. They’re more likely to confuse your model than help it learn and it's unlikely that they'll be encountered in practice.
 - **Quality control**: Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.
 - **Labeling tool**: Good labeling UI and workflow makes a big difference in productivity and quality. It’s worth investing the time to find the right tool and configure it optimally. The tool should also make it easy look at the examples that were already annotated and fix errors.
 - **Simplify the task**: Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.
-- **Onboarding**: When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.
+- **Onboarding**: When a new labeler starts, have a one-to-one onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.
 - **Quality over quantity**: A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.
 - **Diminishing rates of return**: Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g. with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.
 - **You get what you pay for**: When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed and whether they're native speakers for the language of the task.
@@ -136,7 +136,7 @@ Mistaken labels are poison for your model. It learns wrong rules or gets falsely
 
 ### Add high-signal examples
 
-Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from the anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.
+Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from them anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.
 
 ### Data augmentation
 

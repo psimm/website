@@ -198,7 +198,7 @@ div.csl-indent {
 <p>With the attention on new LLM releases, it’s easy to forget that correctly labeled examples are still a critical factor for accuracy in most NLP tasks. I think they’re the best source of competitive advantage for most teams. Labeled examples will be useful in conjunction with any model that comes out.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="vault.png" class="img-fluid figure-img"></p>
+<p><img src="vault_cropped.png" class="img-fluid figure-img"></p>
 <figcaption>Gold-standard data, image generated with Midjourney</figcaption>
 </figure>
 </div>
@@ -223,8 +223,8 @@ div.csl-indent {
 <p>First, check if there’s a public dataset that fits your needs. Here are some places to look:</p>
 <ul>
 <li><a href="https://huggingface.co/datasets">Huggingface Hub</a> features more than 100,000 free datasets.</li>
-<li><a href="https://www.kaggle.com/datasets">Kaggle</a> has more than 50,000 freedatasets.</li>
-<li><a href="https://paperswithcode.com/datasets">Papers with Code</a> has more than 2000 text datasets, covering all popular NLP benchmarks.</li>
+<li><a href="https://www.kaggle.com/datasets">Kaggle</a> has more than 50,000 free datasets.</li>
+<li><a href="https://paperswithcode.com/datasets">Papers with Code</a> has more than 2,000 text datasets, covering all popular NLP benchmarks.</li>
 <li><a href="https://data.world/datasets/nlp">data.world</a> has 72 free NLP datasets.</li>
 <li><a href="https://github.com/niderhoff/nlp-datasets">nlp-datasets Github repository</a> has a curated list of free NLP datasets.</li>
 </ul>
@@ -239,7 +239,7 @@ div.csl-indent {
 <li>Positive / negative feedback for support answers is a signal for customer satisfaction.</li>
 <li>The number of upvotes, likes and shares for social media posts is a signal for popularity.</li>
 <li>The upvotes for question answers on Stack Overflow is a signal for correctness.</li>
-<li>Open rate of emails is a signal for interestingness of the subject line.</li>
+<li>Open rate of emails is a signal for interest of the subject line.</li>
 </ul>
 <p>Perhaps there is a dataset in your organization that has natural labels for the task you want to solve.</p>
 </section>
@@ -249,12 +249,12 @@ div.csl-indent {
 <p>Here are some points to consider when creating a labeled dataset, whether in a team or alone:</p>
 <ul>
 <li><strong>Annotation guide</strong>: Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.</li>
-<li><strong>Iterate on the rules</strong>: Figuring out clear rules is the number 1 priority at the start. Discuss unclear examples with the team and refine the annotation guide. It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses.</li>
+<li><strong>Iterate on the rules</strong>: Figuring out clear rules is the number one priority at the start. Discuss unclear examples with the team and refine the annotation guide. It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses.</li>
 <li><strong>Skip the weirdest examples</strong>: User generated internet content can be wild in terms of content and grammar. It can be better better to skip the weirdest examples than to try to label them. They’re more likely to confuse your model than help it learn and it’s unlikely that they’ll be encountered in practice.</li>
 <li><strong>Quality control</strong>: Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.</li>
 <li><strong>Labeling tool</strong>: Good labeling UI and workflow makes a big difference in productivity and quality. It’s worth investing the time to find the right tool and configure it optimally. The tool should also make it easy look at the examples that were already annotated and fix errors.</li>
 <li><strong>Simplify the task</strong>: Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.</li>
-<li><strong>Onboarding</strong>: When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.</li>
+<li><strong>Onboarding</strong>: When a new labeler starts, have a one-to-one onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.</li>
 <li><strong>Quality over quantity</strong>: A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.</li>
 <li><strong>Diminishing rates of return</strong>: Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g.&nbsp;with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.</li>
 <li><strong>You get what you pay for</strong>: When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed and whether they’re native speakers for the language of the task.</li>
@@ -338,7 +338,7 @@ div.csl-indent {
 </section>
 <section id="add-high-signal-examples" class="level3">
 <h3 class="anchored" data-anchor-id="add-high-signal-examples">Add high-signal examples</h3>
-<p>Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from the anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.</p>
+<p>Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from them anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.</p>
 </section>
 <section id="data-augmentation" class="level3">
 <h3 class="anchored" data-anchor-id="data-augmentation">Data augmentation</h3>
