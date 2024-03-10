@@ -1,5 +1,16 @@
 [
   {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/texttunnel/index.html",
+      "/projects/cosmention/index.html",
+      "/projects/stakex/index.html",
+      "/projects/gpexp/index.html",
+      "/projects/masterthesis/index.html",
+      "/projects/bachelorthesis/index.html"
+    ]
+  },
+  {
     "listing": "/talks.html",
     "items": [
       "/talks/gor2024/index.html",
@@ -14,19 +25,9 @@
     ]
   },
   {
-    "listing": "/projects.html",
-    "items": [
-      "/projects/texttunnel/index.html",
-      "/projects/cosmention/index.html",
-      "/projects/stakex/index.html",
-      "/projects/gpexp/index.html",
-      "/projects/masterthesis/index.html",
-      "/projects/bachelorthesis/index.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
+      "/blog/gold-data/index.html",
       "/blog/llm-price-performance/index.html",
       "/blog/data-grug/index.html",
       "/blog/nlp-model-escalation/index.html",

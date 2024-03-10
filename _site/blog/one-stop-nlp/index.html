@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.340">
+<meta name="generator" content="quarto-1.5.22">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
 <meta name="dcterms.date" content="2023-10-29">
 
-<title>Paul Simmering - One-stop NLP: Multi-task prompts for LLMs</title>
+<title>Paul Simmering – One-stop NLP: Multi-task prompts for LLMs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,8 +96,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <meta name="mermaid-theme" content="neutral">
@@ -125,10 +133,10 @@ require(['plotly'], function(Plotly) {
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Paul Simmering</span>
     </a>
@@ -140,40 +148,40 @@ require(['plotly'], function(Plotly) {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html" rel="" target="">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../projects.html" rel="" target="">
- <span class="menu-text">Projects</span></a>
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../talks.html" rel="" target="">
- <span class="menu-text">Talks</span></a>
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/psimm" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/paul_simmering" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering" rel="" target=""><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -219,12 +227,13 @@ require(['plotly'], function(Plotly) {
 
 
 
+
 <p>In NLP, we often want to extract multiple pieces of information from a text. Each extraction task is typically done by one model. For example, we might want to classify the topic of a text, do named entity recognition and extract the sentiment. To build such a pipeline, we need to train three different models.</p>
 <p>What if we asked a large language model (LLM) to do it all in one step and return a god-view JSON object with all the structured information we need? That’s the idea I’d like to explore in this article.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="knife.webp" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Illustration generated with DALL·E 3</figcaption>
+<figcaption>Illustration generated with DALL·E 3</figcaption>
 </figure>
 </div>
 <p>I’ll use the <a href="https://github.com/jxnl/instructor">instructor</a> package to describe the desired JSON object using a Pydantic model. Then I’ll send the requests to the OpenAI API with the <a href="https://github.com/qagentur/texttunnel">texttunnel</a> package. I’m the main developer of texttunnel.</p>
@@ -585,7 +594,6 @@ Note
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>fig.update_layout(title<span class="op">=</span><span class="st">"Topic and sentiment distribution"</span>)</span>
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>                            <div id="13087234-cdd9-4df1-a880-1e66c715ef47" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("13087234-cdd9-4df1-a880-1e66c715ef47")) {                    Plotly.newPlot(                        "13087234-cdd9-4df1-a880-1e66c715ef47",                        [{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=POSITIVE\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"POSITIVE","marker":{"color":"#98FB98","pattern":{"shape":""}},"name":"POSITIVE","offsetgroup":"POSITIVE","orientation":"v","showlegend":true,"x":["BUSINESS","TECHNOLOGY","POLITICS","ENTERTAINMENT","ARTS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","TECHNOLOGY","BUSINESS","ENTERTAINMENT","BUSINESS","HEALTH","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","HEALTH","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","TECHNOLOGY","SPORTS","ENTERTAINMENT","BUSINESS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","SPORTS","SPORTS","ENTERTAINMENT","SPORTS","SPORTS","TECHNOLOGY","BUSINESS","BUSINESS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT",null,"SCIENCE","ARTS","ENTERTAINMENT","ARTS","BUSINESS","BUSINESS","ENTERTAINMENT","HEALTH","POLITICS","SCIENCE","SPORTS","TECHNOLOGY","SPORTS","TECHNOLOGY","ENTERTAINMENT","HEALTH","SPORTS","SPORTS","SPORTS","BUSINESS","TECHNOLOGY","SPORTS","SPORTS","SPORTS","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","POLITICS",null,"SPORTS","POLITICS",null,"POLITICS","SCIENCE","SPORTS","SPORTS","BUSINESS","ARTS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","ARTS","SPORTS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","SPORTS","SPORTS","BUSINESS",null,"BUSINESS","TECHNOLOGY","ARTS","SPORTS","HEALTH",null,"TECHNOLOGY","SPORTS",null,"ENTERTAINMENT","ENTERTAINMENT","ENTERTAINMENT","SPORTS","POLITICS","ARTS","SPORTS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","SPORTS","HEALTH","SCIENCE","ARTS","ENTERTAINMENT","BUSINESS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","ENTERTAINMENT"],"xaxis":"x","yaxis":"y","type":"histogram"},{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=NEUTRAL\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NEUTRAL","marker":{"color":"#B0C4DE","pattern":{"shape":""}},"name":"NEUTRAL","offsetgroup":"NEUTRAL","orientation":"v","showlegend":true,"x":["BUSINESS","SPORTS","BUSINESS","POLITICS","POLITICS","ENTERTAINMENT","SPORTS","BUSINESS","HEALTH","SCIENCE","POLITICS","POLITICS","ENTERTAINMENT","POLITICS","HEALTH","POLITICS","ENTERTAINMENT","BUSINESS","POLITICS","SPORTS","ARTS","TECHNOLOGY","POLITICS","SPORTS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","BUSINESS","TECHNOLOGY",null,"POLITICS","BUSINESS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","POLITICS","TECHNOLOGY","BUSINESS","TECHNOLOGY","SPORTS","TECHNOLOGY","ENTERTAINMENT","TECHNOLOGY","TECHNOLOGY","SPORTS","POLITICS","BUSINESS","TECHNOLOGY","POLITICS","SPORTS",null,null,"BUSINESS","SPORTS","HEALTH",null,"BUSINESS","TECHNOLOGY","ENTERTAINMENT","TECHNOLOGY","BUSINESS","POLITICS","ENTERTAINMENT","SPORTS","POLITICS","SPORTS","BUSINESS","SPORTS","POLITICS","HEALTH","POLITICS",null,"POLITICS","ARTS","BUSINESS","BUSINESS","TECHNOLOGY","SCIENCE","TECHNOLOGY","HEALTH","POLITICS","SPORTS","BUSINESS","TECHNOLOGY","POLITICS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","POLITICS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","POLITICS","SCIENCE","ENTERTAINMENT","SPORTS","HEALTH","POLITICS","BUSINESS","TECHNOLOGY","ENTERTAINMENT","POLITICS","SPORTS","BUSINESS","BUSINESS","HEALTH","SPORTS","BUSINESS","SPORTS","POLITICS","HEALTH","BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","POLITICS","SPORTS","POLITICS","TECHNOLOGY","SPORTS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","HEALTH","SCIENCE","BUSINESS","HEALTH",null,"TECHNOLOGY","SPORTS","POLITICS","TECHNOLOGY",null,"BUSINESS","HEALTH","SPORTS","BUSINESS","ARTS","POLITICS","POLITICS","ARTS","ENTERTAINMENT","BUSINESS","SPORTS","HEALTH","TECHNOLOGY","POLITICS","BUSINESS","HEALTH","BUSINESS","BUSINESS","TECHNOLOGY","SPORTS","BUSINESS","POLITICS","BUSINESS","SPORTS","HEALTH","HEALTH","ARTS","ENTERTAINMENT","TECHNOLOGY","TECHNOLOGY","ENTERTAINMENT","SPORTS","BUSINESS","BUSINESS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS","TECHNOLOGY","BUSINESS","BUSINESS","ENTERTAINMENT","SPORTS","BUSINESS",null,"ENTERTAINMENT","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","POLITICS","ARTS",null,"POLITICS","BUSINESS","POLITICS","BUSINESS","BUSINESS","POLITICS",null,"ARTS","BUSINESS","TECHNOLOGY","BUSINESS",null,"BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","SPORTS","SPORTS","TECHNOLOGY","SPORTS","BUSINESS","HEALTH","BUSINESS","TECHNOLOGY",null,null,"SPORTS","BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","POLITICS","BUSINESS","POLITICS","POLITICS","BUSINESS","BUSINESS","SPORTS","TECHNOLOGY","BUSINESS","POLITICS","SPORTS","BUSINESS","POLITICS","ENTERTAINMENT","POLITICS","POLITICS","HEALTH","BUSINESS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","HEALTH","TECHNOLOGY","SPORTS","SPORTS","ARTS","BUSINESS","BUSINESS","POLITICS","BUSINESS","SPORTS","SPORTS",null,"SPORTS","BUSINESS","SPORTS","SPORTS",null,"BUSINESS","TECHNOLOGY","SCIENCE","BUSINESS","POLITICS","TECHNOLOGY","BUSINESS","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","TECHNOLOGY","BUSINESS","BUSINESS","ARTS","BUSINESS","POLITICS","SPORTS","BUSINESS","BUSINESS","POLITICS","HEALTH","TECHNOLOGY","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","POLITICS","SPORTS","SPORTS","HEALTH","POLITICS","ENTERTAINMENT","SPORTS","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","BUSINESS","SPORTS","ARTS","SPORTS"],"xaxis":"x","yaxis":"y","type":"histogram"},{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=NEGATIVE\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NEGATIVE","marker":{"color":"#F08080","pattern":{"shape":""}},"name":"NEGATIVE","offsetgroup":"NEGATIVE","orientation":"v","showlegend":true,"x":["POLITICS","TECHNOLOGY","POLITICS","TECHNOLOGY","POLITICS","ENTERTAINMENT","BUSINESS","POLITICS","ENTERTAINMENT","SPORTS","POLITICS","TECHNOLOGY","SPORTS","BUSINESS","SPORTS",null,"BUSINESS",null,null,"BUSINESS","POLITICS","SPORTS","ARTS","POLITICS","ARTS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","POLITICS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS",null,null,"POLITICS",null,"BUSINESS","SPORTS","TECHNOLOGY","SPORTS","POLITICS","HEALTH",null,"POLITICS","BUSINESS",null,"BUSINESS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","POLITICS","BUSINESS","BUSINESS","POLITICS",null,"POLITICS",null,null,"POLITICS","POLITICS",null,"BUSINESS","POLITICS","SPORTS","POLITICS","BUSINESS","BUSINESS","POLITICS","POLITICS","BUSINESS","POLITICS","HEALTH","SCIENCE","POLITICS",null,"POLITICS",null,"BUSINESS","POLITICS",null,"SPORTS","ARTS","POLITICS","BUSINESS","POLITICS","POLITICS","ENTERTAINMENT","POLITICS","POLITICS","SPORTS","BUSINESS","ENTERTAINMENT","SPORTS",null,null,"ENTERTAINMENT","POLITICS","POLITICS","BUSINESS","BUSINESS","SPORTS",null,"BUSINESS","BUSINESS","POLITICS","POLITICS",null,"BUSINESS","POLITICS","BUSINESS","POLITICS","SPORTS","POLITICS","HEALTH","SPORTS","ENTERTAINMENT","POLITICS","SPORTS","BUSINESS","BUSINESS","ENTERTAINMENT",null,"BUSINESS","BUSINESS","POLITICS","SPORTS","POLITICS","BUSINESS",null,null,"BUSINESS","POLITICS",null,null,null,"BUSINESS","BUSINESS","BUSINESS","BUSINESS",null,"TECHNOLOGY","TECHNOLOGY","BUSINESS","POLITICS","POLITICS","HEALTH","POLITICS","POLITICS","POLITICS","POLITICS","POLITICS","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","POLITICS",null,null,"POLITICS","BUSINESS","POLITICS",null],"xaxis":"x","yaxis":"y","type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Topic"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Mentions"}},"legend":{"title":{"text":"Sentiment"},"tracegroupgap":0},"margin":{"t":60},"barmode":"group","title":{"text":"Topic and sentiment distribution"}},                        {"responsive": true}                    ).then(function(){
                             
 var gd = document.getElementById('13087234-cdd9-4df1-a880-1e66c715ef47');
@@ -645,7 +653,6 @@ if (outputEl) {{
 <span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>                            <div id="13d9ae16-4c69-4697-b579-21950d0b2bd1" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("13d9ae16-4c69-4697-b579-21950d0b2bd1")) {                    Plotly.newPlot(                        "13d9ae16-4c69-4697-b579-21950d0b2bd1",                        [{"alignmentgroup":"True","hovertemplate":"label=PERSON\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"PERSON","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"PERSON","offsetgroup":"PERSON","orientation":"h","showlegend":true,"textposition":"auto","x":[25,5,5,4,3],"xaxis":"x5","y":["Donald Trump","Barack Obama","Trump","Xi Jinping","Prince Harry"],"yaxis":"y5","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=LOCATION\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"LOCATION","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"LOCATION","offsetgroup":"LOCATION","orientation":"h","showlegend":true,"textposition":"auto","x":[20,11,11,10,9],"xaxis":"x4","y":["China","New York","United States","Las Vegas","Australia"],"yaxis":"y4","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=ORG\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"ORG","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"ORG","offsetgroup":"ORG","orientation":"h","showlegend":true,"textposition":"auto","x":[9,6,5,5,5],"xaxis":"x3","y":["Dodgers","Supreme Court","DRDO","FBI","BJP"],"yaxis":"y3","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=PRODUCT\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"PRODUCT","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"PRODUCT","offsetgroup":"PRODUCT","orientation":"h","showlegend":true,"textposition":"auto","x":[4,4,4,3,3],"xaxis":"x2","y":["The Flash","Instagram","Twitter","Riverdale","Android"],"yaxis":"y2","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=EVENT\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"EVENT","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"EVENT","offsetgroup":"EVENT","orientation":"h","showlegend":true,"textposition":"auto","x":[4,3,3,3,2],"xaxis":"x","y":["Friday","World Cup","Premiership","Championship","constituency projects"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,0.98],"title":{"text":"Mentions"}},"yaxis":{"anchor":"x","domain":[0.0,0.17600000000000002],"title":{"text":""},"autorange":"reversed"},"xaxis2":{"anchor":"y2","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis2":{"anchor":"x2","domain":[0.20600000000000002,0.382],"title":{"text":""},"autorange":"reversed"},"xaxis3":{"anchor":"y3","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis3":{"anchor":"x3","domain":[0.41200000000000003,0.5880000000000001],"title":{"text":""},"autorange":"reversed"},"xaxis4":{"anchor":"y4","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis4":{"anchor":"x4","domain":[0.618,0.794],"title":{"text":""},"autorange":"reversed"},"xaxis5":{"anchor":"y5","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis5":{"anchor":"x5","domain":[0.8240000000000001,1.0],"title":{"text":""},"autorange":"reversed"},"annotations":[{"font":{},"showarrow":false,"text":"EVENT","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.08800000000000001,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"PRODUCT","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.29400000000000004,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"ORG","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.5,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"LOCATION","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.706,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"PERSON","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.912,"yanchor":"middle","yref":"paper"}],"legend":{"title":{"text":"label"},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative","showlegend":false,"title":{"text":"Most frequent named entities by label"}},                        {"responsive": true}                    ).then(function(){
                             
 var gd = document.getElementById('13d9ae16-4c69-4697-b579-21950d0b2bd1');
@@ -696,9 +703,10 @@ Unvalidated model
 <p>They [LLMs] are extremely useful, but if you want to deliver reliable software you can improve over time, you can’t just write a prompt and call it a day</p>
 </blockquote>
 <p>The alternate pipeline with a modular approach of specialized models could look like this:</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     A([Text]) --&gt; B[Tokenization]
@@ -708,6 +716,7 @@ Unvalidated model
     E --&gt; F[NER]
 </pre>
 </div>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
@@ -818,10 +827,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/simmering\.dev");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -831,8 +857,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -844,7 +879,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -888,6 +1046,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -913,6 +1072,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -978,12 +1163,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">
       &nbsp;
     </div>   
-    <div class="nav-footer-center"><a href="imprint.html">Imprint</a> | <a href="privacy.html">Privacy policy</a> | This website doesn’t use cookies.</div>
+    <div class="nav-footer-center">
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
   </div>
 </footer>
+
 
 
 
