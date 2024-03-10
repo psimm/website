@@ -1,18 +1,5 @@
 [
   {
-    "listing": "/talks.html",
-    "items": [
-      "/talks/succeet2023/index.html",
-      "/talks/gor2023/index.html",
-      "/talks/bvmki2021/index.html",
-      "/talks/comes2020/index.html",
-      "/talks/gor2019/index.html",
-      "/talks/researchplus2018/index.html",
-      "/talks/concordi2017/index.html",
-      "/talks/emaee2017/index.html"
-    ]
-  },
-  {
     "listing": "/projects.html",
     "items": [
       "/projects/texttunnel/index.html",
@@ -24,9 +11,23 @@
     ]
   },
   {
+    "listing": "/talks.html",
+    "items": [
+      "/talks/gor2024/index.html",
+      "/talks/succeet2023/index.html",
+      "/talks/gor2023/index.html",
+      "/talks/bvmki2021/index.html",
+      "/talks/comes2020/index.html",
+      "/talks/gor2019/index.html",
+      "/talks/researchplus2018/index.html",
+      "/talks/concordi2017/index.html",
+      "/talks/emaee2017/index.html"
+    ]
+  },
+  {
     "listing": "/index.html",
     "items": [
-      "/blog/training-data/index.html",
+      "/blog/gold-data/index.html",
       "/blog/llm-price-performance/index.html",
       "/blog/data-grug/index.html",
       "/blog/nlp-model-escalation/index.html",

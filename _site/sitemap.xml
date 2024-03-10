@@ -1,143 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://simmering.dev/imprint.html</loc>
-    <lastmod>2023-12-27T09:54:47.465Z</lastmod>
+    <loc>https://simmering.dev/privacy.html</loc>
+    <lastmod>2023-12-27T09:51:54.349Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks.html</loc>
-    <lastmod>2023-10-21T09:31:12.963Z</lastmod>
+    <loc>https://simmering.dev/blog/modal-twitter/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.228Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/texttunnel/index.html</loc>
-    <lastmod>2023-11-01T15:52:51.560Z</lastmod>
+    <loc>https://simmering.dev/blog/echarts4r/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.228Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/masterthesis/index.html</loc>
-    <lastmod>2023-11-01T15:52:51.915Z</lastmod>
+    <loc>https://simmering.dev/blog/llm-future/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.228Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/bachelorthesis/index.html</loc>
-    <lastmod>2023-11-01T15:52:52.194Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/projects/stakex/index.html</loc>
-    <lastmod>2023-11-01T15:52:52.503Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/projects/cosmention/index.html</loc>
-    <lastmod>2023-11-01T15:52:52.805Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/projects/gpexp/index.html</loc>
-    <lastmod>2023-11-01T15:52:53.105Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/researchplus2018/index.html</loc>
-    <lastmod>2023-11-01T15:52:53.431Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/emaee2017/index.html</loc>
-    <lastmod>2023-11-01T15:52:53.743Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/gor2023/index.html</loc>
-    <lastmod>2023-11-01T15:52:54.079Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/succeet2023/index.html</loc>
-    <lastmod>2023-10-28T06:46:54.989Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/comes2020/index.html</loc>
-    <lastmod>2023-11-01T15:52:54.676Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/gor2019/index.html</loc>
-    <lastmod>2023-11-01T15:52:54.972Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/concordi2017/index.html</loc>
-    <lastmod>2023-11-01T15:52:55.274Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
-    <lastmod>2023-11-01T15:52:55.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2023-10-21T09:31:12.912Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2023-10-21T11:21:01.814Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
-    <lastmod>2023-11-01T15:52:57.919Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/dataframes/index.html</loc>
-    <lastmod>2023-11-01T15:52:59.035Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</loc>
-    <lastmod>2023-11-20T07:58:11.022Z</lastmod>
+    <loc>https://simmering.dev/blog/yarn/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.230Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/llms-for-absa/index.html</loc>
     <lastmod>2023-11-07T11:32:08.230Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/one-stop-nlp/index.html</loc>
-    <lastmod>2023-11-01T12:06:48.229Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/yarn/index.html</loc>
-    <lastmod>2023-11-01T15:53:02.571Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/llm-future/index.html</loc>
-    <lastmod>2023-11-01T15:53:03.043Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/fangmant/index.html</loc>
-    <lastmod>2023-11-01T15:53:03.776Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/echarts4r/index.html</loc>
-    <lastmod>2023-11-01T15:53:04.527Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/skills/index.html</loc>
-    <lastmod>2023-11-01T15:53:04.998Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/modal-twitter/index.html</loc>
-    <lastmod>2023-11-01T15:53:05.521Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2023-10-29T15:19:47.026Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/privacy.html</loc>
-    <lastmod>2023-12-27T09:54:45.716Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
-    <lastmod>2023-11-21T07:45:48.718Z</lastmod>
+    <loc>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</loc>
+    <lastmod>2023-11-20T07:58:11.022Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/data-grug/index.html</loc>
     <lastmod>2023-12-09T16:03:36.415Z</lastmod>
   </url>
   <url>
+    <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.226Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects.html</loc>
+    <lastmod>2023-10-21T09:31:12.912Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/concordi2017/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.002Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/comes2020/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.975Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/gor2024/index.html</loc>
+    <lastmod>2024-03-10T11:33:49.510Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/emaee2017/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.010Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/gpexp/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.944Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/stakex/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.948Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/masterthesis/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.945Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks.html</loc>
+    <lastmod>2023-10-21T09:31:12.963Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/imprint.html</loc>
+    <lastmod>2023-12-27T09:51:41.970Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/texttunnel/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.963Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/bachelorthesis/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.933Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/cosmention/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.938Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/researchplus2018/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.029Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/gor2023/index.html</loc>
+    <lastmod>2023-10-28T06:46:54.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/succeet2023/index.html</loc>
+    <lastmod>2023-10-28T06:46:54.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/gor2019/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.022Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.974Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/index.html</loc>
+    <lastmod>2023-10-21T11:21:01.814Z</lastmod>
+  </url>
+  <url>
     <loc>https://simmering.dev/blog/llm-price-performance/index.html</loc>
     <lastmod>2024-02-13T11:06:58.923Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/training-data/index.html</loc>
-    <lastmod>2024-03-10T11:31:23.556Z</lastmod>
+    <loc>https://simmering.dev/blog/dataframes/index.html</loc>
+    <lastmod>2023-11-01T15:50:45.185Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/gold-data/index.html</loc>
+    <lastmod>2024-03-10T11:33:54.260Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/one-stop-nlp/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.229Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
+    <lastmod>2023-11-21T07:45:48.718Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/fangmant/index.html</loc>
+    <lastmod>2023-10-21T09:55:13.491Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/skills/index.html</loc>
+    <lastmod>2023-11-01T12:06:48.229Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/about.html</loc>
+    <lastmod>2023-10-29T15:19:47.026Z</lastmod>
   </url>
 </urlset>
