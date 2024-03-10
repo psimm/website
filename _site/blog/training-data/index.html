@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
-<meta name="dcterms.date" content="2024-03-09">
+<meta name="dcterms.date" content="2024-03-10">
 
-<title>Paul Simmering – How to get good labeled data for NLP</title>
+<title>Paul Simmering – How to get gold standard data for NLP</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -68,6 +88,10 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -132,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">How to get good labeled data for NLP</h1>
+      <h1 class="title">How to get gold standard data for NLP</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Machine Learning</div>
               </div>
@@ -152,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 9, 2024</p>
+        <p class="date">March 10, 2024</p>
       </div>
     </div>
     
@@ -171,104 +195,198 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>With the focus on new LLMs, it’s easy to forget that training data is still the most important factor for model performance in most NLP tasks. This article will give you an overview of how to get good labeled data for your NLP project. It’s based on my 5 years of experience in the field and a review of the literature.</p>
-<section id="training-data-still-matters" class="level2">
-<h2 class="anchored" data-anchor-id="training-data-still-matters">Training data still matters</h2>
-<ul>
-<li>Zero-shot and few-shot prediction with LLMs promises to let you skip the labeling and training</li>
-<li>But how do you know that the labels it gives are correct?</li>
-<li>Checking individual examples by hand is helpful, but not enough proof</li>
-<li>Need at least a test set to evaluate on</li>
-<li>Plus, finetuning still produces the most accurate models</li>
-</ul>
-<p>GOR model accuracy comparison</p>
-<p>Literature references</p>
+<p>With the attention on new LLM releases, it’s easy to forget that correctly labeled examples are still a critical factor for accuracy in most NLP tasks. I think they’re the best source of competitive advantage for most teams. Labeled examples will be useful in conjunction with any model that comes out.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="vault.png" class="img-fluid figure-img"></p>
+<figcaption>Gold-standard data, image generated with Midjourney</figcaption>
+</figure>
+</div>
+<p>High quality, human-labeled examples are aptly called “gold standard”. This guide will help you accumulate and refine this treasure. It’s based on my five years of experience collecting and refining labeled data for NLP projects, plus a review of the literature.</p>
+<section id="fine-tuned-models-outperform-few-shot-and-zero-shot-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="fine-tuned-models-outperform-few-shot-and-zero-shot-approaches">Fine-tuned models outperform few-shot and zero-shot approaches</h2>
+<p>Zero-shot and few-shot prediction with LLMs promises to let you skip the labeling and training. Just give the model a few examples and it’ll figure out the rest. This is great for a proof of concept, but how do you know that the labels it gives are correct? Checking individual examples by hand is helpful, but not enough proof. Even if the model doesn’t need finetuning, you’ll need at least a test set to evaluate on.</p>
+<p>For classic NLP tasks like text classification, named entity recognition and sentiment analysis, fine-tuned models are still by far the most accurate. This is shown in the benchmarks below. Fine-tuned models perform best across all tasks, followed by few-shot instructed models. Zero-shot performance is the least accurate.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="benchmarks.png" class="img-fluid figure-img"></p>
+<figcaption>Finetuning vs.&nbsp;few-shot vs.&nbsp;zero-shot benchmark results</figcaption>
+</figure>
+</div>
+<p>Benchmarks were done by <span class="citation" data-cites="ziems2023can">Ziems et al. (<a href="#ref-ziems2023can" role="doc-biblioref">2023</a>)</span>, <span class="citation" data-cites="qin2023chatgpt">Qin et al. (<a href="#ref-qin2023chatgpt" role="doc-biblioref">2023</a>)</span>, <span class="citation" data-cites="wang2023gpt">Wang et al. (<a href="#ref-wang2023gpt" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="simmering2023large">Simmering and Huoviala (<a href="#ref-simmering2023large" role="doc-biblioref">2023</a>)</span>.</p>
 </section>
 <section id="ways-to-get-training-data" class="level2">
 <h2 class="anchored" data-anchor-id="ways-to-get-training-data">Ways to get training data</h2>
 <p>I hope that I convinced you that training data is still relevant. So how to acquire it?</p>
 <section id="public-sources" class="level3">
 <h3 class="anchored" data-anchor-id="public-sources">Public sources</h3>
+<p>First, check if there’s a public dataset that fits your needs. Here are some places to look:</p>
 <ul>
 <li><a href="https://huggingface.co/datasets">Huggingface Hub</a> features more than 100,000 free datasets.</li>
-<li><a href="https://www.kaggle.com/datasets">Kaggle</a></li>
+<li><a href="https://www.kaggle.com/datasets">Kaggle</a> has more than 50,000 freedatasets.</li>
 <li><a href="https://paperswithcode.com/datasets">Papers with Code</a> has more than 2000 text datasets, covering all popular NLP benchmarks.</li>
-<li><a href="https://github.com/niderhoff/nlp-datasets">nlp-datasets Github repository</a> a curated list of free/ public domain NLP datasets.</li>
 <li><a href="https://data.world/datasets/nlp">data.world</a> has 72 free NLP datasets.</li>
+<li><a href="https://github.com/niderhoff/nlp-datasets">nlp-datasets Github repository</a> has a curated list of free NLP datasets.</li>
 </ul>
-<p>If the dataset is popular you may also find pre-trained models for it. Even if you want to use a different architecture, they can give you an idea of the accuracy you can expect to reach and the difficulty of the examples.</p>
-<p>The majority of public NLP datasets are in English. It may be possible to translate a dataset to your language. DeepL and other translation APIs make this affordable. Try it with some examples and see if the translations are good enough.</p>
+<p>If the dataset is popular you may also find pre-trained models for it on Huggingface. They can give you an idea of the accuracy you can expect to reach and the difficulty of the examples. That’s useful information even if you train your own model.</p>
+<p>The majority of public NLP datasets are in English. It may be possible to translate a dataset to your language. DeepL and other translation APIs are affordable. Try it with some examples and see if the translations are good enough.</p>
 </section>
 <section id="using-natural-labels" class="level3">
 <h3 class="anchored" data-anchor-id="using-natural-labels">Using natural labels</h3>
+<p>Natural labels are signals that are already present in the data. They can be used to train a model without any human labeling. Here are some examples:</p>
 <ul>
-<li>Star ratings for reviews</li>
-<li>Positive / negative feedback for support answers</li>
-<li>Question and answer pairs, e.g.&nbsp;from Stack Overflow</li>
+<li>Star ratings for reviews are a signal for sentiment analysis.</li>
+<li>Positive / negative feedback for support answers is a signal for customer satisfaction.</li>
+<li>The number of upvotes, likes and shares for social media posts is a signal for popularity.</li>
+<li>The upvotes for question answers on Stack Overflow is a signal for correctness.</li>
+<li>Open rate of emails is a signal for interestingness of the subject line.</li>
 </ul>
+<p>Perhaps there is a dataset in your organization that has natural labels for the task you want to solve.</p>
 </section>
-<section id="labeling-it-yourself-hire-a-contractor" class="level3">
-<h3 class="anchored" data-anchor-id="labeling-it-yourself-hire-a-contractor">Labeling it yourself / hire a contractor</h3>
-<p>Quick advice based on 5 years of experience:</p>
+<section id="labeling-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="labeling-by-hand">Labeling by hand</h3>
+<p>If you’re not lucky enough to find a public dataset or natural labels, creating your own dataset is the way to go. To go beyond a few thousand examples, a team of labelers is necessary. In any case, I suggest you start by labeling a few examples yourself. This will give you a good understanding of the task.</p>
+<p>Here are some points to consider when creating a labeled dataset, whether in a team or alone:</p>
 <ul>
-<li>Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.</li>
-<li>Discuss unclear examples and refine your annotation guide.</li>
-<li>It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses. Figuring out clear rules is your number 1 priority at the start.</li>
-<li>Skip the weirdest texts. They’re more likely to confuse your model than help it learn.</li>
-<li>A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.</li>
-<li>Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g.&nbsp;with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.</li>
-<li>Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.</li>
-<li>Figure out good labeling user experience.</li>
-<li>Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.</li>
-<li>Checking examples is a good use of a data scientist’s time.</li>
-<li>When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.</li>
-<li>Pick an annotation tool that prioritizes productivity of the labelers. It should also be easy to look at the examples that were already annotated and fix errors.</li>
+<li><strong>Annotation guide</strong>: Write a detailed annotation guide with examples. This is a living document that gets updated with details and examples throughout the project.</li>
+<li><strong>Iterate on the rules</strong>: Figuring out clear rules is the number 1 priority at the start. Discuss unclear examples with the team and refine the annotation guide. It can be necessary to change a rule and re-label the examples done until then. The cost increases as the project progresses.</li>
+<li><strong>Skip the weirdest examples</strong>: User generated internet content can be wild in terms of content and grammar. It can be better better to skip the weirdest examples than to try to label them. They’re more likely to confuse your model than help it learn and it’s unlikely that they’ll be encountered in practice.</li>
+<li><strong>Quality control</strong>: Double annotation and analysis of inter-annotator reliability is a key technique for correct annotation from a team.</li>
+<li><strong>Labeling tool</strong>: Good labeling UI and workflow makes a big difference in productivity and quality. It’s worth investing the time to find the right tool and configure it optimally. The tool should also make it easy look at the examples that were already annotated and fix errors.</li>
+<li><strong>Simplify the task</strong>: Have reasonable expectations for what a labeler can do. For example, correctly using 20 different labels in a text classification task is not realistic. It’s too easy to forget one of them. Binary labeling is easier and it can be worth it to split a task into subtasks that use fewer labels.</li>
+<li><strong>Onboarding</strong>: When a new labeler starts, have a 1 to 1 onboarding session in which you label some examples together. This is often much more effective than reading the guide. It’s also an opportunity to teach efficient use of the labeling tool.</li>
+<li><strong>Quality over quantity</strong>: A small, high quality dataset is preferable to a large, low quality dataset. Falsely labeled examples are misleading for the model and for evaluation. Plus, they increase the time and cost for training.</li>
+<li><strong>Diminishing rates of return</strong>: Check the difference that adding more examples to the training set makes on model performance. You can do this by training your model on varying amounts of your labeled data, e.g.&nbsp;with 80%, 90% and 100%. If the last 10% of labeled data make a clear difference, keep annotating more data.</li>
+<li><strong>You get what you pay for</strong>: When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed and whether they’re native speakers for the language of the task.</li>
 </ul>
-<p>In terms of data quality, you get what you pay for. When choosing a contractor or full labeling service, ask for inter-annotator reliability and how labelers are instructed. You may also want to check that their workers are paid fairly and have decent working conditions.</p>
-<p>Are they going to do a better job than GPT-4? If you suspect they won’t read the next section.</p>
-<p>Paper references here.</p>
-<p><span class="citation" data-cites="article">@article</span>{tornberg2023chatgpt, title={Chatgpt-4 outperforms experts and crowd workers in annotating political twitter messages with zero-shot learning}, author={T{"o}rnberg, Petter}, journal={arXiv preprint arXiv:2304.06588}, year={2023} }</p>
-<p><span class="citation" data-cites="article">@article</span>{gilardi2023chatgpt, title={ChatGPT outperforms crowd workers for text-annotation tasks}, author={Gilardi, Fabrizio and Alizadeh, Meysam and Kubli, Ma{"e}l}, journal={Proceedings of the National Academy of Sciences}, volume={120}, number={30}, pages={e2305016120}, year={2023}, publisher={National Acad Sciences} }</p>
+<section id="gpt-4-is-more-accurate-than-low-quality-labeling-services" class="level4">
+<h4 class="anchored" data-anchor-id="gpt-4-is-more-accurate-than-low-quality-labeling-services">GPT-4 is more accurate than low-quality labeling services</h4>
+<p><span class="citation" data-cites="tornberg2023chatgpt">Törnberg (<a href="#ref-tornberg2023chatgpt" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="gilardi2023chatgpt">Gilardi, Alizadeh, and Kubli (<a href="#ref-gilardi2023chatgpt" role="doc-biblioref">2023</a>)</span> compared labeling accuracy of GPT-4 with labels created by Amazon Mechanical Turk workers. They found that GPT-4 with a zero-shot instruction was more accurate on tweet text classification tasks. As a buyer of labeling services, a low-quality service may be a worse deal than using an LLM to label the examples (see next section). Hence, it’s only worth using a labeling service if it’s high quality. The ideal solution is a team of experienced labelers that communicate well, refine the annotation guide and use a highly efficient labeling tool.</p>
+</section>
 </section>
 <section id="synthetic-data-labels" class="level3">
 <h3 class="anchored" data-anchor-id="synthetic-data-labels">Synthetic data / labels</h3>
-<ul>
-<li>GPT-4 with a few-shot example prompt can solve many NLP problems with decent accuracy. You can kickstart a project by letting it label examples and then training your smaller model on them.</li>
-<li>You can also use your partially trained model to label examples and then ask the labelers to correct the labels rather than set them from scratch. This tends to be faster.</li>
-</ul>
+<p>The most capable LLMs like GPT-4 can solve many NLP problems with decent accuracy with a few-shot example prompt. You can kickstart a project by letting it label examples and then training your smaller, more efficient model on them. <span class="citation" data-cites="laurer2024synthetic">Laurer (<a href="#ref-laurer2024synthetic" role="doc-biblioref">2024</a>)</span> provides a great deep dive into this approach and its efficiency benefits.</p>
+<p>Experiment with the prompt and the examples to get the best performance. An annotation guide with examples as described in the previous section is a great starting point for an effective prompt.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Raw data] --&gt; B[Few-shot prompt]
+    C[4 to 10 examples] --&gt; B
+    B --&gt;|Instruct| D[LLM]
+    D --&gt;|Predict| E[Labels]
+    E --&gt;|Manual check| F[Corrected labels]
+    F --&gt;|Train| G[Efficient model]
+    
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>If the model’s few-shot accuracy isn’t good enough, check the examples and correct the labels by hand. The human-in-the-loop step is required to get proper “gold standard” data. It’s still faster than labeling from scratch.</p>
+<section id="active-learning" class="level4">
+<h4 class="anchored" data-anchor-id="active-learning">Active learning</h4>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Model] --&gt;|Predict| B[Label]
+    B --&gt;|Prioritize low confidence predictions| C[Human check]
+    C --&gt;|Train| A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>With active learning, the model is trained incrementally as new examples are labeled. A human labeler is presented with the examples that the model is most uncertain about and labels them. This maximizes labeling productivity and also gives insight into the model’s weaknesses. The tool <a href="https://prodi.gy">Prodigy</a> by Explosion AI was a pioneer in this area and is still a popular choice.</p>
 </section>
 </section>
-<section id="improving-your-training-data" class="level2">
-<h2 class="anchored" data-anchor-id="improving-your-training-data">Improving your training data</h2>
+</section>
+<section id="improving-your-labeled-data" class="level2">
+<h2 class="anchored" data-anchor-id="improving-your-labeled-data">Improving your labeled data</h2>
+<blockquote class="blockquote">
+<p>“The biggest alpha in AI is actually looking at your data” - Mark Tenenholtz on <a href="https://twitter.com/marktenenholtz/status/1762179463033278963">X</a></p>
+</blockquote>
+<p>Better training data makes everything easier, without adding complexity to the model, your code or your infrastructure. There’s no substitute for high quality data. Here are some ways to improve your labeled data:</p>
+<section id="stare-at-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="stare-at-the-data">Stare at the data</h3>
+<p>Ultra simple, but effective. Look at the examples and labels, check that they conform to the annotation guide. Think about what the model will learn from them. This is a high-value activity, worthy of a senior engineer’s time. It doesn’t scale, but it’s worth doing every now and then.</p>
+</section>
 <section id="perform-all-standard-checks" class="level3">
 <h3 class="anchored" data-anchor-id="perform-all-standard-checks">Perform all standard checks</h3>
-<ul>
-<li>Are the predicted classes balanced, and if not, does your training and evaluation handle imbalance properly?</li>
-<li>Is your training data as diverse as the data you’ll encounter in practice?</li>
-<li>Do you version your data along with the trained machine learning models?</li>
-</ul>
+<p>Here are some standard questions that are always worth asking about your data:</p>
+<ol type="1">
+<li>Is your training data as diverse as the data you’ll encounter in practice? For example, if you’re doing fake news detection, do you have examples from all political sides?</li>
+<li>Are the predicted classes balanced, and if not, does your training and evaluation handle imbalance properly? For example, star ratings for reviews are often biased towards 5 stars.</li>
+<li>Do you version your data along with the trained machine learning models? This is critical for reproducibility and debugging.</li>
+<li>Do the labels have clear and non-overlapping definitions?</li>
+<li>Does the dataset contain outliers or unrealistic values? For example, a review with more than 5 stars.</li>
+<li>Are there any duplicates in the data?</li>
+<li>Is there overlap between the training and evaluation data?</li>
+</ol>
 </section>
 <section id="fix-errors-in-training-data-by-analyzing-wrong-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="fix-errors-in-training-data-by-analyzing-wrong-predictions">Fix errors in training data by analyzing wrong predictions</h3>
-<p>A quick way to identify training examples that may be wrong is to train a model on the examples and then run inference on them. If the model gets the label wrong even after having seen it during training, the example may be wrong. The model learned the rule from the other examples, but this example doesn’t follow it. Check those examples and fix the label where necessary.</p>
+<p>Mistaken labels are poison for your model. It learns wrong rules or gets falsely penalized for correct predictions. How do you find and fix them? The model can help with that! One way to find training examples that may be wrong is to train a model on the examples and then run inference on them. If the model gets the label wrong even after having seen it during training, the example may be wrong. The model learned the rule from the other examples, but this example doesn’t follow it. Check those examples and fix the label where necessary.</p>
 </section>
-<section id="add-high-value-examples" class="level3">
-<h3 class="anchored" data-anchor-id="add-high-value-examples">Add high-value examples</h3>
+<section id="add-high-signal-examples" class="level3">
+<h3 class="anchored" data-anchor-id="add-high-signal-examples">Add high-signal examples</h3>
 <p>Labels for difficult examples are a stronger signal than labels for easy examples. Once the model has figured out the basic labeling rules from general examples, it doesn’t have as much to learn from the anymore. You can identify difficult examples by checking the model’s confidence when predicting their answers. Classification models typically return a probability distribution over labels, and LLMs can provide next-token probabilities. Label the examples that have a more uniform distribution, meaning low confidence in the chosen solution. These examples will also help you find edge cases for the annotation guide.</p>
 </section>
 <section id="data-augmentation" class="level3">
 <h3 class="anchored" data-anchor-id="data-augmentation">Data augmentation</h3>
-<p>You can squeeze more training signal out of your examples by varying them slightly while keeping the label.</p>
+<p>You can turn one example into many by slightly changing the wording while keeping the label. <span class="citation" data-cites="chaudhary2020visual">Chaudhary (<a href="#ref-chaudhary2020visual" role="doc-biblioref">2020</a>)</span> offers a visual overview of techniques, including:</p>
+<ol type="1">
+<li>Lexical substitution: Replace words with synonyms.</li>
+<li>Back translation: Translate the text to another language and back.</li>
+<li>Text surface transformation: Contract expressions e.g.&nbsp;“I am” -&gt; “I’m”.</li>
+<li>Random noise injection: Adding spelling mistakes, shuffling sentences, randomly removing words.</li>
+<li>Generative methods: Use a generative model to create new examples similar to the original.</li>
+</ol>
+<p>These variations of the same example can improve robustness and generalization of the model. They can also help to balance the classes. However, they are less valuable than real examples. Only use them for the training set, not for the test set and run experiments to see if they actually improve performance or just slow down training.</p>
 </section>
 </section>
 <section id="models-come-and-go-data-is-forever" class="level2">
 <h2 class="anchored" data-anchor-id="models-come-and-go-data-is-forever">Models come and go, data is forever</h2>
-<p>New models are released every week and every 2-3 years we seem to have a revolution in model architecture. It can be exhausting to keep up, especially if your goal is to serve a customer need rather than conduct research. If you find yourself in this position, prioritizing training and evaluation data over modeling is a good strategy. Your labeled data will likely be compatible with any model that will come out. Even if the model doesn’t need to be trained, it’ll still be good to have an accurate evaluation dataset. By keeping your code as model-agnostic as possible you can ride the waves of new models coming out, reaping the performance improvements, with little model customization on your part. Just plug in the new model and combine it with your real treasure, the labeled data.</p>
+<p>New models are released every week and we seem to have a revolution in model architecture about every 3 years. It can be exhausting to keep up, especially if your goal is to serve a customer need rather than conduct research. If you find yourself in this position, prioritizing training and evaluation data over modeling is a good strategy. Your labeled data will likely be compatible with any model that will come out. Even if the model doesn’t need to be trained, it’ll still be good to have an accurate evaluation dataset. By keeping your code as model-agnostic as possible you can ride the waves of new models coming out, reaping the performance improvements, with little model customization on your part. Just plug in the new model and combine it with your real treasure, the labeled data.</p>
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-chaudhary2020visual" class="csl-entry" role="listitem">
+Chaudhary, Amit. 2020. <span>“A Visual Survey of Data Augmentation in NLP.”</span> <a href="https://amitness.com/2020/05/data-augmentation-for-nlp/">https://amitness.com/2020/05/data-augmentation-for-nlp/</a>.
+</div>
+<div id="ref-gilardi2023chatgpt" class="csl-entry" role="listitem">
+Gilardi, Fabrizio, Meysam Alizadeh, and Maël Kubli. 2023. <span>“ChatGPT Outperforms Crowd Workers for Text-Annotation Tasks.”</span> <em>Proceedings of the National Academy of Sciences</em> 120 (30): e2305016120.
+</div>
+<div id="ref-laurer2024synthetic" class="csl-entry" role="listitem">
+Laurer, Moritz. 2024. <span>“Synthetic Data: Save Money, Time and Carbon with Open Source.”</span> <a href="https://huggingface.co/blog/synthetic-data-save-costs">https://huggingface.co/blog/synthetic-data-save-costs</a>.
+</div>
+<div id="ref-qin2023chatgpt" class="csl-entry" role="listitem">
+Qin, Chengwei, Aston Zhang, Zhuosheng Zhang, Jiaao Chen, Michihiro Yasunaga, and Diyi Yang. 2023. <span>“Is ChatGPT a General-Purpose Natural Language Processing Task Solver?”</span> <em>arXiv Preprint arXiv:2302.06476</em>.
+</div>
+<div id="ref-simmering2023large" class="csl-entry" role="listitem">
+Simmering, Paul F, and Paavo Huoviala. 2023. <span>“Large Language Models for Aspect-Based Sentiment Analysis.”</span> <em>arXiv Preprint arXiv:2310.18025</em>.
+</div>
+<div id="ref-tornberg2023chatgpt" class="csl-entry" role="listitem">
+Törnberg, Petter. 2023. <span>“Chatgpt-4 Outperforms Experts and Crowd Workers in Annotating Political Twitter Messages with Zero-Shot Learning.”</span> <em>arXiv Preprint arXiv:2304.06588</em>.
+</div>
+<div id="ref-wang2023gpt" class="csl-entry" role="listitem">
+Wang, Shuhe, Xiaofei Sun, Xiaoya Li, Rongbin Ouyang, Fei Wu, Tianwei Zhang, Jiwei Li, and Guoyin Wang. 2023. <span>“Gpt-Ner: Named Entity Recognition via Large Language Models.”</span> <em>arXiv Preprint arXiv:2304.10428</em>.
+</div>
+<div id="ref-ziems2023can" class="csl-entry" role="listitem">
+Ziems, Caleb, Omar Shaikh, Zhehao Zhang, William Held, Jiaao Chen, and Diyi Yang. 2023. <span>“Can Large Language Models Transform Computational Social Science?”</span> <em>Computational Linguistics</em>, 1–53.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
