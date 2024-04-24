@@ -1,0 +1,27 @@
+---
+title: "AI Revolutionizes Content Analysis in Market Research"
+date: 2024-04-24
+author: "Paul Simmering"
+location: "Berlin, Germany"
+categories:
+  - conference
+image: "ephmra2024.jpeg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [EPHMRA 2024 German Chapter Meeting](https://www.ephmra.org/events/43)|
+| 📅 Date | 22 April 2024 |
+| 📍 Location | Berlin, Germany |
+
+![Presenting a case study](ephmra2024.jpeg)
+
+This presentation at EPHMRA 2024 was about three ways in which AI makes content analysis more efficient in market research:
+
+1. Structuring text, audio and image inputs
+2. Aiding aggregation and reporting with Copilots
+3. Enabling market researchers to move from an analyst role to a communicator and strategist role
+
+If you wish to receive a copy of the slides (in German), please contact me.
+
+The slide in the background of the image shows an example of one-stop prompting, see my [article](/blog/one-stop-nlp/) on the topic.

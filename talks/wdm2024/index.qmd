@@ -1,0 +1,25 @@
+---
+title: "AI in Market Research - Case Studies"
+date: 2024-04-16
+author: "Paul Simmering"
+location: "Online"
+categories:
+  - webinar
+image: "wdm2024.png"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [Woche der Marktforschung 2024](https://www.marktforschung.de/succeet/woche-der-marktforschung/)|
+| 📅 Date | 16 April 2024 |
+| 📍 Location | Online |
+
+[Woche der Marktforschung](https://www.marktforschung.de/succeet/woche-der-marktforschung/) is an annual event by Marktforschung.de and Succeet. This year Oliver Tabino and me presented three case studies of applied AI in market research:
+
+1. Agile use of LLMs for social media monitoring in pharma
+2. Scaleable data pipeline for social media monitoringin cosmetics
+3. State of the art accuracy in aspect-based sentiment analysis of reviews using a fine-tuned LLM
+
+With [over 200 attendees](https://www.marktforschung.de/marktforschung/a/das-war-die-fuenfte-wdm-in-zahlen/), this webinar was the second most popular event out of 93 events of the WdM.
+
+Please contact me if you would like to get access to a recording of the presentation on Vimeo (in German).
