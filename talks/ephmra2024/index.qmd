@@ -13,6 +13,8 @@ image: "ephmra2024.jpeg"
 | 🗓️ Event | [EPHMRA 2024 German Chapter Meeting](https://www.ephmra.org/events/43)|
 | 📅 Date | 22 April 2024 |
 | 📍 Location | Berlin, Germany |
+| 🌐 Language | German |
+| 📥 Materials | [Slides (PDF)](/talks/ephmra2024/ephmra_2024_llms.pdf) |
 
 ![Presenting a case study](ephmra2024.jpeg)
 

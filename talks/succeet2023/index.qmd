@@ -13,9 +13,9 @@ image: "image.jpg"
 | 🗓️ Event | [Succeet 2023](https://www.succeet.de/aussteller/succeet23/)|
 | 📅 Date | 26 October 2023 |
 | 📍 Location | Wiesbaden, Germany |
+| 🌐 Language | German |
+| 📥 Materials | [Slides (PDF)](succeet2023_simmering_workshop.pdf) [Questionnaire (PDF)](succeet2023_simmering_workshop_questionnaire.pdf) |
 
 ![Succeet 2023](image.jpg)
 
 Many market researchers have already experimented with ChatGPT and have achieved promising results. But how is this transferred to practice? In practice, accuracy, IT implementation, costs, and data protection count. This workshop provides you with facts and decision-making criteria for the successful use of language models. We will focus on project examples in which language models are used to analyze survey responses, product reviews, and social media posts. In addition to commercial models GPT-3.5 and GPT-4 from OpenAI, we also look at open-source models such as Llama 2 from Meta, as well as the possibility of optimizing models with your own data. Previous knowledge is not required, but it would be advantageous if you already experimented with ChatGPT or a similar model.
-
-The workshop was held in German.

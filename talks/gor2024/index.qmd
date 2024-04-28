@@ -13,6 +13,7 @@ image: "image.jpeg"
 | 🗓️ Event | [General Online Research 2024](https://www.gor.de/wp-content/uploads/2024/02/ConferenceProceedings_2024_final.pdf)|
 | 📅 Date | 21 February 2023 |
 | 📍 Location | Cologne, Germany |
+| 🌐 Language | English |
 | 📥 Materials | [Slides (PDF)](gor_2024_simmering_huoviala.pdf) |
 
 ## Relevance & research question

@@ -18,6 +18,7 @@ image: "image.jpg"
 | 🗓️ Event | BVM symposium: Understanding artificial intelligence and using it with sustained success |
 | 📅 Date | 25 November 2021 |
 | 📍 Location | Online |
+| 🌐 Language | German |
 | 📥 Materials | [Slides (PDF)](KI_fuer_Social_Media_Monitoring_bei_dm.pdf) |
 | 🌐 Website | [Cosmention](https://cosmention.com) |
 

@@ -15,7 +15,8 @@ image: "image.jpg"
 | 🗓️ Event | 6th European Conference on Corporate R&D and Innovation |
 | 📅 Date | 27-29 September 2017 |
 | 📍 Location | Seville, Spain |
-| 📥 Slides | [Download](/talk/concordi2017/simmering_hain_slides.pdf) |
+| 🌐 Language | English |
+| 📥 Materials | [Slides (PDF)](/talks/concordi2017/simmering_hain_slides.pdf) |
 
 Presentation of an agent based simulation game that models a competitive market with innovator and imitator agents.
 

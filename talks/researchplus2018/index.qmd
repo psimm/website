@@ -15,6 +15,7 @@ image: "image.png"
 | 🗓️ Event | [Research Plus by DGOF](https://www.marktforschung.de/aktuelles/marktforschung/research-plus-in-koeln/)|
 | 📅 Date | 13 September 2018 |
 | 📍 Location | Cologne, Germany |
+| 🌐 Language | German |
 | 📥 Materials | [Slides (PDF)](researchplus2018.pdf) |
 | 💻 App | [Business Game](https://psimm.shinyapps.io/business_game) |
 

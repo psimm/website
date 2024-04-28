@@ -14,8 +14,9 @@ image: "image.jpg"
 | 🗓️ Event | [Content Meets Structure 2020](https://www.gesis.org/forschung/tagungen-und-konferenzen/veranstaltungsarchiv/konferenzen/content-meets-structure) |
 | 📅 Date | 28 September 2020 |
 | 📍 Location | Heidelberg, Germany |
+| 🌐 Language | English |
 | 📥 Materials | [Slides (PDF)](perry_simmering_comes_2020.pdf) |
-| 🌐 App | [StakeX](https://teamqapp.de/shiny/stakex_operativ/) |
+| 💻 App | [StakeX](https://teamqapp.de/shiny/stakex_operativ/) |
 
 Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
 
