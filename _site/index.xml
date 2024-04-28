@@ -11,7 +11,314 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.30</generator>
-<lastBuildDate>Sat, 09 Mar 2024 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 27 Apr 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Evaluating an LLM for your use case</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/llm-eval/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In the last two months we’ve seen releases of flagship LLMs like <a href="https://llama.meta.com/llama3/">Llama 3</a>, <a href="https://mistral.ai/news/mixtral-8x22b/">Mixtral 8x22B</a> and <a href="https://www.anthropic.com/news/claude-3-family">Claude 3</a>. The title of Mistral’s announcement summarizes the dynamic well: <em>Cheaper, Better, Faster, Stronger</em>. It’s like neverending Christmas for AI developers! But how do you evaluate these models for your use case? This article is a deep dive into evaluations, covering accuracy, speed, cost, customization, safety and licensing. I focus on text-to-text models, but the principles apply to multimodal models as well.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/llm_eval_cropped.png" class="img-fluid figure-img"></p>
+<figcaption>Image created with GPT-4</figcaption>
+</figure>
+</div>
+<section id="general-language-understanding-benchmarks" class="level2">
+<h2 class="anchored" data-anchor-id="general-language-understanding-benchmarks">General language understanding benchmarks</h2>
+<p>General benchmarks are good for ranking models by their general language understanding and reasoning capabilities. The <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">Hugging Face Open LLM leaderboard</a> scores models on 6 benchmarks.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/huggingface_open_llm_leaderboard.png" class="img-fluid figure-img"></p>
+<figcaption>Hugging Face Open LLM leaderboard</figcaption>
+</figure>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 40%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Benchmark</th>
+<th>Description</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AI2 Reasoning Challenge</td>
+<td>Grade school science multiple choice questions</td>
+<td><span class="citation" data-cites="clark2018think">Clark et al. (2018)</span></td>
+</tr>
+<tr class="even">
+<td>HellaSwag</td>
+<td>Sentence completion task about everyday situations, using examples that are easy for humans but hard for machines</td>
+<td><span class="citation" data-cites="zellers2019hellaswag">Zellers et al. (2019)</span></td>
+</tr>
+<tr class="odd">
+<td>Multi-task language understanding (MMLU)</td>
+<td>Multiple choice questions across 57 subjects</td>
+<td><span class="citation" data-cites="hendrycks2020measuring">Hendrycks et al. (2020)</span></td>
+</tr>
+<tr class="even">
+<td>TruthfulQA</td>
+<td>Multiple choice questions across 38 categories that some humans would answer falsely due to common misconceptions</td>
+<td><span class="citation" data-cites="lin2021truthfulqa">Lin, Hilton, and Evans (2021)</span></td>
+</tr>
+<tr class="odd">
+<td>Winogrande</td>
+<td>Grammar challenge on pronoun disambiguation using contextual knowledge</td>
+<td><span class="citation" data-cites="sakaguchi2021winogrande">Sakaguchi et al. (2021)</span></td>
+</tr>
+<tr class="even">
+<td>GSM8K</td>
+<td>Grade school math word problems</td>
+<td><span class="citation" data-cites="cobbe2021training">Cobbe et al. (2021)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Each benchmark probes a different aspect of language understanding and reasoning. Neither of them is a perfect measure of a model’s capabilities, but together they give a good overview of a model’s <em>general</em> abilities. Note that all of them are posed in English by default, though there are translated versions of some benchmarks.</p>
+<p>If you intend to use the model for <a href="https://platform.openai.com/docs/guides/function-calling">function calling</a>, the <a href="https://gorilla.cs.berkeley.edu/leaderboard.html">Berkeley Function-Calling Leaderboard</a> is a good benchmark. It consists of 2000 question-function-answer triples across multiple programming languages and REST APIs, including cases where the model needs to select which function to call.</p>
+<p>Note that the way a benchmark is administered can affect the results. There are two main levers:</p>
+<ol type="1">
+<li>Additional prompt engineering, e.g.&nbsp;chain-of-thought prompts. This boosts reasoning ability at the cost of speed.</li>
+<li>Few-shot sampling. Rather than asking the model just once, the model generates multiple completions and the most common answer is selected. This boosts robustness at the cost of speed. For example Google Gemini <span class="citation" data-cites="team2023gemini">(Anil et al. 2023)</span> only beats GPT-4 on the 32-shot setting, not in the 5-shot setting.</li>
+</ol>
+<p>A downside of public benchmarks is that cheating is possible by training a model on the test set. An alternative that can’t be gamed in this way is the <a href="https://chat.lmsys.org/?leaderboard">LLM Arena</a>. It’s a chat-based benchmark where visitors prompt two models at once and vote on the better answer. The relevant metric is an <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating</a>, like in chess.</p>
+<p>However, picking the model with the highest MMLU or Elo rating isn’t always the best choice. The benchmarks are general and may not reflect the specific requirements of your use case and domain. It may not have seen examples of your data and task during training. So general benchmarks are a good starting point, but not the end of the evaluation process.</p>
+</section>
+<section id="manual-evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="manual-evaluations">Manual evaluations</h2>
+<p>The easiest way to evaluate a model is to try it out yourself in a chat window. For an unbiased evaluation, you should use the same prompts for all models you’re comparing. At minimum, I suggest writing down 3 example prompts and perfect answers to them. The benefits are twofold:</p>
+<ol type="1">
+<li>you may find issues with the task definition</li>
+<li>you can clarify your quality criteria</li>
+<li>you can objectively compare model answers to your gold standard anwers</li>
+</ol>
+<p>This is easier for tasks that have strictly defined answers, e.g.&nbsp;a text classification task. With more generative tasks like summarization it’s necessary to define more vague quality criteria, like completeness and absence of irrelevant information.</p>
+<p>The <a href="https://chat.lmsys.org/?leaderboard">LLM Arena</a> has a side by side comparison feature to compare models on your own prompts.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/llm_arena.png" class="img-fluid figure-img"></p>
+<figcaption>LLM Arena with the prompt: I have 4 apples today. I ate 3 apples yesterday. How many apples do I have today?</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>LLM Arena saves all prompts and responses and may redistribute them. Don’t put in sensitive information.</p>
+</div>
+</div>
+</section>
+<section id="programmatic-evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="programmatic-evaluations">Programmatic evaluations</h2>
+<p>The downside of manual evaluations is that they are limited to a small number of test cases. More examples are needed to get robust estimates of accuracy. The number depends on the complexity of the task and the desired confidence level. A binary classification task might require 200 examples, while an entity linking task might require 1000 or more examples. I recently published a <a href="../../blog/gold-data/">guide</a> to collecting gold-standard evaluation data.</p>
+<p>To administer the test, a script that formats the examples as prompts, receives the model’s responses and compares them to the gold standard is needed. A custom script is the most flexible and lightweight solution, but there are also libraries that can help, such as <a href="https://github.com/openai/evals/tree/main">OpenAI Evals</a>, <a href="https://github.com/confident-ai/deepeval">promptflow</a>, <a href="https://github.com/parea-ai/parea-sdk-py">parea</a>, <a href="https://ragas.io">ragas</a> and <a href="https://github.com/confident-ai/deepeval">deepeval</a>.</p>
+<p>In the following section I’ll provide a brief overview of model evaluation metrics. A more comprehensive guide is provided by <span class="citation" data-cites="huang2024">Huang, Li, and Yehdego (2024)</span>.</p>
+<p>There are two main types of evaluation: structured and unstructured responses.</p>
+</section>
+<section id="evaluation-of-structured-responses" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-of-structured-responses">Evaluation of structured responses</h2>
+<p>Structured responses consist of a fixed set of possible answers. Examples are multiple choice questions, text classification tasks and function calling. If a text-to-text model is used, there’s an additional step of verifying that the LLM’s response conforms to the expected structure. Getting the LLM to always follow the format is best done through function calling (e.g.&nbsp;via the <a href="https://github.com/jxnl/instructor">instructor</a> library) or fine-tuning.</p>
+<p>Once everything’s in the right format, <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">sklearn-metrics</a> is the standard library to calculate the metrics. The most common metrics are accuracy, precision, recall and F1 score.</p>
+</section>
+<section id="evaluation-of-free-form-responses" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-of-free-form-responses">Evaluation of free form responses</h2>
+<p>A free form response text is harder to evaluate. Examples are summarization, translation and chatbots. Comparing such answers with a gold answer word-by-word is too strict, as the model may use synonyms or rephrase the answer.</p>
+<p>In the pre-LLM era, n-gram overlap metrics were used to evaluate free form responses. The most common are:</p>
+<ul>
+<li>Bilingual Evaluation Understudy (<a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a>) for translation</li>
+<li>Recall-Oriented Understudy for Gisting Evaluation (<a href="https://en.wikipedia.org/wiki/BLEU">ROUGE</a>) for summarization</li>
+</ul>
+<p>They are cheap to compute, but they have well-known limitations: they are sensitive to word order, don’t account for synonyms and don’t measure the writing quality of the generated text.</p>
+<p>Recently, LLMs themselves have been used to evaluate LLMs on unstructured tasks. The idea is to ask a second LLM to rate the quality of the first LLM’s response using a pre-defined criterion. In its simplest form, the second LLM is asked to classify the first LLM’s response as good or bad.</p>
+<p>Let’s try this out with a simple example of a bot that generates jokes, using Claude 3 Opus as the joke generator and GPT-4 as the joke evaluator.</p>
+<ul>
+<li><strong>Prompt for Opus</strong>: “Tell me a joke about AI”</li>
+<li><strong>Opus</strong>: “Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄”</li>
+<li><strong>Prompt for GPT-4</strong>: “Rate the following joke on a scale from 1 to 5: Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄. First give your reason, then end your answer with a single number.”</li>
+<li><strong>GPT-4</strong>: “The joke plays cleverly on the classic”Why did the chicken cross the road?” setup by using AI and dataset elements, appealing to an audience familiar with technology; however, it might not resonate as well with those unacquainted with data science. 3”</li>
+</ul>
+<p>The prompt to GPT-4 uses two prompt engineering techniques: asking for a reason to get better answers and ending the answer with a single number to make it easier to parse. To measure the humor of Opus, one could substitute the subject “AI” with others like “chickens”, “doctors” or “politicians” and aggregate the GPT-4 ratings.</p>
+<p>This is a simple example, but can be extended to more complex tasks. More complex criteria such as fluency, relevance, informativeness and coherence offer a more nuanced evaluation. One of the most common use cases where free form responses occur is retrieval-augmented generation. The <a href="https:ragas.io">ragas</a> library offers a comprehensive set of <a href="(https://docs.ragas.io/en/latest/concepts/metrics/index.html)">metrics</a> for LLM-to-LLM evaluation, including optimized prompts for the second LLM.</p>
+<p>The downside of LLM-to-LLM evaluation is that the second LLM may not have the ability to judge the quality of the first LLM’s response or have a bias towards certain types of responses.</p>
+</section>
+<section id="answer-quality-isnt-everything" class="level2">
+<h2 class="anchored" data-anchor-id="answer-quality-isnt-everything">Answer quality isn’t everything</h2>
+<p>Practical considerations around deploying the model also come into play: inference speed, cost, customization, safety and licensing. These factors can be more important than the model’s accuracy. The website <a href="https://artificialanalysis.ai">artificialanalysis.ai</a> is great for comparing models and API providers.</p>
+<section id="inference-speed" class="level3">
+<h3 class="anchored" data-anchor-id="inference-speed">Inference speed</h3>
+<p>How fast can the model generate responses? This matters most for real-time applications like chatbots. A slow response makes for a poor user experience.</p>
+<p>Inference speed is determined by the model, meaning the number and precision of weights. It’s also determined by the hardware used, with higher-end GPUs offering more speed. The efficiency of inference code is also crucial, with libraries like <a href="https://github.com/vllm-project/vllm">vLLM</a> offering a 2x or greater speedup over the baseline implementation. <a href="https://pages.run.ai/hubfs/PDFs/Serving-Large-Language-Models-Run-ai-Benchmarking-Study.pdf">run.ai</a> has an in-depth analysis of throughput across serving engines and models.</p>
+<p>Artificialanalysis.ai benchmarks throughput for a variety of models and providers and visualizes it by model and by provider.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/throughput_by_model.png" class="img-fluid figure-img"></p>
+<figcaption>Throughput by model, across providers supporting the model</figcaption>
+</figure>
+</div>
+<p>Smaller models, measured by the number of parameters, are faster. Mixture-of-experts models like Mixtral 8x7B have a clever approach to inference: each request only uses a subset of the model, reducing the number of matrix multiplications needed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/throughput_by_provider.png" class="img-fluid figure-img"></p>
+<figcaption>Throughput for llama-3 70B instruct, by provider</figcaption>
+</figure>
+</div>
+<p>The second graph shows throughput for the same model across different providers. The fastest provider offers nearly 10x the throughput of the slowest provider.</p>
+</section>
+<section id="cost" class="level3">
+<h3 class="anchored" data-anchor-id="cost">Cost</h3>
+<p>There are two common pricing modes: per-token or per GPU-hour.</p>
+<section id="per-token-pricing" class="level4">
+<h4 class="anchored" data-anchor-id="per-token-pricing">Per token pricing</h4>
+<p>This is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M Input tokens and $30/1M Output tokens.</p>
+<table class="table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 32%">
+<col style="width: 28%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Message</th>
+<th>Tokens</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>User</td>
+<td>Translate the following text to German: How are you?</td>
+<td>11</td>
+<td>$0.00011</td>
+</tr>
+<tr class="even">
+<td>Assistant</td>
+<td>Wie geht es dir?</td>
+<td>5</td>
+<td>$0.00015</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the cost is per token, not per word. A token is a word or a subword. You can try OpenAI’s free <a href="tokenizer">https://platform.openai.com/tokenizer</a> or the <a href="https://github.com/openai/tiktoken">tiktoken</a> library to get the token count for a prompt. Note that models with a different tokenizer will have different token counts for the same prompt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/tokenizer.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>OpenAI’s tokenizer</figcaption>
+</figure>
+</div>
+<p>You can save money by using shorter prompts. Fine-tuning can “bake” instructions into a model, foregoing the need to explain the task in each request. However, token prices for fine-tuned models are typically higher than for the base model.</p>
+<p>OpenAI recently announced <a href="https://help.openai.com/en/articles/9197833-batch-api-faq">batch inference</a> with 24h turnaround time at 50% off the token price.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-eval/pricing.png" class="img-fluid figure-img"></p>
+<figcaption>Input and output token cost by model, median across providers</figcaption>
+</figure>
+</div>
+<p>Per-token costs vary widely across providers and models. Larger models are more expensive, and major cloud providers charge higher prices than smaller providers. There’s a downward trend in pricing over time, given a fixed model size.</p>
+</section>
+<section id="gpu-hour-pricing" class="level4">
+<h4 class="anchored" data-anchor-id="gpu-hour-pricing">GPU hour pricing</h4>
+<p>The second case is that you self-host the model. Here, pricing depends on <a href="https://fullstackdeeplearning.com/cloud-gpus/">GPU rent</a> (or depreciation of your own GPU). My currently favored GPU provider is <a href="https://modal.com/pricing">Modal</a>. They offer a generous free tier, pricing is competitive, only actually used GPU time is billed and it’s easy to use.</p>
+<p>To figure out the actual cost of your workload it’s normally necessary to run your own cost benchmark. There are too many moving pieces, and each can change the cost by a factor of 2 or more: GPU configuration (model, number of GPUs), the LLM, quantization, inference library, timing of inference (batch or live, long term reservation or on demand) and the geographic region.</p>
+</section>
+</section>
+<section id="customization" class="level3">
+<h3 class="anchored" data-anchor-id="customization">Customization</h3>
+<p>Open models running on your own infrastructure offer deeper customization than models served from APIs.</p>
+<p>There are three main types of customization:</p>
+<ol type="1">
+<li>Finetuning via SFT, RLHF, DPO or ORPO</li>
+<li>Quantization, meaning reducing the precision of the weights to 16-bit or 8-bit</li>
+<li>Token sampling settings, such as temperature, top-k, nucleus sampling and beam search. For a full overview, check the Hugging Face <a href="https://huggingface.co/docs/transformers/main_classes/text_generation">GenerationConfig</a> documentation</li>
+</ol>
+<p>API providers offer only a subset of these options and only for certain models. More knobs to twist is only meaningful if you have the time to actually use them. If your main focus is elsewhere, good presets can be more productive than maximum control. It’s the same reason why many devs choose macOS over Arch Linux.</p>
+</section>
+<section id="safety-and-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="safety-and-fairness">Safety and fairness</h3>
+<p>Others have written extensively on safety and fairness evaluation of LLMs. Anthropic’s principle “Helpful, Honest and Harmless AI” is industry-leading in this regard. They provide an evaluation <a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">dataset</a> on Hugging Face, related to their 2022 paper <span class="citation" data-cites="bai2022training">(Bai et al. 2022)</span>.</p>
+<p>Key questions to ask about a foundational model are:</p>
+<ul>
+<li>Does the model exhibit biases around gender, race, religion or other protected classes?</li>
+<li>Does the model refuse requests to do dangerous or illegal activities?</li>
+<li>Can it be goaded into violating its own principles?</li>
+</ul>
+<p>The documentation by the model providers a good place to start. The abscence of consideration of these factors in a foundation model is a red flag.</p>
+<p>The actual risk of a model depends on the task. High risk tasks such as medical diagnosis, legal advice or loan approval require more scrutiny than tasks such as sentiment analysis or summarization. Situations in which models have free-form interaction with users, such as chatbots carry greater potential for harm and also surface area for prompt injection attacks.</p>
+</section>
+<section id="licensing" class="level3">
+<h3 class="anchored" data-anchor-id="licensing">Licensing</h3>
+<p>Broadly, models can be categorized as open source or proprietary. Generally, the more open the better because you can inspect the model, customize it and deploy it on your own infrastructure. In addition, open source models give you ownership of the model, rather than being at the mercy of the provider’s pricing and availability.</p>
+<p>The term open source has become muddled in the context of LLMs. The minimum requirement is that the model’s weights are available for download. However, full open source also includes the training data, training code, inference code and documentation. Further, there are a variety of open licenses that can be applied. The <a href="https://opensource.org/license/mit">MIT license</a> and <a href="https://opensource.org/license/apache-2-0">Apache 2.0</a> are the most permissive and place the fewest restrictions and duties on the user. Finally, there are custom licenses. Notably, Meta has released the Llama 3 model under a <a href="https://llama.meta.com/llama3/license/">custom license</a> that requires attribution and requires that organzations with more than 700 million monthly active users (effectively only the largest tech companies) to request a commercial license.</p>
+</section>
+</section>
+<section id="llm-evaluation-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="llm-evaluation-checklist">LLM Evaluation Checklist</h2>
+<p>Evaluating LLMs is a multi-faceted challenge. While benchmarks and case studies are valuable, there’s no substitute for hands-on testing in one’s particular domain. To summarize, here’s a checklist for evaluating an LLM:</p>
+<ol type="1">
+<li>✅ <strong>Licensing</strong>: Check that the model’s license is compatible with your use case.</li>
+<li>✅ <strong>Customization</strong>: Consider the model’s customization options based on the license and your needs.</li>
+<li>✅ <strong>Quality</strong>: Start with general benchmarks, then move to manual and programmatic evaluations. Consider structured and unstructured responses.</li>
+<li>✅ <strong>Safety and fairness</strong>: Assess the model’s safety and fairness, especially for use cases involving individual judgments or open-ended interaction.</li>
+<li>✅ <strong>Cost</strong>: Analyze the cost per token or GPU hour for your usage patterns.</li>
+<li>✅ <strong>Speed</strong>: Benchmark the model’s throughput in your setup, whether self-hosted or served from an API. There is often significant optimization potential here.</li>
+</ol>
+<p>Being clear about the task and success criteria at every step is key. Writing down arguments and results lets you repeat the analysis for new models and justify your choice in architecture and budget reviews. Sharing benchmark results builds trust by users of your model. Without quantitative tests, their opinion of the model hinges on their first 1 to 3 interactions alone.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-team2023gemini" class="csl-entry">
+Anil, Rohan, Sebastian Borgeaud, Yonghui Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew M Dai, Anja Hauth, et al. 2023. <span>“Gemini: A Family of Highly Capable Multimodal Models.”</span> <em>arXiv Preprint arXiv:2312.11805</em>. <a href="https://arxiv.org/abs/2312.11805">https://arxiv.org/abs/2312.11805</a>.
+</div>
+<div id="ref-bai2022training" class="csl-entry">
+Bai, Yuntao, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain, et al. 2022. <span>“Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback.”</span> <em>arXiv Preprint arXiv:2204.05862</em>.
+</div>
+<div id="ref-clark2018think" class="csl-entry">
+Clark, Peter, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick, and Oyvind Tafjord. 2018. <span>“Think You Have Solved Question Answering? Try Arc, the Ai2 Reasoning Challenge.”</span> <em>arXiv Preprint arXiv:1803.05457</em>. <a href="https://arxiv.org/abs/1803.05457">https://arxiv.org/abs/1803.05457</a>.
+</div>
+<div id="ref-cobbe2021training" class="csl-entry">
+Cobbe, Karl, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, et al. 2021. <span>“Training Verifiers to Solve Math Word Problems.”</span> <em>arXiv Preprint arXiv:2110.14168</em>. <a href="https://arxiv.org/abs/2110.14168">https://arxiv.org/abs/2110.14168</a>.
+</div>
+<div id="ref-hendrycks2020measuring" class="csl-entry">
+Hendrycks, Dan, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. 2020. <span>“Measuring Massive Multitask Language Understanding.”</span> <em>arXiv Preprint arXiv:2009.03300</em>. <a href="https://arxiv.org/abs/2009.03300">https://arxiv.org/abs/2009.03300</a>.
+</div>
+<div id="ref-huang2024" class="csl-entry">
+Huang, Jane, Kirk Li, and Daniel Yehdego. 2024. <span>“Evaluating Large Language Model (LLM) Systems: Metrics, Challenges, and Best Practices.”</span> Data Science at Microsoft. 2024. <a href="https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5">https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5</a>.
+</div>
+<div id="ref-lin2021truthfulqa" class="csl-entry">
+Lin, Stephanie, Jacob Hilton, and Owain Evans. 2021. <span>“Truthfulqa: Measuring How Models Mimic Human Falsehoods.”</span> <em>arXiv Preprint arXiv:2109.07958</em>. <a href="https://arxiv.org/abs/2109.07958">https://arxiv.org/abs/2109.07958</a>.
+</div>
+<div id="ref-sakaguchi2021winogrande" class="csl-entry">
+Sakaguchi, Keisuke, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi. 2021. <span>“Winogrande: An Adversarial Winograd Schema Challenge at Scale.”</span> <em>Communications of the ACM</em> 64 (9): 99–106. <a href="https://arxiv.org/abs/1907.10641">https://arxiv.org/abs/1907.10641</a>.
+</div>
+<div id="ref-zellers2019hellaswag" class="csl-entry">
+Zellers, Rowan, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. 2019. <span>“Hellaswag: Can a Machine Really Finish Your Sentence?”</span> <em>arXiv Preprint arXiv:1905.07830</em>. <a href="https://arxiv.org/abs/1905.07830">https://arxiv.org/abs/1905.07830</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/llm-eval/</guid>
+  <pubDate>Sat, 27 Apr 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/llm-eval/llm_eval.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>How to get gold standard data for NLP</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -229,15 +536,27 @@ Ziems, Caleb, Omar Shaikh, Zhehao Zhang, William Held, Jiaao Chen, and Diyi Yang
 
 
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This article is about prices as of January 11, 2024. For current prices and more comprehensive analysis, check <a href="https://artificialanalysis.ai">artificialanalysis.ai</a> (not affiliated with me).</p>
+</div>
+</div>
 <p>This is an overview of pricing for large language models from different developers and API providers. The dataset is available on <a href="https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv">GitHub</a>. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the <a href="https://platform.openai.com/tokenizer">Tokenizer</a> by OpenAI.</p>
-<p>Prices as of January 11, 2024.</p>
 <section id="price-comparison" class="level2">
 <h2 class="anchored" data-anchor-id="price-comparison">Price comparison</h2>
-<div id="852be0ab" class="cell" data-execution_count="2">
+<div id="a490e678" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div>                            <div id="d354565e-e3e1-426f-a70b-686632124396" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("d354565e-e3e1-426f-a70b-686632124396")) {                    Plotly.newPlot(                        "d354565e-e3e1-426f-a70b-686632124396",                        [{"alignmentgroup":"True","customdata":[["mistral-7b-openorca","Anyscale","32k",0.15,0.15],["mistral-7b-instruct","Anyscale","32k",0.15,0.15],["llama-guard-7b","Anyscale","4k",0.15,0.15],["llama-2-7b-chat-hf","Anyscale","4k",0.15,0.15],["llama-2-13b-chat-hf","Anyscale","4k",0.25,0.25],["mixtral-8x7b-instruct","Anyscale","32k",0.5,0.5],["llama2-70b-chat-hf","Anyscale","4k",1.0,1.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Anyscale","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Anyscale","offsetgroup":"Anyscale","orientation":"h","showlegend":true,"textposition":"auto","x":[0.15,0.15,0.15,0.15,0.25,0.5,1.0],"xaxis":"x","y":["Anyscale-mistral-7b-openorca","Anyscale-mistral-7b-instruct","Anyscale-llama-guard-7b","Anyscale-llama-2-7b-chat-hf","Anyscale-llama-2-13b-chat-hf","Anyscale-mixtral-8x7b-instruct","Anyscale-llama2-70b-chat-hf"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["mistral-7b-instruct","Mistral","32k",0.14,0.42],["mixtral-8x7b-instruct","Mistral","32k",0.6,1.8],["mistral-medium","Mistral","32k",2.5,7.5]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Mistral","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Mistral","offsetgroup":"Mistral","orientation":"h","showlegend":true,"textposition":"auto","x":[0.28,1.2,5.0],"xaxis":"x","y":["Mistral-mistral-7b-instruct","Mistral-mixtral-8x7b-instruct","Mistral-mistral-medium"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["cohere-light","AWS","4k",0.3,0.6],["llama-2-chat-13b","AWS","4k",0.75,1.0],["claude-instant","AWS","100k",0.8,2.4],["claude","AWS","100k",0.8,2.4],["titan-text-express","AWS","8k",1.2,2.3],["cohere-command","AWS","4k",1.5,2.0],["llama-2-chat-70b","AWS","4k",1.95,2.56],["jurassic-2-mid","AWS","8k",12.5,12.5],["jurassic-2-ultra","AWS","8k",18.8,18.8]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"AWS","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"AWS","offsetgroup":"AWS","orientation":"h","showlegend":true,"textposition":"auto","x":[0.45,0.88,1.6,1.6,1.75,1.75,2.26,12.5,18.8],"xaxis":"x","y":["AWS-cohere-light","AWS-llama-2-chat-13b","AWS-claude-instant","AWS-claude","AWS-titan-text-express","AWS-cohere-command","AWS-llama-2-chat-70b","AWS-jurassic-2-mid","AWS-jurassic-2-ultra"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-1106","OpenAI","16k",1.0,2.0],["gpt-3.5-turbo-turbo-instruct","OpenAI","16k",1.5,2.0],["gpt-4-1106-preview","OpenAI","128k",10.0,30.0],["gpt-4-1106-vision-preview","OpenAI","128k",10.0,30.0],["gpt-4","OpenAI","8k",30.0,60.0],["gpt-4-32k","OpenAI","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"OpenAI","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"OpenAI","offsetgroup":"OpenAI","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,1.75,20.0,20.0,45.0,90.0],"xaxis":"x","y":["OpenAI-gpt-3.5-turbo-1106","OpenAI-gpt-3.5-turbo-turbo-instruct","OpenAI-gpt-4-1106-preview","OpenAI-gpt-4-1106-vision-preview","OpenAI-gpt-4","OpenAI-gpt-4-32k"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gemini-pro","GCP","32k",1.0,2.0],["palm2","GCP","8k",2.0,2.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"GCP","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"GCP","offsetgroup":"GCP","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,2.0],"xaxis":"x","y":["GCP-gemini-pro","GCP-palm2"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-4k","Azure","4k",1.5,2.0],["gpt-3.5-turbo-16k","Azure","16k",3.0,4.0],["gpt-4-8k","Azure","8k",30.0,60.0],["gpt-4-32k","Azure","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Azure","marker":{"color":"#19d3f3","pattern":{"shape":""}},"name":"Azure","offsetgroup":"Azure","orientation":"h","showlegend":true,"textposition":"auto","x":[1.75,3.5,45.0,90.0],"xaxis":"x","y":["Azure-gpt-3.5-turbo-4k","Azure-gpt-3.5-turbo-16k","Azure-gpt-4-8k","Azure-gpt-4-32k"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"$\u002f1M tokens"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"title":{"text":"Provider"},"tracegroupgap":0,"traceorder":"reversed"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+<div>                            <div id="778847f3-16db-44a6-b236-1ec64c8da3e1" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("778847f3-16db-44a6-b236-1ec64c8da3e1")) {                    Plotly.newPlot(                        "778847f3-16db-44a6-b236-1ec64c8da3e1",                        [{"alignmentgroup":"True","customdata":[["mistral-7b-openorca","Anyscale","32k",0.15,0.15],["mistral-7b-instruct","Anyscale","32k",0.15,0.15],["llama-guard-7b","Anyscale","4k",0.15,0.15],["llama-2-7b-chat-hf","Anyscale","4k",0.15,0.15],["llama-2-13b-chat-hf","Anyscale","4k",0.25,0.25],["mixtral-8x7b-instruct","Anyscale","32k",0.5,0.5],["llama2-70b-chat-hf","Anyscale","4k",1.0,1.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Anyscale","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Anyscale","offsetgroup":"Anyscale","orientation":"h","showlegend":true,"textposition":"auto","x":[0.15,0.15,0.15,0.15,0.25,0.5,1.0],"xaxis":"x","y":["Anyscale-mistral-7b-openorca","Anyscale-mistral-7b-instruct","Anyscale-llama-guard-7b","Anyscale-llama-2-7b-chat-hf","Anyscale-llama-2-13b-chat-hf","Anyscale-mixtral-8x7b-instruct","Anyscale-llama2-70b-chat-hf"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["mistral-7b-instruct","Mistral","32k",0.14,0.42],["mixtral-8x7b-instruct","Mistral","32k",0.6,1.8],["mistral-medium","Mistral","32k",2.5,7.5]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Mistral","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Mistral","offsetgroup":"Mistral","orientation":"h","showlegend":true,"textposition":"auto","x":[0.28,1.2,5.0],"xaxis":"x","y":["Mistral-mistral-7b-instruct","Mistral-mixtral-8x7b-instruct","Mistral-mistral-medium"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["cohere-light","AWS","4k",0.3,0.6],["llama-2-chat-13b","AWS","4k",0.75,1.0],["claude-instant","AWS","100k",0.8,2.4],["claude","AWS","100k",0.8,2.4],["titan-text-express","AWS","8k",1.2,2.3],["cohere-command","AWS","4k",1.5,2.0],["llama-2-chat-70b","AWS","4k",1.95,2.56],["jurassic-2-mid","AWS","8k",12.5,12.5],["jurassic-2-ultra","AWS","8k",18.8,18.8]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"AWS","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"AWS","offsetgroup":"AWS","orientation":"h","showlegend":true,"textposition":"auto","x":[0.45,0.88,1.6,1.6,1.75,1.75,2.26,12.5,18.8],"xaxis":"x","y":["AWS-cohere-light","AWS-llama-2-chat-13b","AWS-claude-instant","AWS-claude","AWS-titan-text-express","AWS-cohere-command","AWS-llama-2-chat-70b","AWS-jurassic-2-mid","AWS-jurassic-2-ultra"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-1106","OpenAI","16k",1.0,2.0],["gpt-3.5-turbo-turbo-instruct","OpenAI","16k",1.5,2.0],["gpt-4-1106-preview","OpenAI","128k",10.0,30.0],["gpt-4-1106-vision-preview","OpenAI","128k",10.0,30.0],["gpt-4","OpenAI","8k",30.0,60.0],["gpt-4-32k","OpenAI","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"OpenAI","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"OpenAI","offsetgroup":"OpenAI","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,1.75,20.0,20.0,45.0,90.0],"xaxis":"x","y":["OpenAI-gpt-3.5-turbo-1106","OpenAI-gpt-3.5-turbo-turbo-instruct","OpenAI-gpt-4-1106-preview","OpenAI-gpt-4-1106-vision-preview","OpenAI-gpt-4","OpenAI-gpt-4-32k"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gemini-pro","GCP","32k",1.0,2.0],["palm2","GCP","8k",2.0,2.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"GCP","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"GCP","offsetgroup":"GCP","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,2.0],"xaxis":"x","y":["GCP-gemini-pro","GCP-palm2"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-4k","Azure","4k",1.5,2.0],["gpt-3.5-turbo-16k","Azure","16k",3.0,4.0],["gpt-4-8k","Azure","8k",30.0,60.0],["gpt-4-32k","Azure","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Azure","marker":{"color":"#19d3f3","pattern":{"shape":""}},"name":"Azure","offsetgroup":"Azure","orientation":"h","showlegend":true,"textposition":"auto","x":[1.75,3.5,45.0,90.0],"xaxis":"x","y":["Azure-gpt-3.5-turbo-4k","Azure-gpt-3.5-turbo-16k","Azure-gpt-4-8k","Azure-gpt-4-32k"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"$\u002f1M tokens"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"title":{"text":"Provider"},"tracegroupgap":0,"traceorder":"reversed"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('d354565e-e3e1-426f-a70b-686632124396');
+var gd = document.getElementById('778847f3-16db-44a6-b236-1ec64c8da3e1');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -275,7 +594,7 @@ if (outputEl) {{
 <section id="model-table" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="model-table">Model table</h2>
 <p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
-<div id="77ddb414" class="cell page-columns page-full" data-execution_count="3">
+<div id="ea6ee759" class="cell page-columns page-full" data-execution_count="3">
 <div class="cell-output cell-output-display column-screen">
 <div>
 <style>.itables table td {
@@ -302,7 +621,7 @@ if (outputEl) {{
 </style>
 <div class="itables">
 
-<table id="d842c280-1bfa-4313-b00f-130c006f85eb" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th">Model</th>
@@ -343,7 +662,7 @@ if (outputEl) {{
 
     $(document).ready(function () {
         
-        $('#d842c280-1bfa-4313-b00f-130c006f85eb').DataTable(dt_args);
+        $('#4434095c-1c67-4c0b-89c5-b77fe8a9c71c').DataTable(dt_args);
     });
 </script>
 </div>

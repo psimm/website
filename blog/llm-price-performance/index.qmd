@@ -10,9 +10,11 @@ format:
         fig-height: 12
 ---
 
-This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
+::: {.callout-note}
+This article is about prices as of January 11, 2024. For current prices and more comprehensive analysis, check [artificialanalysis.ai](https://artificialanalysis.ai) (not affiliated with me).
+:::
 
-Prices as of January 11, 2024.
+This is an overview of pricing for large language models from different developers and API providers. The dataset is available on [GitHub](https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv). Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the [Tokenizer](https://platform.openai.com/tokenizer) by OpenAI.
 
 ```{python}
 import polars as pl
@@ -41,7 +43,7 @@ df = (
 
 ```{python}
 fig = px.bar(
-    df,
+    df.to_pandas(),
     x="token_avg_price_1m_usd",
     y="id",
     color="provider",

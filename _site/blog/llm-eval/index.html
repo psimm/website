@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-04-28">
+
+<title>Paul Simmering – Evaluating an LLM for your use case</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Evaluating an LLM for your use case</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Machine Learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 28, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>In the last two months we’ve seen releases of flagship LLMs like <a href="https://llama.meta.com/llama3/">Llama 3</a>, <a href="https://mistral.ai/news/mixtral-8x22b/">Mixtral 8x22B</a> and <a href="https://www.anthropic.com/news/claude-3-family">Claude 3</a>. The title of Mistral’s announcement summarizes the dynamic well: <em>Cheaper, Better, Faster, Stronger</em>. It’s like neverending Christmas for AI developers! But how do you evaluate these models for your use case? This article is a deep dive into evaluations, covering accuracy, speed, cost, customization, safety and licensing. I focus on text-to-text models, but the principles apply to multimodal models as well.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="llm_eval_cropped.png" class="img-fluid figure-img"></p>
+<figcaption>Image created with GPT-4</figcaption>
+</figure>
+</div>
+<section id="general-language-understanding-benchmarks" class="level2">
+<h2 class="anchored" data-anchor-id="general-language-understanding-benchmarks">General language understanding benchmarks</h2>
+<p>General benchmarks are good for ranking models by their general language understanding and reasoning capabilities. The <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">Hugging Face Open LLM leaderboard</a> scores models on 6 benchmarks.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="huggingface_open_llm_leaderboard.png" class="img-fluid figure-img"></p>
+<figcaption>Hugging Face Open LLM leaderboard</figcaption>
+</figure>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 40%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Benchmark</th>
+<th>Description</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AI2 Reasoning Challenge</td>
+<td>Grade school science multiple choice questions</td>
+<td><span class="citation" data-cites="clark2018think">Clark et al. (<a href="#ref-clark2018think" role="doc-biblioref">2018</a>)</span></td>
+</tr>
+<tr class="even">
+<td>HellaSwag</td>
+<td>Sentence completion task about everyday situations, using examples that are easy for humans but hard for machines</td>
+<td><span class="citation" data-cites="zellers2019hellaswag">Zellers et al. (<a href="#ref-zellers2019hellaswag" role="doc-biblioref">2019</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Multi-task language understanding (MMLU)</td>
+<td>Multiple choice questions across 57 subjects</td>
+<td><span class="citation" data-cites="hendrycks2020measuring">Hendrycks et al. (<a href="#ref-hendrycks2020measuring" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td>TruthfulQA</td>
+<td>Multiple choice questions across 38 categories that some humans would answer falsely due to common misconceptions</td>
+<td><span class="citation" data-cites="lin2021truthfulqa">Lin, Hilton, and Evans (<a href="#ref-lin2021truthfulqa" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Winogrande</td>
+<td>Grammar challenge on pronoun disambiguation using contextual knowledge</td>
+<td><span class="citation" data-cites="sakaguchi2021winogrande">Sakaguchi et al. (<a href="#ref-sakaguchi2021winogrande" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="even">
+<td>GSM8K</td>
+<td>Grade school math word problems</td>
+<td><span class="citation" data-cites="cobbe2021training">Cobbe et al. (<a href="#ref-cobbe2021training" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Each benchmark probes a different aspect of language understanding and reasoning. Neither of them is a perfect measure of a model’s capabilities, but together they give a good overview of a model’s <em>general</em> abilities. Note that all of them are posed in English by default, though there are translated versions of some benchmarks.</p>
+<p>If you intend to use the model for <a href="https://platform.openai.com/docs/guides/function-calling">function calling</a>, the <a href="https://gorilla.cs.berkeley.edu/leaderboard.html">Berkeley Function-Calling Leaderboard</a> is a good benchmark. It consists of 2000 question-function-answer triples across multiple programming languages and REST APIs, including cases where the model needs to select which function to call.</p>
+<p>Note that the way a benchmark is administered can affect the results. There are two main levers:</p>
+<ol type="1">
+<li>Additional prompt engineering, e.g.&nbsp;chain-of-thought prompts. This boosts reasoning ability at the cost of speed.</li>
+<li>Few-shot sampling. Rather than asking the model just once, the model generates multiple completions and the most common answer is selected. This boosts robustness at the cost of speed. For example Google Gemini <span class="citation" data-cites="team2023gemini">(<a href="#ref-team2023gemini" role="doc-biblioref">Anil et al. 2023</a>)</span> only beats GPT-4 on the 32-shot setting, not in the 5-shot setting.</li>
+</ol>
+<p>A downside of public benchmarks is that cheating is possible by training a model on the test set. An alternative that can’t be gamed in this way is the <a href="https://chat.lmsys.org/?leaderboard">LLM Arena</a>. It’s a chat-based benchmark where visitors prompt two models at once and vote on the better answer. The relevant metric is an <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating</a>, like in chess.</p>
+<p>However, picking the model with the highest MMLU or Elo rating isn’t always the best choice. The benchmarks are general and may not reflect the specific requirements of your use case and domain. It may not have seen examples of your data and task during training. So general benchmarks are a good starting point, but not the end of the evaluation process.</p>
+</section>
+<section id="manual-evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="manual-evaluations">Manual evaluations</h2>
+<p>The easiest way to evaluate a model is to try it out yourself in a chat window. For an unbiased evaluation, you should use the same prompts for all models you’re comparing. At minimum, I suggest writing down 3 example prompts and perfect answers to them. The benefits are twofold:</p>
+<ol type="1">
+<li>you may find issues with the task definition</li>
+<li>you can clarify your quality criteria</li>
+<li>you can objectively compare model answers to your gold standard anwers</li>
+</ol>
+<p>This is easier for tasks that have strictly defined answers, e.g.&nbsp;a text classification task. With more generative tasks like summarization it’s necessary to define more vague quality criteria, like completeness and absence of irrelevant information.</p>
+<p>The <a href="https://chat.lmsys.org/?leaderboard">LLM Arena</a> has a side by side comparison feature to compare models on your own prompts.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="llm_arena.png" class="img-fluid figure-img"></p>
+<figcaption>LLM Arena with the prompt: I have 4 apples today. I ate 3 apples yesterday. How many apples do I have today?</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>LLM Arena saves all prompts and responses and may redistribute them. Don’t put in sensitive information.</p>
+</div>
+</div>
+</section>
+<section id="programmatic-evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="programmatic-evaluations">Programmatic evaluations</h2>
+<p>The downside of manual evaluations is that they are limited to a small number of test cases. More examples are needed to get robust estimates of accuracy. The number depends on the complexity of the task and the desired confidence level. A binary classification task might require 200 examples, while an entity linking task might require 1000 or more examples. I recently published a <a href="../../blog/gold-data/">guide</a> to collecting gold-standard evaluation data.</p>
+<p>To administer the test, a script that formats the examples as prompts, receives the model’s responses and compares them to the gold standard is needed. A custom script is the most flexible and lightweight solution, but there are also libraries that can help, such as <a href="https://github.com/openai/evals/tree/main">OpenAI Evals</a>, <a href="https://github.com/confident-ai/deepeval">promptflow</a>, <a href="https://github.com/parea-ai/parea-sdk-py">parea</a>, <a href="https://ragas.io">ragas</a> and <a href="https://github.com/confident-ai/deepeval">deepeval</a>.</p>
+<p>In the following section I’ll provide a brief overview of model evaluation metrics. A more comprehensive guide is provided by <span class="citation" data-cites="huang2024">Huang, Li, and Yehdego (<a href="#ref-huang2024" role="doc-biblioref">2024</a>)</span>.</p>
+<p>There are two main types of evaluation: structured and unstructured responses.</p>
+</section>
+<section id="evaluation-of-structured-responses" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-of-structured-responses">Evaluation of structured responses</h2>
+<p>Structured responses consist of a fixed set of possible answers. Examples are multiple choice questions, text classification tasks and function calling. If a text-to-text model is used, there’s an additional step of verifying that the LLM’s response conforms to the expected structure. Getting the LLM to always follow the format is best done through function calling (e.g.&nbsp;via the <a href="https://github.com/jxnl/instructor">instructor</a> library) or fine-tuning.</p>
+<p>Once everything’s in the right format, <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">sklearn-metrics</a> is the standard library to calculate the metrics. The most common metrics are accuracy, precision, recall and F1 score.</p>
+</section>
+<section id="evaluation-of-free-form-responses" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-of-free-form-responses">Evaluation of free form responses</h2>
+<p>A free form response text is harder to evaluate. Examples are summarization, translation and chatbots. Comparing such answers with a gold answer word-by-word is too strict, as the model may use synonyms or rephrase the answer.</p>
+<p>In the pre-LLM era, n-gram overlap metrics were used to evaluate free form responses. The most common are:</p>
+<ul>
+<li>Bilingual Evaluation Understudy (<a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a>) for translation</li>
+<li>Recall-Oriented Understudy for Gisting Evaluation (<a href="https://en.wikipedia.org/wiki/BLEU">ROUGE</a>) for summarization</li>
+</ul>
+<p>They are cheap to compute, but they have well-known limitations: they are sensitive to word order, don’t account for synonyms and don’t measure the writing quality of the generated text.</p>
+<p>Recently, LLMs themselves have been used to evaluate LLMs on unstructured tasks. The idea is to ask a second LLM to rate the quality of the first LLM’s response using a pre-defined criterion. In its simplest form, the second LLM is asked to classify the first LLM’s response as good or bad.</p>
+<p>Let’s try this out with a simple example of a bot that generates jokes, using Claude 3 Opus as the joke generator and GPT-4 as the joke evaluator.</p>
+<ul>
+<li><strong>Prompt for Opus</strong>: “Tell me a joke about AI”</li>
+<li><strong>Opus</strong>: “Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄”</li>
+<li><strong>Prompt for GPT-4</strong>: “Rate the following joke on a scale from 1 to 5: Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄. First give your reason, then end your answer with a single number.”</li>
+<li><strong>GPT-4</strong>: “The joke plays cleverly on the classic”Why did the chicken cross the road?” setup by using AI and dataset elements, appealing to an audience familiar with technology; however, it might not resonate as well with those unacquainted with data science. 3”</li>
+</ul>
+<p>The prompt to GPT-4 uses two prompt engineering techniques: asking for a reason to get better answers and ending the answer with a single number to make it easier to parse. To measure the humor of Opus, one could substitute the subject “AI” with others like “chickens”, “doctors” or “politicians” and aggregate the GPT-4 ratings.</p>
+<p>This is a simple example, but can be extended to more complex tasks. More complex criteria such as fluency, relevance, informativeness and coherence offer a more nuanced evaluation. One of the most common use cases where free form responses occur is retrieval-augmented generation. The <a href="https:ragas.io">ragas</a> library offers a comprehensive set of <a href="(https://docs.ragas.io/en/latest/concepts/metrics/index.html)">metrics</a> for LLM-to-LLM evaluation, including optimized prompts for the second LLM.</p>
+<p>The downside of LLM-to-LLM evaluation is that the second LLM may not have the ability to judge the quality of the first LLM’s response or have a bias towards certain types of responses.</p>
+</section>
+<section id="answer-quality-isnt-everything" class="level2">
+<h2 class="anchored" data-anchor-id="answer-quality-isnt-everything">Answer quality isn’t everything</h2>
+<p>Practical considerations around deploying the model also come into play: inference speed, cost, customization, safety and licensing. These factors can be more important than the model’s accuracy. The website <a href="https://artificialanalysis.ai">artificialanalysis.ai</a> is great for comparing models and API providers.</p>
+<section id="inference-speed" class="level3">
+<h3 class="anchored" data-anchor-id="inference-speed">Inference speed</h3>
+<p>How fast can the model generate responses? This matters most for real-time applications like chatbots. A slow response makes for a poor user experience.</p>
+<p>Inference speed is determined by the model, meaning the number and precision of weights. It’s also determined by the hardware used, with higher-end GPUs offering more speed. The efficiency of inference code is also crucial, with libraries like <a href="https://github.com/vllm-project/vllm">vLLM</a> offering a 2x or greater speedup over the baseline implementation. <a href="https://pages.run.ai/hubfs/PDFs/Serving-Large-Language-Models-Run-ai-Benchmarking-Study.pdf">run.ai</a> has an in-depth analysis of throughput across serving engines and models.</p>
+<p>Artificialanalysis.ai benchmarks throughput for a variety of models and providers and visualizes it by model and by provider.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="throughput_by_model.png" class="img-fluid figure-img"></p>
+<figcaption>Throughput by model, across providers supporting the model</figcaption>
+</figure>
+</div>
+<p>Smaller models, measured by the number of parameters, are faster. Mixture-of-experts models like Mixtral 8x7B have a clever approach to inference: each request only uses a subset of the model, reducing the number of matrix multiplications needed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="throughput_by_provider.png" class="img-fluid figure-img"></p>
+<figcaption>Throughput for llama-3 70B instruct, by provider</figcaption>
+</figure>
+</div>
+<p>The second graph shows throughput for the same model across different providers. The fastest provider offers nearly 10x the throughput of the slowest provider.</p>
+</section>
+<section id="cost" class="level3">
+<h3 class="anchored" data-anchor-id="cost">Cost</h3>
+<p>There are two common pricing modes: per-token or per GPU-hour.</p>
+<section id="per-token-pricing" class="level4">
+<h4 class="anchored" data-anchor-id="per-token-pricing">Per token pricing</h4>
+<p>This is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M Input tokens and $30/1M Output tokens.</p>
+<table class="table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 32%">
+<col style="width: 28%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Message</th>
+<th>Tokens</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>User</td>
+<td>Translate the following text to German: How are you?</td>
+<td>11</td>
+<td>$0.00011</td>
+</tr>
+<tr class="even">
+<td>Assistant</td>
+<td>Wie geht es dir?</td>
+<td>5</td>
+<td>$0.00015</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the cost is per token, not per word. A token is a word or a subword. You can try OpenAI’s free <a href="tokenizer">https://platform.openai.com/tokenizer</a> or the <a href="https://github.com/openai/tiktoken">tiktoken</a> library to get the token count for a prompt. Note that models with a different tokenizer will have different token counts for the same prompt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tokenizer.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>OpenAI’s tokenizer</figcaption>
+</figure>
+</div>
+<p>You can save money by using shorter prompts. Fine-tuning can “bake” instructions into a model, foregoing the need to explain the task in each request. However, token prices for fine-tuned models are typically higher than for the base model.</p>
+<p>OpenAI recently announced <a href="https://help.openai.com/en/articles/9197833-batch-api-faq">batch inference</a> with 24h turnaround time at 50% off the token price.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pricing.png" class="img-fluid figure-img"></p>
+<figcaption>Input and output token cost by model, median across providers</figcaption>
+</figure>
+</div>
+<p>Per-token costs vary widely across providers and models. Larger models are more expensive, and major cloud providers charge higher prices than smaller providers. There’s a downward trend in pricing over time, given a fixed model size.</p>
+</section>
+<section id="gpu-hour-pricing" class="level4">
+<h4 class="anchored" data-anchor-id="gpu-hour-pricing">GPU hour pricing</h4>
+<p>The second case is that you self-host the model. Here, pricing depends on <a href="https://fullstackdeeplearning.com/cloud-gpus/">GPU rent</a> (or depreciation of your own GPU). My currently favored GPU provider is <a href="https://modal.com/pricing">Modal</a>. They offer a generous free tier, pricing is competitive, only actually used GPU time is billed and it’s easy to use.</p>
+<p>To figure out the actual cost of your workload it’s normally necessary to run your own cost benchmark. There are too many moving pieces, and each can change the cost by a factor of 2 or more: GPU configuration (model, number of GPUs), the LLM, quantization, inference library, timing of inference (batch or live, long term reservation or on demand) and the geographic region.</p>
+</section>
+</section>
+<section id="customization" class="level3">
+<h3 class="anchored" data-anchor-id="customization">Customization</h3>
+<p>Open models running on your own infrastructure offer deeper customization than models served from APIs.</p>
+<p>There are three main types of customization:</p>
+<ol type="1">
+<li>Finetuning via SFT, RLHF, DPO or ORPO</li>
+<li>Quantization, meaning reducing the precision of the weights to 16-bit or 8-bit</li>
+<li>Token sampling settings, such as temperature, top-k, nucleus sampling and beam search. For a full overview, check the Hugging Face <a href="https://huggingface.co/docs/transformers/main_classes/text_generation">GenerationConfig</a> documentation</li>
+</ol>
+<p>API providers offer only a subset of these options and only for certain models. More knobs to twist is only meaningful if you have the time to actually use them. If your main focus is elsewhere, good presets can be more productive than maximum control. It’s the same reason why many devs choose macOS over Arch Linux.</p>
+</section>
+<section id="safety-and-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="safety-and-fairness">Safety and fairness</h3>
+<p>Others have written extensively on safety and fairness evaluation of LLMs. Anthropic’s principle “Helpful, Honest and Harmless AI” is industry-leading in this regard. They provide an evaluation <a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">dataset</a> on Hugging Face, related to their 2022 paper <span class="citation" data-cites="bai2022training">(<a href="#ref-bai2022training" role="doc-biblioref">Bai et al. 2022</a>)</span>.</p>
+<p>Key questions to ask about a foundational model are:</p>
+<ul>
+<li>Does the model exhibit biases around gender, race, religion or other protected classes?</li>
+<li>Does the model refuse requests to do dangerous or illegal activities?</li>
+<li>Can it be goaded into violating its own principles?</li>
+</ul>
+<p>The documentation by the model providers a good place to start. The abscence of consideration of these factors in a foundation model is a red flag.</p>
+<p>The actual risk of a model depends on the task. High risk tasks such as medical diagnosis, legal advice or loan approval require more scrutiny than tasks such as sentiment analysis or summarization. Situations in which models have free-form interaction with users, such as chatbots carry greater potential for harm and also surface area for prompt injection attacks.</p>
+</section>
+<section id="licensing" class="level3">
+<h3 class="anchored" data-anchor-id="licensing">Licensing</h3>
+<p>Broadly, models can be categorized as open source or proprietary. Generally, the more open the better because you can inspect the model, customize it and deploy it on your own infrastructure. In addition, open source models give you ownership of the model, rather than being at the mercy of the provider’s pricing and availability.</p>
+<p>The term open source has become muddled in the context of LLMs. The minimum requirement is that the model’s weights are available for download. However, full open source also includes the training data, training code, inference code and documentation. Further, there are a variety of open licenses that can be applied. The <a href="https://opensource.org/license/mit">MIT license</a> and <a href="https://opensource.org/license/apache-2-0">Apache 2.0</a> are the most permissive and place the fewest restrictions and duties on the user. Finally, there are custom licenses. Notably, Meta has released the Llama 3 model under a <a href="https://llama.meta.com/llama3/license/">custom license</a> that requires attribution and requires that organzations with more than 700 million monthly active users (effectively only the largest tech companies) to request a commercial license.</p>
+</section>
+</section>
+<section id="llm-evaluation-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="llm-evaluation-checklist">LLM Evaluation Checklist</h2>
+<p>Evaluating LLMs is a multi-faceted challenge. While benchmarks and case studies are valuable, there’s no substitute for hands-on testing in one’s particular domain. To summarize, here’s a checklist for evaluating an LLM:</p>
+<ol type="1">
+<li>✅ <strong>Licensing</strong>: Check that the model’s license is compatible with your use case.</li>
+<li>✅ <strong>Customization</strong>: Consider the model’s customization options based on the license and your needs.</li>
+<li>✅ <strong>Quality</strong>: Start with general benchmarks, then move to manual and programmatic evaluations. Consider structured and unstructured responses.</li>
+<li>✅ <strong>Safety and fairness</strong>: Assess the model’s safety and fairness, especially for use cases involving individual judgments or open-ended interaction.</li>
+<li>✅ <strong>Cost</strong>: Analyze the cost per token or GPU hour for your usage patterns.</li>
+<li>✅ <strong>Speed</strong>: Benchmark the model’s throughput in your setup, whether self-hosted or served from an API. There is often significant optimization potential here.</li>
+</ol>
+<p>Being clear about the task and success criteria at every step is key. Writing down arguments and results lets you repeat the analysis for new models and justify your choice in architecture and budget reviews. Sharing benchmark results builds trust by users of your model. Without quantitative tests, their opinion of the model hinges on their first 1 to 3 interactions alone.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-team2023gemini" class="csl-entry" role="listitem">
+Anil, Rohan, Sebastian Borgeaud, Yonghui Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew M Dai, Anja Hauth, et al. 2023. <span>“Gemini: A Family of Highly Capable Multimodal Models.”</span> <em>arXiv Preprint arXiv:2312.11805</em>. <a href="https://arxiv.org/abs/2312.11805">https://arxiv.org/abs/2312.11805</a>.
+</div>
+<div id="ref-bai2022training" class="csl-entry" role="listitem">
+Bai, Yuntao, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain, et al. 2022. <span>“Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback.”</span> <em>arXiv Preprint arXiv:2204.05862</em>.
+</div>
+<div id="ref-clark2018think" class="csl-entry" role="listitem">
+Clark, Peter, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick, and Oyvind Tafjord. 2018. <span>“Think You Have Solved Question Answering? Try Arc, the Ai2 Reasoning Challenge.”</span> <em>arXiv Preprint arXiv:1803.05457</em>. <a href="https://arxiv.org/abs/1803.05457">https://arxiv.org/abs/1803.05457</a>.
+</div>
+<div id="ref-cobbe2021training" class="csl-entry" role="listitem">
+Cobbe, Karl, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, et al. 2021. <span>“Training Verifiers to Solve Math Word Problems.”</span> <em>arXiv Preprint arXiv:2110.14168</em>. <a href="https://arxiv.org/abs/2110.14168">https://arxiv.org/abs/2110.14168</a>.
+</div>
+<div id="ref-hendrycks2020measuring" class="csl-entry" role="listitem">
+Hendrycks, Dan, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. 2020. <span>“Measuring Massive Multitask Language Understanding.”</span> <em>arXiv Preprint arXiv:2009.03300</em>. <a href="https://arxiv.org/abs/2009.03300">https://arxiv.org/abs/2009.03300</a>.
+</div>
+<div id="ref-huang2024" class="csl-entry" role="listitem">
+Huang, Jane, Kirk Li, and Daniel Yehdego. 2024. <span>“Evaluating Large Language Model (LLM) Systems: Metrics, Challenges, and Best Practices.”</span> Data Science at Microsoft. 2024. <a href="https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5">https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5</a>.
+</div>
+<div id="ref-lin2021truthfulqa" class="csl-entry" role="listitem">
+Lin, Stephanie, Jacob Hilton, and Owain Evans. 2021. <span>“Truthfulqa: Measuring How Models Mimic Human Falsehoods.”</span> <em>arXiv Preprint arXiv:2109.07958</em>. <a href="https://arxiv.org/abs/2109.07958">https://arxiv.org/abs/2109.07958</a>.
+</div>
+<div id="ref-sakaguchi2021winogrande" class="csl-entry" role="listitem">
+Sakaguchi, Keisuke, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi. 2021. <span>“Winogrande: An Adversarial Winograd Schema Challenge at Scale.”</span> <em>Communications of the ACM</em> 64 (9): 99–106. <a href="https://arxiv.org/abs/1907.10641">https://arxiv.org/abs/1907.10641</a>.
+</div>
+<div id="ref-zellers2019hellaswag" class="csl-entry" role="listitem">
+Zellers, Rowan, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. 2019. <span>“Hellaswag: Can a Machine Really Finish Your Sentence?”</span> <em>arXiv Preprint arXiv:1905.07830</em>. <a href="https://arxiv.org/abs/1905.07830">https://arxiv.org/abs/1905.07830</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/simmering\.dev");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
