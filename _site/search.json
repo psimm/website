@@ -434,137 +434,39 @@
     "text": "Early on the long arc of innovation\n\n\n\nLong Arc of Innovation\n\n\nWhile the hype it peaking, it’s still early days for the technology. Today’s tools are like black and white TV in the 1960s and the future will bring tools equivalent to OLED 4k TVs. In the next few months already, we’ll see better models thanks to:\n\nLarger context windows enable models to take more information into account: GPT-4 supports up to 32k tokens, whereas GPT-3.5 was limited to 4k\nPlugins and chains via ChatGPT plugins and the langchain library. These give models access to the browser, Wolfram Alpha and more\nLet models store context information and access data via LlamaIndex Integration into more developer tasks, such as pull requests via Github Copilot X\nAgents that recursively call GPT-4, see Auto-GPT"
   },
   {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
     "section": "",
-    "text": "texttunnel Python package texttunnel\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCosmention\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 29, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 30, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGlobal Patent Explorer\n\n\n\n\n\n\nPaul Simmering\n\n\nJul 1, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nFeb 1, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDo Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?\n\n\n\n\n\n\nPaul Simmering\n\n\nAug 5, 2015\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Evaluating an LLM for your use case\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nApr 28, 2024\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nHow to get gold standard data for NLP\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nLLM Price Comparison\n\n\n\n\n\n\nMachine Learning\n\n\nCloud\n\n\nEconomics\n\n\n\n\n\n\n\n\n\nJan 11, 2024\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nThe Grug Brained Data Scientist\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nNLP escalation ladder: Use the simplest NLP model that does the job\n\n\n\n\n\n\nMachine Learning\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nNov 12, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nLarge language models for aspect-based sentiment analysis\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nOne-stop NLP: Multi-task prompts for LLMs\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\nOct 29, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nDataset Size vs. Label Correctness: What is more important for training a model?\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\nOct 28, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nFuture Directions for Large Language Models\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\nProductivity\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\nPython\n\n\nCloud\n\n\nData Engineering\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\nPython\n\n\nTidy Tuesday\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\nR\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "talks/concordi2017/index.html",
-    "href": "talks/concordi2017/index.html",
-    "title": "Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model",
+    "objectID": "talks/bvmki2021/index.html",
+    "href": "talks/bvmki2021/index.html",
+    "title": "AI for Social Media Monitoring at dm",
     "section": "",
-    "text": "🗓️ Event\n6th European Conference on Corporate R&D and Innovation\n\n\n📅 Date\n27-29 September 2017\n\n\n📍 Location\nSeville, Spain\n\n\n📥 Slides\nDownload\n\n\n\nPresentation of an agent based simulation game that models a competitive market with innovator and imitator agents.\nPreview photo by Joan Oger on Unsplash"
+    "text": "🗓️ Event\nBVM symposium: Understanding artificial intelligence and using it with sustained success\n\n\n📅 Date\n25 November 2021\n\n\n📍 Location\nOnline\n\n\n📥 Materials\nSlides (PDF)\n\n\n🌐 Website\nCosmention\n\n\n\nA presentation on Cosmention’s data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language models and word vectors and then dives into text classification and named entity recognition.\nPhoto by Christopher Burns on Unsplash"
   },
   {
-    "objectID": "talks/comes2020/index.html",
-    "href": "talks/comes2020/index.html",
-    "title": "StakeX - Organizational Networks from Web Research",
+    "objectID": "talks/gor2019/index.html",
+    "href": "talks/gor2019/index.html",
+    "title": "R Shiny for Interactive Data Visualization – A Case Study",
     "section": "",
-    "text": "🗓️ Event\nContent Meets Structure 2020\n\n\n📅 Date\n28 September 2020\n\n\n📍 Location\nHeidelberg, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n🌐 App\nStakeX\n\n\n\nThomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.\nPhoto by Alina Grubnyak on Unsplash"
+    "text": "🗓️ Event\nGeneral Online Research 2019\n\n\n📅 Date\n8 March 2019\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n💻 App\nPatent Explorer\n\n\n\nAn overview of R Shiny by example of an app I developed for display patent statistics\n\n\n\nPatent Explorer"
   },
   {
-    "objectID": "talks/gor2024/index.html",
-    "href": "talks/gor2024/index.html",
-    "title": "Where do LLMs fit in NLP Pipelines?",
+    "objectID": "talks/ephmra2024/index.html",
+    "href": "talks/ephmra2024/index.html",
+    "title": "AI Revolutionizes Content Analysis in Market Research",
     "section": "",
-    "text": "🗓️ Event\nGeneral Online Research 2024\n\n\n📅 Date\n21 February 2023\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)"
+    "text": "🗓️ Event\nEPHMRA 2024 German Chapter Meeting\n\n\n📅 Date\n22 April 2024\n\n\n📍 Location\nBerlin, Germany\n\n\n\n\n\n\nPresenting a case study\n\n\nThis presentation at EPHMRA 2024 was about three ways in which AI makes content analysis more efficient in market research:\n\nStructuring text, audio and image inputs\nAiding aggregation and reporting with Copilots\nEnabling market researchers to move from an analyst role to a communicator and strategist role\n\nIf you wish to receive a copy of the slides (in German), please contact me.\nThe slide in the background of the image shows an example of one-stop prompting, see my article on the topic."
   },
   {
-    "objectID": "talks/gor2024/index.html#relevance-research-question",
-    "href": "talks/gor2024/index.html#relevance-research-question",
-    "title": "Where do LLMs fit in NLP Pipelines?",
-    "section": "Relevance & research question",
-    "text": "Relevance & research question\nLarge language models (LLMs) can perform classic tasks in natural language processing (NLP), such as text classification, sentiment analysis and named entity recognition. It is tempting to replace whole pipelines with an LLM. But the flexibility and ease of use of LLMs comes at a price: their throughput is low, they require a provider like OpenAI or one’s own GPU cluster and have high operating cost. This study aims to evaluate the practicality of LLMs in NLP pipelines by asking, “What is the optimal placement of LLMs in these pipelines when considering speed, affordability, adaptability, and project management?”."
-  },
-  {
-    "objectID": "talks/gor2024/index.html#methods-data",
-    "href": "talks/gor2024/index.html#methods-data",
-    "title": "Where do LLMs fit in NLP Pipelines?",
-    "section": "Methods & data",
-    "text": "Methods & data\nThis study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are as- sessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models."
-  },
-  {
-    "objectID": "talks/gor2024/index.html#results",
-    "href": "talks/gor2024/index.html#results",
-    "title": "Where do LLMs fit in NLP Pipelines?",
-    "section": "Results",
-    "text": "Results\nSmall neural networks outperform LLMs by over 100-fold in throughput and cost-efficiency. Yet, without parameter training, LLMs attain high accuracy benchmark scores through in-context examples, making them preferable for small scale projects lacking labeled training data. They also allow flexibility of labeling schemes without retraining, which helps at the proof-of-concept stage. Further, they can be used to aid or automate the collection of labeled examples."
-  },
-  {
-    "objectID": "talks/gor2024/index.html#added-value",
-    "href": "talks/gor2024/index.html#added-value",
-    "title": "Where do LLMs fit in NLP Pipelines?",
-    "section": "Added value",
-    "text": "Added value\nLLMs have only recently become available for many organizations and drew new practitioners to the field. A first instinct may be to treat LLMs as a universal solution for any language problem. The aim of this study is to provide social scientists and market researchers with references that help them navigate the tradeoffs of using LLMs versus classic NLP techniques. It combines theory with benchmark results and practical experience."
-  },
-  {
-    "objectID": "talks/emaee2017/index.html",
-    "href": "talks/emaee2017/index.html",
-    "title": "Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model",
+    "objectID": "talks/wdm2024/index.html",
+    "href": "talks/wdm2024/index.html",
+    "title": "AI in Market Research - Case Studies",
     "section": "",
-    "text": "🗓️ Event\n10th European Meeting on Applied Evolutionary Economics\n\n\n📅 Date\n31 May 2017\n\n\n📍 Location\nStrasbourg, France\n\n\n📥 Slides\nDownload\n\n\n📄 Paper\nDownload\n\n\n\nProduct life-cycles in markets for innovative products are shortening, con- sumers rapidly upgrade from one product generation to the next and demand constant technical improvement. Firms are racing against each other and the consumers’ rising ex- pectations. This study uses an agent-based simulation model to analyze the dynamics of innovation and imitation strategies in this new type of market from the firm perspective. Firms use pure and mixed strategies to achieve maximum profitability over the life-cycle of a market for a new product category. It is found that strategies involving innovation outperform those that rely only on imitation, even in absence of any protective measures like patenting or branding.\nPhoto by Patrick Robert Doyle on Unsplash"
-  },
-  {
-    "objectID": "projects/gpexp/index.html",
-    "href": "projects/gpexp/index.html",
-    "title": "Global Patent Explorer",
-    "section": "",
-    "text": "Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. The Shiny App visualizes the results of a paper on natural language processing on patent texts:\n\nD.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html\n\n\nThe app’s code is available on Github.\nThis tool lets users map and visualize inventive and innovative activity around the globe. The explorer relies on a series of novel indicators that combine insights from large-scale natural language processing and established patent analysis techniques and provide insights about dimensions such as technological originality or future orientation. Users can explore the dataset on country or city level, select time-ranges and technologies. The app features rich visualizations including a world map, network plots that show relations between countries and cities, and customizable statistical plots.\nThe app is a winner of the first IPSDM (Intellectual property statistics for descision makers) “Big Data Analytics” Challenge (2018) by the European Union Intellectual Property Office.\n\nI also presented the app at the GOR 2019 conference. You can find the slides here.\nTech stack: R, Shiny"
-  },
-  {
-    "objectID": "projects/stakex/index.html",
-    "href": "projects/stakex/index.html",
-    "title": "StakeX - Organizational Networks from Web Research",
-    "section": "",
-    "text": "StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:\n\nmethods for gathering public data on relevant stakeholders\nbuilding a network based on sociological theory\nanalyzing the network through use of force-based layout algorithms and centrality statistics\nextracting valuable insights for customers\n\nTo learn more about the method, see the slides of the talk by Thomas Perry and me or check the methods section of the demo app.\nI led the development of two Shiny apps for this project. The first is a CRUD app that facilitates data entry into a PostgreSQL database and ensures data integrity. The second is a platform for interactive data analysis featuring graphs with visNetwork and maps with leaflet. Both are hosted on EC2 instances on AWS.\nTech stack: R, PostgreSQL, AWS EC2"
-  },
-  {
-    "objectID": "projects/masterthesis/index.html",
-    "href": "projects/masterthesis/index.html",
-    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
-    "section": "",
-    "text": "My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.\nI also gave a talk about it at a Research Plus conference in Cologne. You can find the slides here.\nCurrent AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker. This idea of an artificial business decision maker is studied along four research questions.\n\nHow do AI and human thought processes differ?\nDo AIs and humans make qualitatively different business decisions?\nWhat are the dynamics of competition and cooperation between humans and AI?\nAre there potential problems in value alignment between a business and its AI?\n\n\nThe study approaches these questions by example of a business game. You can play the game online here. The code for the game is available on Github.\nThe game depicts competition between two firms in a consumer goods market and emphasizes innovation and imitation strategies in product development, as well as vertical and horizontal product differentiation. It is played by an AI and human participants. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. Six human participants played two games each against that agent. While playing, they gave a think-aloud protocol. The research questions are answered by combining insights from a content analysis of the protocols and an analysis of the AI’s architecture and processes.\nThe AI combines forward reasoning using tree search and evaluation of situations with artificial neural networks. This parallels humans’ thought processes that combine conscious, effortful thinking with unconscious, effortless evaluation. The differences lie in AI’s superior computational abilities, humans’ superior ability to learn from small samples and humans’ conscious and unconscious social behavior and emotions. The absence of this social behavior causes AI to act qualitatively differently – to consider actions that humans do not. This divergence can take the form of breaches of norms of reciprocity and unorthodox pursuit of a utility function. Instructing an AI is difficult, because humans have utility functions with many inputs that have complex relationships among each other, and may be unaware of elements until they come to bear. Value alignment is an on- going challenge for businesses and policy makers. Further, firms have to learn how to best incorporate AI in their decision making. This includes training employees in the use of AI assistants, developing transparent algorithms and developing an awareness for situations in which the use of AI is inappropriate for technical, legal or social reasons."
-  },
-  {
-    "objectID": "talks.html",
-    "href": "talks.html",
-    "title": "Talks",
-    "section": "",
-    "text": "AI Revolutionizes Content Analysis in Market Research\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 24, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI in Market Research - Case Studies\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 16, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere do LLMs fit in NLP Pipelines?\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nMar 9, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "imprint.html",
-    "href": "imprint.html",
-    "title": "Imprint",
-    "section": "",
-    "text": "Information pursuant to § 5 TMG\nPaul Simmering\nJägerhofallee 30\n71638 Ludwigsburg\n\n\nE-Mail: paul.simmering@gmail.com"
-  },
-  {
-    "objectID": "imprint.html#contact",
-    "href": "imprint.html#contact",
-    "title": "Imprint",
-    "section": "",
-    "text": "E-Mail: paul.simmering@gmail.com"
-  },
-  {
-    "objectID": "projects/texttunnel/index.html",
-    "href": "projects/texttunnel/index.html",
-    "title": "texttunnel Python package texttunnel",
-    "section": "",
-    "text": "texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.\nThe package is MIT-licensed and available on Github and PyPi.\nAn introduction with a business use case is available on the Q Insight Agency blog."
-  },
-  {
-    "objectID": "projects/bachelorthesis/index.html",
-    "href": "projects/bachelorthesis/index.html",
-    "title": "Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?",
-    "section": "",
-    "text": "I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.\n\nPhoto by Justus Menke on Unsplash"
-  },
-  {
-    "objectID": "projects/cosmention/index.html",
-    "href": "projects/cosmention/index.html",
-    "title": "Cosmention",
-    "section": "",
-    "text": "Cosmention is an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.\n\nI am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and is now in use at dm, the largest drug store chain in Europe.\nI presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.de, the largest German market research website.\nTech stack: R, Shiny, spaCy (Python), AWS, Docker, Postgres, Snowflake"
-  },
-  {
-    "objectID": "talks/researchplus2018/index.html",
-    "href": "talks/researchplus2018/index.html",
-    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
-    "section": "",
-    "text": "🗓️ Event\nResearch Plus by DGOF\n\n\n📅 Date\n13 September 2018\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n💻 App\nBusiness Game\n\n\n\nA presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI’s lack of reciprocity, and potential problems in value alignment."
+    "text": "🗓️ Event\nWoche der Marktforschung 2024\n\n\n📅 Date\n16 April 2024\n\n\n📍 Location\nOnline\n\n\n\nWoche der Marktforschung is an annual event by Marktforschung.de and Succeet. This year Oliver Tabino and me presented three case studies of applied AI in market research:\n\nAgile use of LLMs for social media monitoring in pharma\nScaleable data pipeline for social media monitoringin cosmetics\nState of the art accuracy in aspect-based sentiment analysis of reviews using a fine-tuned LLM\n\nWith over 200 attendees, this webinar was the second most popular event out of 93 events of the WdM.\nPlease contact me if you would like to get access to a recording of the presentation on Vimeo (in German)."
   },
   {
     "objectID": "talks/gor2023/index.html",
@@ -602,6 +504,118 @@
     "text": "Added Value\nThis study provides market researchers evidence on the capabilities of LLMs for ABSA. It also provides practical hints for prompt engineering and the cost-accuracy tradeoffs involved when using LLMs for structured extraction and classification tasks. By extension, it also helps with placing few-shot use of LLMs in contrast with finetuned models."
   },
   {
+    "objectID": "talks/researchplus2018/index.html",
+    "href": "talks/researchplus2018/index.html",
+    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
+    "section": "",
+    "text": "🗓️ Event\nResearch Plus by DGOF\n\n\n📅 Date\n13 September 2018\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n💻 App\nBusiness Game\n\n\n\nA presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI’s lack of reciprocity, and potential problems in value alignment."
+  },
+  {
+    "objectID": "projects/cosmention/index.html",
+    "href": "projects/cosmention/index.html",
+    "title": "Cosmention",
+    "section": "",
+    "text": "Cosmention is an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.\n\nI am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and is now in use at dm, the largest drug store chain in Europe.\nI presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.de, the largest German market research website.\nTech stack: R, Shiny, spaCy (Python), AWS, Docker, Postgres, Snowflake"
+  },
+  {
+    "objectID": "projects/bachelorthesis/index.html",
+    "href": "projects/bachelorthesis/index.html",
+    "title": "Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?",
+    "section": "",
+    "text": "I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.\n\nPhoto by Justus Menke on Unsplash"
+  },
+  {
+    "objectID": "projects/texttunnel/index.html",
+    "href": "projects/texttunnel/index.html",
+    "title": "texttunnel Python package texttunnel",
+    "section": "",
+    "text": "texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.\nThe package is MIT-licensed and available on Github and PyPi.\nAn introduction with a business use case is available on the Q Insight Agency blog."
+  },
+  {
+    "objectID": "imprint.html",
+    "href": "imprint.html",
+    "title": "Imprint",
+    "section": "",
+    "text": "Information pursuant to § 5 TMG\nPaul Simmering\nJägerhofallee 30\n71638 Ludwigsburg\n\n\nE-Mail: paul.simmering@gmail.com"
+  },
+  {
+    "objectID": "imprint.html#contact",
+    "href": "imprint.html#contact",
+    "title": "Imprint",
+    "section": "",
+    "text": "E-Mail: paul.simmering@gmail.com"
+  },
+  {
+    "objectID": "talks.html",
+    "href": "talks.html",
+    "title": "Talks",
+    "section": "",
+    "text": "AI Revolutionizes Content Analysis in Market Research\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 24, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI in Market Research - Case Studies\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 16, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere do LLMs fit in NLP Pipelines?\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nMar 9, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/masterthesis/index.html",
+    "href": "projects/masterthesis/index.html",
+    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
+    "section": "",
+    "text": "My master thesis investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.\nI also gave a talk about it at a Research Plus conference in Cologne. You can find the slides here.\nCurrent AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker. This idea of an artificial business decision maker is studied along four research questions.\n\nHow do AI and human thought processes differ?\nDo AIs and humans make qualitatively different business decisions?\nWhat are the dynamics of competition and cooperation between humans and AI?\nAre there potential problems in value alignment between a business and its AI?\n\n\nThe study approaches these questions by example of a business game. You can play the game online here. The code for the game is available on Github.\nThe game depicts competition between two firms in a consumer goods market and emphasizes innovation and imitation strategies in product development, as well as vertical and horizontal product differentiation. It is played by an AI and human participants. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. Six human participants played two games each against that agent. While playing, they gave a think-aloud protocol. The research questions are answered by combining insights from a content analysis of the protocols and an analysis of the AI’s architecture and processes.\nThe AI combines forward reasoning using tree search and evaluation of situations with artificial neural networks. This parallels humans’ thought processes that combine conscious, effortful thinking with unconscious, effortless evaluation. The differences lie in AI’s superior computational abilities, humans’ superior ability to learn from small samples and humans’ conscious and unconscious social behavior and emotions. The absence of this social behavior causes AI to act qualitatively differently – to consider actions that humans do not. This divergence can take the form of breaches of norms of reciprocity and unorthodox pursuit of a utility function. Instructing an AI is difficult, because humans have utility functions with many inputs that have complex relationships among each other, and may be unaware of elements until they come to bear. Value alignment is an on- going challenge for businesses and policy makers. Further, firms have to learn how to best incorporate AI in their decision making. This includes training employees in the use of AI assistants, developing transparent algorithms and developing an awareness for situations in which the use of AI is inappropriate for technical, legal or social reasons."
+  },
+  {
+    "objectID": "projects/stakex/index.html",
+    "href": "projects/stakex/index.html",
+    "title": "StakeX - Organizational Networks from Web Research",
+    "section": "",
+    "text": "StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:\n\nmethods for gathering public data on relevant stakeholders\nbuilding a network based on sociological theory\nanalyzing the network through use of force-based layout algorithms and centrality statistics\nextracting valuable insights for customers\n\nTo learn more about the method, see the slides of the talk by Thomas Perry and me or check the methods section of the demo app.\nI led the development of two Shiny apps for this project. The first is a CRUD app that facilitates data entry into a PostgreSQL database and ensures data integrity. The second is a platform for interactive data analysis featuring graphs with visNetwork and maps with leaflet. Both are hosted on EC2 instances on AWS.\nTech stack: R, PostgreSQL, AWS EC2"
+  },
+  {
+    "objectID": "projects/gpexp/index.html",
+    "href": "projects/gpexp/index.html",
+    "title": "Global Patent Explorer",
+    "section": "",
+    "text": "Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. The Shiny App visualizes the results of a paper on natural language processing on patent texts:\n\nD.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html\n\n\nThe app’s code is available on Github.\nThis tool lets users map and visualize inventive and innovative activity around the globe. The explorer relies on a series of novel indicators that combine insights from large-scale natural language processing and established patent analysis techniques and provide insights about dimensions such as technological originality or future orientation. Users can explore the dataset on country or city level, select time-ranges and technologies. The app features rich visualizations including a world map, network plots that show relations between countries and cities, and customizable statistical plots.\nThe app is a winner of the first IPSDM (Intellectual property statistics for descision makers) “Big Data Analytics” Challenge (2018) by the European Union Intellectual Property Office.\n\nI also presented the app at the GOR 2019 conference. You can find the slides here.\nTech stack: R, Shiny"
+  },
+  {
+    "objectID": "talks/emaee2017/index.html",
+    "href": "talks/emaee2017/index.html",
+    "title": "Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model",
+    "section": "",
+    "text": "🗓️ Event\n10th European Meeting on Applied Evolutionary Economics\n\n\n📅 Date\n31 May 2017\n\n\n📍 Location\nStrasbourg, France\n\n\n📥 Slides\nDownload\n\n\n📄 Paper\nDownload\n\n\n\nProduct life-cycles in markets for innovative products are shortening, con- sumers rapidly upgrade from one product generation to the next and demand constant technical improvement. Firms are racing against each other and the consumers’ rising ex- pectations. This study uses an agent-based simulation model to analyze the dynamics of innovation and imitation strategies in this new type of market from the firm perspective. Firms use pure and mixed strategies to achieve maximum profitability over the life-cycle of a market for a new product category. It is found that strategies involving innovation outperform those that rely only on imitation, even in absence of any protective measures like patenting or branding.\nPhoto by Patrick Robert Doyle on Unsplash"
+  },
+  {
+    "objectID": "talks/gor2024/index.html",
+    "href": "talks/gor2024/index.html",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "",
+    "text": "🗓️ Event\nGeneral Online Research 2024\n\n\n📅 Date\n21 February 2023\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)"
+  },
+  {
+    "objectID": "talks/gor2024/index.html#relevance-research-question",
+    "href": "talks/gor2024/index.html#relevance-research-question",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Relevance & research question",
+    "text": "Relevance & research question\nLarge language models (LLMs) can perform classic tasks in natural language processing (NLP), such as text classification, sentiment analysis and named entity recognition. It is tempting to replace whole pipelines with an LLM. But the flexibility and ease of use of LLMs comes at a price: their throughput is low, they require a provider like OpenAI or one’s own GPU cluster and have high operating cost. This study aims to evaluate the practicality of LLMs in NLP pipelines by asking, “What is the optimal placement of LLMs in these pipelines when considering speed, affordability, adaptability, and project management?”."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#methods-data",
+    "href": "talks/gor2024/index.html#methods-data",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Methods & data",
+    "text": "Methods & data\nThis study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are as- sessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#results",
+    "href": "talks/gor2024/index.html#results",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Results",
+    "text": "Results\nSmall neural networks outperform LLMs by over 100-fold in throughput and cost-efficiency. Yet, without parameter training, LLMs attain high accuracy benchmark scores through in-context examples, making them preferable for small scale projects lacking labeled training data. They also allow flexibility of labeling schemes without retraining, which helps at the proof-of-concept stage. Further, they can be used to aid or automate the collection of labeled examples."
+  },
+  {
+    "objectID": "talks/gor2024/index.html#added-value",
+    "href": "talks/gor2024/index.html#added-value",
+    "title": "Where do LLMs fit in NLP Pipelines?",
+    "section": "Added value",
+    "text": "Added value\nLLMs have only recently become available for many organizations and drew new practitioners to the field. A first instinct may be to treat LLMs as a universal solution for any language problem. The aim of this study is to provide social scientists and market researchers with references that help them navigate the tradeoffs of using LLMs versus classic NLP techniques. It combines theory with benchmark results and practical experience."
+  },
+  {
     "objectID": "talks/succeet2023/index.html",
     "href": "talks/succeet2023/index.html",
     "title": "GPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy",
@@ -609,32 +623,88 @@
     "text": "🗓️ Event\nSucceet 2023\n\n\n📅 Date\n26 October 2023\n\n\n📍 Location\nWiesbaden, Germany\n\n\n\n\n\n\nSucceet 2023\n\n\nMany market researchers have already experimented with ChatGPT and have achieved promising results. But how is this transferred to practice? In practice, accuracy, IT implementation, costs, and data protection count. This workshop provides you with facts and decision-making criteria for the successful use of language models. We will focus on project examples in which language models are used to analyze survey responses, product reviews, and social media posts. In addition to commercial models GPT-3.5 and GPT-4 from OpenAI, we also look at open-source models such as Llama 2 from Meta, as well as the possibility of optimizing models with your own data. Previous knowledge is not required, but it would be advantageous if you already experimented with ChatGPT or a similar model.\nThe workshop was held in German."
   },
   {
-    "objectID": "talks/gor2019/index.html",
-    "href": "talks/gor2019/index.html",
-    "title": "R Shiny for Interactive Data Visualization – A Case Study",
+    "objectID": "talks/comes2020/index.html",
+    "href": "talks/comes2020/index.html",
+    "title": "StakeX - Organizational Networks from Web Research",
     "section": "",
-    "text": "🗓️ Event\nGeneral Online Research 2019\n\n\n📅 Date\n8 March 2019\n\n\n📍 Location\nCologne, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n💻 App\nPatent Explorer\n\n\n\nAn overview of R Shiny by example of an app I developed for display patent statistics\n\n\n\nPatent Explorer"
+    "text": "🗓️ Event\nContent Meets Structure 2020\n\n\n📅 Date\n28 September 2020\n\n\n📍 Location\nHeidelberg, Germany\n\n\n📥 Materials\nSlides (PDF)\n\n\n🌐 App\nStakeX\n\n\n\nThomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.\nPhoto by Alina Grubnyak on Unsplash"
   },
   {
-    "objectID": "talks/bvmki2021/index.html",
-    "href": "talks/bvmki2021/index.html",
-    "title": "AI for Social Media Monitoring at dm",
+    "objectID": "talks/concordi2017/index.html",
+    "href": "talks/concordi2017/index.html",
+    "title": "Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model",
     "section": "",
-    "text": "🗓️ Event\nBVM symposium: Understanding artificial intelligence and using it with sustained success\n\n\n📅 Date\n25 November 2021\n\n\n📍 Location\nOnline\n\n\n📥 Materials\nSlides (PDF)\n\n\n🌐 Website\nCosmention\n\n\n\nA presentation on Cosmention’s data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language models and word vectors and then dives into text classification and named entity recognition.\nPhoto by Christopher Burns on Unsplash"
+    "text": "🗓️ Event\n6th European Conference on Corporate R&D and Innovation\n\n\n📅 Date\n27-29 September 2017\n\n\n📍 Location\nSeville, Spain\n\n\n📥 Slides\nDownload\n\n\n\nPresentation of an agent based simulation game that models a competitive market with innovator and imitator agents.\nPreview photo by Joan Oger on Unsplash"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
     "section": "",
-    "text": "How to get gold standard data for NLP\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nLLM Price Comparison\n\n\n\n\n\n\nMachine Learning\n\n\nCloud\n\n\nEconomics\n\n\n\n\n\n\n\n\n\nJan 11, 2024\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nThe Grug Brained Data Scientist\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nNLP escalation ladder: Use the simplest NLP model that does the job\n\n\n\n\n\n\nMachine Learning\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nNov 12, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nLarge language models for aspect-based sentiment analysis\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nOne-stop NLP: Multi-task prompts for LLMs\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\nOct 29, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nDataset Size vs. Label Correctness: What is more important for training a model?\n\n\n\n\n\n\nMachine Learning\n\n\nPython\n\n\n\n\n\n\n\n\n\nOct 28, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nFuture Directions for Large Language Models\n\n\n\n\n\n\nMachine Learning\n\n\n\n\n\n\n\n\n\nOct 21, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nA Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow\n\n\n\n\n\n\nProductivity\n\n\n\n\n\n\n\n\n\nApr 10, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nTwitter API data collector with Modal\n\n\n\n\n\n\nPython\n\n\nCloud\n\n\nData Engineering\n\n\n\n\n\n\n\n\n\nJan 26, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nInvesting in data science skills for the long run\n\n\n\n\n\n\nAdvice\n\n\n\n\n\n\n\n\n\nJan 9, 2023\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Tuesday: analyzing yarns with polars\n\n\n\n\n\n\nPython\n\n\nTidy Tuesday\n\n\n\n\n\n\n\n\n\nOct 22, 2022\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nFANGMANT: Tech stock analysis with pandas\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\nDec 27, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nData frame wars: Choosing a Python dataframe library as a dplyr user\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\nDec 20, 2021\n\n\nPaul Simmering\n\n\n\n\n\n\n\n\n\n\n\n\nExploring echarts4r\n\n\n\n\n\n\nR\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\nFeb 8, 2020\n\n\nPaul Simmering\n\n\n\n\n\n\nNo matching items"
+    "text": "texttunnel Python package texttunnel\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCosmention\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 29, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 30, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGlobal Patent Explorer\n\n\n\n\n\n\nPaul Simmering\n\n\nJul 1, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nFeb 1, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDo Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?\n\n\n\n\n\n\nPaul Simmering\n\n\nAug 5, 2015\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/llm-eval/index.html",
+    "href": "blog/llm-eval/index.html",
+    "title": "Evaluating an LLM for your use case",
+    "section": "",
+    "text": "In the last two months we’ve seen releases of flagship LLMs like Llama 3, Mixtral 8x22B, and Claude 3. The title of Mistral’s announcement summarizes the dynamic well: Cheaper, Better, Faster, Stronger. It’s like neverending Christmas for AI developers! But how do you evaluate these models for your use case? This article is a deep dive into evaluations, covering accuracy, speed, cost, customization, context window, safety, and licensing. I focus on text-to-text models, but the principles apply to multimodal models as well."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#general-language-understanding-benchmarks",
+    "href": "blog/llm-eval/index.html#general-language-understanding-benchmarks",
+    "title": "Evaluating an LLM for your use case",
+    "section": "General language understanding benchmarks",
+    "text": "General language understanding benchmarks\nGeneral benchmarks are good for ranking models by their general language understanding and reasoning capabilities. The Hugging Face Open LLM leaderboard scores models on 6 benchmarks.\n\n\n\nHugging Face Open LLM leaderboard\n\n\n\n\n\n\n\n\n\n\nBenchmark\nDescription\nAuthor\n\n\n\n\nAI2 Reasoning Challenge\nGrade school science multiple choice questions\nClark et al. (2018)\n\n\nHellaSwag\nSentence completion task about everyday situations, using examples that are easy for humans but hard for machines\nZellers et al. (2019)\n\n\nMulti-task language understanding (MMLU)\nMultiple choice questions across 57 subjects\nHendrycks et al. (2020)\n\n\nTruthfulQA\nMultiple choice questions across 38 categories that some humans would answer falsely due to common misconceptions\nLin, Hilton, and Evans (2021)\n\n\nWinogrande\nGrammar challenge on pronoun disambiguation using contextual knowledge\nSakaguchi et al. (2021)\n\n\nGSM8K\nGrade school math word problems\nCobbe et al. (2021)\n\n\n\nEach benchmark probes a different aspect of language understanding and reasoning. Although no single benchmark perfectly measures a model’s capabilities, together they provide a comprehensive overview of the model’s general abilities. Note that all of them are posed in English by default, though there are translated versions of some benchmarks.\nIf you intend to use the model for function calling, the Berkeley Function-Calling Leaderboard is a good benchmark. It consists of 2000 question-function-answer triples across multiple programming languages and REST APIs, including cases where the model needs to select which function to call.\nNote that the way a benchmark is administered can affect the results. There are two main levers:\n\nAdditional prompt engineering, e.g. chain-of-thought prompts. This boosts reasoning ability at the cost of speed.\nFew-shot sampling. Rather than asking the model just once, the model generates multiple completions and the most common answer is selected. This boosts robustness at the cost of speed. For example Google Gemini (Anil et al. 2023) only beats GPT-4 on the 32-shot setting, not in the 5-shot setting.\n\nA downside of public benchmarks is that cheating is possible by training a model on the test set. An alternative that can’t be gamed in this way is the LLM Arena. It’s a chat-based benchmark where visitors prompt two models at once and vote on the better answer. The relevant metric is an Elo rating, like in chess.\nHowever, picking the model with the highest MMLU or Elo rating isn’t always the best choice. The benchmarks are general and may not reflect the specific requirements of your use case and domain. It may not have seen examples of your data and task during training. So general benchmarks are a good starting point, but not the end of the evaluation process."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#manual-evaluations",
+    "href": "blog/llm-eval/index.html#manual-evaluations",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Manual evaluations",
+    "text": "Manual evaluations\nThe easiest way to evaluate a model is to try it out yourself in a chat window. For an unbiased evaluation, you should use the same prompts for all models you’re comparing. At a minimum, I suggest writing down three example prompts and perfect answers to them. This approach has three benefits:\n\nyou may find issues with the task definition\nyou can clarify your quality criteria\nyou can objectively compare model answers to your gold standard answers\n\nThis is easier for tasks with strictly defined answers, such as text classification tasks. With more generative tasks like summarization, it’s necessary to define more fuzzy quality criteria, such as completeness and the absence of irrelevant information.\nThe LLM Arena has a side by side comparison feature to compare models on your own prompts.\n\n\n\nLLM Arena with the prompt: I have 4 apples today. I ate 3 apples yesterday. How many apples do I have today?\n\n\n\n\n\n\n\n\nWarning\n\n\n\nLLM Arena saves all prompts and responses and may redistribute them. Don’t put in sensitive information."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#programmatic-evaluations",
+    "href": "blog/llm-eval/index.html#programmatic-evaluations",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Programmatic evaluations",
+    "text": "Programmatic evaluations\nThe downside of manual evaluations is that they are limited to a small number of test cases. More examples are needed to get robust estimates of accuracy. The number depends on the complexity of the task and the desired confidence level. A binary classification task might require 200 examples, while an entity linking task might require 1000 or more examples. I recently published a guide to collecting gold-standard evaluation data.\nTo administer the test, a script that formats the examples as prompts, receives the model’s responses and compares them to the gold standard is needed. A custom script is the most flexible and lightweight solution, but there are also libraries that can help, such as OpenAI Evals, promptflow, parea, ragas and deepeval.\nIn the following section I’ll provide a brief overview of model evaluation metrics. A more comprehensive guide is provided by Huang, Li, and Yehdego (2024).\nThere are two main types of evaluation: structured and unstructured responses."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#evaluation-of-structured-responses",
+    "href": "blog/llm-eval/index.html#evaluation-of-structured-responses",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Evaluation of structured responses",
+    "text": "Evaluation of structured responses\nStructured responses consist of a fixed set of possible answers. Examples are multiple choice questions, text classification tasks, and function calling. If a text-to-text model is used, there’s an additional step of verifying that the LLM’s response conforms to the expected structure. Getting the LLM to always follow the format is best done through function calling (e.g. via the instructor library) or fine-tuning.\nOnce everything’s in the right format, sklearn-metrics is the standard library to calculate the metrics. The most common metrics are accuracy, precision, recall and F1 score."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#evaluation-of-free-form-responses",
+    "href": "blog/llm-eval/index.html#evaluation-of-free-form-responses",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Evaluation of free form responses",
+    "text": "Evaluation of free form responses\nA free form response text is harder to evaluate. Examples are summarization, translation and chatbots. Comparing such answers with a gold answer word-by-word is too strict, as the model may use synonyms or rephrase the answer.\nIn the pre-LLM era, n-gram overlap metrics were used to evaluate free form responses. The most common are:\n\nBilingual Evaluation Understudy (BLEU) for translation\nRecall-Oriented Understudy for Gisting Evaluation (ROUGE) for summarization\n\nThey are cheap to compute, but they have well-known limitations: they are sensitive to word order, don’t account for synonyms and don’t measure the writing quality of the generated text.\nRecently, LLMs themselves have been used to evaluate LLMs on unstructured tasks. The idea is to ask a second LLM to rate the quality of the first LLM’s response using a pre-defined criterion. In its simplest form, the second LLM is asked to classify the first LLM’s response as good or bad.\nLet’s try this out with a simple example of a bot that generates jokes, using Claude 3 Opus as the joke generator and GPT-4 as the joke evaluator.\n\nPrompt for Opus: “Tell me a joke about AI”\nOpus: “Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄”\nPrompt for GPT-4: “You are a comedian. I asked a model to tell me a joke about AI. This is the joke it told me:”Why did the AI cross the road? 🤖🛣️ To get to the other dataset! 📊😄“. Rate this joke on a scale of 1 to 5. Give a short reason and end your answer with a single number.”\nGPT-4: “This joke plays on the classic”Why did the chicken cross the road?” setup, using a pun related to AI’s data-driven nature. It’s straightforward and mildly amusing but lacks surprise or complexity. Rating: 3”\n\nThe prompt to GPT-4 uses three prompt engineering techniques: role play, asking for a reason to get better answers and ending the answer with a single number to make it easier to parse. To measure the humor of Opus, one could substitute the subject “AI” with others like “chickens”, “doctors” or “politicians” and aggregate the GPT-4 ratings.\nThis is a simple example, but can be extended to more complex tasks. More complex criteria such as fluency, relevance, informativeness and coherence offer a more nuanced evaluation. One of the most common use cases where free form responses occur is retrieval-augmented generation. The ragas library offers a comprehensive set of metrics for LLM-to-LLM evaluation, including optimized prompts for the second LLM.\nThe downside of LLM-to-LLM evaluation is that the second LLM may not have the ability to judge the quality of the first LLM’s response or have a bias towards certain types of responses."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#answer-quality-isnt-everything",
+    "href": "blog/llm-eval/index.html#answer-quality-isnt-everything",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Answer quality isn’t everything",
+    "text": "Answer quality isn’t everything\nPractical considerations around deploying the model also come into play: inference speed, cost, customization, safety and licensing. These factors can be more important than the model’s accuracy. The website artificialanalysis.ai is great for comparing models and API providers.\n\nInference speed\nHow fast can the model generate responses? This matters most for real-time applications like chatbots. A slow response makes for a poor user experience.\nInference speed is determined by the model, meaning the number and precision of weights. It’s also determined by the hardware used, with higher-end GPUs offering more speed. The efficiency of inference code is also crucial, with libraries like vLLM offering a 2x or greater speedup over the baseline implementation. run.ai has an in-depth analysis of throughput across serving engines and models.\nArtificialanalysis.ai benchmarks throughput for a variety of models and providers and visualizes it by model and by provider.\n\n\n\nThroughput by model, across providers supporting the model\n\n\nSmaller models, measured by the number of parameters, are faster. Mixture-of-experts models like Mixtral 8x7B have a clever approach to inference: each request only uses a subset of the model, reducing the number of matrix multiplications needed.\n\n\n\nThroughput for llama-3 70B instruct, by provider\n\n\nThe second graph shows throughput for the same model across different providers. The fastest provider offers nearly 10x the throughput of the slowest provider.\n\n\nCost\nThere are two common pricing modes: per-token or per GPU-hour.\n\nPer token pricing\nThis is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M input tokens and $30/1M output tokens.\n\n\n\n\n\n\n\n\n\nRole\nMessage\nTokens\nCost\n\n\n\n\nUser\nTranslate the following text to German: How are you?\n11\n$0.00011\n\n\nAssistant\nWie geht es dir?\n5\n$0.00015\n\n\n\nNote that the cost is per token, not per word. A token is a word or a subword. You can try OpenAI’s free https://platform.openai.com/tokenizer or the tiktoken library to get the token count for a prompt. Note that models with a different tokenizer will have different token counts for the same prompt.\n\n\n\nOpenAI’s tokenizer\n\n\nYou can save money by using shorter prompts. Fine-tuning can “bake” instructions into a model, foregoing the need to explain the task in each request. However, token prices for fine-tuned models are typically higher than for the base model.\nOpenAI recently announced batch inference with 24h turnaround time at 50% off the token price.\n\n\n\nInput and output token cost by model, median across providers\n\n\nPer-token costs vary widely across providers and models. Larger models are more expensive, and major cloud providers charge higher prices than smaller providers. There’s a downward trend in pricing over time, given a fixed model size.\n\n\nGPU hour pricing\nThe second case is that you self-host the model. Here, pricing depends on GPU rent (or depreciation of your own GPU). My currently favored GPU provider is Modal. They offer a generous free tier, pricing is competitive, only actually used GPU time is billed and it’s easy to use.\nTo figure out the actual cost of your workload it’s normally necessary to run your own cost benchmark. There are too many moving pieces, and each can change the cost by a factor of 2 or more: GPU configuration (model, number of GPUs), the LLM, quantization, inference library, timing of inference (batch or live, long term reservation or on demand) and the geographic region.\n\n\n\nCustomization\nOpen models running on your own infrastructure offer deeper customization than models served from APIs.\nThere are three main types of customization:\n\nFinetuning via SFT, RLHF, DPO or ORPO\nQuantization, meaning reducing the precision of the weights to 16-bit or 8-bit\nToken sampling settings, such as temperature, top-k, nucleus sampling and beam search. For a full overview, check the Hugging Face GenerationConfig documentation\n\nAPI providers offer only a subset of these options and only for certain models. More knobs to twist is only meaningful if you have the time to actually use them. If your main focus is elsewhere, good presets can be more productive than maximum control. It’s the same reason why many devs choose macOS over Arch Linux.\n\n\nContext window\nThe context window is the number of input tokens the model can handle in one go. Higher is better, as it allows the model to reason over more information. Roughly speaking, one page of text is 500 tokens.\n\n\n\nContext window sizes by model\n\n\nThis comes with some caveats:\n\noutput token limits are significantly lower than input token limits\nprocessing a large number of input tokens is expensive\nthe model may not be able to actually use the full context, this is referred to the “lost in the middle” problem (Liu et al. 2023)\n\n\n\nSafety and fairness\nOthers have written extensively on safety and fairness evaluation of LLMs. Anthropic’s principle “Helpful, Honest and Harmless AI” is industry-leading in this regard. They provide an evaluation dataset on Hugging Face.\nKey questions to ask about a foundation model are:\n\nDoes the model exhibit biases around gender, race, religion or other protected classes?\nDoes the model refuse requests to do dangerous or illegal activities?\nCan it be goaded into violating its own principles?\n\nThe documentation by the model providers a good place to start. The abscence of consideration of these factors in a foundation model is a red flag.\nThe actual risk of a model depends on the task. High-risk tasks such as medical diagnosis, legal advice or loan approval require more scrutiny than tasks such as sentiment analysis or summarization. Situations in which models have free-form interaction with users, such as chatbots carry greater potential for harm and also surface area for prompt injection attacks.\n\n\nLicensing\nBroadly, models can be categorized as open source or proprietary. Generally, the more open the better because you can inspect the model, customize it and deploy it on your own infrastructure. In addition, open source models give you ownership of the model, rather than being at the mercy of the provider’s pricing and availability.\nThe term open source has become muddled in the context of LLMs. The minimum requirement is that the model’s weights are available for download. However, full open source also includes the training data, training code, inference code and documentation. Further, there are a variety of open licenses that can be applied. The MIT license and Apache 2.0 are the most permissive and place the fewest restrictions and duties on the user. Finally, there are custom licenses. Notably, Meta has released the Llama 3 model under a custom license that requires attribution and requires that organzations with more than 700 million monthly active users (effectively only the largest tech companies) to request a commercial license."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#llm-evaluation-checklist",
+    "href": "blog/llm-eval/index.html#llm-evaluation-checklist",
+    "title": "Evaluating an LLM for your use case",
+    "section": "LLM Evaluation Checklist",
+    "text": "LLM Evaluation Checklist\nEvaluating LLMs is a multi-faceted challenge. While benchmarks and case studies are valuable, there’s no substitute for hands-on testing in one’s particular domain. To summarize, here’s a checklist for evaluating an LLM:\n\n✅ Licensing: Check that the model’s license is compatible with your use case.\n✅ Customization: Consider the model’s customization options based on the license and your needs.\n✅ Quality: Start with general benchmarks, then move to manual and programmatic evaluations. Consider structured and unstructured responses.\n✅ Safety and fairness: Assess the model’s safety and fairness, especially for use cases involving individual judgments or open-ended interaction.\n✅ Cost: Analyze the cost per token or GPU hour for your usage patterns.\n✅ Speed: Benchmark the model’s throughput in your setup, whether self-hosted or served from an API. There is often significant optimization potential here.\n\nBeing clear about the task and success criteria at every step is key. Writing down arguments and results lets you repeat the analysis for new models and justify your choice in architecture and budget reviews. Sharing benchmark results builds trust by users of your model. Without quantitative tests, their opinion of the model hinges on their first interaction alone."
   },
   {
     "objectID": "blog/llm-price-performance/index.html",
     "href": "blog/llm-price-performance/index.html",
     "title": "LLM Price Comparison",
     "section": "",
-    "text": "This is an overview of pricing for large language models from different developers and API providers. The dataset is available on GitHub. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the Tokenizer by OpenAI.\nPrices as of January 11, 2024."
+    "text": "Note\n\n\n\nThis article is about prices as of January 11, 2024. For current prices and more comprehensive analysis, check artificialanalysis.ai (not affiliated with me).\nThis is an overview of pricing for large language models from different developers and API providers. The dataset is available on GitHub. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the Tokenizer by OpenAI."
   },
   {
     "objectID": "blog/llm-price-performance/index.html#price-comparison",
@@ -903,17 +973,45 @@
     "text": "Hi! I’m Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.\nI’m the inventor and lead developer of Cosmention, an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm Drogerie Markt.\nThe best way to contact me is via email: paul.simmering@gmail.com.\nWhat other than data science? Here are some things I enjoy:\n\nContemporary art, particularly generative art and art inspired by geometry. My favorites are Kjetil Golid, Owen Pomery and Reuben Wu.\nParks and gardens, especially Japanese gardens.\nDesign and typography. Some examples: Berkeley Graphics, iA, Stripe’s website.\nEuro-style games, Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run.\n\nThis website is built with Quarto. The source is available on Github."
   },
   {
-    "objectID": "talks/ephmra2024/index.html",
-    "href": "talks/ephmra2024/index.html",
-    "title": "AI Revolutionizes Content Analysis in Market Research",
-    "section": "",
-    "text": "🗓️ Event\nEPHMRA 2024 German Chapter Meeting\n\n\n📅 Date\n22 April 2024\n\n\n📍 Location\nBerlin, Germany\n\n\n\n\n\n\nPresenting a case study\n\n\nThis presentation at EPHMRA 2024 was about three ways in which AI makes content analysis more efficient in market research:\n\nStructuring text, audio and image inputs\nAiding aggregation and reporting with Copilots\nEnabling market researchers to move from an analyst role to a communicator and strategist role\n\nIf you wish to receive a copy of the slides (in German), please contact me.\nThe slide in the background of the image shows an example of one-stop prompting, see my article on the topic."
+    "objectID": "blog/llm-eval/index.html#inference-speed",
+    "href": "blog/llm-eval/index.html#inference-speed",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Inference speed",
+    "text": "Inference speed\nHow fast can the model generate responses? This matters most for real-time applications like chatbots. A slow response makes for a poor user experience.\nInference speed is determined by the model, meaning the number and precision of weights. It’s also determined by the hardware used, with higher-end GPUs offering more speed. The efficiency of inference code is also crucial, with libraries like vLLM offering a 2x or greater speedup over the baseline implementation. run.ai has an in-depth analysis of throughput across serving engines and models.\nArtificialanalysis.ai benchmarks throughput for a variety of models and providers and visualizes it by model and by provider.\n\n\n\nThroughput by model, across providers supporting the model\n\n\nSmaller models, measured by the number of parameters, are faster. Mixture-of-experts models like Mixtral 8x7B have a clever approach to inference: each request only uses a subset of the model, reducing the number of matrix multiplications needed.\n\n\n\nThroughput for llama-3 70B instruct, by provider\n\n\nThe second graph shows throughput for the same model across different providers. The fastest provider offers nearly 10x the throughput of the slowest provider."
   },
   {
-    "objectID": "talks/wdm2024/index.html",
-    "href": "talks/wdm2024/index.html",
-    "title": "AI in Market Research - Case Studies",
-    "section": "",
-    "text": "🗓️ Event\nWoche der Marktforschung 2024\n\n\n📅 Date\n16 April 2024\n\n\n📍 Location\nOnline\n\n\n\nWoche der Marktforschung is an annual event by Marktforschung.de and Succeet. This year Oliver Tabino and me presented three case studies of applied AI in market research:\n\nAgile use of LLMs for social media monitoring in pharma\nScaleable data pipeline for social media monitoringin cosmetics\nState of the art accuracy in aspect-based sentiment analysis of reviews using a fine-tuned LLM\n\nWith over 200 attendees, this webinar was the second most popular event out of 93 events of the WdM.\nPlease contact me if you would like to get access to a recording of the presentation on Vimeo (in German)."
+    "objectID": "blog/llm-eval/index.html#cost",
+    "href": "blog/llm-eval/index.html#cost",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Cost",
+    "text": "Cost\nThere are two common pricing modes: per-token or per GPU-hour.\n\nPer token pricing\nThis is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M input tokens and $30/1M output tokens.\n\n\n\n\n\n\n\n\n\nRole\nMessage\nTokens\nCost\n\n\n\n\nUser\nTranslate the following text to German: How are you?\n11\n$0.00011\n\n\nAssistant\nWie geht es dir?\n5\n$0.00015\n\n\n\nNote that the cost is per token, not per word. A token is a word or a subword. For simple calculations, multiplying the number of words by 1.33 works. You can try OpenAI’s free https://platform.openai.com/tokenizer or the tiktoken library to get the exact token count for a text. Note that models with a different tokenizer will have different token counts for the same prompt.\n\n\n\nOpenAI’s tokenizer\n\n\nYou can save money by using shorter prompts. Fine-tuning can “bake” instructions into a model, foregoing the need to explain the task in each request. However, token prices for fine-tuned models are typically higher than for the base model.\nOpenAI recently announced batch inference with 24h turnaround time at 50% off the token price.\n\n\n\nInput and output token cost by model, median across providers\n\n\nPer-token costs vary widely across providers and models. Larger models are more expensive, and major cloud providers charge higher prices than smaller providers. There’s a downward trend in pricing over time, given a fixed model size.\n\n\nGPU hour pricing\nThe second case is that you self-host the model. Here, pricing depends on GPU rent (or depreciation of your own GPU). My currently favored GPU provider is Modal. They offer a generous free tier, pricing is competitive, only actually used GPU time is billed and it’s easy to use.\nTo figure out the actual cost of your workload it’s normally necessary to run your own cost benchmark. There are too many moving pieces, and each can change the cost by a factor of 2 or more: GPU configuration (model, number of GPUs), the LLM, quantization, inference library, timing of inference (batch or live, long term reservation or on demand) and the geographic region."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#customization",
+    "href": "blog/llm-eval/index.html#customization",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Customization",
+    "text": "Customization\nOpen models running on your own infrastructure offer deeper customization than models served from APIs.\nThere are three main types of customization:\n\nFinetuning via SFT, RLHF, DPO or ORPO\nQuantization, meaning reducing the precision of the weights to 16-bit or 8-bit\nToken sampling settings, such as temperature, top-k, nucleus sampling and beam search. For a full overview, check the Hugging Face GenerationConfig documentation\n\nAPI providers offer only a subset of these options and only for certain models. More knobs to twist is only meaningful if you have the time to actually use them. If your main focus is elsewhere, good presets can be more productive than maximum control. It’s the same reason why many devs choose macOS over Arch Linux."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#context-window",
+    "href": "blog/llm-eval/index.html#context-window",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Context window",
+    "text": "Context window\nThe context window is the number of input tokens the model can handle in one go. Higher is better, as it allows the model to reason over more information. For reference, an A4 page of text is about 500 words, which is about 665 tokens. The smallest context size found in current models is 4096 tokens, which corresponds to about 6 pages of text.\n\n\n\nContext window sizes by model\n\n\nThis comes with some caveats:\n\noutput token limits are significantly lower than input token limits\nprocessing a large number of input tokens is expensive\nthe model may not be able to actually use the full context, this is referred to the “lost in the middle” problem (Liu et al. 2023)"
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#safety-and-fairness",
+    "href": "blog/llm-eval/index.html#safety-and-fairness",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Safety and fairness",
+    "text": "Safety and fairness\nOthers have written extensively on safety and fairness evaluation of LLMs. Anthropic’s principle “Helpful, Honest and Harmless AI” is industry-leading in this regard. They provide an evaluation dataset on Hugging Face.\nKey questions to ask about a foundation model are:\n\nDoes the model exhibit biases around gender, race, religion or other protected classes?\nDoes the model refuse requests to do dangerous or illegal activities?\nCan it be goaded into violating its own principles?\n\nThe documentation by the model providers a good place to start. The abscence of consideration of these factors in a foundation model is a red flag.\nThe actual risk of a model depends on the task. High-risk tasks such as medical diagnosis, legal advice or loan approval require more scrutiny than tasks such as sentiment analysis or summarization. Situations in which models have free-form interaction with users, such as chatbots carry greater potential for harm and also surface area for prompt injection attacks."
+  },
+  {
+    "objectID": "blog/llm-eval/index.html#licensing",
+    "href": "blog/llm-eval/index.html#licensing",
+    "title": "Evaluating an LLM for your use case",
+    "section": "Licensing",
+    "text": "Licensing\nBroadly, models can be categorized as open source or proprietary. Generally, the more open the better because you can inspect the model, customize it and deploy it on your own infrastructure. In addition, open source models give you ownership of the model, rather than being at the mercy of the provider’s pricing and availability.\nThe term open source has become muddled in the context of LLMs. The minimum requirement is that the model’s weights are available for download. However, full open source also includes the training data, training code, inference code and documentation. Further, there are a variety of open licenses that can be applied. The MIT license and Apache 2.0 are the most permissive and place the fewest restrictions and duties on the user. Finally, there are custom licenses. Notably, Meta has released the Llama 3 model under a custom license that requires attribution and requires that organzations with more than 700 million monthly active users (effectively only the largest tech companies) to request a commercial license."
   }
 ]

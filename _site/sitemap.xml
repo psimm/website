@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://simmering.dev/privacy.html</loc>
-    <lastmod>2023-12-27T09:51:54.349Z</lastmod>
+    <lastmod>2024-04-27T16:56:25.589Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/modal-twitter/index.html</loc>
@@ -37,39 +37,43 @@
     <lastmod>2023-11-01T12:06:48.226Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2023-10-21T09:31:12.912Z</lastmod>
+    <loc>https://simmering.dev/index.html</loc>
+    <lastmod>2023-10-21T11:21:01.814Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/concordi2017/index.html</loc>
-    <lastmod>2023-10-21T09:31:13.002Z</lastmod>
+    <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.974Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/comes2020/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.975Z</lastmod>
+    <loc>https://simmering.dev/talks/gor2019/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.022Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/gor2024/index.html</loc>
-    <lastmod>2024-03-10T11:33:49.510Z</lastmod>
+    <loc>https://simmering.dev/talks/ephmra2024/index.html</loc>
+    <lastmod>2024-04-24T08:33:23.988Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/emaee2017/index.html</loc>
-    <lastmod>2023-10-21T09:31:13.010Z</lastmod>
+    <loc>https://simmering.dev/talks/wdm2024/index.html</loc>
+    <lastmod>2024-04-24T08:31:50.352Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/gpexp/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.944Z</lastmod>
+    <loc>https://simmering.dev/talks/gor2023/index.html</loc>
+    <lastmod>2023-10-28T06:46:54.989Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/stakex/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.948Z</lastmod>
+    <loc>https://simmering.dev/talks/researchplus2018/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.029Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/masterthesis/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.945Z</lastmod>
+    <loc>https://simmering.dev/projects/cosmention/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.938Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks.html</loc>
+    <loc>https://simmering.dev/projects/bachelorthesis/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.933Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/projects/texttunnel/index.html</loc>
     <lastmod>2023-10-21T09:31:12.963Z</lastmod>
   </url>
   <url>
@@ -77,44 +81,52 @@
     <lastmod>2023-12-27T09:51:41.970Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/texttunnel/index.html</loc>
+    <loc>https://simmering.dev/talks.html</loc>
     <lastmod>2023-10-21T09:31:12.963Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/bachelorthesis/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.933Z</lastmod>
+    <loc>https://simmering.dev/projects/masterthesis/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.945Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/projects/cosmention/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.938Z</lastmod>
+    <loc>https://simmering.dev/projects/stakex/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.948Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/researchplus2018/index.html</loc>
-    <lastmod>2023-10-21T09:31:13.029Z</lastmod>
+    <loc>https://simmering.dev/projects/gpexp/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.944Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/gor2023/index.html</loc>
-    <lastmod>2023-10-28T06:46:54.989Z</lastmod>
+    <loc>https://simmering.dev/talks/emaee2017/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.010Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/talks/gor2024/index.html</loc>
+    <lastmod>2024-03-10T11:33:49.510Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/talks/succeet2023/index.html</loc>
     <lastmod>2023-10-28T06:46:54.989Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/gor2019/index.html</loc>
-    <lastmod>2023-10-21T09:31:13.022Z</lastmod>
+    <loc>https://simmering.dev/talks/comes2020/index.html</loc>
+    <lastmod>2023-10-21T09:31:12.975Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
-    <lastmod>2023-10-21T09:31:12.974Z</lastmod>
+    <loc>https://simmering.dev/talks/concordi2017/index.html</loc>
+    <lastmod>2023-10-21T09:31:13.002Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2023-10-21T11:21:01.814Z</lastmod>
+    <loc>https://simmering.dev/projects.html</loc>
+    <lastmod>2023-10-21T09:31:12.912Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/llm-eval/index.html</loc>
+    <lastmod>2024-04-28T11:42:58.715Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/llm-price-performance/index.html</loc>
-    <lastmod>2024-02-13T11:06:58.923Z</lastmod>
+    <lastmod>2024-04-24T13:07:07.786Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/dataframes/index.html</loc>
@@ -143,13 +155,5 @@
   <url>
     <loc>https://simmering.dev/about.html</loc>
     <lastmod>2024-04-24T07:46:54.389Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/ephmra2024/index.html</loc>
-    <lastmod>2024-04-24T08:33:23.988Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/talks/wdm2024/index.html</loc>
-    <lastmod>2024-04-24T08:31:50.352Z</lastmod>
   </url>
 </urlset>
