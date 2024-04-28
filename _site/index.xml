@@ -22,7 +22,7 @@
 
 
 
-<p>In the last two months we’ve seen releases of flagship LLMs like <a href="https://llama.meta.com/llama3/">Llama 3</a>, <a href="https://mistral.ai/news/mixtral-8x22b/">Mixtral 8x22B</a>, and <a href="https://www.anthropic.com/news/claude-3-family">Claude 3</a>. The title of Mistral’s announcement summarizes the dynamic well: <em>Cheaper, Better, Faster, Stronger</em>. It’s like neverending Christmas for AI developers! But how do you evaluate these models for your use case? This article is a deep dive into evaluations, covering accuracy, speed, cost, customization, context window, safety, and licensing. Use the table of contents on the right to jump to a specific section.</p>
+<p>In the last two months we’ve seen releases of flagship LLMs like <a href="https://llama.meta.com/llama3/">Llama 3</a>, <a href="https://mistral.ai/news/mixtral-8x22b/">Mixtral 8x22B</a>, and <a href="https://www.anthropic.com/news/claude-3-family">Claude 3</a>. The title of Mistral’s announcement summarizes the dynamic well: <em>Cheaper, Better, Faster, Stronger</em>. It’s like neverending Christmas for AI developers! But how do you evaluate these models for your use case? This article is a deep dive into evaluations, covering accuracy, speed, cost, customization, context window, safety, and licensing.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://simmering.dev/blog/llm-eval/llm_eval_cropped.png" class="img-fluid figure-img"></p>
