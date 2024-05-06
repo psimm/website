@@ -11,7 +11,389 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.30</generator>
-<lastBuildDate>Sat, 27 Apr 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 05 May 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Constrained token generation as universal output layer</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/absa-os-llm/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>With the advancement of LLM capabilities in free-form text generation, it’s natural to think about leveraging LLMs for structured NLP tasks as well. However, by default LLM output doesn’t follow a specific structure. In this article I’ll show how to constrain generation to a predefined structure with the <a href="https://github.com/outlines-dev/outlines">outlines</a> library and how this compares to specialized NLP models.</p>
+<p>I’ll use examples of aspect-based sentiment analysis, text classification and named entity recognition. I’ll use the outlines library to prompt Llama-3 8B served locally by <a href="https://github.com/ggerganov/llama.cpp">llama.cpp</a>. A <a href="https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF">GGUF-formatted version</a> of the model is available on Hugging Face. The result is an efficient, local, zero-shot model for any structured NLP task, even composite tasks like aspect-based sentiment analysis.</p>
+<section id="we-can-do-better-than-prompting" class="level2">
+<h2 class="anchored" data-anchor-id="we-can-do-better-than-prompting">We can do better than prompting</h2>
+<p>LLMs are capable of structured NLP tasks. For example, let’s use Claude 3 Opus for sentiment analysis:</p>
+<blockquote class="blockquote">
+<p>User: Classify the following text as positive, negative or neutral: The cheeseburger was tasty!</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Assistant: Here is the classification of the text “The cheeseburger was tasty!”: Positive. The text expresses a positive sentiment by describing the cheeseburger as “tasty”.</p>
+</blockquote>
+<p>That’s correct, but the response isn’t structured. Let’s try again with a new prompt.</p>
+<blockquote class="blockquote">
+<p>User: Classify the following text as positive, negative or neutral. Answer only with “positive”, “neutral” or “negative”: The cheeseburger was tasty!</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Assistant: positive</p>
+</blockquote>
+<p>That works for now, but the structure isn’t guaranteed. It gets hardes for more complex structures, e.g.&nbsp;for named entity recognition. Further, we’d have to include our prompt in every request, which roughly doubles the number of input tokens and thus latency and cost.</p>
+<p>We can do better than pure prompting. The outlines library provides a token generator that forces the generated tokens to match a predefined structure. It also boosts efficiency because it skips inference for tokens that only have one possible value, e.g.&nbsp;a closing <code>}</code> in a JSON object.</p>
+<p>A related strategy is using <a href="https://platform.openai.com/docs/guides/function-calling">function calling</a> APIs, e.g.&nbsp;from OpenAI. By providing only one function signature, the output is constrained to a specific structure. However, this isn’t as efficient as the approach offered by outlines, as it doesn’t skip tokens and adds overhead for function definitions.</p>
+</section>
+<section id="constrained-token-generation" class="level2">
+<h2 class="anchored" data-anchor-id="constrained-token-generation">Constrained token generation</h2>
+<p>Let’s consider aspect-based sentiment analysis (ABSA) as an example. We define the expected output structure with a <a href="https://docs.pydantic.dev/latest/">Pydantic</a> model:</p>
+<div id="0a5b453d" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BaseModel</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Aspect(BaseModel):</span>
+<span id="cb1-5">    aspect: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-6">    polarity: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Absa(BaseModel):</span>
+<span id="cb1-10">    aspects: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[Aspect]</span></code></pre></div>
+</div>
+<p>We want the model to output a JSON object with a list of aspects, each with an aspect and a polarity. It should conform to the <code>Absa</code> schema.</p>
+<p>Review: “The food was great, but the service was terrible.”</p>
+<p>Load the model locally:</p>
+<div id="149ae555" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> outlines <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> models, generate</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> models.llamacpp(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./Meta-Llama-3-8B-Instruct.Q8_0.gguf"</span>)</span></code></pre></div>
+</div>
+<p>Here’s the desired output:</p>
+<div id="0d5d03ee" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">generator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> generate.json(model, Absa)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">instruction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Extract all mentioned aspects and their sentiment."</span></span>
+<span id="cb3-4">example <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The food was great, but the service was terrible."</span></span>
+<span id="cb3-5">prompt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>instruction<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Text: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>example<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb3-6">answer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> generator(prompt)</span>
+<span id="cb3-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(answer)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+llama_print_timings:        load time =   10661.19 ms
+llama_print_timings:      sample time =      10.33 ms /    35 runs   (    0.30 ms per token,  3388.85 tokens per second)
+llama_print_timings: prompt eval time =   10660.84 ms /    22 tokens (  484.58 ms per token,     2.06 tokens per second)
+llama_print_timings:        eval time =    3499.04 ms /    34 runs   (  102.91 ms per token,     9.72 tokens per second)
+llama_print_timings:       total time =   14408.97 ms /    56 tokens</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>aspects=[Aspect(aspect='food', polarity='positive'), Aspect(aspect='service', polarity='negative')]</code></pre>
+</div>
+</div>
+<p>How does this work? Let’s consider the JSON string as a sequence of predictions <img src="https://latex.codecogs.com/png.latex?y_1,%20y_2,%20...,%20y_K"> and use the <a href="https://github.com/openai/tiktoken?tab=readme-ov-file">tiktoken</a> byte-pair encoding (BPE) tokenizer. At each step, a new token is added to the sequence.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Sequence</th>
+<th>Is fixed</th>
+<th>Possible values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>{</code></td>
+<td>Yes</td>
+<td><code>{</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>{"as</code></td>
+<td>Yes</td>
+<td><code>as</code></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>{"aspects</code></td>
+<td>Yes</td>
+<td><code>pects</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>{"aspects</code></td>
+<td>Yes</td>
+<td><code>":</code></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><code>{"aspects":</code></td>
+<td>No</td>
+<td><code>[]</code> OR <code>[{"</code></td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>K</td>
+<td>…</td>
+<td>No</td>
+<td><code>}</code></td>
+</tr>
+</tbody>
+</table>
+<p>The predicts the output token by token. The first token is the opening <code>{"</code>. This token is fixed, so we don’t need to predict it. The word “aspects” comes next, along with <code>:[</code>. These are also fixed. Now is the first choice: if there is at least one aspect, the model should predict the opening <code>{</code>. If there are no aspects, the model should predict <code>]</code>. We see that a large part of the output is fixed.</p>
+<p>A more thorough explanation of constrained generation is available on the <a href="http://blog.dottxt.co/coalescence.html">blog of .txt</a>, the creators of outlines.</p>
+<p>Normally, ABSA requires two models: one for aspect extraction and one for sentiment classification. With constrained token generation, we can use a single model for both tasks.</p>
+<p>Key insight: Structured generation brings the efficiency and reliability of LLMs closer to that of classic NLP models.</p>
+</section>
+<section id="output-layer-in-classic-structured-nlp-tasks" class="level2">
+<h2 class="anchored" data-anchor-id="output-layer-in-classic-structured-nlp-tasks">Output layer in classic, structured NLP tasks</h2>
+<p>How does this compare to classic NLP tasks?</p>
+<p>Let’s review the output layers of models specialized for classic NLP tasks and compare them to constrained token generation.</p>
+<section id="text-classification" class="level3">
+<h3 class="anchored" data-anchor-id="text-classification">Text classification</h3>
+<p>Input a text, get out a probability for one or more classes. This task includes topic classification, sentiment analysis and intent detection.</p>
+<p>Example on topic classification:</p>
+<p>The output layer represents each class with a neuron. A softmax activation function is used to normalize the output values to a probability distribution.</p>
+</section>
+<section id="sequence-tagging" class="level3">
+<h3 class="anchored" data-anchor-id="sequence-tagging">Sequence tagging</h3>
+<p>This includes named entity recognition and part-of-speech tagging.</p>
+<p>In classic NLP, an LSTM or other sequential model is used to predict the class of each token. The <a href="https://en.wikipedia.org/wiki/Inside–outside–beginning_(tagging)">inside-outside-beginning</a> (IOB) tagging format is used to represent the classes of the tokens.</p>
+<p>Example text:</p>
+<p>Paul is going to New York.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Token</th>
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Paul</td>
+<td>B-PER</td>
+</tr>
+<tr class="even">
+<td>is</td>
+<td>O</td>
+</tr>
+<tr class="odd">
+<td>going</td>
+<td>O</td>
+</tr>
+<tr class="even">
+<td>to</td>
+<td>O</td>
+</tr>
+<tr class="odd">
+<td>New</td>
+<td>B-LOC</td>
+</tr>
+<tr class="even">
+<td>York</td>
+<td>I-LOC</td>
+</tr>
+<tr class="odd">
+<td>.</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>For simplicity I tokenized by whitespace.</p>
+<p>We have 2 output neurons for each class, plus one neuron for the outside class. Assuming 3 classes, we have 7 output neurons at each step.</p>
+<p>How could we solve this task with an LLM? LLMs aren’t great at counting and exactly repeating long sequences. Unless the task requires exact token indices, we can simplify it to extraction of the entities:</p>
+<div id="3f27cae2" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> enum <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Enum</span>
+<span id="cb6-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BaseModel</span>
+<span id="cb6-3"></span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Use enum to tell model which entity types to extract</span></span>
+<span id="cb6-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> EntityType(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>, Enum):</span>
+<span id="cb6-7">    PER <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PER"</span></span>
+<span id="cb6-8">    LOC <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LOC"</span></span>
+<span id="cb6-9">    ORG <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ORG"</span></span>
+<span id="cb6-10"></span>
+<span id="cb6-11"></span>
+<span id="cb6-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Entity(BaseModel):</span>
+<span id="cb6-13">    entity: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb6-14">    type_: EntityType</span>
+<span id="cb6-15"></span>
+<span id="cb6-16"></span>
+<span id="cb6-17"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Ner(BaseModel):</span>
+<span id="cb6-18">    entities: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[Entity]</span></code></pre></div>
+</div>
+<p>So an example output could be:</p>
+<div id="5d90f211" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">generator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> generate.json(model, Ner)</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">instruction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Extract all named entities."</span></span>
+<span id="cb7-4">example <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Paul is going to New York."</span></span>
+<span id="cb7-5">prompt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>instruction<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Text: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>example<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb7-6">answer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> generator(prompt)</span>
+<span id="cb7-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(answer)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+llama_print_timings:        load time =   10661.19 ms
+llama_print_timings:      sample time =       1.67 ms /     6 runs   (    0.28 ms per token,  3586.37 tokens per second)
+llama_print_timings: prompt eval time =    1099.03 ms /    15 tokens (   73.27 ms per token,    13.65 tokens per second)
+llama_print_timings:        eval time =     443.75 ms /     5 runs   (   88.75 ms per token,    11.27 tokens per second)
+llama_print_timings:       total time =    1575.93 ms /    20 tokens</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>entities=[]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p><strong>Advantages</strong> of using an LLM with constrained token generation over a specialized model:</p>
+<ul>
+<li>Use the most powerful LLMs as the base model, rather than smaller models specialized for structured tasks. Larger models have greater learning capacity and greater ability for zero-shot predictions. Testing is still required though, see my <a href="../../blog/llm-eval/">guide</a></li>
+<li>No need to change the model architecture for different output structures. Just provide a Pydantic model.</li>
+<li>Free-form output, including chain-of-thought generation, explanations, summarization, rephrasing, etc. makes the model more versatile. This would otherwise require chaining multiple specialized models.</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>Despite the efficiency gained from skipping tokens, LLMs still require massively more compute than classic models for inference.</li>
+<li>LLMs require more compute for training, too. This need is coming down with <a href="https://huggingface.co/docs/peft/index">PEFT</a> methods, but it’s still a factor.</li>
+<li>Confidence of predictions is harder to gauge. In classic architectures, the interpretation of the output layer is straightforward. In constrained token generation there’s a mix of pre-determined and predicted tokens.</li>
+</ul>
+<p>For high-throughput applications I’d still recommend using specialized models. Same if there are already specialized open source models available. However, for new tasks or tasks that require more flexibility, LLMs with constrained generation via outlines are a valid choice.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/absa-os-llm/</guid>
+  <pubDate>Sun, 05 May 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/absa-os-llm/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Evaluating an LLM for your use case</title>
   <dc:creator>Paul Simmering</dc:creator>

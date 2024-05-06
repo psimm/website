@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/absa-os-llm/index.html",
       "/blog/llm-eval/index.html",
       "/blog/gold-data/index.html",
       "/blog/llm-price-performance/index.html",
@@ -23,8 +24,10 @@
   {
     "listing": "/talks.html",
     "items": [
+      "/talks/day-of-business-psychology-2024/index.html",
       "/talks/ephmra2024/index.html",
       "/talks/wdm2024/index.html",
+      "/talks/finding-answers-2024/index.html",
       "/talks/gor2024/index.html",
       "/talks/succeet2023/index.html",
       "/talks/gor2023/index.html",

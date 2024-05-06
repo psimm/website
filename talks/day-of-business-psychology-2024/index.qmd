@@ -1,0 +1,19 @@
+---
+title: "4th Day of Business Psychology"
+date: 2024-05-03
+author: "Paul Simmering"
+location: "Hochschule für Technik Stuttgart"
+categories:
+  - conference
+image: "image.jpg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [4th Day of Business Psychology](https://eveeno.com/133705124#)|
+| 📅 Date | 3 May 2024 |
+| 📍 Location | Hochschule für Technik Stuttgart |
+| 🌐 Language | German |
+| 📥 Materials | [Slides](/talks/day-of-business-psychology-2024/day-of-business-psychology-2024.pdf) |
+
+I presented a case study of use of AI in consumer research at the 4th Day of Business Psychology, hosted by the Hochschule für Technik Stuttgart.
