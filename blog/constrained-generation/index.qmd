@@ -1,0 +1,824 @@
+---
+title: "The best library for structured LLM output"
+author: "Paul Simmering"
+date: "2024-05-11"
+categories: ["Machine Learning"]
+image: "image.png"
+---
+
+By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification and named entity recognition require structured output. There are several Python libraries that help with this. In this article, I compare ten libraries in terms of efficiency, flexibility and ease of use.
+
+![Image created with Playground v2.5](image_wide.png)
+
+## 10 Python libraries for structured LLM output
+
+Here are the most prominent solutions, sorted by the number of Github stars ⭐:
+
+| Library | Stars | Method¹ | Description |
+|---|---:|---|---|
+| [langchain](https://python.langchain.com/docs/modules/model_io/output_parsers/types/pydantic/) | 84,100 | Prompting & function calling | Pydantic output parser as part of langchain |
+| [llama_index](https://docs.llamaindex.ai/en/stable/module_guides/querying/structured_outputs/pydantic_program/) | 31,500 | Prompting & function calling | Pydantic program as part of llama_index |
+| [guidance](https://github.com/guidance-ai/guidance) | 17,500 | Constrained token sampling | Programming paradigm for constrained generation |
+| [outlines](https://github.com/outlines-dev/outlines) | 5,800 | Constrained token sampling | Constrained token sampling using CFGs² |
+| [instructor](https://github.com/jxnl/instructor) | 5,200 | Function calling | Specify Pydantic models to define structure of LLM outputs |
+| [marvin](https://github.com/prefecthq/marvin) | 4,800 | Function calling | Toolbox of task-specific OpenAI API wrappers |
+| [spacy-llm](https://github.com/explosion/spacy-llm) | 948 | Prompting | spaCy plugin to add LLM responses to a pipeline |
+| [fructose](https://github.com/bananaml/fructose) | 687 | Function calling | LLM calls as strongly-typed functions |
+| [mirascope](https://github.com/Mirascope/mirascope) | 204 | Function calling | Prompting, chaining and structured information extraction |
+| [texttunnel](https://github.com/qagentur/texttunnel) | 11 | Function calling | Efficient async OpenAI API function calling |
+
+¹The method describes how the library generates structured output. See the following sections for more details.
+
+²Context-free grammars: a recursive way to define the structure of a natural language, programming language or other sequence of tokens. See [Wikipedia](https://en.wikipedia.org/wiki/Context-free_grammar).
+
+::: {.callout-note}
+## May 2024
+This article was written in May 2024 with the latest versions of the libraries and the number of Github stars at that time. The libraries are under active development and the features may have changed since then.
+:::
+
+All libraries are released under the MIT or Apache 2.0 license, which are both permissive open-source licenses. Their code is available on Github and they can be installed via pip.
+
+I'll compare the libraries based on three criteria: efficiency, ease of use and flexibility. Efficiency is about how tokens are generated, ease of use is about how easy it is to get started with the library and flexibility is about how much you can customize the output format.
+
+I'll use a named entity recognition task as an example because it's a common task that requires structured output. The task is to extract named entities from the following text:
+
+```python
+text = """BioNTech SE is set to acquire InstaDeep, \
+a Tunis-born and U.K.-based artificial intelligence \
+(AI) startup, for up to £562 million\
+"""
+```
+
+In the following sections, I'll write a code snippet for each library. If possible, I'll use Pydantic classes to define the schema for the structured output. Depending on the library's support I'll use OpenAI's GPT-4-turbo or Meta's Llama-3-8B-Instruct ([8-bit quantized and in GGUF format](https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF)) running on Ollama. I'll set the temperature to 0.0 to reduce randomness in the output. This is also a little test of how easy it is to customize the parameters.
+
+The libraries will be ordered by their method of generating structured output: prompting (llama_index, spacy-llm), function calling (instructor, marvin, mirascope, langchain, texttunnel), and constrained token sampling (outlines and guidance). llama_index also supports function calling and langchain also supports prompting.
+
+At the start of each section I'll give an overview of the generation method.
+
+## Prompting for structured output
+
+This is the simplest approach. A prompt describes a desired output format and hopefully the LLM follows it.
+
+Example prompt:
+
+> Your task is to extract named entities from a text.
+> Add no commentary, only extract the entities and their labels.
+> Entities must have one of the following labels: PERSON, ORGANIZATION, LOCATION.
+> Example text: "Apple is a company started by Steve Jobs, Steve Wozniak and Ronald Wayne in Los Altos."
+> Entities: Apple (ORGANIZATION), Steve Jobs (PERSON), Steve Wozniak (PERSON), Ronald Wayne (PERSON), Los Altos (LOCATION)
+
+> Text: "BioNTech SE is set to acquire InstaDeep, a Tunis-born and U.K.-based artificial intelligence (AI) startup, for up to £562 million"
+
+And answer from an LLM:
+
+> BioNTech SE (ORGANIZATION), InstaDeep (ORGANIZATION), Tunis (LOCATION), U.K. (LOCATION)"
+
+✅ Pros:
+
+- Works with any LLM
+- Easy to get started with
+
+❌ Cons:
+
+- LLM may deviate from the format, especially if not fine-tuned on the task
+- Parsing can be tricky if the LLM outputs additional commentary
+- Explanation of the format adds an overhead to the prompt, increasing cost and latency
+
+### llama_index
+
+```python
+from typing import List, Literal
+
+from pydantic import BaseModel
+from llama_index.core.program import LLMTextCompletionProgram
+from llama_index.llms.openai import OpenAI
+
+class Entity(BaseModel):
+    name: str
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+class ExtractEntities(BaseModel):
+    entities: List[Entity]
+
+
+prompt_template_str = """\
+Extract named entities from the following text: {text}\
+"""
+
+llm = OpenAI(model="gpt-4-turbo", temperature=0.0)
+
+program = LLMTextCompletionProgram.from_defaults(
+    output_cls=ExtractEntities,
+    prompt_template_str=prompt_template_str,
+    llm=llm,
+)
+
+output = program(text=text)
+print(output)
+```
+
+```python
+entities=[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='InstaDeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')]
+```
+
+Note that llama_index also has a function calling mode. I'm showing the prompting mode here.
+
+✅ Pros:
+
+- Works with prompting and function calling
+- Supports many [LLMs](https://docs.llamaindex.ai/en/stable/module_guides/models/llms/) for Pydantic programs
+
+❌ Cons:
+
+- Large library with many features, which can be overwhelming
+
+llama_index also has a guidance-based constrained generation mode, but it isn't compatible with the latest version of guidance.
+
+A common complaint about comprehensive libraries is that they have too many dependencies. This doesn't apply to llama_index because it can be installed modularly. For example, you can install only the OpenAI module with `pip install llama-index-llms-openai`.
+
+### spacy-llm
+
+spacy-llm uses the prompting approach in a sophisticated way. Prompts are built using a jinja-template based system to describe the task, give examples and implement chain-of-thought reasoning. See their [templates](https://github.com/explosion/spacy-llm/tree/main/spacy_llm/tasks/templates) directory for examples.
+
+To solve our named entity recognition task, we create a `config.cfg` file:
+
+```cfg
+[nlp]
+lang = "en"
+pipeline = ["llm"]
+
+[components]
+
+[components.llm]
+factory = "llm"
+
+[components.llm.task]
+@llm_tasks = "spacy.NER.v3"
+labels = ["ORGANIZATION", "PERSON", "LOCATION"]
+
+[components.llm.model]
+@llm_models = "spacy.GPT-4.v3"
+name = "gpt-4"
+config = {"temperature": 0.0}
+```
+
+Then run:
+
+```python
+from spacy_llm.util import assemble
+nlp = assemble("config.cfg")
+doc = nlp(text)
+print([(ent.text, ent.label_) for ent in doc.ents])
+```
+
+```python
+[('BioNTech SE', 'ORGANIZATION'), ('InstaDeep', 'ORGANIZATION'), ('Tunis', 'LOCATION')]
+```
+
+✅ Pros:
+
+- Seamless integration with spaCy and Prodigy (for labeling)
+- Compatible with many APIs and open source LLMs from Hugging Face
+- Recipes for many tasks available out of the box
+
+❌ Cons:
+
+- Config system and jinja-based prompt templating has a learning curve, especially for those unfamiliar with spaCy
+- Prompt-based approach is inefficient with respect to token usage
+- Doesn't support async/multi-threaded processing (see this [discussion](https://github.com/explosion/spacy-llm/discussions/258))
+
+
+### Function calling for structured output
+
+Some LLMs have a function calling mode, which allows passing a function signature to the model along with the prompt. The LLM generates the arguments for the function. The [OpenAI](https://platform.openai.com/docs/guides/function-calling) docs explain this in detail. 
+
+Example [JSON schema](https://json-schema.org) for the named entity recognition task:
+
+```json
+{
+    "name": "extract_entities",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "entities": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "description": "Named entity extracted from the text"
+                        "label": {
+                            "type": "string",
+                            "enum": ["PERSON", "ORGANIZATION", "LOCATION"]
+                        },
+                    },
+                    "required": ["name", "label"],
+                    "additionalProperties": false
+                }
+            },
+        },
+        "required": ["answers"],
+        "additionalProperties": false
+    },
+}
+```
+
+In OpenAI's format, the API would respond with:
+
+```json
+{
+    "choices": [
+        {
+            "message": {
+                "function_call": {
+                    "arguments": {
+                        "entities": [
+                            {"name": "BioNTech SE", "label": "ORGANIZATION"},
+                            {"name": "InstaDeep", "label": "ORGANIZATION"},
+                            {"name": "Tunis", "label": "LOCATION"},
+                            {"name": "U.K.", "label": "LOCATION"}
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
+
+```
+(Simplified for brevity)
+
+✅ Pros:
+
+- Almost guaranteed valid output (LLMs are trained to generate valid function arguments)
+- Uses JSON as a standard interchange format
+- Easy to define constraints in JSON schema
+
+❌ Cons:
+
+- Only a few LLMs support function calling
+- Adds overhead to the prompt
+
+instructor, mirascope, marvin, fructose, llama_index, langchain and texttunnel use this approach. As we'll see later, Pydantic is a popular wrapper for the JSON schema. It's less verbose and also provides type checking.
+
+### instructor
+
+instructor patches LLM clients to accept Pydantic models as input and output. Here's an example with OpenAI:
+
+```python
+from typing import List, Literal
+
+import instructor
+from pydantic import BaseModel
+from openai import OpenAI
+
+
+# Define the schema for the function calling API
+class Entity(BaseModel):
+    name: str
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+class ExtractEntities(BaseModel):
+    entities: List[Entity]
+
+
+# Patch the OpenAI client
+client = instructor.from_openai(OpenAI())
+
+# Call the LLM
+entities = client.chat.completions.create(
+    model="gpt-4-turbo",
+    temperature=0.0,
+    response_model=ExtractEntities,
+    messages=[{"role": "user", "content": text}],
+)
+
+print(entities)
+```
+
+```python
+entities=[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='InstaDeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')]
+```
+
+✅ Pros:
+
+- Easy to use due to its focused nature and plenty of examples
+- Patches OpenAI's client instead of adding own abstractions, so it's familiar to OpenAI users
+- Compatible with many APIs through direct support of OpenAI, Anthropic, Cohere, as well as LiteLLM which itself is compatible with [more than 100 LLMs](https://docs.litellm.ai/docs/providers), also support Ollama for local LLMs
+- Supports detailed Pydantic models with nested structures and validators, including re-tries with an adjusted prompt to show the LLM the formatting error of the previous response
+- Detailed docs with a cookbook
+
+❌ Cons:
+
+- Does one job well, but doesn't have many additional features
+- No complete solution for efficient batch processing, see [https://python.useinstructor.com/blog/2023/11/13/learn-async/?h=batch#practical-implications-of-batch-processing](docs) (rate limiting not solved yet, though this is not found in many other libraries either)
+
+### mirascope
+
+```python
+from typing import Literal, Type, List
+
+from mirascope.openai import OpenAIExtractor
+from pydantic import BaseModel
+
+class Entity(BaseModel):
+    name: str
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+class Entities(BaseModel):
+    entities: List[Entity]
+
+
+class EntityExtractor(OpenAIExtractor[Entities]):
+    extract_schema: Type[Entity] = Entities
+    prompt_template = """
+    Extract named entities from the following text:
+    {text}
+    """
+
+    text: str
+
+entities = EntityExtractor(text=text).extract()
+print(entities)
+
+```
+
+```python
+entities=[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='InstaDeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')]
+```
+
+✅ Pros:
+
+- Uses function calling with Pydantic models
+- Compatible with many LLM [providers](https://github.com/Mirascope/mirascope/blob/dev/docs/concepts/supported_llm_providers.md) including OpenAI, Anthropic, Cohere and Groq.
+- Built in code organization through their colocation principle: everything relevant to an LLM call is in one class
+
+❌ Cons:
+
+- No support for ollama, litellm and Hugging Face yet
+- Not mature (cookbook missing, many features planned but not yet implemented, few contributors)
+
+mirascope is a new library with a lot of potential. For structured output, it has similar functionality to instructor, with a different approach: rather than patching the OpenAI client, it offers classes for each LLM provider. The roadmap has features for agents, RAG, metrics and a CLI. The question is whether there is room for another fully-featured library next to langchain and llama_index.
+
+### marvin
+
+```python
+from typing import Literal
+from pydantic import BaseModel
+import marvin
+
+marvin.settings.openai.chat.completions.model = "gpt-4-turbo"
+
+
+class Entity(BaseModel):
+    name: str
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+entities = marvin.extract(
+    text,
+    target=Entity,
+    model_kwargs={"temperature": 0.0},
+)
+
+print(entities)
+```
+
+```python
+[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='InstaDeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')]
+```
+
+✅ Pros:
+
+- Easy to use due to its simple API and clear documentation
+- Many built-in tasks, including multi-modal ones like image classification and speech recognition
+
+❌ Cons:
+
+- Only supports OpenAI models
+- Limited customization options and no access to underlying API response
+
+Marvin was the easiest to use in my test with instructor a close second. The developers describe marvin as a tool for developers who want to use rather than build AI. It's a way to easily add many AI capabilities to your app. It's not a tool for AI researchers.
+
+### fructose
+
+```python
+from dataclasses import dataclass
+from enum import Enum
+
+from fructose import Fructose
+
+ai = Fructose(model="gpt-4-turbo")
+
+
+class Label(Enum):
+    PERSON = "PERSON"
+    ORGANIZATION = "ORGANIZATION"
+    LOCATION = "LOCATION"
+
+
+@dataclass
+class Entity:
+    name: str
+    label: Label
+
+
+@ai
+def extract_entities(text: str) -> list[Entity]:
+    """
+    Given a text, extract the named entities with their labels.
+    """
+    ...
+
+
+entities = extract_entities(text)
+print(entities)
+```
+
+```python
+[Entity(name='BioNTech SE', label=<Label.ORGANIZATION: 'ORGANIZATION'>), Entity(name='InstaDeep', label=<Label.ORGANIZATION: 'ORGANIZATION'>), Entity(name='Tunis', label=<Label.LOCATION: 'LOCATION'>), Entity(name='U.K.', label=<Label.LOCATION: 'LOCATION'>)]
+```
+
+✅ Pros:
+
+- Chainable functions with an elegant syntax
+- Built-in support for chain of thought prompting
+
+❌ Cons:
+
+- Uses dataclasses instead of Pydantic models
+- Only OpenAI models are officially supported, though other models implementing OpenAI's API format [can work too](https://github.com/bananaml/fructose/issues/13)
+- I didn't find a way to set the temperature
+- No documentation website
+- Not actively developed
+
+### langchain
+
+```python
+from typing import List, Literal
+
+from langchain.output_parsers.openai_tools import PydanticToolsParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.pydantic_v1 import BaseModel, Field, validator
+from langchain_openai import ChatOpenAI
+
+
+# Set up a Pydantic model for the structured output
+
+class Entity(BaseModel):
+    name: str = Field(description="name of the entity")
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+class ExtractEntities(BaseModel):
+    entities: List[Entity]
+
+
+# Choose a model
+llm = ChatOpenAI(model="gpt-4-turbo", temperature=0.0)
+
+# Force the model to always use the ExtractEntities schema
+llm_with_tools = llm.bind_tools([ExtractEntities], tool_choice="ExtractEntities")
+
+# Add a parser to convert the LLM output to a Pydantic object
+chain = llm_with_tools | PydanticToolsParser(tools=[ExtractEntities])
+
+chain.invoke(text)[0]
+```
+
+```python
+ExtractEntities(entities=[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='InstaDeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')])
+```
+
+This is the function calling solution for langchain. It also supports [prompting](https://python.langchain.com/v0.1/docs/modules/model_io/output_parsers/types/json/).
+
+✅ Pros:
+
+- Has both prompt-based and function calling solutions for structured output generation
+- Compatibly with many [APIs and LLMs](https://python.langchain.com/v0.1/docs/integrations/platforms/)
+
+❌ Cons:
+
+Langchain is a huge library with many features, which can be overwhelming. There are multiple solutions to the same problem, which can be confusing for beginners. I've often read the [argument](https://minimaxir.com/2023/07/langchain-problem/) that langchain's abstractions are adding complexity and figuring out the langchain way of doing things can be harder than working with the underlying libraries directly.
+
+To be fair, in the test case above the solution was easy to find in the [docs](https://python.langchain.com/v0.1/docs/modules/model_io/chat/function_calling/) and worked right away.
+
+Like llama_index, langchain can be installed modularly.
+
+### texttunnel
+
+::: {.callout-note}
+I'm the developer of texttunnel, but I'll evaluate it as objectively as I can.
+:::
+
+```python
+from texttunnel import chat, models, processor
+
+function = {
+    "name": "extract_entities",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "entities": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "label": {
+                            "type": "string",
+                            "enum": ["PERSON", "ORGANIZATION", "LOCATION"],
+                        },
+                    },
+                    "required": ["name", "label"],
+                    "additionalProperties": False,
+                },
+            },
+        },
+        "required": ["answers"],
+        "additionalProperties": False,
+    },
+}
+
+# Build requests and process them
+requests = chat.build_requests(
+    texts=[text],
+    function=function,
+    model=models.GPT_4,
+    system_message="You are an NER model. Extract entities from the text.",
+    params=models.Parameters(max_tokens=512, temperature=0.0),
+)
+
+responses = processor.process_api_requests(requests)
+
+results = [processor.parse_arguments(response=r) for r in responses]
+
+print(results[0])
+```
+
+```json
+{'entities': [{'name': 'BioNTech SE', 'label': 'ORGANIZATION'}, {'name': 'InstaDeep', 'label': 'ORGANIZATION'}, {'name': 'Tunis', 'label': 'LOCATION'}, {'name': 'U.K.', 'label': 'LOCATION'}]}
+```
+
+texttunnel exposes the JSON schema directly, rather than wrapping it in a Pydantic model. It also returns the complete API response rather than only the extracted structured data. The unique selling point of texttunnel is its efficiency in calling the OpenAI API, as it uses asyncio to make multiple requests in parallel while respecting the individual rate limits of the user's API key.
+
+✅ Pros:
+
+- Exposes the JSON schema and API response directly
+- Efficient async function calling in a convenient wrapper
+
+❌ Cons:
+
+- Only supports OpenAI models
+- Only supports function calling
+- JSON schema is verbose and less user-friendly than Pydantic models
+- Not actively developed
+
+### Constrained token sampling for structured output
+
+This approach hooks deeper into the LLM generation process. The user defines constraints as Pydantic models, regular expressions or other means that can be expressed as context-free grammars ([CFGs](https://en.wikipedia.org/wiki/Context-free_grammar)). At inference time, the library's token generator only considers tokens in the output layer that match the constraints.
+
+This approach doesn't add overhead to the prompt, guarantees valid output and is even more flexible than function calling. It's also highly efficient because the generator can skip tokens that only have one possible value.
+
+✅ Pros:
+
+- Guarantees valid output
+- Clear interchange format
+- Easy to define constraints
+- Efficient, skips unnecessary tokens
+
+❌ Cons:
+
+- Requires endpoint integration, which API providers like OpenAI do not support
+
+outlines and guidance use this approach.
+
+### outlines
+
+```python
+from typing import List, Literal
+from pydantic import BaseModel, Field
+
+import outlines
+
+model = outlines.models.llamacpp("./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf")
+
+class Entity(BaseModel):
+    name: str = Field(description="name of the entity")
+    label: Literal["PERSON", "ORGANIZATION", "LOCATION"]
+
+
+class ExtractEntities(BaseModel):
+    entities: List[Entity]
+
+
+generator = outlines.generate.json(model, ExtractEntities)
+
+instruction = "Extract all named entities from the input using the labels: PERSON, ORGANIZATION, LOCATION. Input:"
+prompt = f"{instruction} {text}"
+
+entities = generator(prompt)
+print(repr(entities))
+```
+
+```python
+ExtractEntities(entities=[Entity(name='BioNTech SE', label='ORGANIZATION'), Entity(name='Instadeep', label='ORGANIZATION'), Entity(name='Tunis', label='LOCATION'), Entity(name='U.K.', label='LOCATION')])
+```
+
+Under the hood outlines translates the Pydantic model to a CFG. It steps through the CFG token by token and generates the output.
+
+✅ Pros:
+
+- Efficient token generation that adds no overhead and even speeds up inference (see [article](http://blog.dottxt.co/coalescence.html))
+- Translates Pydantic models, regular expressions, multiple choice questions and Jinja templates to CFGs
+- Compatible with transformers, llama.cpp and vLLM
+
+❌ Cons:
+
+- Integration with OpenAI is limited, JSON schema is not supported
+- No support for Anthropic, Cohere or Groq
+- Cookbook is sparse relative to the wide set of supported workflows, though the available examples are well explained
+
+### guidance
+
+The guidance libary uses its own programming paradigm for constrained generation. Prompts are constructed from functions that define a CFG. Here is an example from the readme, with slight modifications:
+
+```python
+import re
+
+import guidance
+from guidance import models, gen, select
+
+llm = models.LlamaCpp("./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf")
+
+
+@guidance(stateless=True)
+def ner_instruction(lm, input):
+    lm += f"""\
+    Please tag each word in the input with PER, ORG, LOC, or nothing
+    ---
+    Input: John worked at Apple.
+    Output:
+    John: PER
+    worked: 
+    at: 
+    Apple: ORG
+    .: 
+    ---
+    Input: {input}
+    Output:
+    """
+    return lm
+
+
+input = text
+
+
+@guidance(stateless=True)
+def constrained_ner(lm, input):
+    # Split into words
+    words = [
+        x for x in re.split("([^a-zA-Z0-9])", input) if x and not re.match("\s", x)
+    ]
+    ret = ""
+    for x in words:
+        ret += x + ": " + select(["PER", "ORG", "LOC", ""]) + "\n"
+    return lm + ret
+
+
+llm + ner_instruction(input) + constrained_ner(input)
+```
+
+The `constrained_ner()` function looks like normal Python, but is actually a CFG that the LLM uses to generate the output. It tokenizes the text and assigns a label to each token that is either PERSON, ORGANIZATION, LOCATION or nothing.
+
+The model returns:
+
+```
+BioNTech: PER
+SE: 
+is: 
+set: 
+to: 
+acquire: LOC
+InstaDeep: ORG
+,: 
+a: 
+Tunis: ORG
+-: LOC
+born: 
+and: 
+U: 
+.: LOC
+K: 
+.: LOC
+-: 
+based: 
+artificial: LOC
+intelligence: 
+(: LOC
+AI: 
+): LOC
+startup: 
+,: LOC
+for: 
+up: 
+to: 
+£: 
+562: 
+million: 
+```
+
+The simplified tokenization causes inaccurate labels, as terms like "U.K." are split incorrectly. In addition, Llama-3 falsely labeled "artificial" as a LOCATION.
+
+To fix this, we could use a simplified approach that doesn't require tokenization. The model could simply list the named entities, like in the other libraries.
+
+```python
+import guidance
+from guidance import models, gen, regex
+
+llm = models.LlamaCpp("./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf")
+
+
+# stateless=True indicates this function does not depend on LLM generations
+@guidance(stateless=True)
+def ner_instruction(lm, input):
+    lm += f"""\
+    Extract named entities from the input using the labels: PERSON, ORGANIZATION, LOCATION.
+    ---
+    Input: Jane and John live in San Francisco.
+    Output:
+    PERSON: Jane, John
+    ORGANIZATION:
+    LOCATION: San Francisco
+    ---
+    Input: {input}
+    Output:
+    """
+    return lm
+
+
+pattern = "PERSON:([\w, ]*)\nORGANIZATION:([\w, ]*)\nLOCATION:([\w, ]*)"
+
+llm + ner_instruction(text) + regex(pattern) + gen(stop="---")
+```
+
+The regular expression guarantees that each line in the output begins with a label and a colon, in the order PERSON, ORGANIZATION, LOCATION, even if the input text doesn't follow this order or doesn't contain all three types of entities. `gen(stop="---")` stops the generation when the model outputs the `---` separator between the input and output.
+
+The model returns:
+
+```
+PERSON:relative
+ORGANIZATION:UIButtonTypeCustom BioNTech SE, InstaDeep
+LOCATION: Tunis, U.K.
+```
+
+The output has the correct entities, but also contains garbage tokens like "relative" and "UIButtonTypeCustom". Is this an issue with the model or the constraints? Let's try pure generation without constraints:
+
+```python
+llm + ner_instruction(text) + gen(stop="---")
+```
+
+Output:
+
+```
+PERSON:
+ORGANIZATION: BioNTech SE, InstaDeep
+LOCATION: Tunis, U.K.
+```
+
+This works! I don't know why the regular expression caused the model to output garbage tokens. I looked for a solution to specify the constraints using Pydantic. A Github [issue](https://github.com/guidance-ai/guidance/issues/462) linked to a module in LlamaIndex called [Guidance Pydantic Program](https://docs.llamaindex.ai/en/stable/examples/output_parsing/guidance_pydantic_program/) which has this feature, however, it doesn't work with the latest version of guidance.
+
+✅ Pros:
+
+- Efficient token generation through constrained generation
+- Flexible prompting system with CFGs which support complex constraints and recursive structures
+
+❌ Cons:
+
+- NER didn't work as expected with tokenization or regular expressions
+- No built-in support for Pydantic models
+- Writing CFGs via regular expressions has a steep learning curve
+- Most powerful features are not compatible with OpenAI
+
+## Recommendations
+
+In general, constrained generation is superior in terms of efficiency and guaranteed valid output. Function calling is the second best option and has higher compatibility with APIs. Prompting is the least efficient method but compatible with any LLM, local or via API.
+
+The best library for your structured LLM task depends on your surrounding software stack. If you are already using....
+
+- transformers, llama.cpp or vLLM, meaning you control the token generation process, constrained generation with [outlines](https://github.com/outlines-dev/outlines) is the most efficient way to generate structured output. outlines is easier to use than [guidance](https://github.com/guidance-ai/guidance), because it supports Pydantic models.
+- an API that supports function calling, such as OpenAI's API, use one of the libraries that support function calling with Pydantic models. Their functionality is quite similar. [marvin](https://github.com/prefecthq/marvin) has the simplest syntax and many built-in tasks, though limited customization and it only supports OpenAI. [instructor](https://github.com/jxnl/instructor) is focused on structured output and stays as close to the OpenAI Python client as possible. [mirascope](https://github.com/jxnl/instructor) has a wider scope, adding chaining and other prompt engineering techniques.
+- [langchain](https://python.langchain.com/docs/modules/model_io/output_parsers/types/pydantic/) or [llama_index](https://docs.llamaindex.ai/en/stable/module_guides/querying/structured_outputs/pydantic_program/), you can use their Pydantic output parsers for structured output from function calling or prompting too. Either is a decent choice if you prefer a comprehensive library over a specialized one. In my test, llama_index was easier to use.
+- spaCy, choose [spacy-llm](https://github.com/explosion/spacy-llm) because it integrates seamlessly.
+
+[fructose](https://github.com/bananaml/fructose) and [texttunnel](https://github.com/qagentur/texttunnel) are not actively developed, so I don't recommend them for new projects.
+
+### Further reading
+
+- [Improving Prompt Consistency with Structured Generations](https://huggingface.co/blog/evaluation-structured-outputs) by Will Kurt, Remi Louf and Clémentine Fourrier at Hugging Face.
+- [Structured Generation Improves LLM performance: GSM8K Benchmark](http://blog.dottxt.co/performance-gsm8k.html) by the .txt team.
+- [Steering Large Language Models with Pydantic](https://pydantic.dev/articles/llm-intro) by Jason Liu, developer of instructor.
+- [The Definitive Guide to Structured Data Parsing with OpenAI GPT 3.5](https://towardsdatascience.com/the-definitive-guide-to-structured-data-parsing-with-openai-gpt3-5-0e5ea0e52637) (paywalled) by Marie Stephen Leo. A systematic comparison and benchmark of langchain, instructor, fructose and mirascope.

@@ -1,23 +1,13 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/projects.html",
     "items": [
-      "/blog/llm-eval/index.html",
-      "/blog/gold-data/index.html",
-      "/blog/llm-price-performance/index.html",
-      "/blog/data-grug/index.html",
-      "/blog/nlp-model-escalation/index.html",
-      "/blog/llms-for-absa/index.html",
-      "/blog/one-stop-nlp/index.html",
-      "/blog/dataset-size-vs-correctness/index.html",
-      "/blog/llm-future/index.html",
-      "/blog/ai-assistants/index.html",
-      "/blog/modal-twitter/index.html",
-      "/blog/skills/index.html",
-      "/blog/yarn/index.html",
-      "/blog/fangmant/index.html",
-      "/blog/dataframes/index.html",
-      "/blog/echarts4r/index.html"
+      "/projects/texttunnel/index.html",
+      "/projects/cosmention/index.html",
+      "/projects/stakex/index.html",
+      "/projects/gpexp/index.html",
+      "/projects/masterthesis/index.html",
+      "/projects/bachelorthesis/index.html"
     ]
   },
   {
@@ -39,14 +29,25 @@
     ]
   },
   {
-    "listing": "/projects.html",
+    "listing": "/index.html",
     "items": [
-      "/projects/texttunnel/index.html",
-      "/projects/cosmention/index.html",
-      "/projects/stakex/index.html",
-      "/projects/gpexp/index.html",
-      "/projects/masterthesis/index.html",
-      "/projects/bachelorthesis/index.html"
+      "/blog/constrained-generation/index.html",
+      "/blog/llm-eval/index.html",
+      "/blog/gold-data/index.html",
+      "/blog/llm-price-performance/index.html",
+      "/blog/data-grug/index.html",
+      "/blog/nlp-model-escalation/index.html",
+      "/blog/llms-for-absa/index.html",
+      "/blog/one-stop-nlp/index.html",
+      "/blog/dataset-size-vs-correctness/index.html",
+      "/blog/llm-future/index.html",
+      "/blog/ai-assistants/index.html",
+      "/blog/modal-twitter/index.html",
+      "/blog/skills/index.html",
+      "/blog/yarn/index.html",
+      "/blog/fangmant/index.html",
+      "/blog/dataframes/index.html",
+      "/blog/echarts4r/index.html"
     ]
   }
 ]

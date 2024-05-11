@@ -24,3 +24,8 @@ format:
     theme: simplex
     css: styles.css
     linkcolor: "#3478C5"
+    highlight-style: a11y
+    code-overflow: wrap
+    code-copy: hover
+    code-block-bg: "#f7f7f7"
+    code-block-border-left: "#31BAE9"
