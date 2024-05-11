@@ -2,7 +2,7 @@
 title: "The best library for structured LLM output"
 author: "Paul Simmering"
 date: "2024-05-11"
-categories: ["Machine Learning"]
+categories: ["Machine Learning", "Python"]
 image: "image.png"
 ---
 
