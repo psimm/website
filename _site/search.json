@@ -977,7 +977,7 @@
     "href": "blog/constrained-generation/index.html",
     "title": "The best library for structured LLM output",
     "section": "",
-    "text": "By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification and named entity recognition require structured output. There are several Python libraries that help with this. In this article, I compare ten libraries in terms of efficiency, flexibility and ease of use."
+    "text": "By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification, named entity recognition, relation extraction and information extraction require structured output. There are several Python libraries that help with this. In this article, I compare ten libraries in terms of efficiency, flexibility and ease of use."
   },
   {
     "objectID": "blog/constrained-generation/index.html#python-libraries-for-structured-llm-output",
