@@ -15,7 +15,7 @@
 <item>
   <title>The best library for structured LLM output</title>
   <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/constrained-generation/</link>
+  <link>https://simmering.dev/blog/structured_output/</link>
   <description><![CDATA[ 
 
 
@@ -25,7 +25,7 @@
 <p>By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification, named entity recognition, relation extraction and information extraction require structured output. There are several Python libraries that help with this. In this article, I compare ten libraries in terms of efficiency, flexibility and ease of use.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://simmering.dev/blog/constrained-generation/image_wide.png" class="img-fluid figure-img"></p>
+<p><img src="https://simmering.dev/blog/structured_output/image_wide.png" class="img-fluid figure-img"></p>
 <figcaption>Image created with Playground v2.5</figcaption>
 </figure>
 </div>
@@ -2307,9 +2307,9 @@ LOCATION: Tunis, U.K.</code></pre>
  ]]></description>
   <category>Machine Learning</category>
   <category>Python</category>
-  <guid>https://simmering.dev/blog/constrained-generation/</guid>
+  <guid>https://simmering.dev/blog/structured_output/</guid>
   <pubDate>Fri, 10 May 2024 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/constrained-generation/image.png" medium="image" type="image/png" height="144" width="144"/>
+  <media:content url="https://simmering.dev/blog/structured_output/image.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
   <title>Evaluating an LLM for your use case</title>

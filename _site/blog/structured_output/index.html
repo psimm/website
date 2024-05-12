@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-05-11">
+
+<title>Paul Simmering – The best library for structured LLM output</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">The best library for structured LLM output</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Machine Learning</div>
+                <div class="quarto-category">Python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 11, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification, named entity recognition, relation extraction and information extraction require structured output. There are several Python libraries that help with this. In this article, I compare ten libraries in terms of efficiency, flexibility and ease of use.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_wide.png" class="img-fluid figure-img"></p>
+<figcaption>Image created with Playground v2.5</figcaption>
+</figure>
+</div>
+<section id="python-libraries-for-structured-llm-output" class="level2">
+<h2 class="anchored" data-anchor-id="python-libraries-for-structured-llm-output">10 Python libraries for structured LLM output</h2>
+<p>Here are the most prominent solutions, sorted by the number of Github stars ⭐:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Library</th>
+<th style="text-align: right;">Stars</th>
+<th>Method¹</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://python.langchain.com/docs/modules/model_io/output_parsers/types/pydantic/">langchain</a></td>
+<td style="text-align: right;">84,100</td>
+<td>Prompting &amp; function calling</td>
+<td>Pydantic output parser as part of langchain</td>
+</tr>
+<tr class="even">
+<td><a href="https://docs.llamaindex.ai/en/stable/module_guides/querying/structured_outputs/pydantic_program/">llama_index</a></td>
+<td style="text-align: right;">31,500</td>
+<td>Prompting &amp; function calling</td>
+<td>Pydantic program as part of llama_index</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/guidance-ai/guidance">guidance</a></td>
+<td style="text-align: right;">17,500</td>
+<td>Constrained token sampling</td>
+<td>Programming paradigm for constrained generation</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/outlines-dev/outlines">outlines</a></td>
+<td style="text-align: right;">5,800</td>
+<td>Constrained token sampling</td>
+<td>Constrained token sampling using CFGs²</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/jxnl/instructor">instructor</a></td>
+<td style="text-align: right;">5,200</td>
+<td>Function calling</td>
+<td>Specify Pydantic models to define structure of LLM outputs</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/prefecthq/marvin">marvin</a></td>
+<td style="text-align: right;">4,800</td>
+<td>Function calling</td>
+<td>Toolbox of task-specific OpenAI API wrappers</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/explosion/spacy-llm">spacy-llm</a></td>
+<td style="text-align: right;">948</td>
+<td>Prompting</td>
+<td>spaCy plugin to add LLM responses to a pipeline</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/bananaml/fructose">fructose</a></td>
+<td style="text-align: right;">687</td>
+<td>Function calling</td>
+<td>LLM calls as strongly-typed functions</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/Mirascope/mirascope">mirascope</a></td>
+<td style="text-align: right;">204</td>
+<td>Function calling</td>
+<td>Prompting, chaining and structured information extraction</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/qagentur/texttunnel">texttunnel</a></td>
+<td style="text-align: right;">11</td>
+<td>Function calling</td>
+<td>Efficient async OpenAI API function calling</td>
+</tr>
+</tbody>
+</table>
+<p>¹The method describes how the library generates structured output. See the following sections for more details.</p>
+<p>²Context-free grammars: a recursive way to define the structure of a natural language, programming language or other sequence of tokens. See <a href="https://en.wikipedia.org/wiki/Context-free_grammar">Wikipedia</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+May 2024
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This article was written in May 2024 with the latest versions of the libraries and the number of Github stars at that time. The libraries are under active development and the features may have changed since then.</p>
+</div>
+</div>
+<p>All libraries are released under the MIT or Apache 2.0 license, which are both permissive open-source licenses. Their code is available on Github and they can be installed via pip.</p>
+<p>I’ll compare the libraries based on three criteria: efficiency, ease of use and flexibility. Efficiency is about how tokens are generated, ease of use is about how easy it is to get started with the library and flexibility is about how much you can customize the output format.</p>
+<p>I’ll use a named entity recognition task as an example because it’s a common task that requires structured output. The task is to extract named entities from the following text:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"""BioNTech SE is set to acquire InstaDeep, </span><span class="ch">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">a Tunis-born and U.K.-based artificial intelligence </span><span class="ch">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">(AI) startup, for up to £562 million</span><span class="ch">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the following sections, I’ll write a code snippet for each library. If possible, I’ll use Pydantic classes to define the schema for the structured output. Depending on the library’s support I’ll use OpenAI’s GPT-4-turbo or Meta’s Llama-3-8B-Instruct (<a href="https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF">8-bit quantized and in GGUF format</a>) running on Ollama. I’ll set the temperature to 0.0 to reduce randomness in the output. This is also a little test of how easy it is to customize the parameters.</p>
+<p>The libraries will be ordered by their method of generating structured output: prompting (llama_index, spacy-llm), function calling (instructor, marvin, mirascope, langchain, texttunnel), and constrained token sampling (outlines and guidance). llama_index also supports function calling and langchain also supports prompting.</p>
+<p>At the start of each section I’ll give an overview of the generation method.</p>
+</section>
+<section id="prompting-for-structured-output" class="level2">
+<h2 class="anchored" data-anchor-id="prompting-for-structured-output">Prompting for structured output</h2>
+<p>This is the simplest approach. A prompt describes a desired output format and hopefully the LLM follows it.</p>
+<p>Example prompt:</p>
+<blockquote class="blockquote">
+<p>Your task is to extract named entities from a text. Add no commentary, only extract the entities and their labels. Entities must have one of the following labels: PERSON, ORGANIZATION, LOCATION. Example text: “Apple is a company started by Steve Jobs, Steve Wozniak and Ronald Wayne in Los Altos.” Entities: Apple (ORGANIZATION), Steve Jobs (PERSON), Steve Wozniak (PERSON), Ronald Wayne (PERSON), Los Altos (LOCATION)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Text: “BioNTech SE is set to acquire InstaDeep, a Tunis-born and U.K.-based artificial intelligence (AI) startup, for up to £562 million”</p>
+</blockquote>
+<p>And answer from an LLM:</p>
+<blockquote class="blockquote">
+<p>BioNTech SE (ORGANIZATION), InstaDeep (ORGANIZATION), Tunis (LOCATION), U.K. (LOCATION)”</p>
+</blockquote>
+<p>✅ Pros:</p>
+<ul>
+<li>Works with any LLM</li>
+<li>Easy to get started with</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>LLM may deviate from the format, especially if not fine-tuned on the task</li>
+<li>Parsing can be tricky if the LLM outputs additional commentary</li>
+<li>Explanation of the format adds an overhead to the prompt, increasing cost and latency</li>
+</ul>
+<section id="llama_index" class="level3">
+<h3 class="anchored" data-anchor-id="llama_index">llama_index</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Literal</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.core.program <span class="im">import</span> LLMTextCompletionProgram</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.llms.openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtractEntities(BaseModel):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    entities: List[Entity]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>prompt_template_str <span class="op">=</span> <span class="st">"""</span><span class="ch">\</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">Extract named entities from the following text: </span><span class="sc">{text}</span><span class="ch">\</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> OpenAI(model<span class="op">=</span><span class="st">"gpt-4-turbo"</span>, temperature<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>program <span class="op">=</span> LLMTextCompletionProgram.from_defaults(</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    output_cls<span class="op">=</span>ExtractEntities,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    prompt_template_str<span class="op">=</span>prompt_template_str,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    llm<span class="op">=</span>llm,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> program(text<span class="op">=</span>text)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>entities<span class="op">=</span>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that llama_index also has a function calling mode. I’m showing the prompting mode here.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Works with prompting and function calling</li>
+<li>Supports many <a href="https://docs.llamaindex.ai/en/stable/module_guides/models/llms/">LLMs</a> for Pydantic programs</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Large library with many features, which can be overwhelming</li>
+</ul>
+<p>llama_index also has a guidance-based constrained generation mode, but it isn’t compatible with the latest version of guidance.</p>
+<p>A common complaint about comprehensive libraries is that they have too many dependencies. This doesn’t apply to llama_index because it can be installed modularly. For example, you can install only the OpenAI module with <code>pip install llama-index-llms-openai</code>.</p>
+</section>
+<section id="spacy-llm" class="level3">
+<h3 class="anchored" data-anchor-id="spacy-llm">spacy-llm</h3>
+<p>spacy-llm uses the prompting approach in a sophisticated way. Prompts are built using a jinja-template based system to describe the task, give examples and implement chain-of-thought reasoning. See their <a href="https://github.com/explosion/spacy-llm/tree/main/spacy_llm/tasks/templates">templates</a> directory for examples.</p>
+<p>To solve our named entity recognition task, we create a <code>config.cfg</code> file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cfg code-with-copy"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[nlp]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">lang </span><span class="ot">=</span><span class="st"> "en"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">pipeline </span><span class="ot">=</span><span class="st"> ["llm"]</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">[components]</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">[components.llm]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="dt">factory </span><span class="ot">=</span><span class="st"> "llm"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">[components.llm.task]</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="dt">@llm_tasks </span><span class="ot">=</span><span class="st"> "spacy.NER.v3"</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="dt">labels </span><span class="ot">=</span><span class="st"> ["ORGANIZATION", "PERSON", "LOCATION"]</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">[components.llm.model]</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="dt">@llm_models </span><span class="ot">=</span><span class="st"> "spacy.GPT-4.v3"</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="dt">name </span><span class="ot">=</span><span class="st"> "gpt-4"</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="dt">config </span><span class="ot">=</span><span class="st"> {"temperature": 0.0}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then run:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> spacy_llm.util <span class="im">import</span> assemble</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> assemble(<span class="st">"config.cfg"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp(text)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([(ent.text, ent.label_) <span class="cf">for</span> ent <span class="kw">in</span> doc.ents])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>[(<span class="st">'BioNTech SE'</span>, <span class="st">'ORGANIZATION'</span>), (<span class="st">'InstaDeep'</span>, <span class="st">'ORGANIZATION'</span>), (<span class="st">'Tunis'</span>, <span class="st">'LOCATION'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Pros:</p>
+<ul>
+<li>Seamless integration with spaCy and Prodigy (for labeling)</li>
+<li>Compatible with many APIs and open source LLMs from Hugging Face</li>
+<li>Recipes for many tasks available out of the box</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Config system and jinja-based prompt templating has a learning curve, especially for those unfamiliar with spaCy</li>
+<li>Prompt-based approach is inefficient with respect to token usage</li>
+<li>Doesn’t support async/multi-threaded processing (see this <a href="https://github.com/explosion/spacy-llm/discussions/258">discussion</a>)</li>
+</ul>
+</section>
+<section id="function-calling-for-structured-output" class="level3">
+<h3 class="anchored" data-anchor-id="function-calling-for-structured-output">Function calling for structured output</h3>
+<p>Some LLMs have a function calling mode, which allows passing a function signature to the model along with the prompt. The LLM generates the arguments for the function. The <a href="https://platform.openai.com/docs/guides/function-calling">OpenAI</a> docs explain this in detail.</p>
+<p>Example <a href="https://json-schema.org">JSON schema</a> for the named entity recognition task:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"extract_entities"</span><span class="fu">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"parameters"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"object"</span><span class="fu">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"entities"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"array"</span><span class="fu">,</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                <span class="dt">"items"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"object"</span><span class="fu">,</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                        <span class="dt">"name"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"type"</span><span class="fu">:</span> <span class="st">"string"</span><span class="fu">},</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                        <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"Named entity extracted from the text"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"label"</span><span class="er">:</span> <span class="fu">{</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"string"</span><span class="fu">,</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                            <span class="dt">"enum"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"PERSON"</span><span class="ot">,</span> <span class="st">"ORGANIZATION"</span><span class="ot">,</span> <span class="st">"LOCATION"</span><span class="ot">]</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">},</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">},</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">"required"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"name"</span><span class="ot">,</span> <span class="st">"label"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">"additionalProperties"</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                <span class="fu">}</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="fu">},</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"required"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"answers"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"additionalProperties"</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In OpenAI’s format, the API would respond with:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"choices"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"message"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                <span class="dt">"function_call"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">"arguments"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                        <span class="dt">"entities"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"BioNTech SE"</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"ORGANIZATION"</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"InstaDeep"</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"ORGANIZATION"</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Tunis"</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"LOCATION"</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"U.K."</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"LOCATION"</span><span class="fu">}</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                        <span class="ot">]</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">}</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                <span class="fu">}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">}</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(Simplified for brevity)</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Almost guaranteed valid output (LLMs are trained to generate valid function arguments)</li>
+<li>Uses JSON as a standard interchange format</li>
+<li>Easy to define constraints in JSON schema</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Only a few LLMs support function calling</li>
+<li>Adds overhead to the prompt</li>
+</ul>
+<p>instructor, mirascope, marvin, fructose, llama_index, langchain and texttunnel use this approach. As we’ll see later, Pydantic is a popular wrapper for the JSON schema. It’s less verbose and also provides type checking.</p>
+</section>
+<section id="instructor" class="level3">
+<h3 class="anchored" data-anchor-id="instructor">instructor</h3>
+<p>instructor patches LLM clients to accept Pydantic models as input and output. Here’s an example with OpenAI:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Literal</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> instructor</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the schema for the function calling API</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtractEntities(BaseModel):</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    entities: List[Entity]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Patch the OpenAI client</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> instructor.from_openai(OpenAI())</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the LLM</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-4-turbo"</span>,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    response_model<span class="op">=</span>ExtractEntities,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: text}],</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>entities<span class="op">=</span>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Pros:</p>
+<ul>
+<li>Easy to use due to its focused nature and plenty of examples</li>
+<li>Patches OpenAI’s client instead of adding own abstractions, so it’s familiar to OpenAI users</li>
+<li>Compatible with many APIs through direct support of OpenAI, Anthropic, Cohere, as well as LiteLLM which itself is compatible with <a href="https://docs.litellm.ai/docs/providers">more than 100 LLMs</a>, also support Ollama for local LLMs</li>
+<li>Supports detailed Pydantic models with nested structures and validators, including re-tries with an adjusted prompt to show the LLM the formatting error of the previous response</li>
+<li>Detailed docs with a cookbook</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Does one job well, but doesn’t have many additional features</li>
+<li>No complete solution for efficient batch processing, see <a href="docs">https://python.useinstructor.com/blog/2023/11/13/learn-async/?h=batch#practical-implications-of-batch-processing</a> (rate limiting not solved yet, though this is not found in many other libraries either)</li>
+</ul>
+</section>
+<section id="mirascope" class="level3">
+<h3 class="anchored" data-anchor-id="mirascope">mirascope</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal, Type, List</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mirascope.openai <span class="im">import</span> OpenAIExtractor</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entities(BaseModel):</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    entities: List[Entity]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EntityExtractor(OpenAIExtractor[Entities]):</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    extract_schema: Type[Entity] <span class="op">=</span> Entities</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    prompt_template <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="st">    Extract named entities from the following text:</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">{text}</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    text: <span class="bu">str</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> EntityExtractor(text<span class="op">=</span>text).extract()</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>entities<span class="op">=</span>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Pros:</p>
+<ul>
+<li>Uses function calling with Pydantic models</li>
+<li>Compatible with many LLM <a href="https://github.com/Mirascope/mirascope/blob/dev/docs/concepts/supported_llm_providers.md">providers</a> including OpenAI, Anthropic, Cohere and Groq.</li>
+<li>Built in code organization through their colocation principle: everything relevant to an LLM call is in one class</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>No support for ollama, litellm and Hugging Face yet</li>
+<li>Not mature (cookbook missing, many features planned but not yet implemented, few contributors)</li>
+</ul>
+<p>mirascope is a new library with a lot of potential. For structured output, it has similar functionality to instructor, with a different approach: rather than patching the OpenAI client, it offers classes for each LLM provider. The roadmap has features for agents, RAG, metrics and a CLI. The question is whether there is room for another fully-featured library next to langchain and llama_index.</p>
+</section>
+<section id="marvin" class="level3">
+<h3 class="anchored" data-anchor-id="marvin">marvin</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> marvin</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>marvin.settings.openai.chat.completions.model <span class="op">=</span> <span class="st">"gpt-4-turbo"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> marvin.extract(</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    text,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    target<span class="op">=</span>Entity,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    model_kwargs<span class="op">=</span>{<span class="st">"temperature"</span>: <span class="fl">0.0</span>},</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Pros:</p>
+<ul>
+<li>Easy to use due to its simple API and clear documentation</li>
+<li>Many built-in tasks, including multi-modal ones like image classification and speech recognition</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Only supports OpenAI models</li>
+<li>Limited customization options and no access to underlying API response</li>
+</ul>
+<p>Marvin was the easiest to use in my test with instructor a close second. The developers describe marvin as a tool for developers who want to use rather than build AI. It’s a way to easily add many AI capabilities to your app. It’s not a tool for AI researchers.</p>
+</section>
+<section id="fructose" class="level3">
+<h3 class="anchored" data-anchor-id="fructose">fructose</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> enum <span class="im">import</span> Enum</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fructose <span class="im">import</span> Fructose</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>ai <span class="op">=</span> Fructose(model<span class="op">=</span><span class="st">"gpt-4-turbo"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Label(Enum):</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    PERSON <span class="op">=</span> <span class="st">"PERSON"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    ORGANIZATION <span class="op">=</span> <span class="st">"ORGANIZATION"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    LOCATION <span class="op">=</span> <span class="st">"LOCATION"</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity:</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    label: Label</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="at">@ai</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_entities(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[Entity]:</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">    Given a text, extract the named entities with their labels.</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> extract_entities(text)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=&lt;</span>Label.ORGANIZATION: <span class="st">'ORGANIZATION'</span><span class="op">&gt;</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=&lt;</span>Label.ORGANIZATION: <span class="st">'ORGANIZATION'</span><span class="op">&gt;</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=&lt;</span>Label.LOCATION: <span class="st">'LOCATION'</span><span class="op">&gt;</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=&lt;</span>Label.LOCATION: <span class="st">'LOCATION'</span><span class="op">&gt;</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Pros:</p>
+<ul>
+<li>Chainable functions with an elegant syntax</li>
+<li>Built-in support for chain of thought prompting</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Uses dataclasses instead of Pydantic models</li>
+<li>Only OpenAI models are officially supported, though other models implementing OpenAI’s API format <a href="https://github.com/bananaml/fructose/issues/13">can work too</a></li>
+<li>I didn’t find a way to set the temperature</li>
+<li>No documentation website</li>
+<li>Not actively developed</li>
+</ul>
+</section>
+<section id="langchain" class="level3">
+<h3 class="anchored" data-anchor-id="langchain">langchain</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Literal</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.output_parsers.openai_tools <span class="im">import</span> PydanticToolsParser</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.prompts <span class="im">import</span> PromptTemplate</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.pydantic_v1 <span class="im">import</span> BaseModel, Field, validator</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a Pydantic model for the structured output</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span> <span class="op">=</span> Field(description<span class="op">=</span><span class="st">"name of the entity"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtractEntities(BaseModel):</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    entities: List[Entity]</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a model</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">"gpt-4-turbo"</span>, temperature<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Force the model to always use the ExtractEntities schema</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>llm_with_tools <span class="op">=</span> llm.bind_tools([ExtractEntities], tool_choice<span class="op">=</span><span class="st">"ExtractEntities"</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a parser to convert the LLM output to a Pydantic object</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>chain <span class="op">=</span> llm_with_tools <span class="op">|</span> PydanticToolsParser(tools<span class="op">=</span>[ExtractEntities])</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>chain.invoke(text)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ExtractEntities(entities<span class="op">=</span>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'InstaDeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is the function calling solution for langchain. It also supports <a href="https://python.langchain.com/v0.1/docs/modules/model_io/output_parsers/types/json/">prompting</a>.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Has both prompt-based and function calling solutions for structured output generation</li>
+<li>Compatibly with many <a href="https://python.langchain.com/v0.1/docs/integrations/platforms/">APIs and LLMs</a></li>
+</ul>
+<p>❌ Cons:</p>
+<p>Langchain is a huge library with many features, which can be overwhelming. There are multiple solutions to the same problem, which can be confusing for beginners. I’ve often read the <a href="https://minimaxir.com/2023/07/langchain-problem/">argument</a> that langchain’s abstractions are adding complexity and figuring out the langchain way of doing things can be harder than working with the underlying libraries directly.</p>
+<p>To be fair, in the test case above the solution was easy to find in the <a href="https://python.langchain.com/v0.1/docs/modules/model_io/chat/function_calling/">docs</a> and worked right away.</p>
+<p>Like llama_index, langchain can be installed modularly.</p>
+</section>
+<section id="texttunnel" class="level3">
+<h3 class="anchored" data-anchor-id="texttunnel">texttunnel</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I’m the developer of texttunnel, but I’ll evaluate it as objectively as I can.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> texttunnel <span class="im">import</span> chat, models, processor</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>function <span class="op">=</span> {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"name"</span>: <span class="st">"extract_entities"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"parameters"</span>: {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"properties"</span>: {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"entities"</span>: {</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"type"</span>: <span class="st">"array"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"items"</span>: {</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"properties"</span>: {</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"name"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"label"</span>: {</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"enum"</span>: [<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>],</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                        },</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                    },</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"required"</span>: [<span class="st">"name"</span>, <span class="st">"label"</span>],</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"additionalProperties"</span>: <span class="va">False</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            },</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"required"</span>: [<span class="st">"answers"</span>],</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"additionalProperties"</span>: <span class="va">False</span>,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Build requests and process them</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>requests <span class="op">=</span> chat.build_requests(</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    texts<span class="op">=</span>[text],</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    function<span class="op">=</span>function,</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>models.GPT_4,</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    system_message<span class="op">=</span><span class="st">"You are an NER model. Extract entities from the text."</span>,</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>models.Parameters(max_tokens<span class="op">=</span><span class="dv">512</span>, temperature<span class="op">=</span><span class="fl">0.0</span>),</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>responses <span class="op">=</span> processor.process_api_requests(requests)</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> [processor.parse_arguments(response<span class="op">=</span>r) <span class="cf">for</span> r <span class="kw">in</span> responses]</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="er">'entities'</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="er">'name'</span><span class="fu">:</span> <span class="er">'BioNTech</span> <span class="er">SE'</span><span class="fu">,</span> <span class="er">'label'</span><span class="fu">:</span> <span class="er">'ORGANIZATION'</span><span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="er">'name'</span><span class="fu">:</span> <span class="er">'InstaDeep'</span><span class="fu">,</span> <span class="er">'label'</span><span class="fu">:</span> <span class="er">'ORGANIZATION'</span><span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="er">'name'</span><span class="fu">:</span> <span class="er">'Tunis'</span><span class="fu">,</span> <span class="er">'label'</span><span class="fu">:</span> <span class="er">'LOCATION'</span><span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span><span class="er">'name'</span><span class="fu">:</span> <span class="er">'U.K.'</span><span class="fu">,</span> <span class="er">'label'</span><span class="fu">:</span> <span class="er">'LOCATION'</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>texttunnel exposes the JSON schema directly, rather than wrapping it in a Pydantic model. It also returns the complete API response rather than only the extracted structured data. The unique selling point of texttunnel is its efficiency in calling the OpenAI API, as it uses asyncio to make multiple requests in parallel while respecting the individual rate limits of the user’s API key.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Exposes the JSON schema and API response directly</li>
+<li>Efficient async function calling in a convenient wrapper</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Only supports OpenAI models</li>
+<li>Only supports function calling</li>
+<li>JSON schema is verbose and less user-friendly than Pydantic models</li>
+<li>Not actively developed</li>
+</ul>
+</section>
+<section id="constrained-token-sampling-for-structured-output" class="level3">
+<h3 class="anchored" data-anchor-id="constrained-token-sampling-for-structured-output">Constrained token sampling for structured output</h3>
+<p>This approach hooks deeper into the LLM generation process. The user defines constraints as Pydantic models, regular expressions or other means that can be expressed as context-free grammars (<a href="https://en.wikipedia.org/wiki/Context-free_grammar">CFGs</a>). At inference time, the library’s token generator only considers tokens in the output layer that match the constraints.</p>
+<p>This approach doesn’t add overhead to the prompt, guarantees valid output and is even more flexible than function calling. It’s also highly efficient because the generator can skip tokens that only have one possible value.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Guarantees valid output</li>
+<li>Clear interchange format</li>
+<li>Easy to define constraints</li>
+<li>Efficient, skips unnecessary tokens</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Requires endpoint integration, which API providers like OpenAI do not support</li>
+</ul>
+<p>outlines and guidance use this approach.</p>
+</section>
+<section id="outlines" class="level3">
+<h3 class="anchored" data-anchor-id="outlines">outlines</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Literal</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> outlines</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> outlines.models.llamacpp(<span class="st">"./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Entity(BaseModel):</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span> <span class="op">=</span> Field(description<span class="op">=</span><span class="st">"name of the entity"</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    label: Literal[<span class="st">"PERSON"</span>, <span class="st">"ORGANIZATION"</span>, <span class="st">"LOCATION"</span>]</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtractEntities(BaseModel):</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    entities: List[Entity]</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>generator <span class="op">=</span> outlines.generate.json(model, ExtractEntities)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>instruction <span class="op">=</span> <span class="st">"Extract all named entities from the input using the labels: PERSON, ORGANIZATION, LOCATION. Input:"</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>instruction<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> generator(prompt)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">repr</span>(entities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ExtractEntities(entities<span class="op">=</span>[Entity(name<span class="op">=</span><span class="st">'BioNTech SE'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Instadeep'</span>, label<span class="op">=</span><span class="st">'ORGANIZATION'</span>), Entity(name<span class="op">=</span><span class="st">'Tunis'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>), Entity(name<span class="op">=</span><span class="st">'U.K.'</span>, label<span class="op">=</span><span class="st">'LOCATION'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Under the hood outlines translates the Pydantic model to a CFG. It steps through the CFG token by token and generates the output.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Efficient token generation that adds no overhead and even speeds up inference (see <a href="http://blog.dottxt.co/coalescence.html">article</a>)</li>
+<li>Translates Pydantic models, regular expressions, multiple choice questions and Jinja templates to CFGs</li>
+<li>Compatible with transformers, llama.cpp and vLLM</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>Integration with OpenAI is limited, JSON schema is not supported</li>
+<li>No support for Anthropic, Cohere or Groq</li>
+<li>Cookbook is sparse relative to the wide set of supported workflows, though the available examples are well explained</li>
+</ul>
+</section>
+<section id="guidance" class="level3">
+<h3 class="anchored" data-anchor-id="guidance">guidance</h3>
+<p>The guidance libary uses its own programming paradigm for constrained generation. Prompts are constructed from functions that define a CFG. Here is an example from the readme, with slight modifications:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> guidance</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> guidance <span class="im">import</span> models, gen, select</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> models.LlamaCpp(<span class="st">"./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf"</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="at">@guidance</span>(stateless<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ner_instruction(lm, <span class="bu">input</span>):</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    lm <span class="op">+=</span> <span class="ss">f"""</span><span class="ch">\</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    Please tag each word in the input with PER, ORG, LOC, or nothing</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="ss">    ---</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="ss">    Input: John worked at Apple.</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="ss">    Output:</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    John: PER</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    worked: </span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="ss">    at: </span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="ss">    Apple: ORG</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="ss">    .: </span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="ss">    ---</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    Input: </span><span class="sc">{</span><span class="bu">input</span><span class="sc">}</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="ss">    Output:</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> lm</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span> <span class="op">=</span> text</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="at">@guidance</span>(stateless<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> constrained_ner(lm, <span class="bu">input</span>):</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split into words</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> [</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        x <span class="cf">for</span> x <span class="kw">in</span> re.split(<span class="st">"([^a-zA-Z0-9])"</span>, <span class="bu">input</span>) <span class="cf">if</span> x <span class="kw">and</span> <span class="kw">not</span> re.match(<span class="st">"\s"</span>, x)</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    ret <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> words:</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>        ret <span class="op">+=</span> x <span class="op">+</span> <span class="st">": "</span> <span class="op">+</span> select([<span class="st">"PER"</span>, <span class="st">"ORG"</span>, <span class="st">"LOC"</span>, <span class="st">""</span>]) <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> lm <span class="op">+</span> ret</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>llm <span class="op">+</span> ner_instruction(<span class="bu">input</span>) <span class="op">+</span> constrained_ner(<span class="bu">input</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>constrained_ner()</code> function looks like normal Python, but is actually a CFG that the LLM uses to generate the output. It tokenizes the text and assigns a label to each token that is either PERSON, ORGANIZATION, LOCATION or nothing.</p>
+<p>The model returns:</p>
+<pre><code>BioNTech: PER
+SE: 
+is: 
+set: 
+to: 
+acquire: LOC
+InstaDeep: ORG
+,: 
+a: 
+Tunis: ORG
+-: LOC
+born: 
+and: 
+U: 
+.: LOC
+K: 
+.: LOC
+-: 
+based: 
+artificial: LOC
+intelligence: 
+(: LOC
+AI: 
+): LOC
+startup: 
+,: LOC
+for: 
+up: 
+to: 
+£: 
+562: 
+million: </code></pre>
+<p>The simplified tokenization causes inaccurate labels, as terms like “U.K.” are split incorrectly. In addition, Llama-3 falsely labeled “artificial” as a LOCATION.</p>
+<p>To fix this, we could use a simplified approach that doesn’t require tokenization. The model could simply list the named entities, like in the other libraries.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> guidance</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> guidance <span class="im">import</span> models, gen, regex</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> models.LlamaCpp(<span class="st">"./models/Meta-Llama-3-8B-Instruct.Q8_0.gguf"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># stateless=True indicates this function does not depend on LLM generations</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="at">@guidance</span>(stateless<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ner_instruction(lm, <span class="bu">input</span>):</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    lm <span class="op">+=</span> <span class="ss">f"""</span><span class="ch">\</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="ss">    Extract named entities from the input using the labels: PERSON, ORGANIZATION, LOCATION.</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    ---</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="ss">    Input: Jane and John live in San Francisco.</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="ss">    Output:</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="ss">    PERSON: Jane, John</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    ORGANIZATION:</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    LOCATION: San Francisco</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="ss">    ---</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="ss">    Input: </span><span class="sc">{</span><span class="bu">input</span><span class="sc">}</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="ss">    Output:</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> lm</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>pattern <span class="op">=</span> <span class="st">"PERSON:([\w, ]*)</span><span class="ch">\n</span><span class="st">ORGANIZATION:([\w, ]*)</span><span class="ch">\n</span><span class="st">LOCATION:([\w, ]*)"</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>llm <span class="op">+</span> ner_instruction(text) <span class="op">+</span> regex(pattern) <span class="op">+</span> gen(stop<span class="op">=</span><span class="st">"---"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The regular expression guarantees that each line in the output begins with a label and a colon, in the order PERSON, ORGANIZATION, LOCATION, even if the input text doesn’t follow this order or doesn’t contain all three types of entities. <code>gen(stop="---")</code> stops the generation when the model outputs the <code>---</code> separator between the input and output.</p>
+<p>The model returns:</p>
+<pre><code>PERSON:relative
+ORGANIZATION:UIButtonTypeCustom BioNTech SE, InstaDeep
+LOCATION: Tunis, U.K.</code></pre>
+<p>The output has the correct entities, but also contains garbage tokens like “relative” and “UIButtonTypeCustom”. Is this an issue with the model or the constraints? Let’s try pure generation without constraints:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>llm <span class="op">+</span> ner_instruction(text) <span class="op">+</span> gen(stop<span class="op">=</span><span class="st">"---"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<pre><code>PERSON:
+ORGANIZATION: BioNTech SE, InstaDeep
+LOCATION: Tunis, U.K.</code></pre>
+<p>This works! I don’t know why the regular expression caused the model to output garbage tokens. I looked for a solution to specify the constraints using Pydantic. A Github <a href="https://github.com/guidance-ai/guidance/issues/462">issue</a> linked to a module in LlamaIndex called <a href="https://docs.llamaindex.ai/en/stable/examples/output_parsing/guidance_pydantic_program/">Guidance Pydantic Program</a> which has this feature, however, it doesn’t work with the latest version of guidance.</p>
+<p>✅ Pros:</p>
+<ul>
+<li>Efficient token generation through constrained generation</li>
+<li>Flexible prompting system with CFGs which support complex constraints and recursive structures</li>
+</ul>
+<p>❌ Cons:</p>
+<ul>
+<li>NER didn’t work as expected with tokenization or regular expressions</li>
+<li>No built-in support for Pydantic models</li>
+<li>Writing CFGs via regular expressions has a steep learning curve</li>
+<li>Most powerful features are not compatible with OpenAI</li>
+</ul>
+</section>
+</section>
+<section id="recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="recommendations">Recommendations</h2>
+<p>In general, constrained generation is superior in terms of efficiency and guaranteed valid output. Function calling is the second best option and has higher compatibility with APIs. Prompting is the least efficient method but compatible with any LLM, local or via API.</p>
+<p>The best library for your structured LLM task depends on your surrounding software stack. If you are already using….</p>
+<ul>
+<li>transformers, llama.cpp or vLLM, meaning you control the token generation process, constrained generation with <a href="https://github.com/outlines-dev/outlines">outlines</a> is the most efficient way to generate structured output. outlines is easier to use than <a href="https://github.com/guidance-ai/guidance">guidance</a>, because it supports Pydantic models.</li>
+<li>an API that supports function calling, such as OpenAI’s API, use one of the libraries that support function calling with Pydantic models. Their functionality is quite similar. <a href="https://github.com/prefecthq/marvin">marvin</a> has the simplest syntax and many built-in tasks, though limited customization and it only supports OpenAI. <a href="https://github.com/jxnl/instructor">instructor</a> is focused on structured output and stays as close to the OpenAI Python client as possible. <a href="https://github.com/jxnl/instructor">mirascope</a> has a wider scope, adding chaining and other prompt engineering techniques.</li>
+<li><a href="https://python.langchain.com/docs/modules/model_io/output_parsers/types/pydantic/">langchain</a> or <a href="https://docs.llamaindex.ai/en/stable/module_guides/querying/structured_outputs/pydantic_program/">llama_index</a>, you can use their Pydantic output parsers for structured output from function calling or prompting too. Either is a decent choice if you prefer a comprehensive library over a specialized one. In my test, llama_index was easier to use.</li>
+<li>spaCy, choose <a href="https://github.com/explosion/spacy-llm">spacy-llm</a> because it integrates seamlessly.</li>
+</ul>
+<p><a href="https://github.com/bananaml/fructose">fructose</a> and <a href="https://github.com/qagentur/texttunnel">texttunnel</a> are not actively developed, so I don’t recommend them for new projects.</p>
+<section id="further-reading" class="level3">
+<h3 class="anchored" data-anchor-id="further-reading">Further reading</h3>
+<ul>
+<li><a href="https://huggingface.co/blog/evaluation-structured-outputs">Improving Prompt Consistency with Structured Generations</a> by Will Kurt, Remi Louf and Clémentine Fourrier at Hugging Face.</li>
+<li><a href="http://blog.dottxt.co/performance-gsm8k.html">Structured Generation Improves LLM performance: GSM8K Benchmark</a> by the .txt team.</li>
+<li><a href="https://pydantic.dev/articles/llm-intro">Steering Large Language Models with Pydantic</a> by Jason Liu, developer of instructor.</li>
+<li><a href="https://towardsdatascience.com/the-definitive-guide-to-structured-data-parsing-with-openai-gpt3-5-0e5ea0e52637">The Definitive Guide to Structured Data Parsing with OpenAI GPT 3.5</a> (paywalled) by Marie Stephen Leo. A systematic comparison and benchmark of langchain, instructor, fructose and mirascope.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/simmering\.dev");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

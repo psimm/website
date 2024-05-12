@@ -31,7 +31,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/blog/constrained-generation/index.html",
+      "/blog/structured_output/index.html",
       "/blog/llm-eval/index.html",
       "/blog/gold-data/index.html",
       "/blog/llm-price-performance/index.html",
