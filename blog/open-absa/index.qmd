@@ -1,0 +1,335 @@
+---
+title: "Open SOTA model for aspect-based sentiment analysis"
+author: "Paul Simmering"
+date: "2024-05-24"
+bibliography: bibliography.bib
+categories: ["Machine Learning", "Python"]
+image: llama.png
+---
+
+In October 2023, my colleague and me published a paper [@simmering2023large] on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 dataset. A downside of this approach is that it relies on OpenAI's proprietary GPT-3.5 model.
+
+In this article, I'm training a model that achieves similar performance using an open source base model. I'll also show how to deploy it locally using llama.cpp for a fully open source and private solution.
+
+## SemEval 2014 task 4 dataset
+
+As in the original paper, I'll use the SemEval 2014 task 4 dataset [@pontiki_semeval-2014_2014]. This dataset contains reviews of laptops and restaurants. Each review is annotated with the aspect and sentiment expressed towards that aspect. The dataset is split into a training and a test set.
+
+The approach to ABSA taken in this dataset has some limitations:
+
+- aspects have to be noun phrases
+- aspects can't be indirect
+- the output only tells you what aspect and polarity is, not the reasoning behind it
+
+The fine-tuning in this article could also be done on datasets annotated in a style that doesn't have these limitations.
+
+As before, I'll only target the task 4 subtask 1+2 mode. This means the model jointly predicts the aspect and sentiment polarity.
+
+![SemEval 2014 task 4 subtask 1+2 leaderboard](absa_task4_subtask12.png)
+
+Leaderboard on PapersWithCode: <https://paperswithcode.com/sota/aspect-based-sentiment-analysis-on-semeval-6>.
+
+## Model
+
+I'm looking for a model with the following properties:
+
+- Relatively small, to keep training cost and time low, as well as enable local deployment
+- Open source model
+- Available from Hugging Face's model hub
+- Compatible with [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)
+- Not a mixture-of-experts model, as the task I'll train for is very specific and unlikely to benefit from an ensemble
+
+Meta's [Llama-3 8B](https://huggingface.co/meta-llama/Meta-Llama-3-8B) is the best model I found that meets these criteria.
+
+It also comes in a 70B variant, but I'll use the 8B variant to keep training time and cost low. I expect that training on the 70B would yield higher benchmark scores.
+
+I'll use the base pretrained model rather than the instruction tuned model. The reason is that the instructions it was tuned on are different from the ABSA task, and that it introduces the need to include tokens indicating turns in a chat format.
+
+## Data preprocessing
+
+I have prepared a [script](LINK HERE) that reads the data from XML files and converts it to a Parquet file. It also removes examples that use the "conflict" sentiment label.
+
+Let's load the Parquet file.
+
+```{python}
+import polars as pl
+
+df = pl.read_parquet("data/semeval_2014/cleaned.parquet")
+```
+
+Let's inspect the data.
+
+```{python}
+# | code-fold: true
+
+from great_tables import GT
+
+df_counted = (
+    df.group_by(["domain", "split"])
+    .len()
+    .rename({"domain": "Domain", "split": "Split", "len": "Examples"})
+    .sort("Split", descending=True)
+    .sort("Domain", maintain_order=True)
+)
+
+sum_train = df_counted.filter(pl.col("Split") == "train")["Examples"].sum()
+sum_test = df_counted.filter(pl.col("Split") == "test")["Examples"].sum()
+
+(
+    GT(df_counted)
+    .fmt_integer(columns=["Examples"])
+    .tab_header("Examples in SemEval 2014 task 4 dataset")
+    .cols_align(align="right", columns=["Examples"])
+)
+
+```
+
+In total, there are `{python} sum_train` training examples and `{python} sum_test` test examples.
+
+The next step is to turn each example into a dialogue that the model can understand.
+
+## Training
+
+I use [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training runs on GPUs by [Modal](https://modal.com). Modal generously provided compute credits to participants of the [LLM Fine-Tuning for Data Scientists and Software Engineers](https://maven.com/parlance-labs/fine-tuning) course by Dan Becker and Hamel Husain.
+
+`llama-3.yml` specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html).
+
+### Format input-output pairs
+
+Format in the Alpaca format. See [axolotl instruction tuning formats](https://openaccess-ai-collective.github.io/axolotl/docs/dataset-formats/inst_tune.html).
+
+I'll validate the format of the responses using Pydantic.
+
+```{python}
+from pydantic import BaseModel
+from typing import List
+
+
+class Aspect(BaseModel):
+    term: str
+    polarity: str
+
+
+class AbsaAnswer(BaseModel):
+    aspects: List[Aspect]
+```
+
+```{python}
+import json
+
+df_train = df.filter(pl.col("split") == "train")
+
+train_inputs = df_train["text"].to_list()
+train_outputs = df_train["aspect_terms"].to_list()
+train_outputs = [AbsaAnswer(aspects=aspects) for aspects in train_outputs]
+
+
+# Write to a JSONL file for axolotl in Alpaca format
+
+for input, output in zip(train_inputs, train_outputs):
+    with open("data/semeval_2014/semeval2014_train.jsonl", "a") as f:
+        ex = {
+            "question": input,
+            "context": "",
+            "answer": json.dumps(output.dict()),
+        }
+
+        f.write(json.dumps(ex) + "\n")
+```
+
+## Inference
+
+I'll use the model to make predictions on the test set.
+
+```{python}
+# Export the test examples to a .txt file for prompting
+
+df_test = df.filter(pl.col("split") == "test")
+
+test_inputs = df_test["text"].to_list()
+
+with open("data/semeval_2014/test.txt", "w") as f:
+    for text in test_inputs:
+        f.write(text + "\n")
+```
+
+For reference, I'll also get predictions from GPT-4o using function calling, via [instructor](https://github.com/jxnl/instructor).
+
+I use a [litellm](https://docs.litellm.ai/docs/proxy/caching) proxy to cache the responses from OpenAI. Start the proxy with `litellm --config litellm.yaml`.
+
+```{python}
+import instructor
+from openai import OpenAI
+
+# Patch the client and set the base URL to a litellm proxy
+# The API key is supplied by the litellm proxy, so we can use a placeholder here
+client = instructor.from_openai(OpenAI(api_key="abc", base_url="http://localhost:4000"))
+
+
+def predict_openai(model, text: str) -> AbsaAnswer:
+    return client.chat.completions.create(
+        model=model,
+        response_model=AbsaAnswer,
+        messages=[{"role": "user", "content": text}],
+    )
+
+```
+
+```{python}
+df_test = df.filter(pl.col("split") == "test")
+test_texts = df_test["text"].to_list()[0:10]
+```
+
+```{python}
+# predictions = [predict_openai(model="gpt-4o", text=text) for text in test_texts]
+```
+
+```{python}
+import json
+
+predictions = []
+
+with open("data/semeval_2014/predictions_llama3.jsonl", "r") as f:
+    for line in f:
+        d = json.loads(json.loads(line)["completion"])
+        pred = AbsaAnswer(**d)
+        predictions.append(pred)
+
+```
+
+## Evaluation
+
+Each occurence of an aspect in an example of the gold set is counted as a prediction. The model's prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the F1 score. Correctly predicting that an example doesn't contain any aspects is also considered a correct prediction.
+
+$$ F1 = \frac{2 \cdot \text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} $$
+
+Precision is the number of correct predictions divided by the number of predictions made by the model. Recall is the number of correct predictions divided by the number of aspects in the gold set.
+
+$$ \text{precision} = \frac{\text{correct predictions}}{\text{predictions}} $$
+
+$$ \text{recall} = \frac{\text{correct predictions}}{\text{aspects in gold set}} $$
+
+If the model outputs a text that doesn't match the expected format, we disregard the example. We count a separate percentage of malformed examples.
+
+```{python}
+# Create a class to represent the evaluation metrics
+class AbsaRowMetrics(BaseModel):
+    malformed: bool
+    tp: int
+    fp: int
+    fn: int
+
+
+def evaluate(input: str | AbsaAnswer, expected: AbsaAnswer) -> AbsaRowMetrics:
+    """
+    Evaluate the model's output against the expected output.
+    """
+    metrics = {
+        "malformed": False,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+    }
+
+    if isinstance(input, str):
+        try:
+            predicted = AbsaAnswer(**json.loads(input))
+        except json.JSONDecodeError:
+            metrics["malformed"] = True
+            return AbsaMetrics(**metrics)
+    else:
+        predicted = input
+
+    # Compare the predicted and expected aspects
+    pred_set = set((a.term, a.polarity) for a in predicted.aspects)
+    exp_set = set((a.term, a.polarity) for a in expected.aspects)
+
+    metrics["tp"] = len(pred_set & exp_set)
+    metrics["fp"] = len(pred_set - exp_set)
+    metrics["fn"] = len(exp_set - pred_set)
+
+    # If both sets are empty, the prediction is correct
+    if len(pred_set) == 0 and len(exp_set) == 0:
+        metrics["tp"] = 1
+
+    return AbsaRowMetrics(**metrics)
+    
+```
+
+Turn the gold set into a list of AbsaAnswer objects.
+
+```{python}
+aspect_list = df_test["aspect_terms"].to_list()
+gold_set = [AbsaAnswer(aspects=aspects) for aspects in aspect_list]
+```
+
+```{python}
+row_metrics = [evaluate(pred, gold) for pred, gold in zip(predictions, gold_set)]
+
+
+class AbsaMetrics(BaseModel):
+    malformed: int
+    malformed_pct: float
+    tp: int
+    fp: int
+    fn: int
+    precision: float
+    recall: float
+    f1: float
+    examples: int
+
+
+def aggregate_metrics(row_metrics=List[AbsaRowMetrics]) -> AbsaMetrics:
+    agg_metrics = {
+        "malformed": sum(r.malformed for r in row_metrics),
+        "malformed_pct": sum(r.malformed for r in row_metrics) / len(row_metrics),
+        "tp": sum(r.tp for r in row_metrics),
+        "fp": sum(r.fp for r in row_metrics),
+        "fn": sum(r.fn for r in row_metrics),
+        "examples": len(row_metrics),
+    }
+
+    agg_metrics["precision"] = agg_metrics["tp"] / (
+        agg_metrics["tp"] + agg_metrics["fp"]
+    )
+    agg_metrics["recall"] = agg_metrics["tp"] / (agg_metrics["tp"] + agg_metrics["fn"])
+    agg_metrics["f1"] = (
+        2
+        * agg_metrics["precision"]
+        * agg_metrics["recall"]
+        / (agg_metrics["precision"] + agg_metrics["recall"])
+    )
+
+    return AbsaMetrics(**agg_metrics)
+
+
+absa_metrics = aggregate_metrics(row_metrics)
+```
+
+## Results
+
+```{python}
+# | code-fold: true
+
+df_metrics = pl.DataFrame(absa_metrics.dict()).select(
+    pl.lit("llama-3-8B").alias("model"),
+    pl.col("f1"),
+    pl.col("precision"),
+    pl.col("recall"),
+    pl.col("malformed_pct"),
+)
+
+GT(df_metrics).tab_header(
+    "SemEval 2014 task 4 subtask 1+2 evaluation metrics"
+).fmt_number(decimals=2, columns=["precision", "recall", "f1"]).fmt_percent(
+    decimals=0, columns=["malformed_pct"]
+)
+```
+
+## Deployment with llama.cpp
+
+## Discussion
+
+## References
+
+Add citation help
