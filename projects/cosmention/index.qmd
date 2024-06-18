@@ -14,11 +14,13 @@ categories:
 image: "image.png"
 ---
 
-[Cosmention](https://cosmention.com) is an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard.
+Cosmention was an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard. Over 100 million social media posts and more than 10 million customer reviews were collected and analyzed using machine learning models.
+
+I am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by [Q Insight Agency](https://teamq.de) and used by [dm](https://dm.de), the largest drug store chain in Europe.
+
+The SaaS offering is not available to the public anymore, but the landing page can still be viewed as an [archive](https://web.archive.org/web/20240610063007/https://www.cosmention.com/).
 
 ![](image.png)
-
-I am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by [Q Insight Agency](https://teamq.de) and is now in use at [dm](https://dm.de), the largest drug store chain in Europe.
 
 I presented the data pipeline in 2021 at the BVM (German association of social and market researchers) [symposium on artificial intelligence](/talk/bvmki2021) and wrote an [article](https://www.marktforschung.de/dossiers/themendossiers/kuenstliche-intelligenz-in-marktanalyse-kundenmanagement-und-darueber-hinaus/dossier/marktforschung-als-data-pipeline-datenfluesse-kontinuierlich-analysieren/) on Marktforschung.de, the largest German market research website.
 

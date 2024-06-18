@@ -10,7 +10,7 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.5.30</generator>
+<generator>quarto-1.5.45</generator>
 <lastBuildDate>Fri, 10 May 2024 22:00:00 GMT</lastBuildDate>
 <item>
   <title>The best library for structured LLM output</title>
@@ -32,7 +32,7 @@
 <section id="python-libraries-for-structured-llm-output" class="level2">
 <h2 class="anchored" data-anchor-id="python-libraries-for-structured-llm-output">10 Python libraries for structured LLM output</h2>
 <p>Here are the most prominent solutions, sorted by the number of Github stars ⭐:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Library</th>
@@ -2337,7 +2337,7 @@ LOCATION: Tunis, U.K.</code></pre>
 <figcaption>Hugging Face Open LLM leaderboard</figcaption>
 </figure>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 34%">
 <col style="width: 40%">
@@ -2483,7 +2483,7 @@ Warning
 <section id="per-token-pricing" class="level4">
 <h4 class="anchored" data-anchor-id="per-token-pricing">Per token pricing</h4>
 <p>This is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M input tokens and $30/1M output tokens.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 21%">
 <col style="width: 32%">
@@ -2909,7 +2909,6 @@ if (outputEl) {{
 <p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
 <div id="ea6ee759" class="cell page-columns page-full" data-execution_count="3">
 <div class="cell-output cell-output-display column-screen">
-<div>
 <style>.itables table td {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -2934,7 +2933,7 @@ if (outputEl) {{
 </style>
 <div class="itables">
 
-<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th">Model</th>
@@ -2978,7 +2977,6 @@ if (outputEl) {{
         $('#4434095c-1c67-4c0b-89c5-b77fe8a9c71c').DataTable(dt_args);
     });
 </script>
-</div>
 </div>
 </div>
 </div>
@@ -3152,7 +3150,7 @@ if (outputEl) {{
 <li><strong>Large language models</strong>: GPT-3, GPT-4 and other large language models are capable of virtually any task in NLP, from translation to named entity recognition. The flexibility comes at a price: they have billions of parameters and require multiple GPUs to run. Arguably, using a pre-trained LLM without fine-tuning is simpler than any of the previous standpoints because they don’t require much knowledge of NLP techniques. LLMs are slow, even on the latest GPUs, struggling to handle more than one example per second.</li>
 </ol>
 <p>To summarize:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Model</th>
@@ -4582,10 +4580,9 @@ background-color: null;
 font-style: inherit;">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -4612,7 +4609,6 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -5599,10 +5595,9 @@ font-style: inherit;">1</span>],</span>
 <span id="cb17-20">)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -5637,7 +5632,6 @@ font-style: inherit;">1</span>],</span>
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -6782,7 +6776,6 @@ font-style: inherit;">"texture_clean"</span>: pl.Utf8,</span>
 background-color: null;
 font-style: inherit;">10</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -6791,7 +6784,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 }
 </style>
 <small>shape: (10, 24)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">discontinued</th>
@@ -7112,12 +7105,10 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <p>The <code>pl.DataFrame.describe()</code> method gives a quick overview of the data.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">yarn.describe()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7126,7 +7117,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 }
 </style>
 <small>shape: (9, 25)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">describe</th>
@@ -7432,7 +7423,6 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <section id="check-for-missing-values" class="level2">
 <h2 class="anchored" data-anchor-id="check-for-missing-values">Check for missing values</h2>
 <p>A good first step in any exploratory data analysis is to check for missing values. Here, I’d like to know the percentage of missing values per column. The <code>pl.DataFrame.describe()</code> method already gives the number of missing values. I use <code>.transpose()</code> to turn the columns into rows, so I can use the <code>pl.DataFrame.with_column()</code> method to add a new column with the percentage of missing values.</p>
@@ -7486,7 +7476,6 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb4-12">)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7495,7 +7484,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (24, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">column</th>
@@ -7631,7 +7620,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -7818,7 +7806,6 @@ font-style: inherit;">True</span>)</span>
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7827,7 +7814,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (644, 4)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_company_name</th>
@@ -7998,7 +7985,6 @@ font-style: inherit;">True</span>)</span>
 </div>
 </div>
 </div>
-</div>
 <p>The table shows brands with at least 500 ratings on Ravelry. Lion Brand stands out with a particularly low average rating of 3.98, whereas madelinetosh scores an average rating of 4.73.</p>
 </section>
 <section id="yarn-weights" class="level2">
@@ -8035,7 +8021,6 @@ font-style: inherit;">True</span>)</span>
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -8044,7 +8029,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (9, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_weight_name</th>
@@ -8105,7 +8090,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -9806,7 +9790,6 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb15-19">)</span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -9815,7 +9798,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (16, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">airline</th>
@@ -9911,7 +9894,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>

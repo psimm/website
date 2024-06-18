@@ -20,7 +20,7 @@ image: "image.jpg"
 | 📍 Location | Online |
 | 🌐 Language | German |
 | 📥 Materials | [Slides (PDF)](KI_fuer_Social_Media_Monitoring_bei_dm.pdf) |
-| 🔗 Website | [Cosmention](https://cosmention.com) |
+| 🔗 Website | [Cosmention](https://web.archive.org/web/20240610063007/https://www.cosmention.com/) |
 
 A presentation on Cosmention's data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language models and word vectors and then dives into text classification and named entity recognition.
 
