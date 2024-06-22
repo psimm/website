@@ -6,7 +6,7 @@ categories: ["Productivity"]
 image: "good_fast_cheap.png"
 ---
 
-The adage goes: fast, good, cheap. Pick two. You probably don't want to be cheap labor, so I suggest that developers strive for fast and good. Not just good, and not just fast—both.
+The adage goes: fast, good, cheap. Pick two. As a developer, you probably don't want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.
 
 ![Good, fast, cheap](good_fast_cheap.png){width=65%}
 
