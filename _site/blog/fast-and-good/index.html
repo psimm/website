@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-06-22">
 
-<title>Talks – Paul Simmering</title>
+<title>Fast and good – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +68,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Paul Simmering</span>
     </a>
   </div>
@@ -149,19 +91,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html"> 
+    <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./talks.html" aria-current="page"> 
+    <a class="nav-link" href="../../talks.html"> 
 <span class="menu-text">Talks</span></a>
   </li>  
   <li class="nav-item compact">
@@ -187,368 +129,115 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fast and good</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Productivity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 22, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Talks</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>The adage goes: fast, good, cheap. Pick two. You probably don’t want to be cheap labor, so I suggest that developers strive for fast and good. Not just good, and not just fast—both.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="good_fast_cheap.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>Good, fast, cheap</figcaption>
+</figure>
+</div>
+<p>A developer writing bad code quickly creates troublesome “spaghetti code” that may function for a demo but becomes a nightmare to maintain as the project scales. LLMs have made this even easier.</p>
+<p>Conversely, a developer who writes good code at a glacial pace may see the project run out of money, be overtaken by competitors or get stuck in a cycle of endless refactoring.</p>
+<p>Both outcomes are to be avoided.</p>
+<p>But can’t you just write the first version quickly, get feedback, and then rewrite it properly?</p>
+<p>You may not get the luxury of a full rewrite. Rewrites are <a href="https://swizec.com/blog/you-can-t-stop-the-business-or-why-rewrites-fail/">risky</a> and often <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">ill-advised</a>. It’s hard to find the time for a rewrite on a project that is accelerating. It’s not impossible to do a successful rewrite, but rare. Projects like <a href="https://tailwindcss.com/blog/tailwindcss-v4-alpha">Tailwind CSS</a> and <a href="https://docs.pydantic.dev/2.0/blog/pydantic-v2-alpha/">Pydantic</a> have done successful rewrites in Rust. This happened after they achieved amazing adoption and had plenty of resources. For most projects, a rewrite is not a viable option. That means you need to get it right the first time.</p>
+<p>The dual optimum of fast and good is achievable with a balanced approach.</p>
+<p>Before diving into strategies, I’d like to clarify that fast doesn’t just mean typing quickly. <a href="https://en.wiktionary.org/wiki/slow_is_smooth,_smooth_is_fast">“Slow is smooth, smooth is fast”</a>. The fastest way to write a feature can involve spending 2 hours sketching out the design first.</p>
+<p>Now, here are some strategies that helped me, and might help you, get closer to the dual optimum:</p>
+<section id="strategies-for-the-dual-optimum" class="level2">
+<h2 class="anchored" data-anchor-id="strategies-for-the-dual-optimum">Strategies for the dual optimum</h2>
+<section id="prioritize-and-plan" class="level3">
+<h3 class="anchored" data-anchor-id="prioritize-and-plan">Prioritize and plan</h3>
+<ul>
+<li><strong>Don’t build unnecessary features</strong>: much easier said than done, but this belongs at the top of every list of productivity tips.</li>
+<li><strong>Involve users early</strong>: work in sprints, get feedback and iterate.</li>
+<li><strong>Sketch it first</strong>: write the names of functions and classes before writing the code, then fill in the details.</li>
+<li><strong>Don’t over-engineer for scale you don’t have</strong>: Most companies have gigabytes to terrabytes of data, <a href="https://motherduck.com/blog/big-data-is-dead/">not petabytes</a>, and an outage once in a few months is acceptable. Don’t build for the scale of Google if you’re not Google.</li>
+<li><strong>Don’t reinvent the wheel</strong>: For everything but your core differentiating features, use libraries and services. It can be worth adjusting your design to fit existing software.</li>
+</ul>
+</section>
+<section id="minimize-waiting" class="level3">
+<h3 class="anchored" data-anchor-id="minimize-waiting">Minimize waiting</h3>
+<ul>
+<li><strong>Minimize waiting for code</strong>: use a fast computer, fast internet connection, and run your code and tests locally if possible</li>
+<li><strong>Minimize waiting for people</strong>: establish time limits for code reviews, schedule tasks in a way that minimizes dependencies on others.</li>
+</ul>
+</section>
+<section id="create-an-environment-that-supports-flow" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-environment-that-supports-flow">Create an environment that supports flow</h3>
+<ul>
+<li><strong>Minimize interruptions</strong>: both external and <a href="https://ics.uci.edu/~gmark/Home_page/Publications_files/CHI%202011%20Self-interruption.pdf">self-interruptions</a>.</li>
+<li><strong>Embrace bursts of productivity</strong>: use your best hours for coding, take breaks when you’re not productive, get on a <a href="https://www.paulgraham.com/makersschedule.html">maker’s schedule</a>, if possible.</li>
+<li><strong>Learn to type fast</strong>: Not because typing speed itself is important, but because it reduces the friction between your thoughts and the code editor and the mental cost of rewriting a section of code.</li>
+<li><strong>Learn your tools</strong>: keyboard shortcuts, IDE extensions, terminal commands.</li>
+<li><strong>Use a <a href="https://github.com/features/copilot">Copilot</a></strong>: not because it writes better code than you, but because it lets you get it onto the page faster. This is especially useful for boilerplate code and for writing tests and documentation.</li>
+</ul>
+</section>
+<section id="keep-a-clean-codebase" class="level3">
+<h3 class="anchored" data-anchor-id="keep-a-clean-codebase">Keep a clean codebase</h3>
+<ul>
+<li><strong>Be willing to throw away code</strong>: if you realize you’ve gone down the wrong path during a coding session, don’t be afraid to delete parts of the code and start over.</li>
+<li><strong>Hop from good state to good state</strong>: When working on a big feature, break it down into smaller tasks that leave the code in a runnable state at the end of each task. This also makes for clean commits and easier code reviews.</li>
+<li><strong>Putter, within reason</strong>: Reading and re-reading code, refactoring and tweaking it is necessary to make it good. But don’t overdo it.</li>
+</ul>
+</section>
+<section id="test-and-automate" class="level3">
+<h3 class="anchored" data-anchor-id="test-and-automate">Test and automate</h3>
+<ul>
+<li><strong>Reduce worry about breaking things</strong>: use version control, write tests, use a test environment rather than working on production data.</li>
+<li><strong>Automate everything</strong>: use a linter, formatter, test runner, CI/CD, deployment scripts and infrastructure as code.</li>
+<li><strong>Write tests as you go</strong>: tests will give you the confidence to refactor and add features quickly. It’s easiest to write tests when you’re writing the code.</li>
+</ul>
+<p>May you code swiftly and wisely.</p>
+<p>The term dual optimum and finding strategies to achieve it came from the book <a href="https://www.goodreads.com/book/show/17730608-winning-without-losing">Winning without Losing</a> by Martin Bjergegaard and Jordan Milne.</p>
 
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="conference" data-listing-date-sort="1714687200000" data-listing-file-modified-sort="1714977256529" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="65">
-<a href="./talks/day-of-business-psychology-2024/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/day-of-business-psychology-2024/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-4th Day of Business Psychology
-</h5>
-<div class="card-text listing-description">
-I presented a case study of use of AI in consumer research at the 4th Day of Business Psychology, hosted by the Hochschule für Technik Stuttgart.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-May 3, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="conference" data-listing-date-sort="1713909600000" data-listing-file-modified-sort="1719051294289" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="149">
-<a href="./talks/ephmra2024/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/ephmra2024/ephmra2024.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-AI Revolutionizes Content Analysis in Market Research
-</h5>
-<div class="card-text listing-description">
-This presentation at EPHMRA 2024 was about three ways in which AI makes content analysis more efficient in market research:
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Apr 24, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="webinar" data-listing-date-sort="1713218400000" data-listing-file-modified-sort="1714977256567" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="133">
-<a href="./talks/wdm2024/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/wdm2024/wdm2024.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-AI in Market Research - Case Studies
-</h5>
-<div class="card-text listing-description">
-Woche der Marktforschung is an annual event by Marktforschung.de and Succeet. This year Oliver Tabino and me presented three case studies of applied AI in market research:
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering and Oliver Tabino
-</div>
-<div class="listing-date">
-Apr 16, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="conference" data-listing-date-sort="1710198000000" data-listing-file-modified-sort="1714977256545" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="81">
-<a href="./talks/finding-answers-2024/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/finding-answers-2024/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Finding Answers Summit
-</h5>
-<div class="card-text listing-description">
-Lena Kurzmann from Dialego interviewed me on the topic of implementing AI in market research. The interview was part of the Finding Answers Summit. We discussed text…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Mar 12, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="conference" data-listing-date-sort="1709938800000" data-listing-file-modified-sort="1714977256557" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="349">
-<a href="./talks/gor2024/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/gor2024/image.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Where do LLMs fit in NLP Pipelines?
-</h5>
-<div class="card-text listing-description">
-Large language models (LLMs) can perform classic tasks in natural language processing (NLP), such as text classification, sentiment analysis and named entity recognition. It…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering and Paavo Huoviala
-</div>
-<div class="listing-date">
-Mar 9, 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="workshop" data-listing-date-sort="1698271200000" data-listing-file-modified-sort="1714977256558" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="160">
-<a href="./talks/succeet2023/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/succeet2023/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-GPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy
-</h5>
-<div class="card-text listing-description">
-Many market researchers have already experimented with ChatGPT and have achieved promising results. But how is this transferred to practice? In practice, accuracy, IT…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Oct 26, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="conference" data-listing-date-sort="1695247200000" data-listing-file-modified-sort="1714977256546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="357">
-<a href="./talks/gor2023/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/gor2023/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Large Language Models for Aspect-Based Sentiment Analysis
-</h5>
-<div class="card-text listing-description">
-Large language models (LLMs) like GPT-4 offer unprecedented text processing capabilities. As general models, they can fulfill a wide range of roles, including those of more…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering and Paavo Huoviala
-</div>
-<div class="listing-date">
-Sep 21, 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="7" data-categories="symposium" data-listing-date-sort="1637794800000" data-listing-file-modified-sort="1718696481390" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="97">
-<a href="./talks/bvmki2021/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/bvmki2021/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-AI for Social Media Monitoring at dm
-</h5>
-<div class="card-text listing-description">
-A presentation on Cosmention’s data pipeline and how Cosmention is used at dm, the largest drugstore chain in Europe. The presentation starts with a review of language…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Nov 25, 2021
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="8" data-categories="symposium" data-listing-date-sort="1601244000000" data-listing-file-modified-sort="1714977256518" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="67">
-<a href="./talks/comes2020/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/comes2020/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-StakeX - Organizational Networks from Web Research
-</h5>
-<div class="card-text listing-description">
-Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Perry and Paul Simmering
-</div>
-<div class="listing-date">
-Sep 28, 2020
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="9" data-categories="conference" data-listing-date-sort="1551999600000" data-listing-file-modified-sort="1714977256545" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="60">
-<a href="./talks/gor2019/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/gor2019/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-R Shiny for Interactive Data Visualization – A Case Study
-</h5>
-<div class="card-text listing-description">
-An overview of R Shiny by example of an app I developed for display patent statistics
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Mar 8, 2019
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="10" data-categories="symposium" data-listing-date-sort="1536789600000" data-listing-file-modified-sort="1714977256557" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="135">
-<a href="./talks/researchplus2018/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/researchplus2018/image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Human and AI Decision Making in a Game of Innovation and Imitation
-</h5>
-<div class="card-text listing-description">
-A presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering
-</div>
-<div class="listing-date">
-Sep 13, 2018
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="11" data-categories="conference" data-listing-date-sort="1506463200000" data-listing-file-modified-sort="1714977256518" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="67">
-<a href="./talks/concordi2017/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/concordi2017/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model
-</h5>
-<div class="card-text listing-description">
-Presentation of an agent based simulation game that models a competitive market with innovator and imitator agents.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Paul Simmering and Daniel S. Hain
-</div>
-<div class="listing-date">
-Sep 27, 2017
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="12" data-categories="conference" data-listing-date-sort="1496181600000" data-listing-file-modified-sort="1714977256529" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="163">
-<a href="./talks/emaee2017/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./talks/emaee2017/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model
-</h5>
-<div class="card-text listing-description">
-Product life-cycles in markets for innovative products are shortening, con- sumers rapidly upgrade from one product generation to the next and demand constant technical…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
 
-</div>
-<div class="listing-date">
-May 31, 2017
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -976,7 +665,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="./imprint.html">Imprint</a> | <a href="./privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
 </div>
     <div class="nav-footer-right">
       &nbsp;
