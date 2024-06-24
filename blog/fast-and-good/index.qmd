@@ -1,0 +1,66 @@
+---
+title: "Fast and good"
+author: "Paul Simmering"
+date: "2024-06-22"
+categories: ["Productivity"]
+image: "good_fast_cheap.png"
+---
+
+The adage goes: fast, good, cheap. Pick two. As a developer, you probably don't want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.
+
+![Good, fast, cheap](good_fast_cheap.png){width=65%}
+
+A developer writing bad code quickly creates troublesome "spaghetti code" that may function for a demo but becomes a nightmare to maintain as the project scales. LLMs have made this even easier.
+
+Conversely, a developer who writes good code at a glacial pace may see the project run out of money, be overtaken by competitors or get stuck in a cycle of endless refactoring.
+
+Both outcomes are to be avoided.
+
+But can't you just write the first version quickly, get feedback, and then rewrite it properly?
+
+You may not get the luxury of a full rewrite. Rewrites are [risky](https://swizec.com/blog/you-can-t-stop-the-business-or-why-rewrites-fail/) and often [ill-advised](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/). It's hard to find the time for a rewrite on a project that is accelerating. It's not impossible to do a successful rewrite, but rare. Projects like [Tailwind CSS](https://tailwindcss.com/blog/tailwindcss-v4-alpha) and [Pydantic](https://docs.pydantic.dev/2.0/blog/pydantic-v2-alpha/) have done successful rewrites in Rust. This happened after they achieved amazing adoption and had plenty of resources. For most projects, a rewrite is not a viable option. That means you need to get it right the first time.
+
+The dual optimum of fast and good is achievable with a balanced approach.
+
+Before diving into strategies, I'd like to clarify that fast doesn't just mean typing quickly. ["Slow is smooth, smooth is fast"](https://en.wiktionary.org/wiki/slow_is_smooth,_smooth_is_fast). The fastest way to write a feature can involve spending 2 hours sketching out the design first.
+
+Now, here are some strategies that helped me, and might help you, get closer to the dual optimum:
+
+## Strategies for the dual optimum
+
+### Prioritize and plan
+
+- **Don't build unnecessary features**: much easier said than done, but this belongs at the top of every list of productivity tips.
+- **Involve users early**: work in sprints, get feedback and iterate.
+- **Sketch it first**: write the names of functions and classes before writing the code, then fill in the details.
+- **Don't over-engineer for scale you don't have**: Most companies have gigabytes to terrabytes of data, [not petabytes](https://motherduck.com/blog/big-data-is-dead/), and an outage once in a few months is acceptable. Don't build for the scale of Google if you're not Google.
+- **Don't reinvent the wheel**: For everything but your core differentiating features, use libraries and services. It can be worth adjusting your design to fit existing software.
+
+### Minimize waiting
+
+- **Minimize waiting for code**: use a fast computer, fast internet connection, and run your code and tests locally if possible
+- **Minimize waiting for people**: establish time limits for code reviews, schedule tasks in a way that minimizes dependencies on others.
+
+### Create an environment that supports flow
+
+- **Minimize interruptions**: both external and [self-interruptions](https://ics.uci.edu/~gmark/Home_page/Publications_files/CHI%202011%20Self-interruption.pdf).
+- **Embrace bursts of productivity**: use your best hours for coding, take breaks when you're not productive, get on a [maker's schedule](https://www.paulgraham.com/makersschedule.html), if possible.
+- **Learn to type fast**: Not because typing speed itself is important, but because it reduces the friction between your thoughts and the code editor and the mental cost of rewriting a section of code.
+- **Learn your tools**: keyboard shortcuts, IDE extensions, terminal commands.
+- **Use a [Copilot](https://github.com/features/copilot)**: not because it writes better code than you, but because it lets you get it onto the page faster. This is especially useful for boilerplate code and for writing tests and documentation.
+
+### Keep a clean codebase
+
+- **Be willing to throw away code**: if you realize you've gone down the wrong path during a coding session, don't be afraid to delete parts of the code and start over.
+- **Hop from good state to good state**: When working on a big feature, break it down into smaller tasks that leave the code in a runnable state at the end of each task. This also makes for clean commits and easier code reviews.
+- **Putter, within reason**: Reading and re-reading  code, refactoring and tweaking it is necessary to make it good. But don't overdo it.
+
+### Test and automate
+
+- **Reduce worry about breaking things**: use version control, write tests, use a test environment rather than working on production data.
+- **Automate everything**: use a linter, formatter, test runner, CI/CD, deployment scripts and infrastructure as code.
+- **Write tests as you go**: tests will give you the confidence to refactor and add features quickly. It's easiest to write tests when you're writing the code.
+
+May you code swiftly and wisely.
+
+The term dual optimum and finding strategies to achieve it came from the book [Winning without Losing](https://www.goodreads.com/book/show/17730608-winning-without-losing) by Martin Bjergegaard and Jordan Milne.

@@ -18,9 +18,7 @@ about:
 
 
 
-Hi! I'm Paul Simmering, a data scientist from Germany specializing in Natural Language Processing. Besides coding, I enjoy writing and speaking about data science.
-
-I’m the inventor and lead developer of [Cosmention](https://cosmention.com), an AI-powered social media monitoring tool for cosmetics. It’s a fully automated data pipeline for collecting social media posts, analyzing them with ML and reporting via dashboard and email. It’s in use at Europe’s largest drugstore chain dm Drogerie Markt.
+Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. Besides coding, I enjoy writing and speaking about data science. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de).
 
 The best way to contact me is via email: [paul.simmering@gmail.com](mailto:paul.simmering@gmail.com).
 

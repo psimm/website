@@ -10,8 +10,90 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.5.30</generator>
-<lastBuildDate>Fri, 10 May 2024 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.45</generator>
+<lastBuildDate>Fri, 21 Jun 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Fast and good</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/fast-and-good/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>The adage goes: fast, good, cheap. Pick two. As a developer, you probably don’t want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/fast-and-good/good_fast_cheap.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>Good, fast, cheap</figcaption>
+</figure>
+</div>
+<p>A developer writing bad code quickly creates troublesome “spaghetti code” that may function for a demo but becomes a nightmare to maintain as the project scales. LLMs have made this even easier.</p>
+<p>Conversely, a developer who writes good code at a glacial pace may see the project run out of money, be overtaken by competitors or get stuck in a cycle of endless refactoring.</p>
+<p>Both outcomes are to be avoided.</p>
+<p>But can’t you just write the first version quickly, get feedback, and then rewrite it properly?</p>
+<p>You may not get the luxury of a full rewrite. Rewrites are <a href="https://swizec.com/blog/you-can-t-stop-the-business-or-why-rewrites-fail/">risky</a> and often <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">ill-advised</a>. It’s hard to find the time for a rewrite on a project that is accelerating. It’s not impossible to do a successful rewrite, but rare. Projects like <a href="https://tailwindcss.com/blog/tailwindcss-v4-alpha">Tailwind CSS</a> and <a href="https://docs.pydantic.dev/2.0/blog/pydantic-v2-alpha/">Pydantic</a> have done successful rewrites in Rust. This happened after they achieved amazing adoption and had plenty of resources. For most projects, a rewrite is not a viable option. That means you need to get it right the first time.</p>
+<p>The dual optimum of fast and good is achievable with a balanced approach.</p>
+<p>Before diving into strategies, I’d like to clarify that fast doesn’t just mean typing quickly. <a href="https://en.wiktionary.org/wiki/slow_is_smooth,_smooth_is_fast">“Slow is smooth, smooth is fast”</a>. The fastest way to write a feature can involve spending 2 hours sketching out the design first.</p>
+<p>Now, here are some strategies that helped me, and might help you, get closer to the dual optimum:</p>
+<section id="strategies-for-the-dual-optimum" class="level2">
+<h2 class="anchored" data-anchor-id="strategies-for-the-dual-optimum">Strategies for the dual optimum</h2>
+<section id="prioritize-and-plan" class="level3">
+<h3 class="anchored" data-anchor-id="prioritize-and-plan">Prioritize and plan</h3>
+<ul>
+<li><strong>Don’t build unnecessary features</strong>: much easier said than done, but this belongs at the top of every list of productivity tips.</li>
+<li><strong>Involve users early</strong>: work in sprints, get feedback and iterate.</li>
+<li><strong>Sketch it first</strong>: write the names of functions and classes before writing the code, then fill in the details.</li>
+<li><strong>Don’t over-engineer for scale you don’t have</strong>: Most companies have gigabytes to terrabytes of data, <a href="https://motherduck.com/blog/big-data-is-dead/">not petabytes</a>, and an outage once in a few months is acceptable. Don’t build for the scale of Google if you’re not Google.</li>
+<li><strong>Don’t reinvent the wheel</strong>: For everything but your core differentiating features, use libraries and services. It can be worth adjusting your design to fit existing software.</li>
+</ul>
+</section>
+<section id="minimize-waiting" class="level3">
+<h3 class="anchored" data-anchor-id="minimize-waiting">Minimize waiting</h3>
+<ul>
+<li><strong>Minimize waiting for code</strong>: use a fast computer, fast internet connection, and run your code and tests locally if possible</li>
+<li><strong>Minimize waiting for people</strong>: establish time limits for code reviews, schedule tasks in a way that minimizes dependencies on others.</li>
+</ul>
+</section>
+<section id="create-an-environment-that-supports-flow" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-environment-that-supports-flow">Create an environment that supports flow</h3>
+<ul>
+<li><strong>Minimize interruptions</strong>: both external and <a href="https://ics.uci.edu/~gmark/Home_page/Publications_files/CHI%202011%20Self-interruption.pdf">self-interruptions</a>.</li>
+<li><strong>Embrace bursts of productivity</strong>: use your best hours for coding, take breaks when you’re not productive, get on a <a href="https://www.paulgraham.com/makersschedule.html">maker’s schedule</a>, if possible.</li>
+<li><strong>Learn to type fast</strong>: Not because typing speed itself is important, but because it reduces the friction between your thoughts and the code editor and the mental cost of rewriting a section of code.</li>
+<li><strong>Learn your tools</strong>: keyboard shortcuts, IDE extensions, terminal commands.</li>
+<li><strong>Use a <a href="https://github.com/features/copilot">Copilot</a></strong>: not because it writes better code than you, but because it lets you get it onto the page faster. This is especially useful for boilerplate code and for writing tests and documentation.</li>
+</ul>
+</section>
+<section id="keep-a-clean-codebase" class="level3">
+<h3 class="anchored" data-anchor-id="keep-a-clean-codebase">Keep a clean codebase</h3>
+<ul>
+<li><strong>Be willing to throw away code</strong>: if you realize you’ve gone down the wrong path during a coding session, don’t be afraid to delete parts of the code and start over.</li>
+<li><strong>Hop from good state to good state</strong>: When working on a big feature, break it down into smaller tasks that leave the code in a runnable state at the end of each task. This also makes for clean commits and easier code reviews.</li>
+<li><strong>Putter, within reason</strong>: Reading and re-reading code, refactoring and tweaking it is necessary to make it good. But don’t overdo it.</li>
+</ul>
+</section>
+<section id="test-and-automate" class="level3">
+<h3 class="anchored" data-anchor-id="test-and-automate">Test and automate</h3>
+<ul>
+<li><strong>Reduce worry about breaking things</strong>: use version control, write tests, use a test environment rather than working on production data.</li>
+<li><strong>Automate everything</strong>: use a linter, formatter, test runner, CI/CD, deployment scripts and infrastructure as code.</li>
+<li><strong>Write tests as you go</strong>: tests will give you the confidence to refactor and add features quickly. It’s easiest to write tests when you’re writing the code.</li>
+</ul>
+<p>May you code swiftly and wisely.</p>
+<p>The term dual optimum and finding strategies to achieve it came from the book <a href="https://www.goodreads.com/book/show/17730608-winning-without-losing">Winning without Losing</a> by Martin Bjergegaard and Jordan Milne.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Productivity</category>
+  <guid>https://simmering.dev/blog/fast-and-good/</guid>
+  <pubDate>Fri, 21 Jun 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/fast-and-good/good_fast_cheap.png" medium="image" type="image/png" height="132" width="144"/>
+</item>
 <item>
   <title>The best library for structured LLM output</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -32,7 +114,7 @@
 <section id="python-libraries-for-structured-llm-output" class="level2">
 <h2 class="anchored" data-anchor-id="python-libraries-for-structured-llm-output">10 Python libraries for structured LLM output</h2>
 <p>Here are the most prominent solutions, sorted by the number of Github stars ⭐:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Library</th>
@@ -2337,7 +2419,7 @@ LOCATION: Tunis, U.K.</code></pre>
 <figcaption>Hugging Face Open LLM leaderboard</figcaption>
 </figure>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 34%">
 <col style="width: 40%">
@@ -2483,7 +2565,7 @@ Warning
 <section id="per-token-pricing" class="level4">
 <h4 class="anchored" data-anchor-id="per-token-pricing">Per token pricing</h4>
 <p>This is typical for models served by an API. The longer the prompt and the response, the greater the cost. Cost for output tokens is typically 2 to 5 times higher than input tokens. Let’s look at an example, using GPT-4 Turbo’s pricing of $10/1M input tokens and $30/1M output tokens.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 21%">
 <col style="width: 32%">
@@ -2909,7 +2991,6 @@ if (outputEl) {{
 <p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
 <div id="ea6ee759" class="cell page-columns page-full" data-execution_count="3">
 <div class="cell-output cell-output-display column-screen">
-<div>
 <style>.itables table td {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -2934,7 +3015,7 @@ if (outputEl) {{
 </style>
 <div class="itables">
 
-<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th">Model</th>
@@ -2978,7 +3059,6 @@ if (outputEl) {{
         $('#4434095c-1c67-4c0b-89c5-b77fe8a9c71c').DataTable(dt_args);
     });
 </script>
-</div>
 </div>
 </div>
 </div>
@@ -3152,7 +3232,7 @@ if (outputEl) {{
 <li><strong>Large language models</strong>: GPT-3, GPT-4 and other large language models are capable of virtually any task in NLP, from translation to named entity recognition. The flexibility comes at a price: they have billions of parameters and require multiple GPUs to run. Arguably, using a pre-trained LLM without fine-tuning is simpler than any of the previous standpoints because they don’t require much knowledge of NLP techniques. LLMs are slow, even on the latest GPUs, struggling to handle more than one example per second.</li>
 </ol>
 <p>To summarize:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Model</th>
@@ -4582,10 +4662,9 @@ background-color: null;
 font-style: inherit;">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -4612,7 +4691,6 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -5599,10 +5677,9 @@ font-style: inherit;">1</span>],</span>
 <span id="cb17-20">)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -5637,7 +5714,6 @@ font-style: inherit;">1</span>],</span>
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -6782,7 +6858,6 @@ font-style: inherit;">"texture_clean"</span>: pl.Utf8,</span>
 background-color: null;
 font-style: inherit;">10</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -6791,7 +6866,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 }
 </style>
 <small>shape: (10, 24)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">discontinued</th>
@@ -7112,12 +7187,10 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <p>The <code>pl.DataFrame.describe()</code> method gives a quick overview of the data.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">yarn.describe()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7126,7 +7199,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 }
 </style>
 <small>shape: (9, 25)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">describe</th>
@@ -7432,7 +7505,6 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <section id="check-for-missing-values" class="level2">
 <h2 class="anchored" data-anchor-id="check-for-missing-values">Check for missing values</h2>
 <p>A good first step in any exploratory data analysis is to check for missing values. Here, I’d like to know the percentage of missing values per column. The <code>pl.DataFrame.describe()</code> method already gives the number of missing values. I use <code>.transpose()</code> to turn the columns into rows, so I can use the <code>pl.DataFrame.with_column()</code> method to add a new column with the percentage of missing values.</p>
@@ -7486,7 +7558,6 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb4-12">)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7495,7 +7566,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (24, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">column</th>
@@ -7631,7 +7702,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -7818,7 +7888,6 @@ font-style: inherit;">True</span>)</span>
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -7827,7 +7896,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (644, 4)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_company_name</th>
@@ -7998,7 +8067,6 @@ font-style: inherit;">True</span>)</span>
 </div>
 </div>
 </div>
-</div>
 <p>The table shows brands with at least 500 ratings on Ravelry. Lion Brand stands out with a particularly low average rating of 3.98, whereas madelinetosh scores an average rating of 4.73.</p>
 </section>
 <section id="yarn-weights" class="level2">
@@ -8035,7 +8103,6 @@ font-style: inherit;">True</span>)</span>
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -8044,7 +8111,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (9, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_weight_name</th>
@@ -8105,7 +8172,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -9806,7 +9872,6 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb15-19">)</span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -9815,7 +9880,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (16, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">airline</th>
@@ -9911,7 +9976,6 @@ font-style: inherit;">True</span>)</span>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>

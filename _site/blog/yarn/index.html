@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.30">
+<meta name="generator" content="quarto-1.5.45">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
 <meta name="dcterms.date" content="2022-10-22">
 
-<title>Paul Simmering – Tidy Tuesday: analyzing yarns with polars</title>
+<title>Tidy Tuesday: analyzing yarns with polars – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -138,7 +138,7 @@ require(['plotly'], function(Plotly) {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -278,7 +278,6 @@ require(['plotly'], function(Plotly) {
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>yarn.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -287,7 +286,7 @@ require(['plotly'], function(Plotly) {
 }
 </style>
 <small>shape: (10, 24)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">discontinued</th>
@@ -608,12 +607,10 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 </div>
-</div>
 <p>The <code>pl.DataFrame.describe()</code> method gives a quick overview of the data.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yarn.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -622,7 +619,7 @@ require(['plotly'], function(Plotly) {
 }
 </style>
 <small>shape: (9, 25)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">describe</th>
@@ -928,7 +925,6 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 </div>
-</div>
 <section id="check-for-missing-values" class="level2">
 <h2 class="anchored" data-anchor-id="check-for-missing-values">Check for missing values</h2>
 <p>A good first step in any exploratory data analysis is to check for missing values. Here, I’d like to know the percentage of missing values per column. The <code>pl.DataFrame.describe()</code> method already gives the number of missing values. I use <code>.transpose()</code> to turn the columns into rows, so I can use the <code>pl.DataFrame.with_column()</code> method to add a new column with the percentage of missing values.</p>
@@ -946,7 +942,6 @@ require(['plotly'], function(Plotly) {
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    .sort(pl.col(<span class="st">"null_pct"</span>), descending<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -955,7 +950,7 @@ require(['plotly'], function(Plotly) {
 }
 </style>
 <small>shape: (24, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">column</th>
@@ -1094,7 +1089,6 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 </div>
-</div>
 <p>Some columns have close to 100% missing values, these won’t be useful for further analysis.</p>
 </section>
 <section id="discontinued-yarns" class="level2">
@@ -1190,7 +1184,6 @@ if (outputEl) {{
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -1199,7 +1192,7 @@ if (outputEl) {{
 }
 </style>
 <small>shape: (644, 4)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_company_name</th>
@@ -1370,7 +1363,6 @@ if (outputEl) {{
 </div>
 </div>
 </div>
-</div>
 <p>The table shows brands with at least 500 ratings on Ravelry. Lion Brand stands out with a particularly low average rating of 3.98, whereas madelinetosh scores an average rating of 4.73.</p>
 </section>
 <section id="yarn-weights" class="level2">
@@ -1395,7 +1387,6 @@ if (outputEl) {{
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -1404,7 +1395,7 @@ if (outputEl) {{
 }
 </style>
 <small>shape: (9, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">yarn_weight_name</th>
@@ -1465,7 +1456,6 @@ if (outputEl) {{
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>

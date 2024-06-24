@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Thomas Perry and Paul Simmering">
-<meta name="dcterms.date" content="2020-09-28">
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-06-22">
 
-<title>StakeX - Organizational Networks from Web Research – Paul Simmering</title>
+<title>Fast and good – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -76,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -129,79 +129,113 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fast and good</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Productivity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 22, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">StakeX - Organizational Networks from Web Research</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">symposium</div>
-  </div>
-  </div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Thomas Perry and Paul Simmering </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 28, 2020</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
 
 
-</header>
+<p>The adage goes: fast, good, cheap. Pick two. As a developer, you probably don’t want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="good_fast_cheap.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>Good, fast, cheap</figcaption>
+</figure>
+</div>
+<p>A developer writing bad code quickly creates troublesome “spaghetti code” that may function for a demo but becomes a nightmare to maintain as the project scales. LLMs have made this even easier.</p>
+<p>Conversely, a developer who writes good code at a glacial pace may see the project run out of money, be overtaken by competitors or get stuck in a cycle of endless refactoring.</p>
+<p>Both outcomes are to be avoided.</p>
+<p>But can’t you just write the first version quickly, get feedback, and then rewrite it properly?</p>
+<p>You may not get the luxury of a full rewrite. Rewrites are <a href="https://swizec.com/blog/you-can-t-stop-the-business-or-why-rewrites-fail/">risky</a> and often <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">ill-advised</a>. It’s hard to find the time for a rewrite on a project that is accelerating. It’s not impossible to do a successful rewrite, but rare. Projects like <a href="https://tailwindcss.com/blog/tailwindcss-v4-alpha">Tailwind CSS</a> and <a href="https://docs.pydantic.dev/2.0/blog/pydantic-v2-alpha/">Pydantic</a> have done successful rewrites in Rust. This happened after they achieved amazing adoption and had plenty of resources. For most projects, a rewrite is not a viable option. That means you need to get it right the first time.</p>
+<p>The dual optimum of fast and good is achievable with a balanced approach.</p>
+<p>Before diving into strategies, I’d like to clarify that fast doesn’t just mean typing quickly. <a href="https://en.wiktionary.org/wiki/slow_is_smooth,_smooth_is_fast">“Slow is smooth, smooth is fast”</a>. The fastest way to write a feature can involve spending 2 hours sketching out the design first.</p>
+<p>Now, here are some strategies that helped me, and might help you, get closer to the dual optimum:</p>
+<section id="strategies-for-the-dual-optimum" class="level2">
+<h2 class="anchored" data-anchor-id="strategies-for-the-dual-optimum">Strategies for the dual optimum</h2>
+<section id="prioritize-and-plan" class="level3">
+<h3 class="anchored" data-anchor-id="prioritize-and-plan">Prioritize and plan</h3>
+<ul>
+<li><strong>Don’t build unnecessary features</strong>: much easier said than done, but this belongs at the top of every list of productivity tips.</li>
+<li><strong>Involve users early</strong>: work in sprints, get feedback and iterate.</li>
+<li><strong>Sketch it first</strong>: write the names of functions and classes before writing the code, then fill in the details.</li>
+<li><strong>Don’t over-engineer for scale you don’t have</strong>: Most companies have gigabytes to terrabytes of data, <a href="https://motherduck.com/blog/big-data-is-dead/">not petabytes</a>, and an outage once in a few months is acceptable. Don’t build for the scale of Google if you’re not Google.</li>
+<li><strong>Don’t reinvent the wheel</strong>: For everything but your core differentiating features, use libraries and services. It can be worth adjusting your design to fit existing software.</li>
+</ul>
+</section>
+<section id="minimize-waiting" class="level3">
+<h3 class="anchored" data-anchor-id="minimize-waiting">Minimize waiting</h3>
+<ul>
+<li><strong>Minimize waiting for code</strong>: use a fast computer, fast internet connection, and run your code and tests locally if possible</li>
+<li><strong>Minimize waiting for people</strong>: establish time limits for code reviews, schedule tasks in a way that minimizes dependencies on others.</li>
+</ul>
+</section>
+<section id="create-an-environment-that-supports-flow" class="level3">
+<h3 class="anchored" data-anchor-id="create-an-environment-that-supports-flow">Create an environment that supports flow</h3>
+<ul>
+<li><strong>Minimize interruptions</strong>: both external and <a href="https://ics.uci.edu/~gmark/Home_page/Publications_files/CHI%202011%20Self-interruption.pdf">self-interruptions</a>.</li>
+<li><strong>Embrace bursts of productivity</strong>: use your best hours for coding, take breaks when you’re not productive, get on a <a href="https://www.paulgraham.com/makersschedule.html">maker’s schedule</a>, if possible.</li>
+<li><strong>Learn to type fast</strong>: Not because typing speed itself is important, but because it reduces the friction between your thoughts and the code editor and the mental cost of rewriting a section of code.</li>
+<li><strong>Learn your tools</strong>: keyboard shortcuts, IDE extensions, terminal commands.</li>
+<li><strong>Use a <a href="https://github.com/features/copilot">Copilot</a></strong>: not because it writes better code than you, but because it lets you get it onto the page faster. This is especially useful for boilerplate code and for writing tests and documentation.</li>
+</ul>
+</section>
+<section id="keep-a-clean-codebase" class="level3">
+<h3 class="anchored" data-anchor-id="keep-a-clean-codebase">Keep a clean codebase</h3>
+<ul>
+<li><strong>Be willing to throw away code</strong>: if you realize you’ve gone down the wrong path during a coding session, don’t be afraid to delete parts of the code and start over.</li>
+<li><strong>Hop from good state to good state</strong>: When working on a big feature, break it down into smaller tasks that leave the code in a runnable state at the end of each task. This also makes for clean commits and easier code reviews.</li>
+<li><strong>Putter, within reason</strong>: Reading and re-reading code, refactoring and tweaking it is necessary to make it good. But don’t overdo it.</li>
+</ul>
+</section>
+<section id="test-and-automate" class="level3">
+<h3 class="anchored" data-anchor-id="test-and-automate">Test and automate</h3>
+<ul>
+<li><strong>Reduce worry about breaking things</strong>: use version control, write tests, use a test environment rather than working on production data.</li>
+<li><strong>Automate everything</strong>: use a linter, formatter, test runner, CI/CD, deployment scripts and infrastructure as code.</li>
+<li><strong>Write tests as you go</strong>: tests will give you the confidence to refactor and add features quickly. It’s easiest to write tests when you’re writing the code.</li>
+</ul>
+<p>May you code swiftly and wisely.</p>
+<p>The term dual optimum and finding strategies to achieve it came from the book <a href="https://www.goodreads.com/book/show/17730608-winning-without-losing">Winning without Losing</a> by Martin Bjergegaard and Jordan Milne.</p>
 
 
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>🗓️ Event</td>
-<td><a href="https://www.gesis.org/forschung/tagungen-und-konferenzen/veranstaltungsarchiv/konferenzen/content-meets-structure">Content Meets Structure 2020</a></td>
-</tr>
-<tr class="even">
-<td>📅 Date</td>
-<td>28 September 2020</td>
-</tr>
-<tr class="odd">
-<td>📍 Location</td>
-<td>Heidelberg, Germany</td>
-</tr>
-<tr class="even">
-<td>🌐 Language</td>
-<td>English</td>
-</tr>
-<tr class="odd">
-<td>📥 Materials</td>
-<td><a href="perry_simmering_comes_2020.pdf">Slides (PDF)</a></td>
-</tr>
-<tr class="even">
-<td>💻 App</td>
-<td><a href="https://teamqapp.de/shiny/stakex_operativ/">StakeX</a></td>
-</tr>
-</tbody>
-</table>
-<p>Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.</p>
-<p>Photo by <a href="https://unsplash.com/@alinnnaaaa?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Alina Grubnyak</a> on <a href="https://unsplash.com/s/photos/network?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
-
-
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -27,3 +27,5 @@ This presentation at EPHMRA 2024 was about three ways in which AI makes content 
 If you wish to receive a copy of the slides (in German), please contact me.
 
 The slide in the background of the image shows an example of one-stop prompting, see my [article](/blog/one-stop-nlp/) on the topic.
+
+I have given versions of this talk at Bristol Myers Squibb and Roche. If you are interested in a similar presentation at your company or event, please contact me.
