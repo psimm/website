@@ -1,74 +1,84 @@
 ---
 title: "Open SOTA model for aspect-based sentiment analysis"
 author: "Paul Simmering"
-date: "2024-06-24"
+date: "2024-06-30"
 bibliography: bibliography.bib
-categories: ["Machine Learning", "Python"]
+categories: ["Machine Learning"]
 image: llama.png
 ---
 
-In October 2023, my colleague and me published a paper [@simmering2023large] on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI's proprietary GPT-3.5 model. We couldn't share the model, only the training and evaluation code.
+In October 2023, Paavo Huoviala and me published a paper [@simmering2023large] on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI's proprietary GPT-3.5 model. We couldn't share the model, only the training and evaluation code.
 
-I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance and can even run locally using llama.cpp.
+I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (X vs Y). The LoRA adapter is available on Hugging Face. The model is small enough to run on a single GPU.
 
-This article will cover the technical details of training and evaluating the model. You can find the code on [GitHub]() and the model on [HuggingFace]().
+This article will cover the technical details of training and evaluating the model. You can the LoRA adapter on [HuggingFace](https://huggingface.co/psimm/llama-3-8B-semeval2014) and the code on [GitHub](). It's a fork of the [modal-labs/llm-finetuning](https://github.com/modal-labs/llm-finetuning) repository.
+
+I also trained a Llama-3 70B and Mistral-7B model. Neither had a convincing performance improvement over the Llama-3 8B model.
 
 ## SemEval 2014 task 4 dataset
 
-As in the original paper, I'll use the SemEval 2014 task 4 dataset [@pontiki_semeval-2014_2014]. This dataset contains reviews of laptops and restaurants. Each review is annotated with the aspect and sentiment expressed towards that aspect.
+The SemEval 2014 task 4 dataset [@pontiki_semeval-2014_2014] dataset contains 5759 training and 1572 test reviews of restaurants and laptops. Each review is annotated with aspects and their polarities.
 
 Here's an example: "The food was great, but the service was terrible." The aspect terms are "food" and "service". The sentiment towards "food" is positive, and the sentiment towards "service" is negative.
 
-The approach to ABSA taken in this dataset has some limitations:
-
-- aspects have to be noun phrases
-- aspects can't be indirect
-- the output only tells you what aspect and polarity is, not the reasoning behind it
-
-As before, I'll only target the task 4 subtask 1+2 mode. This means the model jointly predicts the aspect and sentiment polarity. As in previous work, I'll exclude examples with the "conflict" sentiment label.
+As before, I'll only target the task 4 subtask 1+2 mode. This means the model jointly predicts the aspect and sentiment polarity. I've excluded examples with the "conflict" sentiment label.
 
 ## Model
 
-I'm looking for a model with the following properties:
+When I started this project, I set the following requirements for the base model:
 
 - Relatively small, to keep training cost and time low, as well as enable local deployment
-- Open source model
+- Open weights, to allow sharing the model
 - Available from Hugging Face's model hub
 - Compatible with [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)
 - Not a mixture-of-experts model, as the task I'll train for is very specific and unlikely to benefit from an ensemble
 
 Meta's [Llama-3 8B](https://huggingface.co/meta-llama/Meta-Llama-3-8B) is the best model I found that meets these criteria. I have also tried Mistral-7B and Llama-3 70B.
 
-I'll use the base pretrained model rather than the instruction tuned model. The reason is that the instructions it was tuned on are different from the ABSA task, and that it introduces the need to include tokens indicating turns in a chat format.
+I've used the base pretrained model rather than the instruction tuned model. The reason is that the instructions it was tuned on are different from the ABSA task, and that it introduces the need to include tokens indicating turns in a chat format.
 
 ## Training
 
-I use [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training runs on GPUs by [Modal](https://modal.com).
+I used [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training ran on [Modal](https://modal.com) using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.
 
-`llama-3.yml` specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html).
+`llama-3-8b-semeval2014.yml` specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html).
 
 Examples were prepared in the Alpaca format.
 
-LoRA settings: r = 16, alpha = 32, dropout = 0.05.
+I used low-rank adaptation [@hu2021lora].
 
-## Evaluation
+LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.
 
-Each occurence of an aspect in an example of the gold set is counted as a prediction. The model's prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the F1 score. Correctly predicting that an example doesn't contain any aspects is also considered a correct prediction.
+For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfinetuningquantized] with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) [@lin2024awqactivationawareweightquantization]. This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100.
 
-$$ F1 = \frac{2 \cdot \text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} $$
+## Results
 
-Precision is the number of correct predictions divided by the number of predictions made by the model. Recall is the number of correct predictions divided by the number of aspects in the gold set.
+Each occurence of an aspect in an example of the gold set is counted as a prediction. The model's prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the [F1 score](https://en.wikipedia.org/wiki/F-score). Correctly predicting that an example doesn't contain any aspects is also considered a correct prediction.
 
-$$ \text{precision} = \frac{\text{correct predictions}}{\text{predictions}} $$
+If the model outputs a text that doesn't match the expected JSON output format, we disregard the example. We count a separate percentage of malformed examples.
 
-$$ \text{recall} = \frac{\text{correct predictions}}{\text{aspects in gold set}} $$
+| Model | F1 | Precision | Recall | Malformed |
+|-------|----|-----------|--------|-----------|
+| Llama-3 8B | X | X | X | X |
+| Llama-3 70B | X | X | X | X |
+| Mistral-7B | X | X | X | X |
+| GPT-3.5 fine-tuned | X | X | X | X |
+| InstructABSA | X | X | X | X |
 
-If the model outputs a text that doesn't match the expected format, we disregard the example. We count a separate percentage of malformed examples.
+Scaling from 8B to 70B didn't noticeably improve performance.
 
-## Discussion
+## Conclusion
 
-## Thanks
+Fine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.
 
-Thanks to Hamel Husain and Dan Becker for their course on LLM fine-tuning. Thanks to Modal for providing compute credits. Thanks to Wing Lian for developing axolotl.
+While the initial paper reported a performance improvement in going from the 300M InstructABSA model based on T5 [@scaria2023instructabsainstructionlearningaspect] to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.
+
+Further experiments with higher LoRA ranks (e.g. 32) and less intense quantization (e.g. FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points.
+
+Personally, I'll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data.
+
+## Acknowledgements
+
+Thanks to Hamel Husain and Dan Becker for their [course](https://maven.com/parlance-labs/fine-tuning) on LLM fine-tuning. Thanks to Modal for providing compute credits. Thanks to Wing Lian for developing axolotl.
 
 ## References

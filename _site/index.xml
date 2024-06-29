@@ -11,7 +11,146 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.45</generator>
-<lastBuildDate>Fri, 21 Jun 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 29 Jun 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Open SOTA model for aspect-based sentiment analysis</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/open-absa/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In October 2023, Paavo Huoviala and me published a paper <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span> on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI’s proprietary GPT-3.5 model. We couldn’t share the model, only the training and evaluation code.</p>
+<p>I’m happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (X vs Y). The LoRA adapter is available on Hugging Face. The model is small enough to run on a single GPU.</p>
+<p>This article will cover the technical details of training and evaluating the model. You can the LoRA adapter on <a href="https://huggingface.co/psimm/llama-3-8B-semeval2014">HuggingFace</a> and the code on <a href="">GitHub</a>. It’s a fork of the <a href="https://github.com/modal-labs/llm-finetuning">modal-labs/llm-finetuning</a> repository.</p>
+<p>I also trained a Llama-3 70B and Mistral-7B model. Neither had a convincing performance improvement over the Llama-3 8B model.</p>
+<section id="semeval-2014-task-4-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="semeval-2014-task-4-dataset">SemEval 2014 task 4 dataset</h2>
+<p>The SemEval 2014 task 4 dataset <span class="citation" data-cites="pontiki_semeval-2014_2014">(Pontiki et al. 2014)</span> dataset contains 5759 training and 1572 test reviews of restaurants and laptops. Each review is annotated with aspects and their polarities.</p>
+<p>Here’s an example: “The food was great, but the service was terrible.” The aspect terms are “food” and “service”. The sentiment towards “food” is positive, and the sentiment towards “service” is negative.</p>
+<p>As before, I’ll only target the task 4 subtask 1+2 mode. This means the model jointly predicts the aspect and sentiment polarity. I’ve excluded examples with the “conflict” sentiment label.</p>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>When I started this project, I set the following requirements for the base model:</p>
+<ul>
+<li>Relatively small, to keep training cost and time low, as well as enable local deployment</li>
+<li>Open weights, to allow sharing the model</li>
+<li>Available from Hugging Face’s model hub</li>
+<li>Compatible with <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a></li>
+<li>Not a mixture-of-experts model, as the task I’ll train for is very specific and unlikely to benefit from an ensemble</li>
+</ul>
+<p>Meta’s <a href="https://huggingface.co/meta-llama/Meta-Llama-3-8B">Llama-3 8B</a> is the best model I found that meets these criteria. I have also tried Mistral-7B and Llama-3 70B.</p>
+<p>I’ve used the base pretrained model rather than the instruction tuned model. The reason is that the instructions it was tuned on are different from the ABSA task, and that it introduces the need to include tokens indicating turns in a chat format.</p>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<p>I used <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a> to train the model. Training ran on <a href="https://modal.com">Modal</a> using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.</p>
+<p><code>llama-3-8b-semeval2014.yml</code> specifies the training configuration according to axolotl’s <a href="https://openaccess-ai-collective.github.io/axolotl/docs/config.html">configuration format</a>.</p>
+<p>Examples were prepared in the Alpaca format.</p>
+<p>I used low-rank adaptation <span class="citation" data-cites="hu2021lora">(Hu et al. 2021)</span>.</p>
+<p>LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.</p>
+<p>For training the Llama-3 70B model, I used QLoRA <span class="citation" data-cites="dettmers2023qloraefficientfinetuningquantized">(Dettmers et al. 2023)</span> with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) <span class="citation" data-cites="lin2024awqactivationawareweightquantization">(Lin et al. 2024)</span>. This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Each occurence of an aspect in an example of the gold set is counted as a prediction. The model’s prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the <a href="https://en.wikipedia.org/wiki/F-score">F1 score</a>. Correctly predicting that an example doesn’t contain any aspects is also considered a correct prediction.</p>
+<p>If the model outputs a text that doesn’t match the expected JSON output format, we disregard the example. We count a separate percentage of malformed examples.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>F1</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>Malformed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Llama-3 8B</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr class="even">
+<td>Llama-3 70B</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr class="odd">
+<td>Mistral-7B</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr class="even">
+<td>GPT-3.5 fine-tuned</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr class="odd">
+<td>InstructABSA</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<p>Scaling from 8B to 70B didn’t noticeably improve performance.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Fine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.</p>
+<p>While the initial paper reported a performance improvement in going from the 300M InstructABSA model based on T5 <span class="citation" data-cites="scaria2023instructabsainstructionlearningaspect">(Scaria et al. 2023)</span> to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.</p>
+<p>Further experiments with higher LoRA ranks (e.g.&nbsp;32) and less intense quantization (e.g.&nbsp;FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points.</p>
+<p>Personally, I’ll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data.</p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to Hamel Husain and Dan Becker for their <a href="https://maven.com/parlance-labs/fine-tuning">course</a> on LLM fine-tuning. Thanks to Modal for providing compute credits. Thanks to Wing Lian for developing axolotl.</p>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-dettmers2023qloraefficientfinetuningquantized" class="csl-entry">
+Dettmers, Tim, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. 2023. <span>“QLoRA: Efficient Finetuning of Quantized LLMs.”</span> <a href="https://arxiv.org/abs/2305.14314">https://arxiv.org/abs/2305.14314</a>.
+</div>
+<div id="ref-hu2021lora" class="csl-entry">
+Hu, Edward J., Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. 2021. <span>“LoRA: Low-Rank Adaptation of Large Language Models.”</span> <a href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a>.
+</div>
+<div id="ref-lin2024awqactivationawareweightquantization" class="csl-entry">
+Lin, Ji, Jiaming Tang, Haotian Tang, Shang Yang, Wei-Ming Chen, Wei-Chen Wang, Guangxuan Xiao, Xingyu Dang, Chuang Gan, and Song Han. 2024. <span>“AWQ: Activation-Aware Weight Quantization for LLM Compression and Acceleration.”</span> <a href="https://arxiv.org/abs/2306.00978">https://arxiv.org/abs/2306.00978</a>.
+</div>
+<div id="ref-pontiki_semeval-2014_2014" class="csl-entry">
+Pontiki, Maria, Dimitris Galanis, John Pavlopoulos, Harris Papageorgiou, Ion Androutsopoulos, and Suresh Manandhar. 2014. <span>“<span>SemEval</span>-2014 <span>Task</span> 4: <span>Aspect</span> <span>Based</span> <span>Sentiment</span> <span>Analysis</span>.”</span> In <em>Proceedings of the 8th <span>International</span> <span>Workshop</span> on <span>Semantic</span> <span>Evaluation</span> (<span>SemEval</span> 2014)</em>, 27–35. Dublin, Ireland: Association for Computational Linguistics. <a href="https://doi.org/10.3115/v1/S14-2004">https://doi.org/10.3115/v1/S14-2004</a>.
+</div>
+<div id="ref-scaria2023instructabsainstructionlearningaspect" class="csl-entry">
+Scaria, Kevin, Himanshu Gupta, Siddharth Goyal, Saurabh Arjun Sawant, Swaroop Mishra, and Chitta Baral. 2023. <span>“InstructABSA: Instruction Learning for Aspect Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2302.08624">https://arxiv.org/abs/2302.08624</a>.
+</div>
+<div id="ref-simmering2023large" class="csl-entry">
+Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for Aspect-Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2310.18025">https://arxiv.org/abs/2310.18025</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/open-absa/</guid>
+  <pubDate>Sat, 29 Jun 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/open-absa/llama.png" medium="image" type="image/png" height="110" width="144"/>
+</item>
 <item>
   <title>Fast and good</title>
   <dc:creator>Paul Simmering</dc:creator>
