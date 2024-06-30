@@ -43,7 +43,7 @@ I used [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train t
 
 [llama-3-8b-semeval2014.yml](https://github.com/psimm/semeval-finetuning/blob/main/config/llama-3-8b-semeval2014.yml) specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html). Examples were prepared in the Alpaca format. I used low-rank adaptation [@hu2021lora] (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.
 
-For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfinetuningquantized] with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) [@lin2024awqactivationawareweightquantization]. This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100.
+For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfinetuningquantized] with 4 bit quantization. I merged the resulting LoRA adapter into the model. Then I quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) [@lin2024awqactivationawareweightquantization]. This combination of techniques made it possible to train the model on 2 H100 GPUs and run it on a single H100 GPU. An alternative would've been to load the LoRA adapter into a pre-quantized model at inference time.
 
 ## Results
 
