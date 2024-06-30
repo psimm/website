@@ -9,11 +9,11 @@ image: llama.png
 
 In October 2023, Paavo Huoviala and me published a paper [@simmering2023large] on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI's proprietary GPT-3.5 model. We couldn't share the model, only the training and evaluation code.
 
-I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (X vs Y). The LoRA adapter is available on Hugging Face. The model is small enough to run on a single GPU.
+I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (83.1 F1, vs. 83.8 for GPT-3.5). The model is small enough to run on a single GPU and has open weights.
 
-This article will cover the technical details of training and evaluating the model. You can the LoRA adapter on [HuggingFace](https://huggingface.co/psimm/llama-3-8B-semeval2014) and the code on [GitHub](). It's a fork of the [modal-labs/llm-finetuning](https://github.com/modal-labs/llm-finetuning) repository.
+This article will cover the technical details of training and evaluating the model. You can find the LoRA adapter on [HuggingFace](https://huggingface.co/psimm/llama-3-8B-semeval2014) and the code on [GitHub](https://github.com/psimm/semeval-finetuning). It's a fork of the [modal-labs/llm-finetuning](https://github.com/modal-labs/llm-finetuning) repository.
 
-I also trained a Llama-3 70B and Mistral-7B model. Neither had a convincing performance improvement over the Llama-3 8B model.
+I also trained a Llama-3 70B and Mistral-7B model. Llama-3 70B achieved an F1 score of 83.4, Mistral-7B 81.97.
 
 ## SemEval 2014 task 4 dataset
 
@@ -41,13 +41,7 @@ I've used the base pretrained model rather than the instruction tuned model. The
 
 I used [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training ran on [Modal](https://modal.com) using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.
 
-`llama-3-8b-semeval2014.yml` specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html).
-
-Examples were prepared in the Alpaca format.
-
-I used low-rank adaptation [@hu2021lora].
-
-LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.
+[llama-3-8b-semeval2014.yml](https://github.com/psimm/semeval-finetuning/blob/main/config/llama-3-8b-semeval2014.yml) specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html). Examples were prepared in the Alpaca format. I used low-rank adaptation [@hu2021lora] (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.
 
 For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfinetuningquantized] with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) [@lin2024awqactivationawareweightquantization]. This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100.
 
@@ -55,27 +49,33 @@ For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfin
 
 Each occurence of an aspect in an example of the gold set is counted as a prediction. The model's prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the [F1 score](https://en.wikipedia.org/wiki/F-score). Correctly predicting that an example doesn't contain any aspects is also considered a correct prediction.
 
-If the model outputs a text that doesn't match the expected JSON output format, we disregard the example. We count a separate percentage of malformed examples.
+Part of this structured extraction task is learning the JSON format of the expected output. If a model has generated a token sequence that doesn't match the expected JSON output format, I disregarded the example. This happened in 1 case for each of the Llama models and 4 cases for the Mistral model.
 
-| Model | F1 | Precision | Recall | Malformed |
-|-------|----|-----------|--------|-----------|
-| Llama-3 8B | X | X | X | X |
-| Llama-3 70B | X | X | X | X |
-| Mistral-7B | X | X | X | X |
-| GPT-3.5 fine-tuned | X | X | X | X |
-| InstructABSA | X | X | X | X |
+| Model | F1 |
+|-------|----|
+| Llama-3 8B | 83.14 |
+| Llama-3 70B | 83.40 |
+| Mistral-7B | 81.97 |
+| GPT-3.5 fine-tuned | 83.76 |
+| InstructABSA | 79.30 |
 
-Scaling from 8B to 70B didn't noticeably improve performance.
+GPT-3.5 fine-tuned remains the most performant model. Llama-3 8B and Llama-3 70B are less than 1 F1 percentage point behind. Scaling from 8B to 70B didn't noticeably improve performance, or the scaling benefits were compensated by the precision loss from quantization.
 
-## Conclusion
+## Discussion
 
 Fine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.
 
-While the initial paper reported a performance improvement in going from the 300M InstructABSA model based on T5 [@scaria2023instructabsainstructionlearningaspect] to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.
+While the initial paper reported a performance improvement in going from the 200M InstructABSA model based on T5 [@scaria2023instructabsainstructionlearningaspect] to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.
 
 Further experiments with higher LoRA ranks (e.g. 32) and less intense quantization (e.g. FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points.
 
-Personally, I'll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data.
+## Moving forward
+
+I'll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data. Further, it does not include the extraction of an opinion term (the expression of sentiment towards an aspect) and it doesn't categorize the aspect terms into aspect categories.
+
+The ACOS (aspect category opinion sentiment) task definition [@zhang2022surveyaspectbasedsentimentanalysis] is more useful for real-world applications.
+
+![Aspect category opinion sentiment, image by Zhang et al. (2022)](acos.png){width=50%}
 
 ## Acknowledgements
 

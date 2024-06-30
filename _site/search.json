@@ -1068,7 +1068,7 @@
     "href": "blog/open-absa/index.html",
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "",
-    "text": "In October 2023, Paavo Huoviala and me published a paper (Simmering and Huoviala 2023) on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI’s proprietary GPT-3.5 model. We couldn’t share the model, only the training and evaluation code.\nI’m happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (X vs Y). The LoRA adapter is available on Hugging Face. The model is small enough to run on a single GPU.\nThis article will cover the technical details of training and evaluating the model. You can the LoRA adapter on HuggingFace and the code on GitHub. It’s a fork of the modal-labs/llm-finetuning repository.\nI also trained a Llama-3 70B and Mistral-7B model. Neither had a convincing performance improvement over the Llama-3 8B model."
+    "text": "In October 2023, Paavo Huoviala and me published a paper (Simmering and Huoviala 2023) on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI’s proprietary GPT-3.5 model. We couldn’t share the model, only the training and evaluation code.\nI’m happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (83.1 F1, vs. 83.8 for GPT-3.5). The model is small enough to run on a single GPU and has open weights.\nThis article will cover the technical details of training and evaluating the model. You can find the LoRA adapter on HuggingFace and the code on GitHub. It’s a fork of the modal-labs/llm-finetuning repository.\nI also trained a Llama-3 70B and Mistral-7B model. Llama-3 70B achieved an F1 score of 83.4, Mistral-7B 81.97."
   },
   {
     "objectID": "blog/open-absa/index.html#semeval-2014-task-4-dataset",
@@ -1089,7 +1089,7 @@
     "href": "blog/open-absa/index.html#training",
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "Training",
-    "text": "Training\nI used axolotl to train the model. Training ran on Modal using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.\nllama-3-8b-semeval2014.yml specifies the training configuration according to axolotl’s configuration format.\nExamples were prepared in the Alpaca format.\nI used low-rank adaptation (Hu et al. 2021).\nLoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.\nFor training the Llama-3 70B model, I used QLoRA (Dettmers et al. 2023) with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) (Lin et al. 2024). This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100."
+    "text": "Training\nI used axolotl to train the model. Training ran on Modal using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.\nllama-3-8b-semeval2014.yml specifies the training configuration according to axolotl’s configuration format. Examples were prepared in the Alpaca format. I used low-rank adaptation (Hu et al. 2021) (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.\nFor training the Llama-3 70B model, I used QLoRA (Dettmers et al. 2023) with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) (Lin et al. 2024). This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100."
   },
   {
     "objectID": "blog/open-absa/index.html#evaluation",
@@ -1103,7 +1103,7 @@
     "href": "blog/open-absa/index.html#discussion",
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "Discussion",
-    "text": "Discussion"
+    "text": "Discussion\nFine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.\nWhile the initial paper reported a performance improvement in going from the 200M InstructABSA model based on T5 (Scaria et al. 2023) to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.\nFurther experiments with higher LoRA ranks (e.g. 32) and less intense quantization (e.g. FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points."
   },
   {
     "objectID": "blog/open-absa/index.html#thanks",
@@ -1117,14 +1117,14 @@
     "href": "blog/open-absa/index.html#results",
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "Results",
-    "text": "Results\nEach occurence of an aspect in an example of the gold set is counted as a prediction. The model’s prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the F1 score. Correctly predicting that an example doesn’t contain any aspects is also considered a correct prediction.\nIf the model outputs a text that doesn’t match the expected JSON output format, we disregard the example. We count a separate percentage of malformed examples.\n\n\n\nModel\nF1\nPrecision\nRecall\nMalformed\n\n\n\n\nLlama-3 8B\nX\nX\nX\nX\n\n\nLlama-3 70B\nX\nX\nX\nX\n\n\nMistral-7B\nX\nX\nX\nX\n\n\nGPT-3.5 fine-tuned\nX\nX\nX\nX\n\n\nInstructABSA\nX\nX\nX\nX\n\n\n\nScaling from 8B to 70B didn’t noticeably improve performance."
+    "text": "Results\nEach occurence of an aspect in an example of the gold set is counted as a prediction. The model’s prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the F1 score. Correctly predicting that an example doesn’t contain any aspects is also considered a correct prediction.\nPart of this structured extraction task is learning the JSON format of the expected output. If a model has generated a token sequence that doesn’t match the expected JSON output format, I disregarded the example. This happened in 1 case for each of the Llama models and 4 cases for the Mistral model.\n\n\n\nModel\nF1\n\n\n\n\nLlama-3 8B\n83.14\n\n\nLlama-3 70B\n83.40\n\n\nMistral-7B\n81.97\n\n\nGPT-3.5 fine-tuned\n83.76\n\n\nInstructABSA\n79.30\n\n\n\nGPT-3.5 fine-tuned remains the most performant model. Llama-3 8B and Llama-3 70B are less than 1 F1 percentage point behind. Scaling from 8B to 70B didn’t noticeably improve performance, or the scaling benefits were compensated by the precision loss from quantization."
   },
   {
     "objectID": "blog/open-absa/index.html#conclusion",
     "href": "blog/open-absa/index.html#conclusion",
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "Conclusion",
-    "text": "Conclusion\nFine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.\nWhile the initial paper reported a performance improvement in going from the 300M InstructABSA model based on T5 (Scaria et al. 2023) to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.\nFurther experiments with higher LoRA ranks (e.g. 32) and less intense quantization (e.g. FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points.\nPersonally, I’ll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data."
+    "text": "Conclusion\nFine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.\nWhile the initial paper reported a performance improvement in going from the 200M InstructABSA model based on T5 (Scaria et al. 2023) to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.\nFurther experiments with higher LoRA ranks (e.g. 32) and less intense quantization (e.g. FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points."
   },
   {
     "objectID": "blog/open-absa/index.html#acknowledgements",
@@ -1132,5 +1132,12 @@
     "title": "Open SOTA model for aspect-based sentiment analysis",
     "section": "Acknowledgements",
     "text": "Acknowledgements\nThanks to Hamel Husain and Dan Becker for their course on LLM fine-tuning. Thanks to Modal for providing compute credits. Thanks to Wing Lian for developing axolotl."
+  },
+  {
+    "objectID": "blog/open-absa/index.html#moving-forward",
+    "href": "blog/open-absa/index.html#moving-forward",
+    "title": "Open SOTA model for aspect-based sentiment analysis",
+    "section": "Moving forward",
+    "text": "Moving forward\nI’ll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data. Further, it does not include the extraction of an opinion term (the expression of sentiment towards an aspect) and it doesn’t categorize the aspect terms into aspect categories.\nThe ACOS (aspect category opinion sentiment) task definition (Zhang et al. 2022) is more useful for real-world applications.\n\n\n\nAspect category opinion sentiment, image by Zhang et al. (2022)"
   }
 ]
