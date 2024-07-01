@@ -82,7 +82,7 @@ font-style: inherit;">50</span>,</span>
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">128</span>,</span>
+font-style: inherit;">256</span>,</span>
 <span id="cb1-7">)</span></code></pre></div>
 <p>The repetition penalty prevents the model from repeating the same tokens over and over. A low temperature and strict settings for top_p and top_k encourage following the JSON format of the expected output, e.g.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
@@ -147,7 +147,7 @@ font-style: inherit;">]</span></span>
 <span id="cb2-12"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">}</span></span></code></pre></div>
-<p>Pretty printed here, the actual output is a single line of text. 128 tokens is enough to cover all aspects of the longest review in the dataset.</p>
+<p>Pretty printed here, the actual output is a single line of text. 256 tokens is enough to cover all aspects of the longest review in the dataset.</p>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>

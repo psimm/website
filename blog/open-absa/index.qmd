@@ -57,7 +57,7 @@ sampling_params = SamplingParams(
     temperature=0,
     top_p=0.95,
     top_k=50,
-    max_tokens=128,
+    max_tokens=256,
 )
 ```
 
@@ -78,7 +78,7 @@ The repetition penalty prevents the model from repeating the same tokens over an
 }
 ```
 
-Pretty printed here, the actual output is a single line of text. 128 tokens is enough to cover all aspects of the longest review in the dataset.
+Pretty printed here, the actual output is a single line of text. 256 tokens is enough to cover all aspects of the longest review in the dataset.
 
 ## Results
 
