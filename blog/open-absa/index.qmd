@@ -9,7 +9,7 @@ image: llama.png
 
 In October 2023, Paavo Huoviala and me published a paper [@simmering2023large] on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI's proprietary GPT-3.5 model. We couldn't share the model, only the training and evaluation code.
 
-I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (83.1 F1, vs. 83.8 for GPT-3.5). The model is small enough to run on a single GPU and has open weights.
+I'm happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (82.1 F1, vs. 83.8 for GPT-3.5). The model is small enough to run on a single GPU and has open weights.
 
 This article will cover the technical details of training and evaluating the model. You can find the LoRA adapter on [HuggingFace](https://huggingface.co/psimm/llama-3-8B-semeval2014) and the code on [GitHub](https://github.com/psimm/semeval-finetuning). It's a fork of the [modal-labs/llm-finetuning](https://github.com/modal-labs/llm-finetuning) repository.
 
@@ -86,15 +86,15 @@ Each occurence of an aspect in an example of the gold set is counted as a predic
 
 Part of this structured extraction task is learning the JSON format of the expected output. If a model has generated a token sequence that doesn't match the expected JSON output format, I disregarded the example. This happened in 1 case for each of the Llama models and 4 cases for the Mistral model.
 
-| Model | F1 |
-|-------|----|
-| Llama-3 8B | 83.14 |
-| Llama-3 70B | 83.40 |
-| Mistral-7B | 81.97 |
-| GPT-3.5 fine-tuned | 83.76 |
-| InstructABSA | 79.30 |
+| Model | F1 ↓ | Parameters |
+|-------|----| -----------|
+| GPT-3.5 fine-tuned | 83.76 | 175B |
+| Llama-3 70B (4bit) | 83.40 | 70B |
+| Llama-3 8B | 82.13 | 8B |
+| Mistral-7B | 81.97 | 7B |
+| InstructABSA | 79.30 | 0.2B |
 
-GPT-3.5 fine-tuned remains the most performant model. Llama-3 8B and Llama-3 70B are less than 1 F1 percentage point behind. Scaling from 8B to 70B didn't noticeably improve performance, or the scaling benefits were compensated by the precision loss from quantization.
+GPT-3.5 fine-tuned remains the most performant model. Llama-3 8B and Llama-3 70B are less than 1 F1 percentage point behind. Scaling from 8B to 70B only yields a 1.27 F1 percentage point improvement. This gain may be larger when a higher LoRA rank is used or when less intense quantization is applied.
 
 ## Discussion
 
