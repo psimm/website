@@ -11,7 +11,242 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.45</generator>
-<lastBuildDate>Fri, 21 Jun 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 29 Jun 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Open fine-tuned LLMs for aspect-based sentiment analysis</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/open-absa/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In October 2023, Paavo Huoviala and me published a paper <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span> on aspect-based sentiment analysis using a fine-tuned GPT-3.5 model. This model achieved state of the art performance on the SemEval 2014 task 4 1+2 benchmark. A downside of this approach is that it relies on OpenAI’s proprietary GPT-3.5 model. We couldn’t share the model, only the training and evaluation code.</p>
+<p>I’m happy to report that a LoRA fine-tune of Llama-3 8B achieves similar performance (82.1 F1, vs.&nbsp;83.8 for GPT-3.5). The model is small enough to run on a single GPU and has open weights.</p>
+<p>This article will cover the technical details of training and evaluating the model. You can find the LoRA adapter on <a href="https://huggingface.co/psimm/llama-3-8B-semeval2014">HuggingFace</a> and the code on <a href="https://github.com/psimm/semeval-finetuning">GitHub</a>. It’s a fork of the <a href="https://github.com/modal-labs/llm-finetuning">modal-labs/llm-finetuning</a> repository.</p>
+<p>I also trained a Llama-3 70B and Mistral-7B model. Llama-3 70B achieved an F1 score of 83.4, Mistral-7B 81.97.</p>
+<section id="semeval-2014-task-4-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="semeval-2014-task-4-dataset">SemEval 2014 task 4 dataset</h2>
+<p>The SemEval 2014 task 4 dataset <span class="citation" data-cites="pontiki_semeval-2014_2014">(Pontiki et al. 2014)</span> dataset contains 5759 training and 1572 test reviews of restaurants and laptops. Each review is annotated with aspects and their polarities.</p>
+<p>Here’s an example: “The food was great, but the service was terrible.” The aspect terms are “food” and “service”. The sentiment towards “food” is positive, and the sentiment towards “service” is negative.</p>
+<p>As before, I’ll only target the task 4 subtask 1+2 mode. This means the model jointly predicts the aspect and sentiment polarity. I’ve excluded examples with the “conflict” sentiment label.</p>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>When I started this project, I set the following requirements for the base model:</p>
+<ul>
+<li>Relatively small, to keep training cost and time low, as well as enable local deployment</li>
+<li>Open weights, to allow sharing the model</li>
+<li>Available from Hugging Face’s model hub</li>
+<li>Compatible with <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a></li>
+<li>Not a mixture-of-experts model, as the task I’ll train for is very specific and unlikely to benefit from an ensemble</li>
+</ul>
+<p>Meta’s <a href="https://huggingface.co/meta-llama/Meta-Llama-3-8B">Llama-3 8B</a> is the best model I found that meets these criteria. I have also tried Mistral-7B and Llama-3 70B.</p>
+<p>I’ve used the base pretrained model rather than the instruction tuned model. The reason is that the instructions it was tuned on are different from the ABSA task, and that it introduces the need to include tokens indicating turns in a chat format.</p>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<p>I used <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a> to train the model. Training ran on <a href="https://modal.com">Modal</a> using 2x A100 GPUs for the 7 and 8 models and 2x H100 for the 70B model. Inference ran on a single H100 for all models.</p>
+<p><a href="https://github.com/psimm/semeval-finetuning/blob/main/config/llama-3-8b-semeval2014.yml">llama-3-8b-semeval2014.yml</a> specifies the training configuration according to axolotl’s <a href="https://openaccess-ai-collective.github.io/axolotl/docs/config.html">configuration format</a>. Examples were prepared in the Alpaca format. I used low-rank adaptation <span class="citation" data-cites="hu2021lora">(Hu et al. 2021)</span> (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.</p>
+<p>I’ve added <code>[INST]</code> and <code>[/INST]</code> tokens during training to indicate the start and end of an instruction. Compared to a fine-tune without these tokens, this increased the F1 score and reduced the number of malformed outputs.</p>
+<p>For training the Llama-3 70B model, I used QLoRA <span class="citation" data-cites="dettmers2023qloraefficientfinetuningquantized">(Dettmers et al. 2023)</span> with 4 bit quantization. I merged the resulting LoRA adapter into the model. Then I quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) <span class="citation" data-cites="lin2024awqactivationawareweightquantization">(Lin et al. 2024)</span>. This combination of techniques made it possible to train the model on 2 H100 GPUs and run it on a single H100 GPU. An alternative would’ve been to load the LoRA adapter into a pre-quantized model at inference time.</p>
+</section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<p>During inference using vLLM I set these <a href="https://docs.vllm.ai/en/latest/offline_inference/sampling_params.html">sampling parameters</a>:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">sampling_params <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SamplingParams(</span>
+<span id="cb1-2">    repetition_penalty<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.1</span>,</span>
+<span id="cb1-3">    temperature<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb1-4">    top_p<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.95</span>,</span>
+<span id="cb1-5">    top_k<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,</span>
+<span id="cb1-6">    max_tokens<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>,</span>
+<span id="cb1-7">)</span></code></pre></div>
+<p>The repetition penalty prevents the model from repeating the same tokens over and over. A low temperature and strict settings for top_p and top_k encourage following the JSON format of the expected output, e.g.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"aspects"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb2-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-4">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"aspect"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"food"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-5">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"sentiment"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"positive"</span></span>
+<span id="cb2-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-8">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"aspect"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"service"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-9">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"sentiment"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"negative"</span></span>
+<span id="cb2-10">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-11">  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb2-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>Pretty printed here, the actual output is a single line of text. 256 tokens is enough to cover all aspects of the longest review in the dataset.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Each occurence of an aspect in an example of the gold set is counted as a prediction. The model’s prediction is considered correct if it predicts the same aspect and sentiment polarity as the gold set. The evaluation metric is the <a href="https://en.wikipedia.org/wiki/F-score">F1 score</a>. Correctly predicting that an example doesn’t contain any aspects is also considered a correct prediction.</p>
+<p>Part of this structured extraction task is learning the JSON format of the expected output. If a model has generated a token sequence that doesn’t match the expected JSON output format, I disregarded the example. This happened in 1 case for each of the Llama models and 4 cases for the Mistral model.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>F1 ↓</th>
+<th>Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GPT-3.5 fine-tuned</td>
+<td>83.76</td>
+<td>175B</td>
+</tr>
+<tr class="even">
+<td>Llama-3 70B (4bit)</td>
+<td>83.40</td>
+<td>70B</td>
+</tr>
+<tr class="odd">
+<td>Llama-3 8B</td>
+<td>82.13</td>
+<td>8B</td>
+</tr>
+<tr class="even">
+<td>Mistral-7B</td>
+<td>81.97</td>
+<td>7B</td>
+</tr>
+<tr class="odd">
+<td>InstructABSA</td>
+<td>79.30</td>
+<td>0.2B</td>
+</tr>
+</tbody>
+</table>
+<p>GPT-3.5 fine-tuned remains the most performant model. Llama-3 8B and Llama-3 70B are less than 1 F1 percentage point behind. Scaling from 8B to 70B only yields a 1.27 F1 percentage point improvement. This gain may be larger when a higher LoRA rank is used or when less intense quantization is applied.</p>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Fine-tuned open-weight LLMs can achieve state of the art performance on the SemEval 2014 task 4 1+2 benchmark.</p>
+<p>While the initial paper reported a performance improvement in going from the 200M InstructABSA model based on T5 <span class="citation" data-cites="scaria2023instructabsainstructionlearningaspect">(Scaria et al. 2023)</span> to the 175B GPT-3.5 model, it now seems that the scaling benefits are exhausted at 8B parameters already.</p>
+<p>Further experiments with higher LoRA ranks (e.g.&nbsp;32) and less intense quantization (e.g.&nbsp;FP8 or FP16 instead of FP4) might yield another 1 or 2 F1 percentage points.</p>
+</section>
+<section id="moving-forward" class="level2">
+<h2 class="anchored" data-anchor-id="moving-forward">Moving forward</h2>
+<p>I’ll switch to different datasets for future research. The SemEval 2014 task 4 dataset does not cover indirect mentions of aspects, which is a common issue in real-world data. Further, it does not include the extraction of an opinion term (the expression of sentiment towards an aspect) and it doesn’t categorize the aspect terms into aspect categories.</p>
+<p>The ACOS (aspect category opinion sentiment) task definition <span class="citation" data-cites="zhang2022surveyaspectbasedsentimentanalysis">(Zhang et al. 2022)</span> is more useful for real-world applications.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/open-absa/acos.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Aspect category opinion sentiment, image by Zhang et al.&nbsp;(2022)</figcaption>
+</figure>
+</div>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to Hamel Husain and Dan Becker for their <a href="https://maven.com/parlance-labs/fine-tuning">course</a> on LLM fine-tuning. Thanks to Modal for providing compute credits. Thanks to Wing Lian for developing axolotl.</p>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-dettmers2023qloraefficientfinetuningquantized" class="csl-entry">
+Dettmers, Tim, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. 2023. <span>“QLoRA: Efficient Finetuning of Quantized LLMs.”</span> <a href="https://arxiv.org/abs/2305.14314">https://arxiv.org/abs/2305.14314</a>.
+</div>
+<div id="ref-hu2021lora" class="csl-entry">
+Hu, Edward J., Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. 2021. <span>“LoRA: Low-Rank Adaptation of Large Language Models.”</span> <a href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a>.
+</div>
+<div id="ref-lin2024awqactivationawareweightquantization" class="csl-entry">
+Lin, Ji, Jiaming Tang, Haotian Tang, Shang Yang, Wei-Ming Chen, Wei-Chen Wang, Guangxuan Xiao, Xingyu Dang, Chuang Gan, and Song Han. 2024. <span>“AWQ: Activation-Aware Weight Quantization for LLM Compression and Acceleration.”</span> <a href="https://arxiv.org/abs/2306.00978">https://arxiv.org/abs/2306.00978</a>.
+</div>
+<div id="ref-pontiki_semeval-2014_2014" class="csl-entry">
+Pontiki, Maria, Dimitris Galanis, John Pavlopoulos, Harris Papageorgiou, Ion Androutsopoulos, and Suresh Manandhar. 2014. <span>“<span>SemEval</span>-2014 <span>Task</span> 4: <span>Aspect</span> <span>Based</span> <span>Sentiment</span> <span>Analysis</span>.”</span> In <em>Proceedings of the 8th <span>International</span> <span>Workshop</span> on <span>Semantic</span> <span>Evaluation</span> (<span>SemEval</span> 2014)</em>, 27–35. Dublin, Ireland: Association for Computational Linguistics. <a href="https://doi.org/10.3115/v1/S14-2004">https://doi.org/10.3115/v1/S14-2004</a>.
+</div>
+<div id="ref-scaria2023instructabsainstructionlearningaspect" class="csl-entry">
+Scaria, Kevin, Himanshu Gupta, Siddharth Goyal, Saurabh Arjun Sawant, Swaroop Mishra, and Chitta Baral. 2023. <span>“InstructABSA: Instruction Learning for Aspect Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2302.08624">https://arxiv.org/abs/2302.08624</a>.
+</div>
+<div id="ref-simmering2023large" class="csl-entry">
+Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for Aspect-Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2310.18025">https://arxiv.org/abs/2310.18025</a>.
+</div>
+<div id="ref-zhang2022surveyaspectbasedsentimentanalysis" class="csl-entry">
+Zhang, Wenxuan, Xin Li, Yang Deng, Lidong Bing, and Wai Lam. 2022. <span>“A Survey on Aspect-Based Sentiment Analysis: Tasks, Methods, and Challenges.”</span> <a href="https://arxiv.org/abs/2203.01054">https://arxiv.org/abs/2203.01054</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/open-absa/</guid>
+  <pubDate>Sat, 29 Jun 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/open-absa/llama.png" medium="image" type="image/png" height="110" width="144"/>
+</item>
 <item>
   <title>Fast and good</title>
   <dc:creator>Paul Simmering</dc:creator>
