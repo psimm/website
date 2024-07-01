@@ -1,5 +1,5 @@
 ---
-title: "Open SOTA model for aspect-based sentiment analysis"
+title: "Open fine-tuned LLMs for aspect-based sentiment analysis"
 author: "Paul Simmering"
 date: "2024-06-30"
 bibliography: bibliography.bib
@@ -39,11 +39,46 @@ I've used the base pretrained model rather than the instruction tuned model. The
 
 ## Training
 
-I used [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training ran on [Modal](https://modal.com) using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.
+I used [axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) to train the model. Training ran on [Modal](https://modal.com) using 2x A100 GPUs for the 7 and 8 models and 2x H100 for the 70B model. Inference ran on a single H100 for all models.
 
 [llama-3-8b-semeval2014.yml](https://github.com/psimm/semeval-finetuning/blob/main/config/llama-3-8b-semeval2014.yml) specifies the training configuration according to axolotl's [configuration format](https://openaccess-ai-collective.github.io/axolotl/docs/config.html). Examples were prepared in the Alpaca format. I used low-rank adaptation [@hu2021lora] (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.
 
+I've added `[INST]` and `[/INST]` tokens during training to indicate the start and end of an instruction. Compared to a fine-tune without these tokens, this increased the F1 score and reduced the number of malformed outputs.
+
 For training the Llama-3 70B model, I used QLoRA [@dettmers2023qloraefficientfinetuningquantized] with 4 bit quantization. I merged the resulting LoRA adapter into the model. Then I quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) [@lin2024awqactivationawareweightquantization]. This combination of techniques made it possible to train the model on 2 H100 GPUs and run it on a single H100 GPU. An alternative would've been to load the LoRA adapter into a pre-quantized model at inference time.
+
+## Inference
+
+During inference using vLLM I set these [sampling parameters](https://docs.vllm.ai/en/latest/offline_inference/sampling_params.html):
+
+```python
+sampling_params = SamplingParams(
+    repetition_penalty=1.1,
+    temperature=0,
+    top_p=0.95,
+    top_k=50,
+    max_tokens=128,
+)
+```
+
+The repetition penalty prevents the model from repeating the same tokens over and over. A low temperature and strict settings for top_p and top_k encourage following the JSON format of the expected output, e.g.
+
+```json
+{
+  "aspects": [
+    {
+      "aspect": "food",
+      "sentiment": "positive"
+    },
+    {
+      "aspect": "service",
+      "sentiment": "negative"
+    }
+  ]
+}
+```
+
+Pretty printed here, the actual output is a single line of text. 128 tokens is enough to cover all aspects of the longest review in the dataset.
 
 ## Results
 

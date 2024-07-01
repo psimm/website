@@ -9,7 +9,7 @@
 <meta name="author" content="Paul Simmering">
 <meta name="dcterms.date" content="2024-06-30">
 
-<title>Open SOTA model for aspect-based sentiment analysis – Paul Simmering</title>
+<title>Open fine-tuned LLMs for aspect-based sentiment analysis – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -152,7 +186,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Open SOTA model for aspect-based sentiment analysis</h1>
+      <h1 class="title">Open fine-tuned LLMs for aspect-based sentiment analysis</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Machine Learning</div>
               </div>
@@ -216,9 +250,35 @@ div.csl-indent {
 </section>
 <section id="training" class="level2">
 <h2 class="anchored" data-anchor-id="training">Training</h2>
-<p>I used <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a> to train the model. Training ran on <a href="https://modal.com">Modal</a> using a single Nvidia H100 for Llama-3 8B and Mistral 7B and two H100 for Llama-3 70B. Inference ran on a single H100 for all models.</p>
-<p><code>llama-3-8b-semeval2014.yml</code> specifies the training configuration according to axolotl’s <a href="https://openaccess-ai-collective.github.io/axolotl/docs/config.html">configuration format</a>. Examples were prepared in the Alpaca format. I used low-rank adaptation <span class="citation" data-cites="hu2021lora">(<a href="#ref-hu2021lora" role="doc-biblioref">Hu et al. 2021</a>)</span> (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.</p>
-<p>For training the Llama-3 70B model, I used QLoRA <span class="citation" data-cites="dettmers2023qloraefficientfinetuningquantized">(<a href="#ref-dettmers2023qloraefficientfinetuningquantized" role="doc-biblioref">Dettmers et al. 2023</a>)</span> with 4 bit quantization. I merged the resulting LoRA adapter into the model and quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) <span class="citation" data-cites="lin2024awqactivationawareweightquantization">(<a href="#ref-lin2024awqactivationawareweightquantization" role="doc-biblioref">Lin et al. 2024</a>)</span>. This combination of techniques allowed me to fine-tune the 70B parameter model on 2 H100s and run inference on a single H100.</p>
+<p>I used <a href="https://github.com/OpenAccess-AI-Collective/axolotl">axolotl</a> to train the model. Training ran on <a href="https://modal.com">Modal</a> using 2x A100 GPUs for the 7 and 8 models and 2x H100 for the 70B model. Inference ran on a single H100 for all models.</p>
+<p><a href="https://github.com/psimm/semeval-finetuning/blob/main/config/llama-3-8b-semeval2014.yml">llama-3-8b-semeval2014.yml</a> specifies the training configuration according to axolotl’s <a href="https://openaccess-ai-collective.github.io/axolotl/docs/config.html">configuration format</a>. Examples were prepared in the Alpaca format. I used low-rank adaptation <span class="citation" data-cites="hu2021lora">(<a href="#ref-hu2021lora" role="doc-biblioref">Hu et al. 2021</a>)</span> (LoRA) to fine-tune the model. I use the following LoRA settings: r = 16, alpha = 32, dropout = 0.05. The model was trained for 4 epochs.</p>
+<p>I’ve added <code>[INST]</code> and <code>[/INST]</code> tokens during training to indicate the start and end of an instruction. Compared to a fine-tune without these tokens, this increased the F1 score and reduced the number of malformed outputs.</p>
+<p>For training the Llama-3 70B model, I used QLoRA <span class="citation" data-cites="dettmers2023qloraefficientfinetuningquantized">(<a href="#ref-dettmers2023qloraefficientfinetuningquantized" role="doc-biblioref">Dettmers et al. 2023</a>)</span> with 4 bit quantization. I merged the resulting LoRA adapter into the model. Then I quantized the resulting model to 4 bit using activation-aware weight quantization (AWQ) <span class="citation" data-cites="lin2024awqactivationawareweightquantization">(<a href="#ref-lin2024awqactivationawareweightquantization" role="doc-biblioref">Lin et al. 2024</a>)</span>. This combination of techniques made it possible to train the model on 2 H100 GPUs and run it on a single H100 GPU. An alternative would’ve been to load the LoRA adapter into a pre-quantized model at inference time.</p>
+</section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<p>During inference using vLLM I set these <a href="https://docs.vllm.ai/en/latest/offline_inference/sampling_params.html">sampling parameters</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sampling_params <span class="op">=</span> SamplingParams(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    repetition_penalty<span class="op">=</span><span class="fl">1.1</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    top_p<span class="op">=</span><span class="fl">0.95</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    top_k<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">128</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The repetition penalty prevents the model from repeating the same tokens over and over. A low temperature and strict settings for top_p and top_k encourage following the JSON format of the expected output, e.g.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"aspects"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"aspect"</span><span class="fu">:</span> <span class="st">"food"</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"sentiment"</span><span class="fu">:</span> <span class="st">"positive"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"aspect"</span><span class="fu">:</span> <span class="st">"service"</span><span class="fu">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"sentiment"</span><span class="fu">:</span> <span class="st">"negative"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pretty printed here, the actual output is a single line of text. 128 tokens is enough to cover all aspects of the longest review in the dataset.</p>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
