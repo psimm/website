@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.45">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-07-11">
+
+<title>Rich Personal Wiki in Quarto – Paul Simmering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.26.0.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/paul_simmering"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Rich Personal Wiki in Quarto</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Productivity</div>
+                <div class="quarto-category">Machine Learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 11, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Machine learning is a deep and constantly evolving field. In an applied project, the details of models are typically compressed into a few lines of a configuration file. Take this excerpt from a configuration file for an LLM training run using <a href="https://github.com/OpenAccess-AI-Collective/axolotl">Axolotl</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adapter</span><span class="kw">:</span><span class="at"> lora</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lora_r</span><span class="kw">:</span><span class="at"> </span><span class="dv">32</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lora_alpha</span><span class="kw">:</span><span class="at"> </span><span class="dv">16</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lora_dropout</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.05</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">gradient_accumulation_steps</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">micro_batch_size</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">num_epochs</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">optimizer</span><span class="kw">:</span><span class="at"> adamw_bnb_8bit</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lr_scheduler</span><span class="kw">:</span><span class="at"> cosine</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">learning_rate</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.0002</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There are so many concepts packed into just 10 lines: low-rank adapters, backpropagation, batching, quantization, optimizers. Each of these decomposes into sub-concepts and sub-sub-concepts. The further you go down, the closer you get to pure mathematics. In this case, matrix factorization, calculus, binary arithmetic and trigonometry.</p>
+<p>I’ve understood each of these at some point in the last 10 years, but I’m not “exam-ready” on all of them at all times. A year ago I started writing a set of notes that form a personal wiki for machine learning topics. In this article I’ll share the software and workflow I use.</p>
+<p>This project helped calm some of my anxiety about forgetting. I can’t remember everything, but I can remember where to find it. Re-learning from a note I’ve written myself is much faster than learning from other sources.</p>
+<section id="beware-of-pseudowork" class="level2">
+<h2 class="anchored" data-anchor-id="beware-of-pseudowork">Beware of pseudowork</h2>
+<p>Before I get into the details, I feel obliged to warn about <em>pseudowork</em>. Setting up note taking systems, reading books about learning, reading advice from successful academics, all of these feel productive but don’t accomplish the main goal: understanding and retaining the material. Endless tweaking of the system can be a form of procrastination.</p>
+<p>In other words, don’t go too midwit:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="notes_midwit.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>Notes Midwit Meme</figcaption>
+</figure>
+</div>
+<p>With that warning out of the way, I’ll try to convince you that using Quarto for studying <em>is</em> worthwhile, even though it’s a little more complex than Apple Notes.</p>
+</section>
+<section id="quarto-website-as-a-personal-wiki" class="level2">
+<h2 class="anchored" data-anchor-id="quarto-website-as-a-personal-wiki">Quarto website as a personal wiki</h2>
+<p>A personal wiki is a repository of documents that are linked to each other.</p>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p align="center">
+<img src="quarto.png" class="img-fluid">
+</p>
+<p><a href="https://quarto.org">Quarto</a> is a scientific publishing system that is based on Markdown and supports code execution in Python, R and other languages. It can be used to create reports, books, slides and <a href="https://quarto.org/docs/websites/">websites</a> (including this one 😄). I use it to create a personal wiki for machine learning. It’s a collection of <code>.qmd</code> files that contain text, code snippets, formulas and interactive visualizations. The files are rendered to HTML and can be viewed in a browser. Notes (web pages) can be <a href="https://quarto.org/docs/websites/#linking">linked</a> to each other.</p>
+</section>
+<section id="file-structure" class="level3">
+<h3 class="anchored" data-anchor-id="file-structure">File structure</h3>
+<p>Each concept gets its own file. For example, to learn about quantization I’ve created three files in the <code>notes</code> folder:</p>
+<ol type="1">
+<li><code>notes/binary_numbers.qmd</code></li>
+<li><code>notes/quantization.qmd</code></li>
+<li><code>notes/qlora.qmd</code></li>
+</ol>
+<p>In <code>binary_numbers.qmd</code>, I’ve written about the binary number system starting with integers and then moving on to floating-point numbers. Hugging Face has an excellent guide on the <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">topic</a> from which I’ve copied visualizations.</p>
+<p>In <code>quantization.qmd</code> I’ve written about how reducing the number of bits used to represent weights reduces the memory footprint and computational cost of neural networks. It has a link to <code>binary_numbers.qmd</code> because binary numbers are used in quantization. The <code>qlora.qmd</code> connects it to LoRA adapters.</p>
+<div class="grid">
+<div class="g-col-6">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="files.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Note files</figcaption>
+</figure>
+</div>
+</div>
+<div class="g-col-6">
+<p>When I come across a new concept or find myself unsure of an old one, I create a new file. Starting with a basic definition, I summarize the topic. The last time I had to manually calculate something using the chain rule was in 2017, so recently I refreshed the topic by writing a detailed <code>chain_rule.md</code> note.</p>
+</div>
+</div>
+</section>
+<section id="notes" class="level3">
+<h3 class="anchored" data-anchor-id="notes">Notes</h3>
+<p>Notes are a weave of Markdown, code snippets and images. If you’re familiar with Jupyter notebooks or R Markdown, you’ll feel right at home. Quarto’s <a href="https://quarto.org/docs/get-started/hello/jupyter.html">tutorial</a> is a great place to start.</p>
+<p>Here’s an example of a note about derivatives:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="derivatives.png" class="img-fluid figure-img"></p>
+<figcaption>Example file derivatives.qmd</figcaption>
+</figure>
+</div>
+<p>I end every note with a sources section, e.g.&nbsp;</p>
+<pre><code>## Sources
+
+- [Stackoverflow AI in your pocket](https://stackoverflow.blog/2023/08/23/fitting-ai-models-in-your-pocket-with-quantization/)
+- [Transformers Quantization Documentation](https://huggingface.co/docs/transformers/quantization)
+- [Quantization](https://huggingface.co/blog/merve/quantization)
+- [4bit transformers](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
+- [A Gentle Introduction to 8-bit Matrix Multiplication for transformers at scale using Hugging Face Transformers, Accelerate and bitsandbytes](https://huggingface.co/blog/hf-bitsandbytes-integration)
+- [LLM-Model-VRAM-Calculator](https://huggingface.co/spaces/NyxKrage/LLM-Model-VRAM-Calculator)</code></pre>
+<p>in <code>quantization.qmd</code>. These can be links to blog posts, books, papers, documentation, YouTube videos or anything else that helped me understand the topic, like the <a href="https://huggingface.co/spaces/NyxKrage/LLM-Model-VRAM-Calculator">VRAM-calculator</a> in the last link.</p>
+</section>
+<section id="website" class="level3">
+<h3 class="anchored" data-anchor-id="website">Website</h3>
+<p>To turn this collection of files into a website, two additional files are needed:</p>
+<p>index.qmd:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Study Wiki"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> notes</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span><span class="st">"date desc"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sort-ui</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">filter-ui</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and <code>_quarto.yml</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Study wiki"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> darkly</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The overall structure looks like this:</p>
+<pre><code>_quarto.yml
+index.qmd
+notes/
+  binary_numbers.qmd
+  quantization.qmd
+  qlora.qmd</code></pre>
+<p>To render the website, run <code>quarto render</code> in the terminal. The website is then available in <code>_site/index.html</code> and can be opened in a browser. Typically, I render individual notes using the <code>render</code> button rather than the whole website.</p>
+<p>And this is what the website looks like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="wiki.png" class="img-fluid figure-img"></p>
+<figcaption>Personal wiki website, please excuse the mix of German and English</figcaption>
+</figure>
+</div>
+<p>It has sorting and search functionality.</p>
+<p>And this is what a note looks like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="batching.png" class="img-fluid figure-img"></p>
+<figcaption>Rendered note about batching</figcaption>
+</figure>
+</div>
+<p>It has a table of contents and references to sources. Quarto can be <a href="https://quarto.org/docs/output-formats/html-themes.html">themed</a>, here with the darkly theme.</p>
+</section>
+<section id="ide-and-extensions" class="level3">
+<h3 class="anchored" data-anchor-id="ide-and-extensions">IDE and extensions</h3>
+<p>I use Quarto with <a href="https://code.visualstudio.com">VSCode</a> and the <a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto extension</a>. I find <a href="https://plotly.com/python/">Plotly</a> to be the best for these notes because it’s interactive (tooltips, zoom, filter) without a need for customization.</p>
+</section>
+</section>
+<section id="copilots-are-great-at-formulas-and-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="copilots-are-great-at-formulas-and-visualizations">Copilots are great at formulas and visualizations</h2>
+<p><a href="https://github.com/features/copilot">Github Copilot</a> and other code completers like <a href="https://www.tabnine.com">TabNine</a> and <a href="https://supermaven.com">Supermaven</a> can generate LaTeX formulas and interactive Plotly visualizations.</p>
+<p>Using a copilot, you can fly through creating notes and illustrate them beautifully.</p>
+<p>For example, if you’re writing a note about linear regression, you might ask Copilot for the formula:</p>
+<blockquote class="blockquote">
+<p>Formula for linear regression:</p>
+</blockquote>
+<p>and Copilot will generate:</p>
+<pre><code>$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n $$</code></pre>
+<p>which renders as:</p>
+<p><span class="math display">\[ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n \]</span></p>
+<p>or ask for a visualization:</p>
+<blockquote class="blockquote">
+<p>Visualization of linear regression using a sample dataset:</p>
+</blockquote>
+<p>and Copilot might generate:</p>
+<div id="e506cf3a" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> px.data.tips()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(df, x<span class="op">=</span><span class="st">"total_bill"</span>, y<span class="op">=</span><span class="st">"tip"</span>, trendline<span class="op">=</span><span class="st">"ols"</span>, height<span class="op">=</span><span class="dv">250</span>, width<span class="op">=</span><span class="dv">600</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fig.data[<span class="dv">1</span>].line.color <span class="op">=</span> <span class="st">"red"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>                            <div id="e5f4fbc2-451e-4271-a006-a66ab36b1693" class="plotly-graph-div" style="height:250px; width:600px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("e5f4fbc2-451e-4271-a006-a66ab36b1693")) {                    Plotly.newPlot(                        "e5f4fbc2-451e-4271-a006-a66ab36b1693",                        [{"hovertemplate":"total_bill=%{x}\u003cbr\u003etip=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":[16.99,10.34,21.01,23.68,24.59,25.29,8.77,26.88,15.04,14.78,10.27,35.26,15.42,18.43,14.83,21.58,10.33,16.29,16.97,20.65,17.92,20.29,15.77,39.42,19.82,17.81,13.37,12.69,21.7,19.65,9.55,18.35,15.06,20.69,17.78,24.06,16.31,16.93,18.69,31.27,16.04,17.46,13.94,9.68,30.4,18.29,22.23,32.4,28.55,18.04,12.54,10.29,34.81,9.94,25.56,19.49,38.01,26.41,11.24,48.27,20.29,13.81,11.02,18.29,17.59,20.08,16.45,3.07,20.23,15.01,12.02,17.07,26.86,25.28,14.73,10.51,17.92,27.2,22.76,17.29,19.44,16.66,10.07,32.68,15.98,34.83,13.03,18.28,24.71,21.16,28.97,22.49,5.75,16.32,22.75,40.17,27.28,12.03,21.01,12.46,11.35,15.38,44.3,22.42,20.92,15.36,20.49,25.21,18.24,14.31,14.0,7.25,38.07,23.95,25.71,17.31,29.93,10.65,12.43,24.08,11.69,13.42,14.26,15.95,12.48,29.8,8.52,14.52,11.38,22.82,19.08,20.27,11.17,12.26,18.26,8.51,10.33,14.15,16.0,13.16,17.47,34.3,41.19,27.05,16.43,8.35,18.64,11.87,9.78,7.51,14.07,13.13,17.26,24.55,19.77,29.85,48.17,25.0,13.39,16.49,21.5,12.66,16.21,13.81,17.51,24.52,20.76,31.71,10.59,10.63,50.81,15.81,7.25,31.85,16.82,32.9,17.89,14.48,9.6,34.63,34.65,23.33,45.35,23.17,40.55,20.69,20.9,30.46,18.15,23.1,15.69,19.81,28.44,15.48,16.58,7.56,10.34,43.11,13.0,13.51,18.71,12.74,13.0,16.4,20.53,16.47,26.59,38.73,24.27,12.76,30.06,25.89,48.33,13.27,28.17,12.9,28.15,11.59,7.74,30.14,12.16,13.42,8.58,15.98,13.42,16.27,10.09,20.45,13.28,22.12,24.01,15.69,11.61,10.77,15.53,10.07,12.6,32.83,35.83,29.03,27.18,22.67,17.82,18.78],"xaxis":"x","y":[1.01,1.66,3.5,3.31,3.61,4.71,2.0,3.12,1.96,3.23,1.71,5.0,1.57,3.0,3.02,3.92,1.67,3.71,3.5,3.35,4.08,2.75,2.23,7.58,3.18,2.34,2.0,2.0,4.3,3.0,1.45,2.5,3.0,2.45,3.27,3.6,2.0,3.07,2.31,5.0,2.24,2.54,3.06,1.32,5.6,3.0,5.0,6.0,2.05,3.0,2.5,2.6,5.2,1.56,4.34,3.51,3.0,1.5,1.76,6.73,3.21,2.0,1.98,3.76,2.64,3.15,2.47,1.0,2.01,2.09,1.97,3.0,3.14,5.0,2.2,1.25,3.08,4.0,3.0,2.71,3.0,3.4,1.83,5.0,2.03,5.17,2.0,4.0,5.85,3.0,3.0,3.5,1.0,4.3,3.25,4.73,4.0,1.5,3.0,1.5,2.5,3.0,2.5,3.48,4.08,1.64,4.06,4.29,3.76,4.0,3.0,1.0,4.0,2.55,4.0,3.5,5.07,1.5,1.8,2.92,2.31,1.68,2.5,2.0,2.52,4.2,1.48,2.0,2.0,2.18,1.5,2.83,1.5,2.0,3.25,1.25,2.0,2.0,2.0,2.75,3.5,6.7,5.0,5.0,2.3,1.5,1.36,1.63,1.73,2.0,2.5,2.0,2.74,2.0,2.0,5.14,5.0,3.75,2.61,2.0,3.5,2.5,2.0,2.0,3.0,3.48,2.24,4.5,1.61,2.0,10.0,3.16,5.15,3.18,4.0,3.11,2.0,2.0,4.0,3.55,3.68,5.65,3.5,6.5,3.0,5.0,3.5,2.0,3.5,4.0,1.5,4.19,2.56,2.02,4.0,1.44,2.0,5.0,2.0,2.0,4.0,2.01,2.0,2.5,4.0,3.23,3.41,3.0,2.03,2.23,2.0,5.16,9.0,2.5,6.5,1.1,3.0,1.5,1.44,3.09,2.2,3.48,1.92,3.0,1.58,2.5,2.0,3.0,2.72,2.88,2.0,3.0,3.39,1.47,3.0,1.25,1.0,1.17,4.67,5.92,2.0,2.0,1.75,3.0],"yaxis":"y","type":"scatter"},{"hovertemplate":"\u003cb\u003eOLS trendline\u003c\u002fb\u003e\u003cbr\u003etip = 0.105025 * total_bill + 0.92027\u003cbr\u003eR\u003csup\u003e2\u003c\u002fsup\u003e=0.456617\u003cbr\u003e\u003cbr\u003etotal_bill=%{x}\u003cbr\u003etip=%{y} \u003cb\u003e(trend)\u003c\u002fb\u003e\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"lines","name":"","showlegend":false,"x":[3.07,5.75,7.25,7.25,7.51,7.56,7.74,8.35,8.51,8.52,8.58,8.77,9.55,9.6,9.68,9.78,9.94,10.07,10.07,10.09,10.27,10.29,10.33,10.33,10.34,10.34,10.51,10.59,10.63,10.65,10.77,11.02,11.17,11.24,11.35,11.38,11.59,11.61,11.69,11.87,12.02,12.03,12.16,12.26,12.43,12.46,12.48,12.54,12.6,12.66,12.69,12.74,12.76,12.9,13.0,13.0,13.03,13.13,13.16,13.27,13.28,13.37,13.39,13.42,13.42,13.42,13.51,13.81,13.81,13.94,14.0,14.07,14.15,14.26,14.31,14.48,14.52,14.73,14.78,14.83,15.01,15.04,15.06,15.36,15.38,15.42,15.48,15.53,15.69,15.69,15.77,15.81,15.95,15.98,15.98,16.0,16.04,16.21,16.27,16.29,16.31,16.32,16.4,16.43,16.45,16.47,16.49,16.58,16.66,16.82,16.93,16.97,16.99,17.07,17.26,17.29,17.31,17.46,17.47,17.51,17.59,17.78,17.81,17.82,17.89,17.92,17.92,18.04,18.15,18.24,18.26,18.28,18.29,18.29,18.35,18.43,18.64,18.69,18.71,18.78,19.08,19.44,19.49,19.65,19.77,19.81,19.82,20.08,20.23,20.27,20.29,20.29,20.45,20.49,20.53,20.65,20.69,20.69,20.76,20.9,20.92,21.01,21.01,21.16,21.5,21.58,21.7,22.12,22.23,22.42,22.49,22.67,22.75,22.76,22.82,23.1,23.17,23.33,23.68,23.95,24.01,24.06,24.08,24.27,24.52,24.55,24.59,24.71,25.0,25.21,25.28,25.29,25.56,25.71,25.89,26.41,26.59,26.86,26.88,27.05,27.18,27.2,27.28,28.15,28.17,28.44,28.55,28.97,29.03,29.8,29.85,29.93,30.06,30.14,30.4,30.46,31.27,31.71,31.85,32.4,32.68,32.83,32.9,34.3,34.63,34.65,34.81,34.83,35.26,35.83,38.01,38.07,38.73,39.42,40.17,40.55,41.19,43.11,44.3,45.35,48.17,48.27,48.33,50.81],"xaxis":"x","y":[1.2426948819246395,1.5241605885147065,1.6816973645912365,1.6816973645912365,1.7090037391111685,1.7142549649803862,1.7331593781095698,1.7972243337140252,1.814028256495522,1.8150785016693654,1.8213799727124267,1.8413346310154537,1.9232537545752495,1.9285049804444672,1.9369069418352154,1.9474093935736507,1.9642133163551472,1.9778665036151133,1.9778665036151133,1.9799669939628002,1.9988714070919837,2.000971897439671,2.005172878135045,2.005172878135045,2.0062231233088887,2.0062231233088887,2.024077291264229,2.032479252654977,2.036680233350351,2.038780723698038,2.0513836657841606,2.0776397951302488,2.093393472737902,2.1007451889548068,2.1122978858670853,2.1154486213886163,2.1375037700393302,2.1396042603870176,2.1480062217777656,2.1669106349069494,2.182664312514602,2.183714557688446,2.1973677449484117,2.207870196686847,2.225724364642187,2.2288751001637177,2.230975590511405,2.237277061554466,2.2435785325975273,2.2498800036405884,2.253030739162119,2.258281965031337,2.2603824553790237,2.2750858878128333,2.2855883395512686,2.2855883395512686,2.288739075072799,2.2992415268112345,2.302392262332765,2.313944959245044,2.3149952044188877,2.3244474109834794,2.3265479013311667,2.329698636852697,2.329698636852697,2.329698636852697,2.339150843417289,2.370658198632595,2.370658198632595,2.384311385892561,2.390612856935622,2.3979645731525268,2.406366534543275,2.4179192314555538,2.4231704573247717,2.4410246252801118,2.4452256059754855,2.4672807546262,2.472531980495418,2.4777832063646352,2.496687619493819,2.4998383550153496,2.501938845363037,2.5334462005783425,2.53554669092603,2.539747671621404,2.546049142664465,2.5513003685336826,2.568104291315179,2.568104291315179,2.5765062527059275,2.5807072334013017,2.5954106658351113,2.598561401356642,2.598561401356642,2.6006618917043287,2.604862872399703,2.622717040355043,2.629018511398104,2.631119001745791,2.6332194920934784,2.634269737267322,2.64267169865807,2.6458224341796006,2.647922924527288,2.650023414874975,2.6521239052226617,2.6615761117872534,2.6699780731780023,2.6867819959594987,2.6983346928717773,2.7025356735671515,2.7046361639148384,2.713038125305587,2.7329927836086143,2.7361435191301444,2.7382440094778318,2.753997687085485,2.755047932259328,2.7592489129547024,2.767650874345451,2.787605532648478,2.7907562681700084,2.791806513343852,2.799158229560757,2.8023089650822874,2.8023089650822874,2.8149119071684097,2.8264646040806887,2.8359168106452803,2.8380173009929677,2.8401177913406546,2.841168036514498,2.841168036514498,2.8474695075575593,2.8558714689483073,2.8779266175990217,2.8831778434682396,2.8852783338159265,2.8926300500328312,2.9241374052481373,2.961946231506505,2.967197457375722,2.9840013801572187,2.996604322243341,3.000805302938715,3.001855548112559,3.0291619226324906,3.044915600240144,3.0491165809355176,3.051217071283205,3.051217071283205,3.0680209940647014,3.072221974760075,3.07642295545545,3.089025897541572,3.0932268782369463,3.0932268782369463,3.100578594453851,3.11528202688766,3.1173825172353475,3.1268347237999397,3.1268347237999397,3.1425884014075924,3.1782967373182727,3.1866986987090207,3.199301640795143,3.2434119380965716,3.2549646350088506,3.2749192933118776,3.2822710095287824,3.301175422657966,3.309577384048714,3.310627629222558,3.316929100265619,3.346335965133238,3.353687681350143,3.370491604131639,3.4072501852161627,3.435606804909938,3.4419082759529998,3.447159501822217,3.449259992169904,3.4692146504729315,3.4954707798190197,3.49862151534055,3.5028224960359244,3.515425438122047,3.5458825481635095,3.567937696814224,3.5752894130311286,3.576339658204972,3.6046962778987472,3.6204499555064005,3.639354368635584,3.693967117675448,3.712871530804631,3.7412281504984066,3.7433286408460935,3.761182808801434,3.7748359960613995,3.776936486409087,3.7853384477998353,3.8767097779242223,3.8788102682719097,3.907166887965685,3.918719584877964,3.9628298821793924,3.9691313532224535,4.050000231608406,4.055251457477623,4.0636534188683715,4.077306606128338,4.085708567519086,4.113014942039017,4.119316413082079,4.204386272163405,4.250597059812521,4.265300492246331,4.323063976807724,4.352470841675343,4.368224519282996,4.375576235499901,4.522610559837996,4.557268650574833,4.559369140922519,4.576173063704016,4.578273554051703,4.623434096526975,4.683298071436057,4.912251519333947,4.918552990377008,4.987869171850681,5.060336088845886,5.1391044768841505,5.1790137934902045,5.24622948461619,5.4478765579941495,5.572855733681529,5.683131476935101,5.979300615958977,5.989803067697413,5.9961045387404734,6.256565341853671],"yaxis":"y","type":"scatter","line":{"color":"red"}}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"total_bill"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"tip"}},"legend":{"tracegroupgap":0},"height":250,"width":600},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('e5f4fbc2-451e-4271-a006-a66ab36b1693');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<p>Using a separate chat like ChatGPT also works, but requires more copy-pasting, which breaks the flow.</p>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<div class="grid">
+<section id="pros" class="level3 g-col-6">
+<h3 class="anchored" data-anchor-id="pros">Pros</h3>
+<ul>
+<li>Enhance understanding with code snippets, formulas and interactive visualizations</li>
+<li>Collect the best learning resources in one place</li>
+<li>Free, open-source software running locally without needing an internet connection</li>
+<li>Text files are future-proof and can be read by any text editor</li>
+<li>Possible to version control with Git</li>
+<li>Easy to back up</li>
+<li>Gets better over time as more notes are added and interlinked</li>
+<li>Visualizes learning progress in a satisfying way</li>
+</ul>
+</section>
+<section id="cons" class="level3 g-col-6">
+<h3 class="anchored" data-anchor-id="cons">Cons</h3>
+<ul>
+<li>It doesn’t work well on mobile. You could find a way to read the notes, but editing is not practical</li>
+<li>Over-engineering notes with interactivity can turn into pseudowork</li>
+<li>Creating many shallow notes using an LLM can also be pseudowork</li>
+<li>Learning curve if you’re not familiar with Markdown and a programming language supported by Quarto</li>
+</ul>
+</section>
+</div>
+<p>If you’re in machine learning, data engineering, or a similar technical field I highly recommend <a href="https://quarto.org">Quarto</a> for creating a personal wiki. If you don’t need code, formulas or interactive visualizations, <a href="https://obsidian.md">Obsidian</a> is an easier alternative that is based on Markdown and local-first. Finally, Apple Notes and Microsoft OneNote are OK too, if you don’t mind being locked into their ecosystems.</p>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://x.com/karpathy/status/1756380066580455557">The shortification of learning</a> by Andrej Karpathy</li>
+<li><a href="https://www.scotthyoung.com/blog/2019/02/15/memory/">The Complete Guide to Memory</a> by Scott Young and Jakub Jílek</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/simmering\.dev");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
