@@ -31,6 +31,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/detailed-world/index.html",
       "/blog/quarto-wiki/index.html",
       "/blog/fast-and-good/index.html",
       "/blog/structured_output/index.html",
