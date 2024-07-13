@@ -20,6 +20,8 @@ about:
 
 Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. Besides coding, I enjoy writing and speaking about data science. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de).
 
+My current focus is aspect-based sentiment analysis using LLMs. My team and I are building a data pipeline for [review analysis](https://www.teamq.de/blog/152/ai_reviews).
+
 The best way to contact me is via email: [paul.simmering@gmail.com](mailto:paul.simmering@gmail.com).
 
 What other than data science? Here are some things I enjoy:
