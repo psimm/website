@@ -6,7 +6,7 @@ categories: ["Economics", "Entrepreneurship"]
 image: "world.jpg"
 ---
 
-![](image.png)
+![](world.jpg)
 
 It's easy to underestimate how vast and heterogeneous the world is. For entrepreneurs and developers this has two implications:
 
@@ -50,7 +50,7 @@ But the practical level of detail is not infinite: the further you zoom out the 
 
 This unlocks huge economies of scale: technology that is applicable in many conditions can be invented once, mass-manufactured or copy-pasted millions of times, and used by millions of people. That is why technology companies are the [most valuable companies](https://companiesmarketcap.com) in the world.
 
-![Largest companies by market cap](marketcap.png)
+![Largest companies by market cap. From companiesmarketcap.com, July 13 2024](marketcap.png)
 
 Standardization can turn to natural monopolies when network effects come into play. The more people use a communication platform or a marketplace, the more valuable it becomes. This is why Facebook, Google and Amazon are so dominant. Standardization can also create monopolies to due scale, hence the dominance of TSMC in the semiconductor space.
 
@@ -92,6 +92,8 @@ Scalability and detail can be seen in a matrix:
 
 There are plenty of niches to exploit and the existence of an incumbent can be taken as a signal that there is a market, rather than that the market is saturated. The hard part isn't to find just any niche, but a niche large enough and amenable to scaling.
 
+Questions for entrepreneurs and investors:
+
 - Where do general incumbents fail to meet the needs of a niche?
-- What types of scale does my niche support?
+- What types of scale does the niche support?
 - Which details can I safely ignore or fix later?
