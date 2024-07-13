@@ -4,9 +4,9 @@ image: assets/profile.jpg
 about:
   template: solana
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/paul_simmering
+    - icon: twitter-x
+      text: ''
+      href: https://x.com/paul_simmering
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/in/paulsimmering
