@@ -1,0 +1,53 @@
+---
+title: "Review analysis pipeline"
+subtitle: "End-to-end automated pipeline for review collection, analysis and report creation"
+date: 2024-07-13
+author: "Paul Simmering"
+draft: false
+categories:
+  - Python
+  - Machine learning
+image: "reviews.jpg"
+---
+
+<head>
+<style>
+.hue-shift {
+    animation: hue-rotate 10s infinite linear;
+}
+@keyframes hue-rotate {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+}
+</style>
+</head>
+<body>
+<div class="hue-shift">
+<img src="reviews.jpg" alt="Hue-shifting image" style="max-width: 100%; height: auto;">
+</div>
+</body>
+
+Q Agentur für Forschung offers a service for automated analysis of customer reviews in any product category in any European language. I'm the inventor and lead developer. We build on our research in aspect-based sentiment analysis (ABSA). Since our [paper](https://arxiv.org/abs/2310.18025) on the SemEval benchmark, we have re-thought ABSA from the ground up and developed a labeling scheme and model that allows for fine-grained analysis of customer reviews. See this example:
+
+![Aspect-based sentiment analysis](absa.png){width=75%}
+
+This model is the core of our pipeline. There are two other steps: review collection and reporting.
+
+![Data pipeline](process.png){width=75%}
+
+Everything's automated in Dagster with data quality checks at every step. Here's the full stack:
+
+| Category | Technology |
+|----------|------------|
+| Data | Web scraping services accessed via API |
+| Data Warehouse | MotherDuck |
+| Data Transformation | dbt, polars |
+| Orchestrator | Dagster |
+| Models | Fine-tuned LLMs + Prompt engineering |
+| Experiment Tracking | Weights & Biases |
+| Labeling Tool | Custom Shiny for Python app |
+| Reporting | Quarto |
+
+The project leverages several machine learning models for ABSA, text classification, translation, and summarization.
+
+The first customer-ready version was released in July 2024. We announced it with an [article](https://www.teamq.de/blog/152/ai_reviews) featuring a case study.

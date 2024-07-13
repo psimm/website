@@ -2,6 +2,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/projects/reviews/index.html",
       "/projects/texttunnel/index.html",
       "/projects/cosmention/index.html",
       "/projects/stakex/index.html",
