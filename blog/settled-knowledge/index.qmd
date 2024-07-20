@@ -6,7 +6,7 @@ categories: ["Advice", "Machine Learning"]
 image: "spiral.jpg"
 ---
 
-The pace of publishing in machine learning is extremely high. There were 242,290 AI publications in 2023. That's 663 per day, or one every two minutes. Based on comments on X, Reddit and Discord, I can see that many people feel FOMO, overwhelmed or inadequate because they can't keep up, even in subfields they're supposed to be experts in.
+The pace of publishing in machine learning is extremely high. There were 242,290 AI publications in 2022. That's 663 per day, or one every two minutes. Based on comments on X, Reddit and Discord, I can see that many people feel FOMO, overwhelmed or inadequate because they can't keep up, even in subfields they're supposed to be experts in.
 
 ![Number of AI publications by year, Source: [Stanford University AI Index 2024](https://aiindex.stanford.edu/report/)](publications.png)
 
