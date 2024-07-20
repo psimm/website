@@ -11,7 +11,7 @@ categories:
 image: "image.jpg"
 ---
 
-I conducted an online survey and economic experiment and analyzed the results using logistic regression. The [thesis](/projects/bachelorthesis/bachelorthesis.pdf) was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
+In 2014, there was an increase in the number of news papers and streaming services that offered users the option to pay for an ad-free version of their website. As an aspiring economist, I wondered how much users would be willing to pay for such a service. To find out, I conducted an online survey and economic experiment and analyzed the results using logistic regression. The [thesis (PDF)](/projects/bachelorthesis/bachelorthesis.pdf) was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.
 
 ![](image.jpg)
 

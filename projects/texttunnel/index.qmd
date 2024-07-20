@@ -1,5 +1,5 @@
 ---
-title: "texttunnel Python package texttunnel"
+title: "Python package texttunnel"
 date: 2023-09-21
 author: "Paul Simmering and Paavo Huoviala"
 draft: false
