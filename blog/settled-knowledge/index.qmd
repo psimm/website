@@ -1,5 +1,5 @@
 ---
-title: "Allow Research to Settle Before Consuming It"
+title: "Let Research Settle Before Consuming It"
 author: "Paul Simmering"
 date: "2024-07-20"
 categories: ["Advice", "Machine Learning"]
