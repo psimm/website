@@ -1,0 +1,32 @@
+---
+title: "Let Research Settle Before Consuming It"
+author: "Paul Simmering"
+date: "2024-07-20"
+categories: ["Advice", "Machine Learning"]
+image: "spiral.jpg"
+---
+
+The pace of publishing in machine learning is extremely high. There were 242,290 AI publications in 2023. That's 663 per day, or one every two minutes. Based on comments on X, Reddit and Discord, I can see that many people feel FOMO, overwhelmed or inadequate because they can't keep up, even in subfields they're supposed to be experts in.
+
+![Number of AI publications by year, Source: [Stanford University AI Index 2024](https://aiindex.stanford.edu/report/)](publications.png)
+
+For those who can afford it, the antidote is to deliberately let research settle before consuming it. This means holding off on reading papers and waiting for the ideas to be integrated into textbooks, video courses and libraries, or at least wait to see which papers are getting cited more than others. This has advantages:
+
+- **Higher quality learning materials**: The initial paper is rarely the best explanation or fullest version of an idea. It necessarily doesn't have as many real world examples as later explanations. It comes from the single perspective of an author with the intent to communicate to peers that are equally deep in the field. Later explanations are written by people with a teaching background and have been refined by feedback and real world experiences. They also have more accessible formats. Most people find it easier to learn from a video course or a textbook than from a collection of papers.
+- **Higher quality software implementations**: Software behind research papers is often brittle and not suitable for production. Waiting for a library to implement the idea means you get a more robust and better documented implementation. It's also more likely to be compatible with other tools you're using and easier to install.
+- **Less likely to be wrong or irrelevant**: The initial paper may have a mistake or a result that's not replicable with other datasets. It may be a theoretical dead end or be quickly surpassed by other research. Waiting a while lets the community sort out what actually works.
+
+Time for learning is precious. Spending it on debugging software or deciphering a paper that is later proven wrong is a waste. By delaying consumption of research your learning is more efficient so you can learn more and more long-term valuable skills in the same time.
+
+Of course, waiting is a luxury that those in research can't afford because they'd be scooped and forever behind the curve. Let's rank roles in the ecosystem by how close they have to be to the cutting edge:
+
+1.	Research scientist in university or industry lab
+2.	Research engineer developing platforms for researchers
+3.	Novel software developer creating cutting-edge products
+4.	Consultant advising on business integration
+5.	General developer at a company that uses ML but not at the cutting edge
+6.	Developer in slow-moving industry exploring ML adoption
+
+The lower you are on the list, the longer you can afford to wait before consuming research. The dropoff is steep. A researcher needs to be up to date with the latest papers within weeks, while a developer in a slow-moving industry can wait multiple years before an idea could become relevant in their work.
+
+Staying at the bleeding edge carries a cost in learning efficiency and stress. If your role permits it, consider letting research settle more before consuming it.
