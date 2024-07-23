@@ -32,6 +32,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/text-tournament/index.html",
       "/blog/settled-knowledge/index.html",
       "/blog/detailed-world/index.html",
       "/blog/quarto-wiki/index.html",

@@ -11,7 +11,144 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.45</generator>
-<lastBuildDate>Fri, 19 Jul 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 22 Jul 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Text Tournament: Rank Marketing Copy with LLMs</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/text-tournament/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>The launch of the <a href="../../projects/reviews/index.html">review analysis project</a> has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It’s called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on <a href="https://github.com/psimm/text-tournament">GitHub</a> under the MIT license.</p>
+<p>This is the companion blog post to the project which explains my thought process and technical details.</p>
+<section id="the-tournament" class="level2">
+<h2 class="anchored" data-anchor-id="the-tournament">The Tournament</h2>
+<p>The user gives a set of competitors and a set of attributes. Each competitor is paired with every other competitor on each aspect. For example, if there are three name choices for a Spotify competitor, say ‘Streamio’, ‘MelodiX’ and ‘SoundWave’ and two attributes ‘memorability’ and ‘pronounceability’, the tournament would look like this:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Competitor 1</th>
+<th>Competitor 2</th>
+<th>Attribute</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Streamio</td>
+<td>MelodiX</td>
+<td>memorability</td>
+</tr>
+<tr class="even">
+<td>Streamio</td>
+<td>SoundWave</td>
+<td>memorability</td>
+</tr>
+<tr class="odd">
+<td>MelodiX</td>
+<td>SoundWave</td>
+<td>memorability</td>
+</tr>
+<tr class="even">
+<td>Streamio</td>
+<td>MelodiX</td>
+<td>pronounceability</td>
+</tr>
+<tr class="odd">
+<td>Streamio</td>
+<td>SoundWave</td>
+<td>pronounceability</td>
+</tr>
+<tr class="even">
+<td>MelodiX</td>
+<td>SoundWave</td>
+<td>pronounceability</td>
+</tr>
+</tbody>
+</table>
+<p>Each of these pairings is turned into a prompt for the LLM, like “Compare the company names Streamio and MelodiX. Which one is more memorable?”</p>
+<p>Each pairing is run twice, once as A vs.&nbsp;B and once as B vs.&nbsp;A. The reason is that LLMs tend to have a bias towards picking the first option <span class="citation" data-cites="dominguezolmedo2024questioningsurveyresponseslarge">(Dominguez-Olmedo, Hardt, and Mendler-Dünner 2024)</span>.</p>
+</section>
+<section id="structured-output-reasoning" class="level2">
+<h2 class="anchored" data-anchor-id="structured-output-reasoning">Structured output &amp; reasoning</h2>
+<p>To make sure that the LLM’s answer is interpretable, I used <a href="https://github.com/jxnl/instructor">instructor</a>. Further, I asked the model to not just pick the winner but also to provide a reason. This is done with a simple Pydantic model:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Rating(BaseModel):</span>
+<span id="cb1-2">    reason: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-3">    preferred: Literal[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]</span></code></pre></div>
+<p>By asking for the reason first, the tokens generated as the reason are influencing the token chosen for the “preferred” field. This makes use of the auto-regressive nature of the model.</p>
+<p>The benefit of the reason is that it typically improves the model’s thinking and it also provides an inspectable record. For example, here are two outputs from the tournament above:</p>
+<p>Streamio vs MelodiX on pronounceability:</p>
+<blockquote class="blockquote">
+<p>Streamio is straightforward to pronounce with a clear phonetic structure, while MelodiX may cause hesitation due to the unusual capital ‘X’ at the end.</p>
+</blockquote>
+<p>MelodiX vs SoundWave on memorability:</p>
+<blockquote class="blockquote">
+<p>The name ‘MelodiX’ is unique and contains a playful twist with the ‘X’ at the end, making it more distinctive and easier to remember. The name ‘SoundWave’ is more generic and can be easily confused with other similar terms in the tech and music industry.</p>
+</blockquote>
+</section>
+<section id="ranking-competitors-with-the-bradley-terry-model" class="level2">
+<h2 class="anchored" data-anchor-id="ranking-competitors-with-the-bradley-terry-model">Ranking competitors with the Bradley-Terry model</h2>
+<p>The simplest approach is to count the number of wins for each competitor. However, this doesn’t take into account the strength of the competitors. A competitor that has only faced weak competitors might have a high win count but not be the best choice. I considered two ranking methods that account for this: the Elo <span class="citation" data-cites="elo1978rating">(Elo and Sloan 1978)</span> model and the Bradley-Terry <span class="citation" data-cites="bradley1952rank">(Bradley and Terry 1952)</span> model.</p>
+<p>Elo is better known due to the popularity of ranking method in Chess. Many people are familiar with the concept of a player’s Elo rating and how it changes after a match.</p>
+<p>The downside of Elo in this context is that ordering of the matches matters. Thce results of the LLM calls are coming in all at once. I’d have to artificially order the matches to use Elo. This is not ideal.</p>
+<p>The Bradley-Terry model is a better fit for this situation. It’s a probabilistic model that estimates the strength of competitors based on the outcomes of matches.</p>
+<p>The probability of competitor <img src="https://latex.codecogs.com/png.latex?i"> beating competitor <img src="https://latex.codecogs.com/png.latex?j"> is given by:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AP(i%20%5Ctext%7B%20beats%20%7D%20j)%20=%20%5Cfrac%7Br_i%7D%7Br_i%20+%20r_j%7D%0A"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?r_i"> is the strength of competitor <img src="https://latex.codecogs.com/png.latex?i">. The model is fit by modifying the strengths <code>r</code> to maximize the likelihood of the observed outcomes.</p>
+<p>The Bradley-Terry model is also the basis for Direct Preference Optimization <span class="citation" data-cites="rafailov2024direct">(Rafailov et al. 2024)</span>. So I’m asking an LLM that was likely trained with DPO to do be a ranking model itself. So meta. This also means that the outputs of the ranking could be used as inputs to the DPO model. For example, a larger model could be used to teach a smaller model how to rank the competitors.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>I ran a tournament with more name options and additional attributes to compare them on. Here is the overall result:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/text-tournament/ranking.png" class="img-fluid figure-img"></p>
+<figcaption>Tournament results</figcaption>
+</figure>
+</div>
+<p>Does it match your preferences?</p>
+<p>The full results with rankings on each attribute are available on this <a href="">Github page</a>.</p>
+</section>
+<section id="validity" class="level2">
+<h2 class="anchored" data-anchor-id="validity">Validity</h2>
+<p>The rankings produced by the tournament are not a replacement for tests with real users and human judgment. LLMs are known to be politically biased, may give random answers, and are heavily influenced by how a question is posed. The rankings are a tool to help with the creative process, not a definitive answer. If you decide to use it, I suggest starting with a low-stakes use case like the title of a blog post.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-bradley1952rank" class="csl-entry">
+Bradley, Ralph Allan, and Milton E Terry. 1952. <span>“Rank Analysis of Incomplete Block Designs: I. The Method of Paired Comparisons.”</span> <em>Biometrika</em> 39 (3/4): 324–45.
+</div>
+<div id="ref-dominguezolmedo2024questioningsurveyresponseslarge" class="csl-entry">
+Dominguez-Olmedo, Ricardo, Moritz Hardt, and Celestine Mendler-Dünner. 2024. <span>“Questioning the Survey Responses of Large Language Models.”</span> <a href="https://arxiv.org/abs/2306.07951">https://arxiv.org/abs/2306.07951</a>.
+</div>
+<div id="ref-elo1978rating" class="csl-entry">
+Elo, Arpad E, and Sam Sloan. 1978. <span>“The Rating of Chessplayers: Past and Present.”</span>
+</div>
+<div id="ref-rafailov2024direct" class="csl-entry">
+Rafailov, Rafael, Archit Sharma, Eric Mitchell, Christopher D Manning, Stefano Ermon, and Chelsea Finn. 2024. <span>“Direct Preference Optimization: Your Language Model Is Secretly a Reward Model.”</span> <em>Advances in Neural Information Processing Systems</em> 36.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <category>Python</category>
+  <category>Marketing</category>
+  <guid>https://simmering.dev/blog/text-tournament/</guid>
+  <pubDate>Mon, 22 Jul 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/text-tournament/tournament.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Let Research Settle Before Consuming It</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -9842,1124 +9979,6 @@ font-style: inherit;">"Volatility"</span>)</span></code></pre></div>
   <guid>https://simmering.dev/blog/fangmant/</guid>
   <pubDate>Sun, 26 Dec 2021 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/fangmant/image.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Data frame wars: Choosing a Python dataframe library as a dplyr user</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/dataframes/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>I’m a long time R user and lately I’ve seen more and more <a href="https://www.tiobe.com/tiobe-index/python/">signals</a> that it’s worth investing into Python. I use it for NLP with <a href="https://spacy.io">spaCy</a> and to build functions on <a href="https://aws.amazon.com/lambda/features/">AWS Lambda</a>. Further, there are many more data API libraries and machine learning libraries for Python than for R.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This article was written at the end of 2021 with the latest versions of the libraries and the number of Github stars at that time.</p>
-</div>
-</div>
-<p>Adopting Python means making choices on which libraries to invest time into learning. Manipulating data frames is one of the most common data science activities, so choosing the right library for it is key.</p>
-<p>Michael Chow, developer of <a href="https://github.com/machow/siuba">siuba</a>, a Python port of dplyr on top of pandas <a href="https://mchow.com/posts/pandas-has-a-hard-job/">wrote</a> describes the situation well:</p>
-<blockquote class="blockquote">
-<p>It seems like there’s been a lot of frustration surfacing on twitter lately from people coming from R—especially if they’ve used dplyr and ggplot—towards pandas and matplotlib. I can relate. I’m developing a port of dplyr to python. But in the end, it’s probably helpful to view these libraries as foundational to a lot of other, higher-level libraries (some of which will hopefully get things right for you!).</p>
-</blockquote>
-<p>The higher-level libraries he mentions come with a problem : There’s no universal standard.</p>
-<p>In a discussion of the polars library on Hacker News the user “civilized” put the dplyr user perspective more bluntly:</p>
-<blockquote class="blockquote">
-<p>In my world, anything that isn’t “identical to R’s dplyr API but faster” just isn’t quite worth switching for. There’s absolutely no contest: dplyr has the most productive API and that matters to me more than anything else.</p>
-</blockquote>
-<p>I’m more willing to compromise though, so here’s a comparison of the strongest contenders.</p>
-<section id="the-contenders" class="level2">
-<h2 class="anchored" data-anchor-id="the-contenders">The contenders</h2>
-<p>The <a href="https://h2oai.github.io/db-benchmark/">database-like ops benchmark on H2Oai</a> is a helpful performance comparison.</p>
-<p>I’m considering these libraries:</p>
-<ol type="1">
-<li><a href="https://pandas.pydata.org">Pandas</a>: The most commonly used library and the one with the most tutorials and Stack Overflow answers available.</li>
-<li><a href="https://github.com/machow/siuba">siuba</a>: A port of dplyr to Python, built on top of pandas. Not in the benchmark. Performance probably similar to pandas or worse due to translation.</li>
-<li><a href="https://www.pola.rs">Polars</a>: The fastest library available. According to the benchmark, it runs 3-10x faster than Pandas.</li>
-<li><a href="https://www.pola.rs">Duckdb</a>: Use an in-memory OLAP database instead of a dataframe and write SQL. In R, this can also be queried via dbplyr.</li>
-<li><a href="https://ibis-project.org/docs/index.html">ibis</a>. Backend-agnostic wrapper for pandas and SQL engines.</li>
-</ol>
-<p>There are more options. I excluded the others for these reasons:</p>
-<ul>
-<li>Slower than polars and not with a readability focus (dask, Arrow, Modin, pydatatable)</li>
-<li>Requires or is optmized for running on a remote server (Spark, ClickHouse and most other SQL databases).</li>
-<li>Not meant for OLAP (sqlite)</li>
-<li>Not in Python (DataFrames.jl)</li>
-<li>Meant for GPU (cuDF)</li>
-</ul>
-</section>
-<section id="github-stars-as-a-proxy-for-popularity" class="level2">
-<h2 class="anchored" data-anchor-id="github-stars-as-a-proxy-for-popularity">Github stars as a proxy for popularity</h2>
-<p>The benchmark provides a comparison of performance, but another important factor is popularity and maturity. A more mature library has a more stable API, better test coverage and there is more help available online, such as on StackOverflow. One way to measure popularity is the number of stars that the package repository has on Github.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(ggplot2)</span>
-<span id="cb1-2">libs <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">data.frame</span>(</span>
-<span id="cb1-3">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">library =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"pandas"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"siuba"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"polars"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"duckdb"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"dplyr"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data.table"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"pydatatable"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"dtplyr"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"tidytable"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ibis"</span>),</span>
-<span id="cb1-4">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">language =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Python"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Python"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Python"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"SQL"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"R"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"R"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Python"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"R"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"R"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Python"</span>),</span>
-<span id="cb1-5">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">stars =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">32100</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">732</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3900</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4100</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3900</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2900</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1400</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">542</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">285</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1600</span>)</span>
-<span id="cb1-6">)</span>
-<span id="cb1-7"></span>
-<span id="cb1-8"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(libs, <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">reorder</span>(library, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>stars), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> stars, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fill =</span> language)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb1-9">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_col</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb1-10">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">labs</span>(</span>
-<span id="cb1-11">        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Pandas is by far the most popular choice"</span>,</span>
-<span id="cb1-12">        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Comparison of Github stars on 2021-12-25"</span>,</span>
-<span id="cb1-13">        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Language"</span>,</span>
-<span id="cb1-14">        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Library"</span>,</span>
-<span id="cb1-15">        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Github stars"</span></span>
-<span id="cb1-16">    )</span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/dataframes/index_files/figure-html/github_stars-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Github stars are not a perfect proxy. For instance, dplyr is more mature than its star count suggests. Comparing the completeness of the documentation and tutorials for dplyr and polars reveals that it’s a day and night difference.</p>
-<p>With the quantitative comparison out of the way, here’s a qualitative comparison of the Python packages. I’m speaking of my personal opinion of these packages - not a general comparison. My reference is my current use of <a href="https://dplyr.tidyverse.org">dplyr</a> in R. When I need more performance, I use <a href="https://github.com/markfairbanks/tidytable">tidytable</a> to get most of the speed of data.table with the grammar of dplyr and eager evaluation. Another alternative is <a href="https://github.com/tidyverse/dtplyr">dtplyr</a>, which translates dplyr to data.table with lazy evaluation. I also use <a href="https://dbplyr.tidyverse.org">dbplyr</a>, which translates dplyr to SQL.</p>
-<p>I’ll compare the libraries by running a data transformation pipeline involving import from CSV, mutate, filter, sort, join, group by and summarize. I’ll use the nycflights13 dataset, which is featured in Hadley Wickham’s <a href="https://r4ds.had.co.nz/transform.html">R for Data Science</a>.</p>
-</section>
-<section id="dplyr-reference-in-r" class="level2">
-<h2 class="anchored" data-anchor-id="dplyr-reference-in-r">dplyr: Reference in R</h2>
-<p>Let’s start with a reference implementation in dplyr. The dataset is available as a package, so I skip the CSV import.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(dplyr, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">warn.conflicts =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">FALSE</span>)</span>
-<span id="cb2-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(nycflights13)</span>
-<span id="cb2-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(reactable)</span>
-<span id="cb2-4"></span>
-<span id="cb2-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Take a look at the tables</span></span>
-<span id="cb2-6"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">reactable</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">head</span>(flights, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>))</span></code></pre></div>
-<div class="cell-output-display">
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7984bc3d583b79db9c60" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7984bc3d583b79db9c60">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],"month":[1,1,1,1,1,1,1,1,1,1],"day":[1,1,1,1,1,1,1,1,1,1],"dep_time":[517,533,542,544,554,554,555,557,557,558],"sched_dep_time":[515,529,540,545,600,558,600,600,600,600],"dep_delay":[2,4,2,-1,-6,-4,-5,-3,-3,-2],"arr_time":[830,850,923,1004,812,740,913,709,838,753],"sched_arr_time":[819,830,850,1022,837,728,854,723,846,745],"arr_delay":[11,20,33,-18,-25,12,19,-14,-8,8],"carrier":["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA"],"flight":[1545,1714,1141,725,461,1696,507,5708,79,301],"tailnum":["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA"],"origin":["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA"],"dest":["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD"],"air_time":[227,227,160,183,116,150,158,53,140,138],"distance":[1400,1416,1089,1576,762,719,1065,229,944,733],"hour":[5,5,5,5,6,5,6,6,6,6],"minute":[15,29,40,45,0,58,0,0,0,0],"time_hour":["2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z"]},"columns":[{"id":"year","name":"year","type":"numeric"},{"id":"month","name":"month","type":"numeric"},{"id":"day","name":"day","type":"numeric"},{"id":"dep_time","name":"dep_time","type":"numeric"},{"id":"sched_dep_time","name":"sched_dep_time","type":"numeric"},{"id":"dep_delay","name":"dep_delay","type":"numeric"},{"id":"arr_time","name":"arr_time","type":"numeric"},{"id":"sched_arr_time","name":"sched_arr_time","type":"numeric"},{"id":"arr_delay","name":"arr_delay","type":"numeric"},{"id":"carrier","name":"carrier","type":"character"},{"id":"flight","name":"flight","type":"numeric"},{"id":"tailnum","name":"tailnum","type":"character"},{"id":"origin","name":"origin","type":"character"},{"id":"dest","name":"dest","type":"character"},{"id":"air_time","name":"air_time","type":"numeric"},{"id":"distance","name":"distance","type":"numeric"},{"id":"hour","name":"hour","type":"numeric"},{"id":"minute","name":"minute","type":"numeric"},{"id":"time_hour","name":"time_hour","type":"Date"}],"dataKey":"efb7087d9e2b5bd5b3155062bf174300"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
-</div>
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">reactable</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">head</span>(airlines, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>))</span></code></pre></div>
-<div class="cell-output-display">
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-04ac92ce4e1217831d7c" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-04ac92ce4e1217831d7c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"carrier":["9E","AA","AS","B6","DL","EV","F9","FL","HA","MQ"],"name":["Endeavor Air Inc.","American Airlines Inc.","Alaska Airlines Inc.","JetBlue Airways","Delta Air Lines Inc.","ExpressJet Airlines Inc.","Frontier Airlines Inc.","AirTran Airways Corporation","Hawaiian Airlines Inc.","Envoy Air"]},"columns":[{"id":"carrier","name":"carrier","type":"character"},{"id":"name","name":"name","type":"character"}],"dataKey":"f306daa08a2136046ead72a665ae9011"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<p>The <code>flights</code> tables has 336776 rows, one for each flight of an airplane. The <code>airlines</code> table has 16 rows, one for each airline mapping the full name of the company to a code.</p>
-<p>Let’s find the airline with the highest arrival delays in January 2013.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">flights <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-2">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">filter</span>(year <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2013</span>, month <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">is.na</span>(arr_delay)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-3">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">arr_delay =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">replace</span>(arr_delay, arr_delay <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-4">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">left_join</span>(airlines, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">by =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"carrier"</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-5">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">group_by</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">airline =</span> name) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-6">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">flights =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">n</span>(), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">mean_delay =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(arr_delay)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb4-7">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">arrange</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">desc</span>(mean_delay))</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 16 × 3
-   airline                     flights mean_delay
-   &lt;chr&gt;                         &lt;int&gt;      &lt;dbl&gt;
- 1 SkyWest Airlines Inc.             1     107   
- 2 Hawaiian Airlines Inc.           31      48.8 
- 3 ExpressJet Airlines Inc.       3964      29.6 
- 4 Frontier Airlines Inc.           59      23.9 
- 5 Mesa Airlines Inc.               39      20.4 
- 6 Endeavor Air Inc.              1480      19.3 
- 7 Alaska Airlines Inc.             62      17.6 
- 8 Envoy Air                      2203      14.3 
- 9 Southwest Airlines Co.          985      13.0 
-10 JetBlue Airways                4413      12.9 
-11 United Air Lines Inc.          4590      11.9 
-12 American Airlines Inc.         2724      11.0 
-13 AirTran Airways Corporation     324       9.95
-14 US Airways Inc.                1554       9.11
-15 Delta Air Lines Inc.           3655       8.07
-16 Virgin America                  314       3.17</code></pre>
-</div>
-</div>
-<p>Some values in <code>arr_delay</code> are negative, indicating that the flight was faster than expected. I replaced these values with 0 because I don’t want them to cancel out delays of other flights. I joined to the airlines table to get the full names of the airlines.</p>
-<p>I export the flights and airlines tables to CSV to hand them over to Python.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Write to temporary files</span></span>
-<span id="cb6-2">flights_path <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">tempfile</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fileext =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">".csv"</span>)</span>
-<span id="cb6-3">airlines_path <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">tempfile</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fileext =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">".csv"</span>)</span>
-<span id="cb6-4"></span>
-<span id="cb6-5">data.table<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">fwrite</span>(flights, flights_path, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">row.names =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">FALSE</span>)</span>
-<span id="cb6-6">data.table<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">fwrite</span>(airlines, airlines_path, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">row.names =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">FALSE</span>)</span></code></pre></div>
-</div>
-<p>To access the file from Python, the path is handed over:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Hand over the path from R</span></span>
-<span id="cb7-2">flights_path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> r[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"flights_path"</span>]</span>
-<span id="cb7-3">airlines_path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> r[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airlines_path"</span>]</span></code></pre></div>
-</div>
-<p>For more details on how this works with the reticulate package, check this documentation.</p>
-</section>
-<section id="pandas-most-popular" class="level2">
-<h2 class="anchored" data-anchor-id="pandas-most-popular">Pandas: Most popular</h2>
-<p>The following sections follow a pattern: read in from CSV, then build a query.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pd</span>
-<span id="cb8-2"></span>
-<span id="cb8-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Import from CSV</span></span>
-<span id="cb8-4">flights_pd <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(flights_path)</span>
-<span id="cb8-5">airlines_pd <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(airlines_path)</span></code></pre></div>
-</div>
-<p><code>pandas.read_csv</code> reads the header and conveniently infers the column types.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">(</span>
-<span id="cb9-2">    flights_pd.query(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"year == 2013 &amp; month == 1 &amp; arr_delay.notnull()"</span>)</span>
-<span id="cb9-3">    .assign(arr_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>flights_pd.arr_delay.clip(lower<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb9-4">    .merge(airlines_pd, how<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"left"</span>, on<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"carrier"</span>)</span>
-<span id="cb9-5">    .rename(columns<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"name"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>})</span>
-<span id="cb9-6">    .groupby(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>)</span>
-<span id="cb9-7">    .agg(flights<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>), mean_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"mean"</span>))</span>
-<span id="cb9-8">    .sort_values(by<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"mean_delay"</span>, ascending<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>)</span>
-<span id="cb9-9">)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                             flights  mean_delay
-airline                                         
-SkyWest Airlines Inc.              1  107.000000
-Hawaiian Airlines Inc.            31   48.774194
-ExpressJet Airlines Inc.        3964   29.642785
-Frontier Airlines Inc.            59   23.881356
-Mesa Airlines Inc.                39   20.410256
-Endeavor Air Inc.               1480   19.321622
-Alaska Airlines Inc.              62   17.645161
-Envoy Air                       2203   14.303677
-Southwest Airlines Co.           985   12.964467
-JetBlue Airways                 4413   12.919329
-United Air Lines Inc.           4590   11.851852
-American Airlines Inc.          2724   10.953377
-AirTran Airways Corporation      324    9.953704
-US Airways Inc.                 1554    9.111326
-Delta Air Lines Inc.            3655    8.070315
-Virgin America                   314    3.165605</code></pre>
-</div>
-</div>
-<p>I chose to use the pipeline syntax from pandas - another option is to modify the dataset in place. That has a lower memory footprint, but can’t be run repeatedly for the same result, such as in interactive use in a notebook.</p>
-<p>Here, the <code>query()</code> function is slightly awkward with the long string argument. The <code>groupby</code> doesn’t allow renaming on the fly like dplyr, though I don’t consider that a real drawback. Perhaps it’s clearer to rename explicitly anyway.</p>
-<p>Pandas has the widest API, offering hundreds of functions for every conceivable manipulation. The <code>clip</code> function used here is one such example. One difference to dplyr is that pandas uses its own methods <code>.mean()</code>, rather than using external ones such as <code>base::mean()</code>. That means using custom functions instead carries a <a href="https://stackoverflow.com/a/26812998">performance penalty</a>.</p>
-<p>As we’ll see later, pandas is the backend for siuba and ibis, which boil down to pandas code.</p>
-<p>One difference to all other discussed solutions is that pandas uses a <a href="https://www.sharpsightlabs.com/blog/pandas-index/">row index</a>. Base R also has this with row names, but the tidyverse and tibbles have largely removed them from common use. I never missed row names. At the times I had to work with them in pandas they were more confusing than helpful. The documentation of polars puts it more bluntly:</p>
-<blockquote class="blockquote">
-<p>No index. They are not needed. Not having them makes things easier. Convince me otherwise</p>
-</blockquote>
-<p>That’s quite passive aggressive, but I do agree and wish pandas didn’t have it.</p>
-</section>
-<section id="siuba-dplyr-in-python" class="level2">
-<h2 class="anchored" data-anchor-id="siuba-dplyr-in-python">siuba: dplyr in Python</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> siuba <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> si</span>
-<span id="cb11-2"></span>
-<span id="cb11-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Import from CSV</span></span>
-<span id="cb11-4">flights_si <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(r[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"flights_path"</span>])</span>
-<span id="cb11-5">airlines_si <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(r[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airlines_path"</span>])</span></code></pre></div>
-</div>
-<p>As siuba is just an alternative way of writing some pandas commands, we read the data just like in the pandas implementation.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">(</span>
-<span id="cb12-2">    flights_si</span>
-<span id="cb12-3">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(si._.year <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2013</span>, si._.month <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, si._.arr_delay.notnull())</span>
-<span id="cb12-4">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.mutate(arr_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>si._.arr_delay.clip(lower<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb12-5">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.left_join(si._, airlines_si, on<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"carrier"</span>)</span>
-<span id="cb12-6">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.rename(airline<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>si._.name)</span>
-<span id="cb12-7">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.group_by(si._.airline)</span>
-<span id="cb12-8">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.summarize(flights<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>si._.airline.count(), mean_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>si._.arr_delay.mean())</span>
-<span id="cb12-9">    <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> si.arrange(<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>si._.mean_delay)</span>
-<span id="cb12-10">)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                        airline  flights  mean_delay
-11        SkyWest Airlines Inc.        1  107.000000
-8        Hawaiian Airlines Inc.       31   48.774194
-6      ExpressJet Airlines Inc.     3964   29.642785
-7        Frontier Airlines Inc.       59   23.881356
-10           Mesa Airlines Inc.       39   20.410256
-4             Endeavor Air Inc.     1480   19.321622
-1          Alaska Airlines Inc.       62   17.645161
-5                     Envoy Air     2203   14.303677
-12       Southwest Airlines Co.      985   12.964467
-9               JetBlue Airways     4413   12.919329
-14        United Air Lines Inc.     4590   11.851852
-2        American Airlines Inc.     2724   10.953377
-0   AirTran Airways Corporation      324    9.953704
-13              US Airways Inc.     1554    9.111326
-3          Delta Air Lines Inc.     3655    8.070315
-15               Virgin America      314    3.165605</code></pre>
-</div>
-</div>
-<p>I found siuba the easiest to work with. Once I understood the <code>_</code> placeholder for a table of data, I could write it almost as fast as dplyr. Out of all the ways to refer to a column in a data frame, I found it to be the most convenient, because it doesn’t require me to spell out the name of the data frame over and over. While not as elegant as dplyr’s <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with">tidy evaluation</a> (discussed at the end of the article), it avoids the ambivalence in dplyr where it can be unclear whether a name refers to a column or an outside object.</p>
-<p>It’s always possible to drop into pandas, such as for the aggregation functions which use the <code>mean()</code> and <code>count()</code> methods of the pandas series. The <code>&gt;&gt;</code> is an easy replacement for the <code>%&gt;%</code> magrittr pipe or <code>|&gt;</code> base pipe in R.</p>
-<p>The author advertises siuba like this (from the <a href="https://siuba.readthedocs.io/en/latest/">docs</a>):</p>
-<blockquote class="blockquote">
-<p>Siuba is a library for quick, scrappy data analysis in Python. It is a port of dplyr, tidyr, and other R Tidyverse libraries.</p>
-</blockquote>
-<p>A way for dplyr users to quickly hack away at data analysis in Python, but not meant for unsupervised production use.</p>
-</section>
-<section id="polars-fastest" class="level2">
-<h2 class="anchored" data-anchor-id="polars-fastest">Polars: Fastest</h2>
-<p>Polars is written in Rust and also offers a Python API. It comes in two flavors: eager and lazy. Lazy evaluation is similar to how dbplyr and dtplyr work: until asked, nothing is evaluated. This enables performance gains by reordering the commands being executed. But it’s a little less convenient for interactive analysis. I’ll use the eager API here.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb14-2"></span>
-<span id="cb14-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Import from CSV</span></span>
-<span id="cb14-4">flights_pl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_csv(flights_path)</span>
-<span id="cb14-5">airlines_pl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_csv(airlines_path)</span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">(</span>
-<span id="cb15-2">    flights_pl.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>((pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"year"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2013</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span> (pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"month"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))</span>
-<span id="cb15-3">    .drop_nulls(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>)</span>
-<span id="cb15-4">    .join(airlines_pl, on<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"carrier"</span>, how<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"left"</span>)</span>
-<span id="cb15-5">    .with_columns(</span>
-<span id="cb15-6">        [</span>
-<span id="cb15-7">            pl.when(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb15-8">            .then(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>))</span>
-<span id="cb15-9">            .otherwise(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb15-10">            .alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>),</span>
-<span id="cb15-11">            pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"name"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>),</span>
-<span id="cb15-12">        ]</span>
-<span id="cb15-13">    )</span>
-<span id="cb15-14">    .groupby(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>)</span>
-<span id="cb15-15">    .agg(</span>
-<span id="cb15-16">        [pl.count(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"flights"</span>), pl.mean(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"arr_delay"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"mean_delay"</span>)]</span>
-<span id="cb15-17">    )</span>
-<span id="cb15-18">    .sort(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"mean_delay"</span>, descending<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)</span>
-<span id="cb15-19">)</span></code></pre></div>
-<div class="cell-output-display">
-<div><style>
-.dataframe > thead > tr > th,
-.dataframe > tbody > tr > td {
-  text-align: right;
-  white-space: pre-wrap;
-}
-</style>
-<small>shape: (16, 3)</small>
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th">airline</th>
-<th data-quarto-table-cell-role="th">flights</th>
-<th data-quarto-table-cell-role="th">mean_delay</th>
-</tr>
-<tr class="odd">
-<th>str</th>
-<th>u32</th>
-<th>f64</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>"SkyWest Airlin…</td>
-<td>1</td>
-<td>107.0</td>
-</tr>
-<tr class="even">
-<td>"Hawaiian Airli…</td>
-<td>31</td>
-<td>48.774194</td>
-</tr>
-<tr class="odd">
-<td>"ExpressJet Air…</td>
-<td>3964</td>
-<td>29.642785</td>
-</tr>
-<tr class="even">
-<td>"Frontier Airli…</td>
-<td>59</td>
-<td>23.881356</td>
-</tr>
-<tr class="odd">
-<td>"Mesa Airlines …</td>
-<td>39</td>
-<td>20.410256</td>
-</tr>
-<tr class="even">
-<td>"Endeavor Air I…</td>
-<td>1480</td>
-<td>19.321622</td>
-</tr>
-<tr class="odd">
-<td>"Alaska Airline…</td>
-<td>62</td>
-<td>17.645161</td>
-</tr>
-<tr class="even">
-<td>"Envoy Air"</td>
-<td>2203</td>
-<td>14.303677</td>
-</tr>
-<tr class="odd">
-<td>"Southwest Airl…</td>
-<td>985</td>
-<td>12.964467</td>
-</tr>
-<tr class="even">
-<td>"JetBlue Airway…</td>
-<td>4413</td>
-<td>12.919329</td>
-</tr>
-<tr class="odd">
-<td>"United Air Lin…</td>
-<td>4590</td>
-<td>11.851852</td>
-</tr>
-<tr class="even">
-<td>"American Airli…</td>
-<td>2724</td>
-<td>10.953377</td>
-</tr>
-<tr class="odd">
-<td>"AirTran Airway…</td>
-<td>324</td>
-<td>9.953704</td>
-</tr>
-<tr class="even">
-<td>"US Airways Inc…</td>
-<td>1554</td>
-<td>9.111326</td>
-</tr>
-<tr class="odd">
-<td>"Delta Air Line…</td>
-<td>3655</td>
-<td>8.070315</td>
-</tr>
-<tr class="even">
-<td>"Virgin America…</td>
-<td>314</td>
-<td>3.165605</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>The API is leaner than pandas, requiring to memorize fewer functions and patterns. Though this can also be seen as less feature-complete. Pandas, for example has a dedicated <code>clip</code> function.</p>
-<p>There isn’t nearly as much help available for problems with polars as for with pandas. While the documentation is good, it can’t answer every question and lots of trial and error is needed.</p>
-<p>A comparison of polars and pandas is available in the <a href="https://pola-rs.github.io/polars-book/user-guide/coming_from_pandas.html?highlight=assign#column-assignment">polars documentation</a>.</p>
-</section>
-<section id="duckdb-highly-compatible-and-easy-for-sql-users" class="level2">
-<h2 class="anchored" data-anchor-id="duckdb-highly-compatible-and-easy-for-sql-users">DuckDB: Highly compatible and easy for SQL users</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> duckdb</span>
-<span id="cb16-2"></span>
-<span id="cb16-3">con_duckdb <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">connect</span>(database<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">":memory:"</span>)</span>
-<span id="cb16-4"></span>
-<span id="cb16-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Import from CSV</span></span>
-<span id="cb16-6">con_duckdb.execute(</span>
-<span id="cb16-7">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"CREATE TABLE 'flights' AS "</span></span>
-<span id="cb16-8">    <span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"SELECT * FROM read_csv_auto('</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>flights_path<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">', header = True);"</span></span>
-<span id="cb16-9">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"CREATE TABLE 'airlines' AS "</span></span>
-<span id="cb16-10">    <span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"SELECT * FROM read_csv_auto('</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>airlines_path<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">', header = True);"</span></span>
-<span id="cb16-11">)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection object at 0x285aba870&gt;</code></pre>
-</div>
-</div>
-<p>DuckDB’s <code>read_csv_auto()</code> works just like the csv readers in Python.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">con_duckdb.execute(</span>
-<span id="cb18-2">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"WITH flights_clipped AS ( "</span></span>
-<span id="cb18-3">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"SELECT carrier, CASE WHEN arr_delay &gt; 0 THEN arr_delay ELSE 0 END AS arr_delay "</span></span>
-<span id="cb18-4">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"FROM flights "</span></span>
-<span id="cb18-5">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"WHERE year = 2013 AND month = 1 AND arr_delay IS NOT NULL"</span></span>
-<span id="cb18-6">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">")"</span></span>
-<span id="cb18-7">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"SELECT name AS airline, COUNT(*) AS flights, AVG(arr_delay) AS mean_delay "</span></span>
-<span id="cb18-8">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"FROM flights_clipped "</span></span>
-<span id="cb18-9">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"LEFT JOIN airlines ON flights_clipped.carrier = airlines.carrier "</span></span>
-<span id="cb18-10">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"GROUP BY name "</span></span>
-<span id="cb18-11">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ORDER BY mean_delay DESC "</span></span>
-<span id="cb18-12">).fetchdf()</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                        airline  flights  mean_delay
-0         SkyWest Airlines Inc.        1  107.000000
-1        Hawaiian Airlines Inc.       31   48.774194
-2      ExpressJet Airlines Inc.     3964   29.642785
-3        Frontier Airlines Inc.       59   23.881356
-4            Mesa Airlines Inc.       39   20.410256
-5             Endeavor Air Inc.     1480   19.321622
-6          Alaska Airlines Inc.       62   17.645161
-7                     Envoy Air     2203   14.303677
-8        Southwest Airlines Co.      985   12.964467
-9               JetBlue Airways     4413   12.919329
-10        United Air Lines Inc.     4590   11.851852
-11       American Airlines Inc.     2724   10.953377
-12  AirTran Airways Corporation      324    9.953704
-13              US Airways Inc.     1554    9.111326
-14         Delta Air Lines Inc.     3655    8.070315
-15               Virgin America      314    3.165605</code></pre>
-</div>
-</div>
-<p>The performance is closer to polars than to pandas. A big plus is the ability to handle larger than memory data.</p>
-<p>DuckDB can also operate directly on a pandas dataframe. The SQL code is portable to R, C, C++, Java and other programming languages the duckdb has <a href="https://duckdb.org/docs/api/overview">APIs</a>. It’s also portable when the logic is taken to a DB like <a href="https://www.postgresql.org">Postgres</a>, or <a href="https://clickhouse.com">Clickhouse</a>, or is ported to an ETL framework like <a href="https://github.com/dbt-labs/dbt-core">DBT</a>.</p>
-<p>This stands in contrast to polars and pandas code, which has to be rewritten from scratch. It also means that the skill gained in manipulating SQL translates well to other situations. SQL has been around for more than 50 years - learning SQL is future-proofing a career.</p>
-<p>While these are big plusses, duckdb isn’t so convenient for interactive data exploration. SQL isn’t as composeable. Composing SQL queries requires many common table expressions (CTEs, <code>WITH x AS (SELECT ...)</code>). Reusing them for other queries is not as easy as with Python. SQL is typically less expressive than Python. It lacks shorthands and it’s awkward when there are many columns. It’s also harder to write custom functions in SQL than in R or Python. This is the motivation for using libraries like pandas and dplyr. But SQL can actually do a surprising amount of things, as database expert Haki Benita explained in a <a href="https://hakibenita.com/sql-for-data-analysis">detailed article</a>.</p>
-<p>Or in short, from the <a href="https://ibis-project.org">documentation</a> of ibis:</p>
-<blockquote class="blockquote">
-<p>SQL is widely used and very convenient when writing simple queries. But as the complexity of operations grow, SQL can become very difficult to deal with.</p>
-</blockquote>
-<p>Then, there’s the issue of how to actually write the SQL code. Writing strings rather than actual Python is awkward and many editors don’t provide syntax highlighting within the strings (Jetbrains editors like <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> and <a href="https://www.jetbrains.com/dataspell/">DataSpell</a> do). The other option is writing <code>.sql</code> that have placeholders for parameters. That’s cleaner and allows using a linter, but is inconvenient for interactive use.</p>
-<p>SQL is inherently lazily executed, because the query planner needs to take the whole query into account before starting computation. This enables performance gains. For interactive use, lazy evaluation is less convenient, because one can’t see the intermediate results at each step. Speed of iteration is critical: the faster one can iterate, the more hypotheses about the data can be tested.</p>
-<p>There is a <a href="https://github.com/duckdb/duckdb/blob/master/examples/python/duckdb-python.py">programmatic way to construct queries</a> for duckdb, designed to provide a <a href="https://github.com/duckdb/duckdb/issues/302">dbplyr alternative</a> in Python. Unfortunately its documentation is sparse.</p>
-<p>Using duckdb without pandas doesn’t seem feasible for exploratory data analysis, because graphing packages like seaborn and plotly expect a pandas data frame or similar as an input.</p>
-</section>
-<section id="ibis-lingua-franca-in-python" class="level2">
-<h2 class="anchored" data-anchor-id="ibis-lingua-franca-in-python">ibis: Lingua franca in Python</h2>
-<p>The goal of ibis is to provide a universal language for working with data frames in Python, regardless of the backend that is used. It’s tagline is: <em>Write your analytics code once, run in everywhere</em>. This is similar to how dplyr can use SQL as a backend with dbplyr and data.table with dtplyr.</p>
-<p>Among others, Ibis supports pandas, PostgreSQL and SQLite as backends. Unfortunately duckdb is not an available backend, because the authors of duckdb have <a href="https://github.com/duckdb/duckdb/issues/302">decided against</a> building on ibis.</p>
-<p>The ibis project aims to bridge the gap between the needs of interactive data analysis and the capabilities of SQL, which I have detailed in the previous section on duckdb.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>UPDATE October 2023</strong></p>
-<ul>
-<li>Duckdb is now a supported backend (along with many more). So performance is going to be very similar to duckdb.</li>
-<li>Directly load/save data</li>
-<li><code>join()</code>, <code>clip()</code>, and <code>case()</code> are well-supported</li>
-<li>Ibis is much more popular and now very actively maintained. There are more examples, better documentation, and community. Still definitely less than pandas, but perhaps comparable to polars.</li>
-</ul>
-<p>Thanks to <a href="https://github.com/psimm/website/issues/10#issuecomment-1767099439">NickCrews</a> for providing this update, including the following code example.</p>
-</div>
-</div>
-<p>For the test drive, I’ll use the <a href="https://ibis-project.org/docs/backends/duckdb.html">duckdb backend</a>, meaning that the ibis code is translated to duckdb operations, similar to how siuba is translated to pandas. This gives ibis the blazing speed of duckdb.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> ibis</span>
-<span id="cb20-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> ibis <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> _</span>
-<span id="cb20-3"></span>
-<span id="cb20-4">flights_ib_csv <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(flights_path)</span>
-<span id="cb20-5">airlines_ib_csv <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pd.read_csv(airlines_path)</span>
-<span id="cb20-6"></span>
-<span id="cb20-7">ibis.options.interactive <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb20-8"></span>
-<span id="cb20-9">flights_ib <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> ibis.read_csv(flights_path)</span>
-<span id="cb20-10">airlines_ib <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> ibis.read_csv(airlines_path)</span>
-<span id="cb20-11">flights_ib</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>┏━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━┓
-┃ year  ┃ month ┃ day   ┃ dep_time ┃ sched_dep_time ┃ dep_delay ┃ arr_time ┃ … ┃
-┡━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━┩
-│ int64 │ int64 │ int64 │ int64    │ int64          │ int64     │ int64    │ … │
-├───────┼───────┼───────┼──────────┼────────────────┼───────────┼──────────┼───┤
-│  2013 │     1 │     1 │      517 │            515 │         2 │      830 │ … │
-│  2013 │     1 │     1 │      533 │            529 │         4 │      850 │ … │
-│  2013 │     1 │     1 │      542 │            540 │         2 │      923 │ … │
-│  2013 │     1 │     1 │      544 │            545 │        -1 │     1004 │ … │
-│  2013 │     1 │     1 │      554 │            600 │        -6 │      812 │ … │
-│  2013 │     1 │     1 │      554 │            558 │        -4 │      740 │ … │
-│  2013 │     1 │     1 │      555 │            600 │        -5 │      913 │ … │
-│  2013 │     1 │     1 │      557 │            600 │        -3 │      709 │ … │
-│  2013 │     1 │     1 │      557 │            600 │        -3 │      838 │ … │
-│  2013 │     1 │     1 │      558 │            600 │        -2 │      753 │ … │
-│     … │     … │     … │        … │              … │         … │        … │ … │
-└───────┴───────┴───────┴──────────┴────────────────┴───────────┴──────────┴───┘</code></pre>
-</div>
-</div>
-<p>Non-interactive ibis means that queries are evaluated lazily.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">(</span>
-<span id="cb22-2">    flights_ib.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(</span>
-<span id="cb22-3">        [</span>
-<span id="cb22-4">            _.year <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2013</span>,</span>
-<span id="cb22-5">            _.month <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb22-6">            _.arr_delay.notnull(),</span>
-<span id="cb22-7">        ]</span>
-<span id="cb22-8">    )</span>
-<span id="cb22-9">    .join(airlines_ib, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"carrier"</span>, how<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"left"</span>)</span>
-<span id="cb22-10">    .select(arr_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>_.arr_delay.clip(lower<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>), airline<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>_.name)</span>
-<span id="cb22-11">    .group_by(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"airline"</span>)</span>
-<span id="cb22-12">    .agg(flights<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>_.count(), mean_delay<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>_.arr_delay.mean())</span>
-<span id="cb22-13">    .order_by(_.mean_delay.desc())</span>
-<span id="cb22-14">)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
-┃ airline                  ┃ flights ┃ mean_delay ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
-│ string                   │ int64   │ float64    │
-├──────────────────────────┼─────────┼────────────┤
-│ SkyWest Airlines Inc.    │       1 │ 107.000000 │
-│ Hawaiian Airlines Inc.   │      31 │  48.774194 │
-│ ExpressJet Airlines Inc. │    3964 │  29.642785 │
-│ Frontier Airlines Inc.   │      59 │  23.881356 │
-│ Mesa Airlines Inc.       │      39 │  20.410256 │
-│ Endeavor Air Inc.        │    1480 │  19.321622 │
-│ Alaska Airlines Inc.     │      62 │  17.645161 │
-│ Envoy Air                │    2203 │  14.303677 │
-│ Southwest Airlines Co.   │     985 │  12.964467 │
-│ JetBlue Airways          │    4413 │  12.919329 │
-│ …                        │       … │          … │
-└──────────────────────────┴─────────┴────────────┘</code></pre>
-</div>
-</div>
-<p>The syntax looks quite similar to dplyr and the versatility of interchangeable backends is remarkable. In the first version of this article, ibis was lacking in documentation and had some rough edges in the API, but these were improved in the meantime.</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>It’s not a clear-cut choice. None of the options offer a syntax that is as convenient for interactive analysis as dplyr. siuba is the closest to it, but dplyr still has an edge with <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/#a-simpler-interpolation-pattern-with">tidy evaluation</a>, letting users refer to columns in a data frame by their names (<code>colname</code>) directly, without any wrappers. But I’ve also seen it be confusing for newbies to R that mix it up with base R’s syntax. It’s also harder to program with, where it’s necessary to use operators like <code>{ }</code> and <code>:=</code>.</p>
-<p>My appreciation for dplyr (and the closely associated tidyr) grew during this research. Not only is it a widely accepted standard like pandas, it can also be used as a translation layer for backends like SQL databases (including duckdb), data.table, and Spark. All while having the most elegant and flexible syntax available.</p>
-<p>Personally, I’ll primarily leverage SQL and a OLAP database (such as Clickhouse or Snowflake) running on a server to do the heavy lifting. For steps that are better done locally, I’ll use pandas for maximum compatibility. I find the use of an index inconvenient, but there’s so much online help available on StackOverflow. Github Copilot also deserves a mention for making it easier to pick up. Other use cases can be very different, so I don’t mean to say that my way is the best. For instance, if the data is not already on a server, fast local processing with polars may be best.</p>
-<p>Most data science work happens in a team. Choosing a library that all team members are familiar with is critical for collaboration. That is typically SQL, pandas or dplyr. The performance gains from using a less common library like polars have to be weighed against the effort spent learning the syntax as well as the increased likelihood of bugs, when beginners write in a new syntax.</p>
-<p>Related articles:</p>
-<ul>
-<li><a href="https://www.analyticsvidhya.com/blog/2021/06/polars-the-fastest-dataframe-library-youve-never-heard-of/">Polars: the fastest DataFrame library you’ve never heard of</a></li>
-<li><a href="https://mchow.com/posts/2020-02-11-dplyr-in-python/">What would it take to recreate dplyr in python?</a></li>
-<li><a href="https://mchow.com/posts/pandas-has-a-hard-job/">Pandas has a hard job (and does it well)</a></li>
-<li><a href="https://bensstats.wordpress.com/2021/09/14/pythonmusings-6-dplyr-in-python-first-impressions-of-the-siuba-小巴-module/">dplyr in Python? First impressions of the siuba module</a></li>
-<li><a href="https://towardsdatascience.com/an-overview-of-pythons-datatable-package-5d3a97394ee9">An Overview of Python’s Datatable package</a></li>
-<li><a href="https://news.ycombinator.com/item?id=24531085">Discussion of DuckDB on Hacker News</a></li>
-<li><a href="https://news.ycombinator.com/item?id=29584698">Discussion of Polars on Hacker News</a></li>
-<li><a href="https://hakibenita.com/sql-for-data-analysis">Practical SQL for Data Analysis</a></li>
-</ul>
-<p>Photo by <a href="https://unsplash.com/@hharritt?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Hunter Harritt</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
-
-
-</section>
-
- ]]></description>
-  <category>R</category>
-  <category>Python</category>
-  <guid>https://simmering.dev/blog/dataframes/</guid>
-  <pubDate>Sun, 19 Dec 2021 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/dataframes/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
