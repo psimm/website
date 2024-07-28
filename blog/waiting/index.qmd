@@ -16,7 +16,7 @@ It's unfortunate, but there are many waiting times in data science. Dealing with
 - someone else is reviewing your code
 - huge upload/download
 
-![Waiting isn't new in software development. [XKCD 303](https://xkcd.com/303/)](https://imgs.xkcd.com/comics/compiling.png)
+![Waiting isn't new in software development. [XKCD 303](https://xkcd.com/303/)](compiling.png)
 
 These waits range from seconds to days.
 
@@ -40,7 +40,7 @@ However, many waiting times are unavoidable, especially when working with large 
 
 I suggest spending the time in a way that guards focus and short-term memory of the work at hand. Else, you're effectively doing this:
 
-![Programmer focus (from Monkeyuser.com)](https://th.bing.com/th/id/OIP.B22HHCKIk6PI8KmkHbzPPAAAAA?rs=1&pid=ImgDetMain)
+![Programmer focus (from Monkeyuser.com)](focus.jpeg)
 
 Except the interruptions are self-inflicted.
 
