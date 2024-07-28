@@ -1,0 +1,75 @@
+---
+title: "Less stress, more focus: How to handle waiting times in development"
+author: "Paul Simmering"
+date: "2024-07-28"
+categories: ["Productivity"]
+image: clocks.jpg
+---
+
+It's unfortunate, but there are many waiting times in data science. Dealing with them well can make work more productive and enjoyable. Common waiting times include:
+
+- model is training
+- data pipeline is running
+- report is rendering
+- Docker image is building
+- tests are running
+- someone else is reviewing your code
+- huge upload/download
+
+![Waiting isn't new in software development. [XKCD 303](https://xkcd.com/303/)](https://imgs.xkcd.com/comics/compiling.png)
+
+These waits range from seconds to days.
+
+Ideally, there would not be any waiting times. Many can be eliminated or reduced Here are the top strategies, ranked by effectiveness in my experience:
+
+| Strategy | Effectiveness | Downsides |
+|----------|---------------| --------- |
+| Caching results | Very high, cuts wait times to zero | Stale data |
+| Indexing databases | High, can massively speed up queries | Not always possible, slows down writes |
+| Mocking dependencies | High, can speed up tests | Adds complexity |
+| Running with smaller inputs | High, can speed up debugging | Not the real result |
+| Writing more efficient code | Medium, can speed up code | It's hard |
+| Parallelizing code | Medium, can speed up code | Hard and adds complexity |
+| Using faster hardware | Medium, can speed up code | Expensive, not always effective |
+
+It's very easy to lose 50% or more of one's productivity to waiting times. The most common form is an inefficient debug cycle: change code, wait for build, run code, wait for results, repeat. Bonus points if the code is a CI/CD pipeline.
+
+Eliminating a waiting time in a workflow is a huge win, especially when multiple people are using the same workflow.
+
+However, many waiting times are unavoidable, especially when working with large language models. Given that these wait times occur regularly, it makes sense to put together a little plan for what to do with them.
+
+I suggest spending the time in a way that guards focus and short-term memory of the work at hand. Else, you're effectively doing this:
+
+![Programmer focus (from Monkeyuser.com)](https://th.bing.com/th/id/OIP.B22HHCKIk6PI8KmkHbzPPAAAAA?rs=1&pid=ImgDetMain)
+
+Except the interruptions are self-inflicted.
+
+The longer the wait is, the more it's worth to switch context. Here's a rough, opinionated guide based on my experience and research by [Parnin and Rugaber (2010)](http://www.chrisparnin.me/pdf/parnin-sqj11.pdf). The authors measure *edit lag*, the time between a developer returning to a task and making the first edit. In a study of 10,000 Java developers, they measured these edit lags:
+
+![Edit lag, Parning and Rugaber (2010)](edit_lag.png)
+
+For difficult tasks, the edit lag after an interruption can easily exceed the length of the interruption itself. Let's get to the tactics to handle waiting times.
+
+## Seconds to minutes
+
+These wait times can turn into interruptions, but they don't have to. It's tempting to fill smaller breaks with social media or news. However, this floods the short-term memory with new information, replacing the context of the work you were doing. Plus, scrolling is addictive and tends to exceed the actual wait time.
+
+If possible, resist the urge to switch context. It's ok to just wait for a moment. Look out the window, take a sip of water, breathe. If you must do something, I suggest stretching or getting a glass of water rather than another computer task.
+
+## Minutes to an hour
+
+This is too long to just do nothing. Before switching context, try to leave an intentional cue for yourself to pick up where you left off, such as a TODO comment that lets you pick up the thread. Keep the IDE open with the file you were working on.
+
+Ideally, pick a little task that is still relevant to your main task. Read through the code, write a comment, plan your next steps, write another test or refactor a small piece of code. Alternatively take a little break or knock out some easy tasks, such as answering emails.
+
+Starting a new big task is not worth it, as it would take a ramp-up time to get back into the context of that task first. This is one of the main points behind Paul Graham's [Maker's Schedule, Manager's Schedule](http://www.paulgraham.com/makersschedule.html).
+
+## Hours to days
+
+Outside of training large models or running simulations, waiting times this long shouldn't occur for technical reasons. If they do, it's a sign that a process is not well-optimized. Fix the process, don't suffer this wait time too often.
+
+For processes involving humans this sort of wait time is normal though. There the best strategy is to have a plan for what to do during the wait time. When allocating tasks in a team I suggest that every developer has one or more backup tasks that can be worked on when waiting on something on the main task.
+
+## Conclusion
+
+Waiting times are a fact of life in data science. They can be reduced, but not eliminated. It's worth having a plan for how to spend the time to avoid losing focus and short-term memory. This can make work not just more productive but also more enjoyable, as the stress of re-finding context is reduced.
