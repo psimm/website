@@ -32,6 +32,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/abstractions/index.html",
       "/blog/waiting/index.html",
       "/blog/text-tournament/index.html",
       "/blog/settled-knowledge/index.html",

@@ -1,0 +1,133 @@
+---
+title: "Levels of Abstraction in the LLM Stack"
+author: "Paul Simmering"
+date: "2024-08-08"
+categories: ["Machine Learning"]
+image: "image.jpg"
+---
+
+Training and serving LLMs requires a tall software stack. You can engage with this stack at different levels of abstraction, from low-level frameworks like CUDA to ready-to-go inference APIs like the OpenAI API. The aim of this article is to provide an overview of the abstraction levels and help you choose the right one for your project. Typical questions are:
+
+- "*Should I use OpenAI's GPT models or an open source model?*"
+- "*Should I use HuggingFace transformers or load the model into PyTorch directly?*"
+- "*Should I use AWS SageMaker or rent plain EC2 instances and manage everything myself?*"
+
+The choice depends on you and your project, but this overview and the decision criteria at the end may help you decide. I'll discuss 3 levels of abstraction:
+
+1. Open source tools and frameworks
+2. Managed LLM services, e.g. AWS SageMaker
+3. Cloud APIs, e.g. OpenAI
+
+## 1. Open source LLM stack
+
+The open source LLM stack is the most flexible and customizable option and what is underlying the other two options. It consists of several layers. The list below has examples of tools at each level. I've not included optional MLOps tools like experiment tracking, monitoring, model store etc. which are not on the critical path for training and serving LLMs.
+
+The term open source is not accurate for the lowest levels: hardware is proprietary and Nvidia holds a near-monopoly on GPUs for machine learning. Cloud providers are also proprietary, but there are many to choose from and they allow running open source software.
+
+| Level | Description | Examples |
+|-------|-------------|-------------------|
+| 1. Hardware | Physical graphics processors with high VRAM | Nvidia H100, AMD MI350, Intel Gaudi 3 |
+| 2. Cloud Providers | Platforms offering rentable GPU resources for LLM training and inference | AWS, Google Cloud, Azure, Modal, Lambda Labs |
+| 3. Acceleration Framework | Software interfaces for efficient use of GPUs for machine learning | CUDA, ROCm |
+| 4. Distributed Computing | Libraries for distributing training workloads across multiple GPUs and machines | DeepSpeed, horovod, Ray, accelerate |
+| 5. Low-level Frameworks | Core libraries for building and training large language models | PyTorch, TensorFlow, JAX |
+| 6. High-level Frameworks | Libraries that build on top of low-level frameworks to simplify common uses | Hugging Face Transformers, PyTorch Lightning, Axolotl |
+| 7. Inference Engine | Software for efficient LLM execution and serving | vLLM, llama.cpp, TorchServe, ONNX |
+| 8. LLM Orchestration | Tools for prompting and chaining LLM calls, constraining and censoring output. These are also compatible with managed ML services and inference APIs | LangChain, llamaindex, litellm, instructor, outlines, guardrails |
+
+To illustrate, let's compare the type of code you'd write at the low and high levels of abstraction.
+
+Creating a simple neural network in PyTorch:
+
+```python
+import torch
+import torch.nn as nn
+
+class MyModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.l1 = nn.Linear(768, 512)
+        self.l2 = nn.Linear(512, 256)
+        self.l3 = nn.Linear(256, 2)
+
+    def forward(self, x):
+        x = torch.relu(self.l1(x))
+        x = torch.relu(self.l2(x))
+        x = self.l3(x)
+        return x
+```
+
+Loading a pre-trained transformer model from Hugging Face:
+
+```python
+from transformers import BertTokenizer, BertForSequenceClassification
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
+```
+
+PyTorch confronts you with the details of layers, their sizes, activation functions and more. Hugging Face abstracts them away.
+
+### More alternatives at higher levels
+
+There tend to be more alternatives the higher you go in the stack. Recently, I've [compared](/blog/structured_output/) 10 different libraries for structured LLM outputs, all at the highest level of abstraction. In contrast, there is no widely used alternative to Nvidia GPUs and CUDA for the hardware and acceleration levels.
+
+### Too much abstraction?
+
+There is such a thing as too many layers of abstractions. Hamel Husain put it well in his article: ["Fuck You, Show Me The Prompt"](https://hamel.dev/blog/posts/prompt/). Make sure you know which tokens are actually being sent to the LLM, and whether there's more than one round-trip involved in getting a response. For education, too many layers can also hinder understanding. Andrej Karpathy is known for re-implementing the GPT architecture for education, for example [nanoGPT](https://github.com/karpathy/nanoGPT), which is GPT2 in ~600 lines of Python.
+
+### Fine-tune, don't train from scratch
+
+Training LLMs from scratch is almost never worth it for organizations whose main business isn't providing foundation models for others. It requires far too much training data and GPU hours. As an example, even the smallest of Meta's Llama 3.1 models was trained for 1.46M GPU hours ([source](https://huggingface.co/blog/llama31#:~:text=The%20Llama%203.1%20models%20were%20trained%20on%20over,for%208B%2C%207.0M%20for%2070B%2C%2030.84M%20for%20405B%29.)). In contrast, fine-tuning a LoRA adapter for that model can be done in less than 1 GPU hour on an H100.
+
+When working with lower-level libraries like PyTorch, it's therefore necessary to start by copying the architecture of an existing LLM and loading its weights. Tweaks like a new output layer must be done carefully in order to preserve the usefulness of the learned weights. This is in contrast to less compute-intensive machine learning models, where training one's own model from scratch is common. For these reasons, starting from a high-level framework like Hugging Face Transformers is more common for working with LLMs.
+
+## 2. Managed ML services
+
+AWS SageMaker, Google Cloud AI Platform, and Azure Machine Learning are examples of managed LLM services. They wrap the DIY stack in their cloud infrastructure, providing a unified interface for training, serving and monitoring models. Essentially, these services bundle the DIY stack into a single product, freeing you from having to manage the details. You still have a selection of open source models to fine-tuned with your own data. 
+
+This approach caters to enterprises with large-scale ML needs and tight security requirements. They're typically already using the cloud provider for other services and want to keep everything in one place.
+
+## 3. Inference APIs
+
+Pre-trained LLMs are offered via API by OpenAI, Anthropic and many others including cloud providers with services like AWS Bedrock. These APIs are the highest level of abstraction, letting you directly connect your app to a powerful LLM without any setup or training. The downside is that you have the least control over the model and your data.
+
+Some inference API providers, like Fireworks.ai also offer fine-tuning, getting close to the level of control you'd have with a managed service.
+
+## Choosing the right level of abstraction
+
+Which level of abstraction do you want to work at?
+
+### High level of abstraction
+
+Choose a higher level of abstraction if you:
+
+- Are a beginner seeking quick first successes
+- Work at a startup focused on product-market fit
+- Are a researcher in a different field wishing to use LLMs
+- Want to integrate LLMs without deep ML expertise
+- Are already committed to a specific cloud ecosystem
+- Have no need for deep customization of models (you'd know if you did)
+
+The danger of choosing a too high level of abstraction is that you may hit a wall when you need to do something the tool doesn't support. For example, OpenAI's API doesn't support reinforcement learning from human feedback (RLHF), only supervised fine-tuning. If you need RLHF, you'd have to switch to a lower level of abstraction.
+
+### Low level of abstraction
+
+Opt for a lower level of abstraction if you:
+
+- Are a researcher or engineer pushing LLM boundaries
+- Require fine-grained control over the model
+- Need on-premises or on-device deployment
+- Desire a deep understanding of the underlying technology
+- Prioritize code and model portability
+- Have engineers familiar with distributed systems and GPU programming
+
+The danger of choosing a too low level of abstraction is that you may spend too much time on infrastructure and not enough on the actual problem you're trying to solve. For example, if you're building a prototype for a meeting summarization chatbot, your time is better spent talking to project managers than optimizing your distributed training setup.
+
+### Cost can go both ways
+
+High level tools can add a tax, but prices have been decreasing quickly. Managed services and API providers can leverage economies of scale and have highly optimized infrastructure. This can be difficult to achieve with a DIY stack. For example, a privately owned GPU deployed for inference may be underutilized outside of business hours, while a GPU at a cloud provider services other customers.
+
+### Keep your training data portable
+
+The linear progression from low to high abstraction is a simplification. As the ecosystem matures, interoperability increases. For example, Hugging Face Transformers abstracts away the model architecture, but you can still access the PyTorch model and adjust it. Then that model can be deployed to AWS SageMaker. Not all combinations are possible though - for example a GPT model fine-tuned on OpenAI's API can only run on that account. When it's cheap to do so, use solutions that have as little lock-in as possible. Especially your training data should remain portable. In a time where research labs one-up each other weekly with better base models, being able to switch to a new model quickly is an advantage.
