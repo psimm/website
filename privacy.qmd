@@ -16,6 +16,8 @@ We collect your data when you provide it to us. This could, for example, be data
 
 Other data is automatically collected or collected with your consent when you visit the website through our IT systems. These are mainly technical data (e.g. internet browser, operating system or time of webpage view). The collection of these data occurs automatically as soon as you enter this website.
 
+We use [Goat Counter](https://www.goatcounter.com) to analyze the traffic on this website. It does not track any personal information and does not use cookies. See their [privacy policy](https://www.goatcounter.com/help/privacy) for more information.
+
 ### What do we use your data for?
 
 Some of the data is collected to ensure that the website is error-free. Other data may be used to analyze your user behavior.
