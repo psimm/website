@@ -35,6 +35,7 @@ great-tables = "^0.5.1"
 anthropic = "^0.25.7"
 instructor = "^1.2.6"
 seaborn = "^0.13.2"
+openai = "^1.40.3"
 
 
 [build-system]

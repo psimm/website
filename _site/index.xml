@@ -11,7 +11,129 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.45</generator>
-<lastBuildDate>Wed, 07 Aug 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 09 Aug 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>OpenAI’s structured output vs. instructor and outlines</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/openai_structured_output/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>On August 6 OpenAI released <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">structured outputs</a> in their API. Is structured outputs a replacement for instructor, outlines and other libraries that provide structured outputs for language models? Let’s compare them.</p>
+<p>OpenAI’s structured outputs makes the following code possible:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> json</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BaseModel</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> openai <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> OpenAI</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Ingredient(BaseModel):</span>
+<span id="cb1-8">    name: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-9">    amount: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-10">    kcal: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Recipe(BaseModel):</span>
+<span id="cb1-14">    ingredients: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[Ingredient]</span>
+<span id="cb1-15">    instructions: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span></span>
+<span id="cb1-16"></span>
+<span id="cb1-17"></span>
+<span id="cb1-18">client <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> OpenAI()</span>
+<span id="cb1-19"></span>
+<span id="cb1-20">completion <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> client.beta.chat.completions.parse(</span>
+<span id="cb1-21">    model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-2024-08-06"</span>,</span>
+<span id="cb1-22">    messages<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[{<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"role"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"user"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"content"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Write an apple pie recipe"</span>}],</span>
+<span id="cb1-23">    response_format<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Recipe,</span>
+<span id="cb1-24">)</span>
+<span id="cb1-25"></span>
+<span id="cb1-26">apple_pie_recipe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Recipe(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>json.loads(completion.choices[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].message.content))</span></code></pre></div>
+<p>It’s guaranteed that the output will be JSON that can be parsed into a <code>Recipe</code> object. The code looks very similar to the code you’d write with any of the <a href="../../blog/structured_output/">10 libraries</a> I compared in May.</p>
+<p>Besides removing the need for a library, structured output works quite differently from function calling under the hood. With function calling the model is trained to follow an instruction given as a JSON schema and is likely but not guaranteed to follow it. At any token position it’s still free to output a token that doesn’t fit the schema. With structured output, the output of the model is constrained to fit the schema. This is the same approach as the <a href="https://github.com/outlines-dev/outlines">outlines</a> library uses for open source models.</p>
+<section id="pros-and-cons" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons">Pros and cons</h2>
+<p>The structured output feature has several advantages over function calling:</p>
+<ol type="1">
+<li>✅ The definition of the output format doesn’t count as input tokens, making it significantly cheaper, especially for short input messages and complex output formats.</li>
+<li>✅ The output is 100% guaranteed to follow the structure, in contrast to JSON mode and function calling which are just very likely to follow the structure.</li>
+<li>✅ It doesn’t slow down the generation process, rather it speeds it up because tokens with no alternatives can be automatically placed rather than generated by the model.</li>
+</ol>
+<p>But also some downsides:</p>
+<ol type="1">
+<li>❌ OpenAI’s implementation only works with its own models.</li>
+<li>❌ It only supports a subset of JSON schema. In particular, they don’t support <code>minLength</code> and <code>maxLength</code> constraints. See their <a href="https://platform.openai.com/docs/guides/structured-outputs">docs</a>. These are supported by outlines and instructor.</li>
+<li>❌ The first API call with a schema has a higher latency than subsequent calls because the schema has to be compiled.</li>
+</ol>
+<p>I expect that the first two downsides will be addressed in the future. Thanks to the outlines library, the implementation of structured outputs is already available for open source models. Perhaps providers like Fireworks AI and Groq will adopt it with the same API specification as OpenAI. They’ve done this with function calling. In turn, platform-agnostic libraries like mirascope, marvin and instructor may adopt it as well.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>If you’re exclusively using OpenAI models and only need basic structured responses, I recommend using structured outputs. It’s the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines or instructor.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <category>Python</category>
+  <guid>https://simmering.dev/blog/openai_structured_output/</guid>
+  <pubDate>Fri, 09 Aug 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/openai_structured_output/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Levels of Abstraction in the LLM Stack</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -7836,76 +7958,6 @@ font-style: inherit;">with</span> stub.run():</span>
   <guid>https://simmering.dev/blog/modal-twitter/</guid>
   <pubDate>Wed, 25 Jan 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/modal-twitter/image.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Investing in data science skills for the long run</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/skills/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Data science is a field that is constantly evolving and requires a lot of practice to master. Picking the right skills to focus on is critical for career development.</p>
-<p>The first distinction I see is between <strong>gig skills</strong> that are useful for a single project or job and <strong>long-term skills</strong> that benefit you for your whole career. Telling the two types apart will let you invest your time more effectively.</p>
-<p>Long-term skills are generally a better investment than gig skills. Focusing too much on gig skills can turn you into a perpetual beginner. In every new job or project, you need to start from scratch learning skills that lose their value quickly. But investing in selected ephermeral skill can still be smart. It is often necessary to learn the particularities of a software system you’re working with to be effective.</p>
-<section id="specialists-turn-gig-skills-turn-into-long-term-skills" class="level2">
-<h2 class="anchored" data-anchor-id="specialists-turn-gig-skills-turn-into-long-term-skills">Specialists turn gig skills turn into long-term skills</h2>
-<p>A skill that is gig skill for a generalist may be a long-term skill for a specialist. Imagine a data scientist that wants to provision resources on an AWS account. Their company uses AWS CDK for infrastructure as code. Learning the AWS CDK is a gig skill for the data scientist, because the next job may be at a company that uses Azure or Google Cloud. But for a dedicated AWS cloud data engineer, learning the AWS CDK is a long-term skill that pays off over and over.</p>
-</section>
-<section id="golden-long-term-skills" class="level2">
-<h2 class="anchored" data-anchor-id="golden-long-term-skills">Golden long-term skills</h2>
-<p>A few skills stand out as eternally valuable for anyone in data science. They’re likely to pay off for a whole career.</p>
-<ol type="1">
-<li><strong>Descriptive statistics and probability distributions</strong>: Understanding variance, quantiles, conditional probability and hypothesis tests is essential. These building blocks of statistics won’t change.</li>
-<li><strong>Linear regression and its variants</strong>: These can answer many questions by themselves and also serve as a benchmark for more sophisticated machine learning algorithms. Understanding variants like logistic regression and regularized least squares widens the range of questions you can answer and deepens your understanding of machine learning.</li>
-<li><strong>Data visualization principles</strong>: A visual expression of data makes the information more accessible. Knowing which visualization is suitable for different types of data and questions makes you a more competent communicator and multiplies the impact your analyses have. Note that I’m only referring to the principles as long-term skills. The plotting libraries come and go.</li>
-<li><strong>Effective writing</strong>: Whether it’s writing a report, a proposal, a support ticket or an email: Writing with clarity boosts anyone’s effectiveness.</li>
-<li><strong>SQL</strong>: This is the only language on the list. SQL is ubiquitous and has been in use for almost 50 years. Being able to access data at the source is essential for anyone working in the data industry. The SQL standard changes very slowly. Different databases implement variants of the language, but the core commands work everywhere.</li>
-<li><strong>Git</strong>: Using version control is non-negotiable when working in a team and Git is the unanimous leading choice.</li>
-<li><strong>Text editor mastery</strong>: Using a text editor or IDE efficiently by touch typing and keyboard shortcuts removes a barrier. Speed isn’t the point, it’s freeing your mind from needing to expend energy on typing. To safeguard your skill investment, use a free editor that supports many programming languages, for example Visual Studio Code.</li>
-</ol>
-<p>If you don’t know what to start with, practice a golden long-term skill.</p>
-</section>
-<section id="pick-one-skills" class="level2">
-<h2 class="anchored" data-anchor-id="pick-one-skills">Pick-one skills</h2>
-<p>This is a class of skills that are required in a wide range of data science projects, but that have many implementations of which only one is used at a time.</p>
-<ol type="1">
-<li><strong>A programming language</strong>: While it’s possible to analyze data entirely within a GUI, it severely limits what you can build. R and Python are the two top choices for programming data analysis. You can also program it with Julia, Java and many other languages, but R and Python have the most package libraries and widest support.</li>
-<li><strong>A charting library</strong>: Creating visualizations with code makes them reuseable, reproducible and with some practice also quicker to make. There are endless charting libraries. Some popular examples are: ggplot2, matplotlib, seaborn, echarts.</li>
-<li><strong>A machine learning framework</strong>: Examples are: scikit-learn, tidymodels, caret, mlr3. When using neural networks, one of Pytorch or Tensorflow is typically required.</li>
-<li><strong>A data quality testing library</strong>: Examples are: pointblank, Great Expectations. You could also use constraints in a SQL database.</li>
-<li><strong>A package manager</strong>: Examples are: renv, pip, poetry, conda.</li>
-<li><strong>An orchestration platform</strong>: Examples are Airflow, Dagster, drake, dbt. Data scientists often don’t have to set these up and maintain them themselves, but need to know how to submit and monitor jobs running on them.</li>
-</ol>
-<p>These can end up as gig skills. Throughout your career, you’ll likely have to switch between them, either because a new library outshines the older ones or because you join a team that uses a different one. Each switch incurs a cost of relearning. Thankfully, the different implementations often share principles. Learning your third visualization library will be much faster than the first. Smart hiring managers understand that these can be picked up on the job.</p>
-</section>
-<section id="vendor-and-project-specific-skills" class="level2">
-<h2 class="anchored" data-anchor-id="vendor-and-project-specific-skills">Vendor and project specific skills</h2>
-<ul>
-<li>Fine details of cloud platforms</li>
-<li>Proprietary software that isn’t widely used</li>
-<li>Internal tools not available to the public</li>
-</ul>
-<p>These are most likely to become gig skills, unless you make it a career choice and specialize in them.</p>
-</section>
-<section id="domain-knowledge" class="level2">
-<h2 class="anchored" data-anchor-id="domain-knowledge">Domain knowledge</h2>
-<p>Knowing more about the subject matter behind the data you’re analyzing lets you ask better questions and avoid silly mistakes.</p>
-<p>If you switch industries, previous domain knowledge loses its value. As an example, I’m currently not using any of the domain knowledge I acquired studying economics, while the statistical methods continue to be useful.</p>
-<p>Some fields of data science require deep industry specialization and corresponding certifications, for example in health, biology, accounting, insurance and other highly regulated industries. This is a form of specialization in domain knowledge.</p>
-<p>Thanks for reading! Do you agree with my skill categorization? Let me know on <a href="https://twitter.com/paul_simmering">Twitter</a>.</p>
-<p>Photo by <a href="https://unsplash.com/@ninaluong?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Nina Luong</a> on <a href="https://unsplash.com/s/photos/staircase?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
-
-
-</section>
-
- ]]></description>
-  <category>Advice</category>
-  <guid>https://simmering.dev/blog/skills/</guid>
-  <pubDate>Sun, 08 Jan 2023 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/skills/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
