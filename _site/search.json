@@ -46,7 +46,7 @@
     "href": "blog/openai_structured_output/index.html#conclusion",
     "title": "OpenAI’s structured output vs. instructor and outlines",
     "section": "Conclusion",
-    "text": "Conclusion\nIf you’re exclusively using OpenAI models and only need basic structured responses, I recommend using structured outputs. It’s the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines or instructor."
+    "text": "Conclusion\nIf you’re exclusively using OpenAI models and only need basic structured responses, I recommend using OpenAI’s structured outputs. It’s the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines (if self-hosting) or instructor (if using API providers)."
   },
   {
     "objectID": "blog/abstractions/index.html",
@@ -1279,5 +1279,12 @@
     "title": "About",
     "section": "",
     "text": "Hi! I’m Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. Besides coding, I enjoy writing and speaking about data science. I work as Senior Data Scientist at Q Agentur für Forschung.\nMy current focus is aspect-based sentiment analysis using LLMs. My team and I are building a data pipeline for review analysis.\nThe best way to contact me is via email: paul.simmering@gmail.com.\nSome things I enjoy outside of work:\n\nEuro-style games, Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as Power Grid and Figgie.\nContemporary art, particularly generative art and art inspired by geometry. My favorites are Kjetil Golid, Owen Pomery and Reuben Wu.\nParks and gardens, especially Japanese gardens. I’m lucky to live close to Blühendes Barock in Ludwigsburg.\nDesign and typography. Some examples: Berkeley Graphics, iA, Stripe’s website.\n\nThis website is built with Quarto. The source is available on Github."
+  },
+  {
+    "objectID": "blog/openai_structured_output/index.html#are-instructor-and-other-structured-output-libraries-obsolete",
+    "href": "blog/openai_structured_output/index.html#are-instructor-and-other-structured-output-libraries-obsolete",
+    "title": "OpenAI’s structured output vs. instructor and outlines",
+    "section": "Are instructor and other structured output libraries obsolete?",
+    "text": "Are instructor and other structured output libraries obsolete?\nRight after the announcement, Jason Liu, author of instructor posted:\n\nThey solved instructor.\n\non X. Later he added a longer post with his thoughts.\nYes, the core value proposition of: “give me a Pydantic model and I’ll use function calling to guarantee the output fits the schema” is now covered for OpenAI models, but only for OpenAI models. If you’re using other models or want to stay flexible, structured output libraries are still useful. Each library also comes with additional features, as I’ve covered in my comparison. Examples are multiple provider support, error handling, caching, chaining and more.\nSo in short: no, they’re not obsolete, but their space is getting squeezed."
   }
 ]

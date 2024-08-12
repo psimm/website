@@ -120,9 +120,19 @@ font-style: inherit;">0</span>].message.content))</span></code></pre></div>
 </ol>
 <p>I expect that the first two downsides will be addressed in the future. Thanks to the outlines library, the implementation of structured outputs is already available for open source models. Perhaps providers like Fireworks AI and Groq will adopt it with the same API specification as OpenAI. They’ve done this with function calling. In turn, platform-agnostic libraries like mirascope, marvin and instructor may adopt it as well.</p>
 </section>
+<section id="are-instructor-and-other-structured-output-libraries-obsolete" class="level2">
+<h2 class="anchored" data-anchor-id="are-instructor-and-other-structured-output-libraries-obsolete">Are instructor and other structured output libraries obsolete?</h2>
+<p>Right after the announcement, Jason Liu, author of instructor posted:</p>
+<blockquote class="blockquote">
+<p>They solved instructor.</p>
+</blockquote>
+<p>on <a href="https://x.com/jxnlco/status/1820880349288595629">X</a>. Later he added a longer <a href="https://x.com/jxnlco/status/1820976130096074940">post</a> with his thoughts.</p>
+<p>Yes, the core value proposition of: “give me a Pydantic model and I’ll use function calling to guarantee the output fits the schema” is now covered for OpenAI models, but only for OpenAI models. If you’re using other models or want to stay flexible, structured output libraries are still useful. Each library also comes with additional features, as I’ve covered in my <a href="../../blog/structured_output/">comparison</a>. Examples are multiple provider support, error handling, caching, chaining and more.</p>
+<p>So in short: no, they’re not obsolete, but their space is getting squeezed.</p>
+</section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>If you’re exclusively using OpenAI models and only need basic structured responses, I recommend using structured outputs. It’s the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines or instructor.</p>
+<p>If you’re exclusively using OpenAI models and only need basic structured responses, I recommend using OpenAI’s structured outputs. It’s the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines (if self-hosting) or instructor (if using API providers).</p>
 
 
 </section>

@@ -41,7 +41,7 @@ apple_pie_recipe = Recipe(**json.loads(completion.choices[0].message.content))
 
 It's guaranteed that the output will be JSON that can be parsed into a `Recipe` object. The code looks very similar to the code you'd write with any of the [10 libraries](/blog/structured_output/) I compared in May. 
 
-Besides removing the need for a library, structured output works quite differently from function calling under the hood. With function calling the model is trained to follow an instruction given as a JSON schema and is likely but not guaranteed to follow it. At any token position it's still free to output a token that doesn't fit the schema. With structured output, the output of the model is constrained to fit the schema. This is the same approach as the [outlines](https://github.com/outlines-dev/outlines) library uses for open source models. 
+Besides removing the need for a library, structured output works quite differently from function calling under the hood. With function calling the model is trained to follow an instruction given as a JSON schema and is likely but not guaranteed to follow it. At any token position it's still free to output a token that doesn't fit the schema. With structured output, the output of the model is constrained to fit the schema. This is the same approach as the [outlines](https://github.com/outlines-dev/outlines) library uses for open source models.
 
 ## Pros and cons
 
@@ -59,6 +59,18 @@ But also some downsides:
 
 I expect that the first two downsides will be addressed in the future. Thanks to the outlines library, the implementation of structured outputs is already available for open source models. Perhaps providers like Fireworks AI and Groq will adopt it with the same API specification as OpenAI. They've done this with function calling. In turn, platform-agnostic libraries like mirascope, marvin and instructor may adopt it as well.
 
+## Are instructor and other structured output libraries obsolete?
+
+Right after the announcement,  Jason Liu, author of instructor posted:
+
+> They solved instructor.
+
+on [X](https://x.com/jxnlco/status/1820880349288595629). Later he added a longer [post](https://x.com/jxnlco/status/1820976130096074940) with his thoughts.
+
+Yes, the core value proposition of: "give me a Pydantic model and I'll use function calling to guarantee the output fits the schema" is now covered for OpenAI models, but only for OpenAI models. If you're using other models or want to stay flexible, structured output libraries are still useful. Each library also comes with additional features, as I've covered in my [comparison](/blog/structured_output/). Examples are multiple provider support, error handling, caching, chaining and more.
+
+So in short: no, they're not obsolete, but their space is getting squeezed.
+
 ## Conclusion
 
-If you're exclusively using OpenAI models and only need basic structured responses, I recommend using structured outputs. It's the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines or instructor.
+If you're exclusively using OpenAI models and only need basic structured responses, I recommend using OpenAI's structured outputs. It's the most convenient, secure and cheapest method. If you prefer other LLM providers or want your code to be provider-agnostic, I recommend sticking with outlines (if self-hosting) or instructor (if using API providers).
