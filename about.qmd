@@ -20,7 +20,7 @@ Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine le
 
 My current focus is aspect-based sentiment analysis using LLMs. My team and I are building a data pipeline for [review analysis](https://www.teamq.de/blog/152/ai_reviews).
 
-The best way to contact me is via email: [paul.simmering@gmail.com](mailto:paul.simmering@gmail.com).
+The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
 
 Some things I enjoy outside of work:
 
