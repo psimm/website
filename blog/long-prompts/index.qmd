@@ -1,5 +1,5 @@
 ---
-title: "Consider a longer prompt"
+title: "From 5-7-5 to Thousand Lines: The Case for Longer Prompts"
 author: "Paul Simmering"
 date: "2024-09-01"
 categories: ["Machine Learning"]
@@ -126,3 +126,5 @@ The Berkeley function calling leaderboard [@berkeley-function-calling-leaderboar
 ## Conclusion: revisit your prompts
 
 In 2023, the cost of long prompts was a major concern. Each input token was precious. This has changed with the introduction of prompt caching and a massive reduction in input token cost. It's worth reevaluating prompts and consider whether adding more information would benefit the application.
+
+About the title: 5-7-5 refers to the syllable count in a haiku, a form of short poetry from Japan.
