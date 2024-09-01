@@ -32,6 +32,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/long-prompts/index.html",
       "/blog/openai_structured_output/index.html",
       "/blog/abstractions/index.html",
       "/blog/waiting/index.html",

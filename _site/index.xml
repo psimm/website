@@ -11,7 +11,241 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.5.45</generator>
-<lastBuildDate>Fri, 09 Aug 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 31 Aug 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Consider a longer prompt</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/long-prompts/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Prompts are the key to guide LLMs for any task, from a chatbot to a text classifier. Longer prompts are usually better than shorter ones, as I’ll argue below. There is a tradeoff, though: each interaction with a long prompt has a longer input sequence, which increases inference cost and latency. Further, a long prompt takes up more of the model’s context window, leaving less for user interaction. But both of these concerns are becoming less relevant with recent developments.</p>
+<section id="long-prompts-are-getting-cheaper" class="level2">
+<h2 class="anchored" data-anchor-id="long-prompts-are-getting-cheaper">Long prompts are getting cheaper</h2>
+<p>There are two developments that keep bringing down the cost of long prompts:</p>
+<ol type="1">
+<li><p><strong>Decrease in input token cost</strong> on API platforms like OpenAI, Anthropic and others. At launch of gpt-3.5-turbo in March 2023, OpenAI charged $2 for 1 million input tokens. By August 2024, it’s $0.15 for gpt-4o-mini, a more capable model. This is a 92.5% reduction in cost. It reflects the fierce competition and the increasing efficiency of inference software, a fall in GPU prices and advances in quantization. Similar trends can be observed in inference cost for open source models, though it’s harder to reach the same economies of scale as the big platforms.</p></li>
+<li><p><strong>Context caching</strong>, meaning that the model doesn’t have to recompute the prefix of the prompt for each interaction. This is also called prompt caching. It uses a KV cache (see a good explanation by <span class="citation" data-cites="log2023kvcache">Log (2023)</span>) to skip the calculation of the attention keys and values for cached tokens. Originally, this was only used within a single generation task to avoid having to re-read all tokens for each additional token generated. However, it can also be used across different generations. It’s integrated in <a href="https://docs.vllm.ai/en/stable/automatic_prefix_caching/apc.html">vLLM</a> <span class="citation" data-cites="kwon2023efficientmemorymanagementlarge">(Kwon et al. 2023)</span>, an inference library that can serve many popular open source models. Since June 2024, three API platforms have also added this feature: <a href="https://platform.deepseek.com/api-docs/news/news0802/">DeepSeek</a>, <a href="https://ai.google.dev/gemini-api/docs/caching?lang=python">Google Gemini</a> and <a href="https://www.anthropic.com/news/prompt-caching">Anthropic</a>.</p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/long-prompts/kv_cache_example.JPEG" class="img-fluid figure-img"></p>
+<figcaption>Context caching lets subsequent requests with the same prefix use a cache. Image from <a href="platform">DeepSeek</a>.</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 33%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Model</th>
+<th>Regular price</th>
+<th>Caching price</th>
+<th>Savings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DeepSeek</td>
+<td>deepseek-chat</td>
+<td>$0.14 / Mtok</td>
+<td>$0.014 / Mtok for cache read</td>
+<td>90%</td>
+</tr>
+<tr class="even">
+<td>Anthropic</td>
+<td>Claude 3.5 Sonnet</td>
+<td>$3.00 / Mtok</td>
+<td>$3.75 / MTok for cache write, $0.30 /Mtok for cache hits</td>
+<td>90%</td>
+</tr>
+<tr class="odd">
+<td>Gemini</td>
+<td>Gemini 1.5 Pro</td>
+<td>$3.50 / Mtok</td>
+<td>Free cache read, $4.50 / Mtok per hour for storage</td>
+<td>Variable</td>
+</tr>
+</tbody>
+</table>
+<p>The table above compares the cost savings from prompt caching on different platforms. Mtok stands for million tokens.</p>
+<p>The pricing models are quite different. DeepSeek offers the best savings at 90% reduction on cache hit and no storage fees. Keep in mind that this is not a frontier model. The documentation says the cache is cleared after a few hours. Further, the feature is active by default and doesn’t require a change in code. This is different at Anthropic where the cache has to be explicitly enabled and writing to it carries a higher cost than a normal input token. As of August 31, the cache only has a 5 minute time to live (TTL), making it only useful apps with high frequency of the same prompt. Gemini charges for storage and gives control over the TTL with a default of one hour and requires explicit enabling.</p>
+<p>Why is it so expensive to store 1 million tokens for one hour? The reason is that the KV cache takes a surprising amount of memory. The formula for the memory per token is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Bmemory%7D%20=%20n_%7Btokens%7D%20*%202%20*%20n_%7Bheads%7D%20*%20d_%7Bhead%7D%20*%20n_%7Blayers%7D%20*%20%5Ctext%7Bprecision%20(bytes)%7D%0A"></p>
+<p>The 2 represents the key and value vectors, <img src="https://latex.codecogs.com/png.latex?n_%7Bheads%7D"> is the number of attention heads, <img src="https://latex.codecogs.com/png.latex?d_%7Bhead%7D"> is the dimension of the attention head, <img src="https://latex.codecogs.com/png.latex?n_%7Blayers%7D"> is the number of layers and precision is the number of bytes used to store a single weight. Note that this doesn’t include optimizations like sparsity, quantizastion or grouped query attention <span class="citation" data-cites="ainslie2023gqatraininggeneralizedmultiquery">(Ainslie et al. 2023)</span>.</p>
+<p>For a 1024 token sequence on a 175B GPT-3 model with 96 heads with 128 dimensions and 96 layers at FP16 precision, this results in</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A1024%20*%202%20*%2096%20*%20128%20*%2096%20*%2016%20%5Ctext%7B%20bytes%7D%20=%2038.65%20%5Ctext%7B%20GB%7D%0A"></p>
+<p>This has to be stored in GPU memory to be accessible for the model.</p>
+<p>But while $4.5 / Mtok might seem expensive for just one hour, if that input token is used at least twice in that hour, it’s already cheaper than the regular input token price. The savings are multiplied with each additional use. For use of open models on your own GPUs, this means that allocating a portion of your GPU memory to cache can be an excellent investment. It also means that for same-y inference requests, GPU memory matters more than its speed.</p>
+</section>
+<section id="context-sizes-are-getting-larger" class="level2">
+<h2 class="anchored" data-anchor-id="context-sizes-are-getting-larger">Context sizes are getting larger</h2>
+<p>Current frontier models have a context length of at least 128,000 tokens - equivalent to roughly 100,000 words or a 400 page novel.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Provider</th>
+<th>Model</th>
+<th>Context size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Google</td>
+<td>Gemini 1.5 Pro</td>
+<td>2m</td>
+</tr>
+<tr class="even">
+<td>Anthropic</td>
+<td>Claude 3.5 Sonnet</td>
+<td>200k</td>
+</tr>
+<tr class="odd">
+<td>Alibaba</td>
+<td>Qwen2 72B</td>
+<td>128k</td>
+</tr>
+<tr class="even">
+<td>Meta</td>
+<td>Llama 3.1 Instruct 405B</td>
+<td>128k</td>
+</tr>
+<tr class="odd">
+<td>Mistral</td>
+<td>Mistral Large 2</td>
+<td>128k</td>
+</tr>
+<tr class="even">
+<td>OpenAI</td>
+<td>GPT-4o</td>
+<td>128k</td>
+</tr>
+</tbody>
+</table>
+<p>Source: <a href="https://artificialanalysis.ai">Artificialanalysis.ai</a></p>
+<p>In contrast, early models like gpt-3.5-turbo in March 2023 only had a context size of 4096 tokens. In a RAG context, this means that more text chunks can be included in the prompt and in a chat context, more questions and answers can be included before the oldest ones are evicted. The problem that a prompt doesn’t fit into the context window is effectively solved for almost all applications.</p>
+</section>
+<section id="longer-prompts-are-often-better" class="level2">
+<h2 class="anchored" data-anchor-id="longer-prompts-are-often-better">Longer prompts are often better</h2>
+<p>Ok, so long prompts are getting cheaper. But how does a longer prompt help?</p>
+<section id="more-detailed-guidelines" class="level3">
+<h3 class="anchored" data-anchor-id="more-detailed-guidelines">1. More detailed guidelines</h3>
+<p>A longer prompt can provide more context to the model, letting it perform a task more accurately or represent a brand or character more faithfully. Consider including information like this:</p>
+<ul>
+<li>Background information about the website, app or task that the model is embedded in.</li>
+<li>Behavioral constraints, like not using certain words or phrases. For example telling the prompt to avoid starting answers with “Certainly!”, to make it sound less AI-like.</li>
+<li>Style guidelines, like using a certain tone or level of formality, whether to address the user by first or last name, or to use emojis.</li>
+<li>Characterization, giving the model a personality or role to play. For example, a chatbot for a bank could be characterized as a friendly and professional customer service agent.</li>
+<li>A more detailed task description, like a list of steps to follow or a description of the desired output.</li>
+<li>Information about the user, like their name, location, or preferences.</li>
+<li>A translation glossary, if the model is used in a multilingual setting.</li>
+</ul>
+<p>If you’re looking for inspiration for a chatbot prompt, check the recently revealed prompts for Anthropic’s <a href="https://docs.anthropic.com/en/release-notes/system-prompts#july-12th-2024">Claude</a>.</p>
+</section>
+<section id="many-shot-in-context-learning" class="level3">
+<h3 class="anchored" data-anchor-id="many-shot-in-context-learning">2. Many-shot in-context learning</h3>
+<p>Few-shot examples can be included in the prompt for in-context learning (ICL). These examples can teach the model about the rules for the task, the desired output format, intermediate reasoning steps and handling of edge cases. Commonly this is done with 1 to 5 examples, but with prefix caching it’s possible to include 50, 100 or even more examples.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/long-prompts/many_shot_learning.png" class="img-fluid figure-img"></p>
+<figcaption>Many-shot in-context learning. Image from Agarwal et al.&nbsp;(2024)</figcaption>
+</figure>
+</div>
+<p><span class="citation" data-cites="agarwal2024manyshotincontextlearning">Agarwal et al. (2024)</span> ran this experiment with Gemini 1.5 Pro across several tasks. Many-shot ICL outperformed few-shot learning in all cases. For sentiment analysis they went as far as 2048 examples in the prompt, achieving an increase in 18.2 percentage points over a 32-shot prompt. In many of their experiments the limiting factor wasn’t the context size, but the number of available examples.</p>
+<p>This allows a prompting approach become closer to fine-tuning, but without the need for training or a model store. <span class="citation" data-cites="bertsch2024incontextlearninglongcontextmodels">Bertsch et al. (2024)</span> made the comparison between many-shot ICL and LoRA <span class="citation" data-cites="hu2021loralowrankadaptationlarge">(Hu et al. 2021)</span> on 5 classification tasks and conclude that “finetuning is more data-hungry than ICL”. In their experiments with Llama2-7b, many-shot prompting outperformed fine-tuning up to about 1000 examples (see figure 2 of their paper).</p>
+</section>
+<section id="more-rag-context" class="level3">
+<h3 class="anchored" data-anchor-id="more-rag-context">3. More RAG context</h3>
+<p>A key design parameter in retrieval augmented generation (RAG) is the number of text chunks to retrieve from a source. With a larger context size, more and longer text chunks can be included in the prompt. This increases the likelihood that the information required to answer the query is present in the prompt.</p>
+<p><span class="citation" data-cites="leng2024longcontextrag">Leng et al. (2024)</span> tested RAG answer correctness on 13 open source and proprietary LLMs.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/long-prompts/long_context_performance.png" class="img-fluid figure-img"></p>
+<figcaption>Long context performance of GPT, Claude, Llama, Mistral and DBRX models on 4 curated RAG datasets (Databricks DocsQA, FinanceBench, HotPotQA and Natural Questions), from Leng et al.&nbsp;(2024).</figcaption>
+</figure>
+</div>
+<p>As the graph above shows, answer correctness increased with longer context all models up to 4k tokens and up to 32k tokens for most models. This is driven by the boost in retrieval (see experiment 1 in the article).</p>
+<p>However, the “lost in the middle” problem can occur, a phenomemon first found by <span class="citation" data-cites="liu2023lostmiddlelanguagemodels">(Liu et al. 2023)</span>, where information presented in the middle is not used as well as information presented at the beginning or end. It can be measured by the “needle in a haystack” method, meaning that a piece of information is hidden in a long text and the model has to find it. The longer the text, the harder it is to find the information. The RULER benchmark by <span class="citation" data-cites="hsieh2024rulerwhatsrealcontext">(Hsieh et al. 2024)</span> extended this to more complex tasks and introduced the concept of an effective context length, which is shorter than the technical context length of a model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/long-prompts/lost_in_the_middle.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Lost in the middle problem. Image from Liu et al.&nbsp;(2023)</figcaption>
+</figure>
+</div>
+<p>Retrieving more information also increases the risk of including irrelevant information. If chunk ranking works correctly, lower ranking chunks are less likely to be relevant and adding them reduces the density of relevant information. <span class="citation" data-cites="levy2024tasktokensimpactinput">Levy, Jacoby, and Goldberg (2024)</span> found that irrelevant information isn’t neutral, it’s detrimental to model performance on a question-answering task.</p>
+</section>
+<section id="more-functions-for-agentic-models" class="level3">
+<h3 class="anchored" data-anchor-id="more-functions-for-agentic-models">4. More functions for agentic models</h3>
+<p>Models used as agents are given function signatures in a JSON schema. Each of these has to be sent to the model as part of the prompt. The more functions and the more arguments they have, the longer the prompt. With lower prompt costs, it’s becoming more economical to have agents with many different and more detailed functions in their repertoire.</p>
+<p>Common functions include:</p>
+<ul>
+<li>Send a task to a sub-agent</li>
+<li>Web search</li>
+<li>Query a database by using text-to-SQL</li>
+<li>Redirect to a human agent</li>
+<li>Call a REST API, e.g.&nbsp;to send an email or schedule a meeting</li>
+<li>Execute code in Python, JavaScript or another language</li>
+</ul>
+<p>The Berkeley function calling leaderboard <span class="citation" data-cites="berkeley-function-calling-leaderboard">(Yan et al. 2024)</span> offers detailed benchmarks for a variety of function calling tasks.</p>
+</section>
+</section>
+<section id="conclusion-revisit-your-prompts" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-revisit-your-prompts">Conclusion: revisit your prompts</h2>
+<p>In 2023, the cost of long prompts was a major concern. Each input token was precious. This has changed with the introduction of prompt caching and a massive reduction in input token cost. It’s worth reevaluating prompts and consider whether adding more information would benefit the application.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-agarwal2024manyshotincontextlearning" class="csl-entry">
+Agarwal, Rishabh, Avi Singh, Lei M. Zhang, Bernd Bohnet, Luis Rosias, Stephanie Chan, Biao Zhang, et al. 2024. <span>“Many-Shot in-Context Learning.”</span> <a href="https://arxiv.org/abs/2404.11018">https://arxiv.org/abs/2404.11018</a>.
+</div>
+<div id="ref-ainslie2023gqatraininggeneralizedmultiquery" class="csl-entry">
+Ainslie, Joshua, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. 2023. <span>“GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints.”</span> <a href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a>.
+</div>
+<div id="ref-bertsch2024incontextlearninglongcontextmodels" class="csl-entry">
+Bertsch, Amanda, Maor Ivgi, Uri Alon, Jonathan Berant, Matthew R. Gormley, and Graham Neubig. 2024. <span>“In-Context Learning with Long-Context Models: An in-Depth Exploration.”</span> <a href="https://arxiv.org/abs/2405.00200">https://arxiv.org/abs/2405.00200</a>.
+</div>
+<div id="ref-hsieh2024rulerwhatsrealcontext" class="csl-entry">
+Hsieh, Cheng-Ping, Simeng Sun, Samuel Kriman, Shantanu Acharya, Dima Rekesh, Fei Jia, Yang Zhang, and Boris Ginsburg. 2024. <span>“RULER: What’s the Real Context Size of Your Long-Context Language Models?”</span> <a href="https://arxiv.org/abs/2404.06654">https://arxiv.org/abs/2404.06654</a>.
+</div>
+<div id="ref-hu2021loralowrankadaptationlarge" class="csl-entry">
+Hu, Edward J., Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. 2021. <span>“LoRA: Low-Rank Adaptation of Large Language Models.”</span> <a href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a>.
+</div>
+<div id="ref-kwon2023efficientmemorymanagementlarge" class="csl-entry">
+Kwon, Woosuk, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph E. Gonzalez, Hao Zhang, and Ion Stoica. 2023. <span>“Efficient Memory Management for Large Language Model Serving with PagedAttention.”</span> <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a>.
+</div>
+<div id="ref-leng2024longcontextrag" class="csl-entry">
+Leng, Quinn, Jacob Portes, Sam Havens, Matei Zaharia, and Michael Carbin. 2024. <span>“Long Context RAG Performance of LLMs.”</span> <a href="https://www.databricks.com/blog/long-context-rag-performance-llms" class="uri">https://www.databricks.com/blog/long-context-rag-performance-llms</a>.
+</div>
+<div id="ref-levy2024tasktokensimpactinput" class="csl-entry">
+Levy, Mosh, Alon Jacoby, and Yoav Goldberg. 2024. <span>“Same Task, More Tokens: The Impact of Input Length on the Reasoning Performance of Large Language Models.”</span> <a href="https://arxiv.org/abs/2402.14848">https://arxiv.org/abs/2402.14848</a>.
+</div>
+<div id="ref-liu2023lostmiddlelanguagemodels" class="csl-entry">
+Liu, Nelson F., Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. 2023. <span>“Lost in the Middle: How Language Models Use Long Contexts.”</span> <a href="https://arxiv.org/abs/2307.03172">https://arxiv.org/abs/2307.03172</a>.
+</div>
+<div id="ref-log2023kvcache" class="csl-entry">
+Log, Matt. 2023. <span>“What Is the KV Cache?”</span> https://mett29.github.io/posts/kv-cache/.
+</div>
+<div id="ref-berkeley-function-calling-leaderboard" class="csl-entry">
+Yan, Fanjia, Huanzhi Mao, Charlie Cheng-Jie Ji, Tianjun Zhang, Shishir G. Patil, Ion Stoica, and Joseph E. Gonzalez. 2024. <span>“Berkeley Function Calling Leaderboard.”</span> In. <a href="https://gorilla.cs.berkeley.edu/blogs/8_berkeley_function_calling_leaderboard.html" class="uri">https://gorilla.cs.berkeley.edu/blogs/8_berkeley_function_calling_leaderboard.html</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/long-prompts/</guid>
+  <pubDate>Sat, 31 Aug 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/long-prompts/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>OpenAI’s structured output vs. instructor and outlines</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -385,9 +619,17 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
 <section id="keep-your-training-data-portable" class="level3">
 <h3 class="anchored" data-anchor-id="keep-your-training-data-portable">Keep your training data portable</h3>
 <p>The linear progression from low to high abstraction is a simplification. As the ecosystem matures, interoperability increases. For example, Hugging Face Transformers abstracts away the model architecture, but you can still access the PyTorch model and adjust it. Then that model can be deployed to AWS SageMaker. Not all combinations are possible though - for example a GPT model fine-tuned on OpenAI’s API can only run on that account. When it’s cheap to do so, use solutions that have as little lock-in as possible. Especially your training data should remain portable. In a time where research labs one-up each other weekly with better base models, being able to switch to a new model quickly is an advantage.</p>
-
-
 </section>
+</section>
+<section id="go-deeper" class="level2">
+<h2 class="anchored" data-anchor-id="go-deeper">Go deeper</h2>
+<p>If you’re interested in the details of the LLM stack, I recommend the following resources:</p>
+<ul>
+<li><a href="https://github.com/lapp0/lm-inference-engines">Open Source LLM Inference Engines Comparison</a></li>
+</ul>
+<p>I’ll keep adding to this list as I find more resources.</p>
+
+
 </section>
 
  ]]></description>
@@ -7305,669 +7547,6 @@ font-style: inherit;">1</span>],</span>
   <guid>https://simmering.dev/blog/ai-assistants/</guid>
   <pubDate>Sun, 09 Apr 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/ai-assistants/image.png" medium="image" type="image/png" height="140" width="144"/>
-</item>
-<item>
-  <title>Twitter API data collector with Modal</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/modal-twitter/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>In this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing analytics. I’ll focus on the technical aspects of building a Twitter data collector.</p>
-<p>Note: As of 2023, Twitter has [deprecated] free access to API that this article uses. The code will need to be updated to use the new, paid API.</p>
-<p>By the end of this article, we’ll have a fully automated Twitter data collector that runs in the cloud. It will fetch new tweets that mention a keyword, and save them to an AWS S3 bucket as a JSON file. It’ll run every 15 minutes.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/modal-twitter/architecture.png" class="img-fluid figure-img"></p>
-<figcaption>Twitter API data collector with Modal</figcaption>
-</figure>
-</div>
-<p>To run the Twitter collector for yourself, please follow the instructions in the readme of the <a href="https://github.com/psimm/modal-twitter/">Github repository</a>. The code is written in Python and uses the <a href="https://modal.com">Modal</a> framework to automate the deployment and scheduling.</p>
-<section id="what-is-modal" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-modal">What is Modal?</h3>
-<p>Modal is an exciting new platform that makes running Python apps in the cloud feel like developing locally. Everything can be specified in code, and the app can be deployed with a single command. Logging and alerting is built in. Modal charges only for what you use at competitive rates. The total cost of running this app is less than $1 per month, which is well under the $30 in free credits that Modal offers each month.</p>
-</section>
-<section id="getting-data-from-the-twitter-api" class="level2">
-<h2 class="anchored" data-anchor-id="getting-data-from-the-twitter-api">Getting data from the Twitter API</h2>
-<p>The <a href="https://pypi.org/project/twitter/">twitter</a> Python package is an easy way to fetch data from the Twitter API. To get started, you need a Twitter developer account and API access keys. The developer account is free and you can create one here: https://developer.twitter.com/en.</p>
-<p>Once you have the API keys, save them as environment variables. This is much safer than placing them directly into the code.</p>
-<p>Here’s a function that uses the <code>twitter</code> package to fetch tweets that mention a keyword:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> twitter</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> os</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> get_tweets(term: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>, count: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>, since_id: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">dict</span>]:</span>
-<span id="cb1-5">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Authenticate with Twitter API</span></span>
-<span id="cb1-6">    api <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> twitter.Api(</span>
-<span id="cb1-7">        consumer_key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"TWITTER_CONSUMER_KEY"</span>],</span>
-<span id="cb1-8">        consumer_secret<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"TWITTER_CONSUMER_SECRET"</span>],</span>
-<span id="cb1-9">        access_token_key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"TWITTER_ACCESS_TOKEN"</span>],</span>
-<span id="cb1-10">        access_token_secret<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"TWITTER_ACCESS_SECRET"</span>],</span>
-<span id="cb1-11">    )</span>
-<span id="cb1-12"></span>
-<span id="cb1-13">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Fetch tweets that mention the term</span></span>
-<span id="cb1-14">    tweets<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>api.GetSearch(</span>
-<span id="cb1-15">        term<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>term,</span>
-<span id="cb1-16">        count<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>count,</span>
-<span id="cb1-17">        since_id<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>since_id,</span>
-<span id="cb1-18">        lang<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"en"</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># adjust to fetch tweets in other languages</span></span>
-<span id="cb1-19">        result_type<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"recent"</span>,</span>
-<span id="cb1-20">    )</span>
-<span id="cb1-21"></span>
-<span id="cb1-22">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Turn tweets object into a list of dictionaries</span></span>
-<span id="cb1-23">    tweets_dict_list <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [t.AsDict() <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> tweets]</span>
-<span id="cb1-24">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> tweets_dict_list</span></code></pre></div>
-<p>To optimally use <a href="https://developer.twitter.com/en/docs/twitter-api/rate-limits">Twitter’s API limits</a>, we want to only fetch tweets that we don’t have yet. That is done using the <code>since_id</code> parameter. The <code>since_id</code> is the id of the last tweet that we fetched. We can save this id to a file, and use it as the <code>since_id</code> parameter in the next call to <code>get_tweets()</code>.</p>
-<p>In addition to short term limits, the Twitter API <a href="https://developer.twitter.com/en/docs/twitter-api/tweet-caps">caps data collection</a> to 500k Tweets per month with Essential access and 2m Tweets per month with Elevated access.</p>
-</section>
-<section id="saving-twitter-data-to-s3" class="level2">
-<h2 class="anchored" data-anchor-id="saving-twitter-data-to-s3">Saving Twitter data to S3</h2>
-<p>For a long term project, data should be saved to secure cloud storage, such as <a href="https://aws.amazon.com/s3/">AWS S3</a>. From there, it could be analyzed using a data lake engine like <a href="https://aws.amazon.com/athena/">AWS Athena</a>, or loaded into a data warehouse.</p>
-<p>Here’s a function to save the tweets from a call to <code>get_tweets()</code> to an S3 bucket:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> boto3</span>
-<span id="cb2-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> json</span>
-<span id="cb2-3"></span>
-<span id="cb2-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> save_tweets(filename: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>, tweets: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">dict</span>]):</span>
-<span id="cb2-5">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Save JSON to S3</span></span>
-<span id="cb2-6">    s3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> boto3.client(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"s3"</span>) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># requires AWS credentials</span></span>
-<span id="cb2-7">    s3.put_object(</span>
-<span id="cb2-8">        Bucket<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"S3_BUCKET"</span>],</span>
-<span id="cb2-9">        Key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>filename,</span>
-<span id="cb2-10">        Body<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>json.dumps(tweets),</span>
-<span id="cb2-11">    )</span>
-<span id="cb2-12"></span>
-<span id="cb2-13">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Saved </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(tweets)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> tweets to </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>filename<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> on S3"</span>)</span></code></pre></div>
-<p>Of course you could also substitute any other blob storage, such as Azure Blob Storage or Google Cloud Storage.</p>
-<section id="s3-storage-costs" class="level3">
-<h3 class="anchored" data-anchor-id="s3-storage-costs">S3 storage costs</h3>
-<p>Over time, the S3 bucket will fill with JSON files. Each file will contain a list of tweets that mention a keyword. A JSON file containing 100 tweets is about 300 kB. If we assume that we fetch 100 tweets every 15 minutes for a keyword, we’ll have about 29 mB of data per day. That’s about 1 GB per month, per keyword. Zipping the files will reduce the size by about 85%, but it will make them a bit harder to work with.</p>
-<p>The AWS free tier offers 5 GB of storage per month. After that, you’ll need to pay for the storage. In addition, there will be a charge for the number of PUT requests to S3. Each keyword will generate about 3,000 PUT requests per month, which amounts to $0.015 per month. The free tier allows 2,000 PUT requests per month.</p>
-</section>
-</section>
-<section id="managing-a-panel-of-keywords" class="level2">
-<h2 class="anchored" data-anchor-id="managing-a-panel-of-keywords">Managing a panel of keywords</h2>
-<p>How do we tell our app which terms to search for? We could hard code them into the app, but that would be a pain to maintain. Instead, we’ll save the terms to a JSON file in S3. The file will look like this:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">[</span></span>
-<span id="cb3-2">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">{</span></span>
-<span id="cb3-3">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"term"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"python"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-4">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"since_id"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"0"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-5">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"timestamp_last_search"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2021-01-01 00:00:00"</span></span>
-<span id="cb3-6">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-7">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">{</span></span>
-<span id="cb3-8">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"term"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data science"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-9">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"since_id"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"0"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-10">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"timestamp_last_search"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2021-01-01 00:00:00"</span></span>
-<span id="cb3-11">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">}</span></span>
-<span id="cb3-12"><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">]</span></span></code></pre></div>
-<p>The <code>since_id</code> is the id of the last tweet that we fetched. Initially, it’s set to 0 so that we fetch all tweets. The <code>timestamp_last_search</code> is the last time that we searched for tweets that mention this term. We’ll use this to prioritize terms that haven’t been searched for recently.</p>
-<p>In each run of the app, we’ll fetch the terms from S3, and save them back to S3 after we’re done. Here’s a function to fetch the terms from S3:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> get_terms() <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">dict</span>]:</span>
-<span id="cb4-2">    s3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> boto3.client(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"s3"</span>)</span>
-<span id="cb4-3">    terms <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> json.loads(</span>
-<span id="cb4-4">        s3.get_object(</span>
-<span id="cb4-5">            Bucket<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"S3_BUCKET"</span>],</span>
-<span id="cb4-6">            Key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"terms.json"</span></span>
-<span id="cb4-7">        )[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Body"</span>].read()</span>
-<span id="cb4-8">    )</span>
-<span id="cb4-9"></span>
-<span id="cb4-10">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Prioritize terms that have not been searched for recently</span></span>
-<span id="cb4-11">    terms <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sorted</span>(terms, key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">lambda</span> t: (t[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"timestamp_last_search"</span>], t[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"since_id"</span>]))</span>
-<span id="cb4-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> terms</span></code></pre></div>
-<p>After fetching tweets, we update the <code>terms.json</code> file with the <code>since_id</code> of the last tweet and upload it to S3.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> datetime <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> datetime</span>
-<span id="cb5-2"></span>
-<span id="cb5-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> save_terms(terms: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">dict</span>]) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb5-4">    s3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> boto3.client(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"s3"</span>)</span>
-<span id="cb5-5">    s3.put_object(</span>
-<span id="cb5-6">        Bucket<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>os.environ[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"S3_BUCKET"</span>],</span>
-<span id="cb5-7">        Key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"terms.json"</span>,</span>
-<span id="cb5-8">        Body<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>json.dumps(terms),</span>
-<span id="cb5-9">    )</span>
-<span id="cb5-10">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Updated terms.json on S3"</span>)</span>
-<span id="cb5-11"></span>
-<span id="cb5-12"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> term <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> terms:</span>
-<span id="cb5-13">    get_tweets(term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"term"</span>], <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)</span>
-<span id="cb5-14">    save_tweets(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"tweets.json"</span>, tweets)</span>
-<span id="cb5-15"></span>
-<span id="cb5-16">    term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"since_id"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> tweets[<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>][<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"id"</span>]</span>
-<span id="cb5-17">    term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"timestamp_last_search"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> datetime.now().strftime(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"%Y-%m-</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%d</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> %H:%M:%S"</span></span>
-<span id="cb5-18">    save_terms(terms)</span></code></pre></div>
-<p>Please note that this solution is not thread safe. If multiple instances of the app are running, they could overwrite each other’s changes to <code>terms.json</code>. This is a problem that could be solved by using a database, such as AWS DynamoDB.</p>
-</section>
-<section id="automating-in-the-cloud-using-modal" class="level2">
-<h2 class="anchored" data-anchor-id="automating-in-the-cloud-using-modal">Automating in the cloud using Modal</h2>
-<p>Modal is a Python framework for automating the deployment and scheduling of Python functions. It’s designed to be simple and easy to use. I found it easier and more powerful than AWS Lambda. They offer a $30 monthly free tier.</p>
-<p>Modal takes Python code that is decorated with <code>@stub.function()</code> and deploys it to the cloud. It also handles the scheduling of the functions. The code is run in a Docker container, so you can use any Python package you want. Modal also provides a distributed dictionary, called <code>stub.info</code> in the code below that can be used to global variables. This is useful for storing the S3 bucket name, for example.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> modal</span>
-<span id="cb6-2"></span>
-<span id="cb6-3">stub <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> modal.Stub(</span>
-<span id="cb6-4">    image<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>modal.Image.debian_slim().pip_install([<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"boto3"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"python-twitter"</span>])</span>
-<span id="cb6-5">)</span></code></pre></div>
-<p>Here we instruct Modal to build a Docker image that contains the <code>boto3</code> and <code>python-twitter</code> packages. This image will be used to run the code in the cloud.</p>
-<section id="scheduling" class="level3">
-<h3 class="anchored" data-anchor-id="scheduling">Scheduling</h3>
-<p>The Twitter API imposes a rate limit that resets every 15 minutes. So we’ll wrap the loop we previously wrote into a <code>main()</code> function to run every 15 minutes. This is done using the <code>schedule</code> argument in the <code>@stub.function()</code> decorator.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> datetime <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> datetime</span>
-<span id="cb7-2"></span>
-<span id="cb7-3"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@stub.function</span>(schedule<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>modal.Period(minutes<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">15</span>))</span>
-<span id="cb7-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> main():</span>
-<span id="cb7-5">    terms <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> get_terms.call()</span>
-<span id="cb7-6"></span>
-<span id="cb7-7">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Terms to search: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">', '</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>join([t[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'term'</span>] <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> terms])<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb7-8"></span>
-<span id="cb7-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> term <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> terms:</span>
-<span id="cb7-10">        <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Searching for term: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'term'</span>]<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb7-11"></span>
-<span id="cb7-12">        timestamp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> datetime.now().strftime(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"%Y-%m-</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%d</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> %H-%M-%S"</span>)</span>
-<span id="cb7-13">        filename <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>timestamp<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'term'</span>]<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">.json"</span>.replace(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">" "</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"_"</span>)</span>
-<span id="cb7-14"></span>
-<span id="cb7-15">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">try</span>:</span>
-<span id="cb7-16">            tweets <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> get_tweets.call(term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"term"</span>], <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># maximum allowed</span></span>
-<span id="cb7-17">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Exception</span> <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> e:</span>
-<span id="cb7-18">            <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(e)</span>
-<span id="cb7-19">            <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Could not get tweets. Saving tweets collected so far."</span>)</span>
-<span id="cb7-20">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">break</span></span>
-<span id="cb7-21"></span>
-<span id="cb7-22">        since_id <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> save_tweets.call(filename, tweets)  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># returns since_id</span></span>
-<span id="cb7-23"></span>
-<span id="cb7-24">        <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Update values in terms</span></span>
-<span id="cb7-25">        term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"since_id"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> since_id</span>
-<span id="cb7-26">        term[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"timestamp_last_search"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> timestamp</span>
-<span id="cb7-27"></span>
-<span id="cb7-28">    save_terms.call(terms)</span></code></pre></div>
-<p>Note that I’ve used the <code>call()</code> method to call the functions that we defined earlier. This is because we want them to run as Modal stubs in the cloud. The previous functions need slight modifications to become stubs. For example, the <code>get_tweets</code> function needs to be decorated like so:</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@stub.function</span>(secret<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>modal.Secret.from_name(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"twitter-api"</span>))</span>
-<span id="cb8-2"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> get_tweets()</span>
-<span id="cb8-3">    ...</span></code></pre></div>
-<p>This lets Modal recognize it as a runnable function and also tells it to supply a secret variable to it. I’ve defined the secret variable in the Modal dashboard. The <code>twitter-api</code> secret variable contains the Twitter API keys and tokens. The <code>aws-s3-access</code> secret variable contains the AWS access key and secret key for an IAM user that has access to the S3 bucket.</p>
-</section>
-<section id="running-and-deploying" class="level3">
-<h3 class="anchored" data-anchor-id="running-and-deploying">Running and deploying</h3>
-<p>To run the app on Modal, we need to wrap the <code>main()</code> function in a <code>if __name__ == "__main__"</code> block. This lets us run the function from the command line. We also need to call <code>stub.run()</code> to start the stubs.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"__main__"</span>:</span>
-<span id="cb9-2">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> stub.run():</span>
-<span id="cb9-3">        main()</span></code></pre></div>
-<p>To run this, use <code>python app.py</code>. The execution will happen on Modal. You can see the logs in the Modal dashboard. To schedule it, run <code>modal deploy app.py</code>. Modal automatically logs the runs and informs you if there are any errors.</p>
-</section>
-<section id="modal-monitoring-costs" class="level3">
-<h3 class="anchored" data-anchor-id="modal-monitoring-costs">Modal monitoring &amp; costs</h3>
-<p>Modal charges CPU and memory by the second and only charges for what’s actually used. See their <a href="https://modal.com/pricing">pricing</a>. Cron jobs, monitoring, logging and custom Docker images are free.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/modal-twitter/monitoring.png" class="img-fluid figure-img"></p>
-<figcaption>Monitoring</figcaption>
-</figure>
-</div>
-<p>The monitoring dashboard shows the scheduled executions, the CPU and memory usage, and the logs. As shown in the screenshot, I encountered a few errors while testing the app. The logs helped me debug the issues. The app never used even 0.05 CPU cores at a time and requires less than 10 MB of memory. Thanks to Modal’s pricing model, this app will cost less than $1 per month to run.</p>
-<p>In addition to monitoring via Modal, you may wish to sign to updates from the <a href="https://api.twitterstat.us">Twitter API status page</a>. This will inform you of any issues with the API.</p>
-</section>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In this post, we built a Python app that fetches tweets from Twitter and saves them to S3. We used Modal to deploy and schedule the app in the cloud, complete with monitoring and logging. The next step is to analyze the tweets. I’ll write about that in a future post.</p>
-<p>If you wish to run this app yourself, you can clone the repo from <a href="https://github.com/psimm/modal-twitter/">GitHub</a> and follow the install instructions in the README.</p>
-<p>Photo by <a href="https://unsplash.com/es/@sortino?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Joshua Sortino</a> on <a href="https://unsplash.com/photos/LqKhnDzSF-8?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
-
-
-</section>
-
- ]]></description>
-  <category>Python</category>
-  <category>Cloud</category>
-  <category>Data Engineering</category>
-  <guid>https://simmering.dev/blog/modal-twitter/</guid>
-  <pubDate>Wed, 25 Jan 2023 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/modal-twitter/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
