@@ -7,7 +7,7 @@ image: "tournament.jpg"
 bibliography: bibliography.bib
 ---
 
-The launch of the [review analysis project](/projects//reviews/index.qmd) has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It's called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on [GitHub](https://github.com/psimm/text-tournament) under the MIT license.
+The launch of the [review analysis project](/projects//aspectwise/index.qmd) has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It's called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on [GitHub](https://github.com/psimm/text-tournament) under the MIT license.
 
 This is the companion blog post to the project which explains my thought process and technical details.
 

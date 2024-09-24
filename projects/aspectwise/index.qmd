@@ -1,5 +1,5 @@
 ---
-title: "Review analysis pipeline"
+title: "AspectWise"
 subtitle: "End-to-end automated pipeline for review collection, analysis and report creation"
 date: 2024-07-13
 author: "Paul Simmering"
@@ -50,4 +50,4 @@ Everything's automated in Dagster with data quality checks at every step. Here's
 
 The project leverages several machine learning models for ABSA, text classification, translation, and summarization.
 
-The first customer-ready version was released in July 2024. We announced it with an [article](https://www.teamq.de/blog/152/ai_reviews) featuring a case study.
+See the [AspectWise website](https://aspectwise.teamq.de) and a [case study](https://www.teamq.de/blog/152/ai_reviews) for more details.

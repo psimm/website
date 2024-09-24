@@ -10,7 +10,7 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.5.45</generator>
+<generator>quarto-1.5.57</generator>
 <lastBuildDate>Sat, 31 Aug 2024 22:00:00 GMT</lastBuildDate>
 <item>
   <title>From 5-7-5 to Thousand Lines: The Case for Longer Prompts</title>
@@ -776,7 +776,7 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
 
 
 
-<p>The launch of the <a href="../../projects/reviews/index.html">review analysis project</a> has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It’s called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on <a href="https://github.com/psimm/text-tournament">GitHub</a> under the MIT license.</p>
+<p>The launch of the <a href="../../projects/aspectwise/index.html">review analysis project</a> has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It’s called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on <a href="https://github.com/psimm/text-tournament">GitHub</a> under the MIT license.</p>
 <p>This is the companion blog post to the project which explains my thought process and technical details.</p>
 <section id="the-tournament" class="level2">
 <h2 class="anchored" data-anchor-id="the-tournament">The Tournament</h2>
