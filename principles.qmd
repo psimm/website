@@ -1,0 +1,254 @@
+---
+title: "Principles"
+author: "Paul Simmering"
+date: "2024-10-29"
+---
+
+This is a collection of 20 wisdoms and mental models that I find useful for decision making and contentedness. They're the best insights learned from years of reading blogs, biographies and personal development books, filtered through my life experience at age 30. They are not universal truths.
+
+> Adapt what is useful, reject what is useless, and add what is specifically your own -- [Bruce Lee](https://www.goodreads.com/quotes/30620-adapt-what-is-useful-reject-what-is-useless-and-add#:~:text=“Adapt%20what%20is%20useful%2C%20reject%20what%20is%20useless%2C,what%20is%20specifically%20your%20own.”%20―%20Bruce%20Lee)
+
+## 1. Put the fundamentals of a good life first
+
+Every lifestyle decision, from the best diet to the optimal workout schedule is debated endlessly. For every guru claiming one thing, there is another guru claiming the opposite. But a small set of fundamentals are obviously and uncontroversially good:
+
+- Get enough sleep
+- Drink water
+- Eat vegetables
+- Don't overeat on the regular
+- Avoid addictive substances
+- Be physically active a few times a week
+- Keep good relations with family and friends
+- Keep your living environment clean and tidy
+- Develop a marketable skill
+
+While individual circumstances may vary, these fundamentals form a strong foundation for a good life. Get the fundamentals right before bothering with figuring out who is right about the debatable issues. Be wary of plans that require you to compromise a fundamental good to pursue a less proven good. When you feel bad, check which of your fundamentals is missing. When deciding whether to invest in something, consider whether it's working towards one of the fundamentals.
+
+## 2. Actively find clarity
+
+Knowing what you want simplifies decision making and empowers action. The more specific you can describe your goal, the better you can act on it.
+
+> "Life favors the specific ask and punishes the vague wish." -- [Tim Ferriss](https://tim.blog/2015/10/29/startup-vacation-2/)
+
+A vague wish like "get a job that pays well" is not as actionable as "reach a senior role with specialization in X at one of the top companies in my field". The action items that spring from the latter will be more specific. It will be clear when the goal is achieved. In addition, a specific goal enables taking bolder actions and making bigger bets, because the reward is clear. It's also a relief for the mind: instead of ruminating, you can focus on the work at hand.
+
+Finding clarity is a process and can't be done overnight. However, the process can be sped up by actively seeking clarity - by trying out different options, talking to or reading from people who have experience, and reflecting on your values.
+
+Oftentimes, goals don't come from within but are learned or imposed by superiors or peers. That's normal, but doesn't mean that you are obligated to dedicate your life to them. Before making a big investment, check in with yourself and consider whether it's a true desire of yours.
+
+Finally, beware of sunk cost fallacy. Just because you've invested time and resources into something doesn't mean you have to continue indefinitely. Staying in a job, relationship or location that makes you unhappy is a terrible price to pay. Better to cut your losses and move on. That, too, requires the clarity that the choice is not working out.
+
+## 3. Form good habits and break bad ones
+
+Habits are the key to a healthy and productive life. Each single execution doesn't seem like much, but over the years, the repetition adds up to a big difference. Being conscious of your habits and deliberately improving them is a powerful way of self-programming. It's a way to take your aspirations and thinking from your brightest moments and apply them to your average behavior. As investor Ray Dalio put it:
+
+> Think of yourself as a machine operating within a machine and know that you have the ability to alter your machines to produce better outcomes. -- Ray Dalio, in [Principles: Life and Work](https://goodreads.com/book/show/34536488-principles)
+
+The best resource on habits I've found is James Clear's book [Atomic Habits](https://jamesclear.com/atomic-habits). It is a straightforward, actionable and scientifically backed guide to acquiring good habits and breaking bad ones. Matt Might's article on [Avoiding Temptation](https://matt.might.net/articles/how-to-avoid-temptation/) is a good companion. The key insight for me was that willpower is only good for temporarily overriding behavior. Habits are the long-term solution and are achieved by making the desired behavior easy.
+
+Habit formation takes time and involves setbacks. Don't try to remodel all of your behaviors at once - take it one at a time. Even dedicating a whole year to adding a new habit (e.g. regular exercising) or breaking a bad habit (e.g. staying up too late) is reasonable. Start easy and value consistency over intensity.
+
+## 4. Take comfort in knowing you're doing the right thing
+
+Procrastination is a terrible habit that wrecks productivity and happiness. Time spent on the "dark playground" (a term coined by Tim Urban in his excellent [article](https://waitbutwhy.com/2013/10/why-procrastinators-procrastinate.html) on procrastination) is wasted. There are many techniques to beat procrastination and it's worth finding ones that work for you.
+
+A frame that I find useful for beating procrastination is to remind myself that the thing I'm about to do is the best use of my time. While I'm doing the dreaded task, I can take solace in knowing that I at least I don't have to spend this time worrying that I'm wasting time. Instead, I can relish the fact that I'm doing the best thing for my future self.
+
+## 5. Use principles to simplify decisions
+
+In a life spanning 70, 80 or even 100 years you will encounter the same situations many times over. Thinking through a situation from first principles is expensive in time and mental energy. Instead, find a solution once and use it over and over again. Your mind already does this subconsciously - you don't need to think about how to ride a bike or how to type on a keyboard, as your use the learned patterns over and over again. A principle is the conscious application of this learning process. This enables automating more complex decisions, from what to buy at the supermarket to how to structure your investments. This frees up mental capacity for new situations, acquiring skills, and, frankly, for taking some time off thinking so hard.
+
+Ray Dalio's book [Principles: Life and Work](https://goodreads.com/book/show/34536488-principles) taught me the value of principles and inspired me to share this collection. Everyone has principles, though they are not a frequent topic of conversation. Taking inventory of your principles can be valuable:
+
+- Understand what shapes your principles - experiences, parents, teachers, religion, books, etc.
+- Evaluate which ones have delivered value and which ones have been wrong or impractical.
+- Observe your own behavior and find ways in which you are inconsistent with your principles.
+- Learn from others by deducing the principles they use.
+- Increase your consistency to help children learn discipline from you.
+- Search for new principles that simplify repeated situations that currently cost effort.
+
+There are different ways to engage with your principles. You may write them down, discuss them with others, or mentally match situations to the principles that you apply.
+
+## 6. Avoid unnecessary suffering
+
+> Pain is mandatory. Suffering is optional -- [Haruki Murakami](https://www.goodreads.com/quotes/613585-pain-is-inevitable-suffering-is-optional-say-you-re-running-and)
+
+I repeat this quote frequently, to the point that my girlfriend mocks me when I complain about something anyway. I repeat it because I think it's true for most people in most situations. The above quote is from a Japanese author in 2009, but the principle goes back a lot further. An earlier take on the same principle was written around the year 62:
+
+> We suffer more often in imagination than in reality -- [Lucius Annaeus Seneca](https://www.goodreads.com/work/quotes/93900-ad-lucilium-epistulae-morales)
+
+This has two parts:
+
+1. Avoid unproductive worrying about a dreaded event in the future. Either prepare with concrete actions (e.g. training, research, preparing resources, making contingency plans) or focus your mind on something else.
+2. Remind yourself that judgement isn't always necessary. Not every sensation requires an emotional response. It's possible to do something without debating whether you like it or not.
+
+## 7. Master your craft
+
+Becoming good at something marketable brings many rewards: a stable income from selling your services, an identity as a skilled professional, and the inherent joy of mastery.
+
+Three forces reward reaching the pinnacle of mastery in the 2020s more than ever:
+
+1. Through the internet, the best professionals can scale the reach and impact of their work far beyond what was possible in the past.
+2. There is a rising number of wealthy individuals who are willing to pay a large premium for the best possible work.
+3. Low to medium-skilled labor is increasingly automated. Unless you can perform at a better level than machines and AI, your job is at risk. This goes especially for desk jobs, as generative AI has developed faster than robotics.
+
+The ideal fuel for the pursuit of mastery is a combination of passion and market demand. If either is missing, it'll be much harder to stay the course. Doing a job you hate is a recipe for misery. Working on something nobody is willing to pay for is a recipe for poverty. For most people, there isn't just one best profession to get into, but rather a range of professions that match their personality and offer challenges that feel empowering. That is what "loving what you do" is about, not literally loving every minute of every day.
+
+When you have choice, I suggest going with the option that maximizes your career capital. Along with higher earnings potential, it also gives you leverage to negotiate how, when and where you work. [80000 hours](https://80000hours.org/career-guide/career-capital/) has a guide on career capital. Also prioritize options that allow you to grow transferable skills that remain useful throughout your career. Math in particular is the key to science, engineering, business administration, finance and many other lucrative fields.
+
+So how do you master your craft?
+
+**Engage in deliberate practice.** It means to work on tasks at a difficulty that is just beyond your current skill level. Too low, and you won't improve. Too high, and you'll get discouraged. It emphasizes the importance of consistent practice over innate talent. Anders Ericsson's book [Peak: Secrets from the New Science of Expertise](https://www.goodreads.com/book/show/26312997-peak) gives a comprehensive overview of deliberate practice. Along with those principles, an important mindset is to develop a sense of agency: take responsibility for your own progress. Past childhood, it's on the learner to take the initiative, rather than on parents or teachers to enforce practice.
+
+**Seek high quality learning materials.** The quality of the material you use to learn is critical to your progress. I've found that textbooks are the highest quality material available on most subjects. Much better than blog posts and videos. They are written by experts with a decade or more of experience in their fields, edited and illustrated, comprehensive and updated as new research emerges and teachers give feedback on the didactic approach. For learning, I suggest finding the highest quality textbook on the subject as the main material. Only consider lower quality materials like internet sources and lecture slides as supplements or on emerging topics not covered in the book.
+
+**Stick with it.** It takes grit to stick with something during the years it takes to go from beginner to master. Ira Glass put it well for creative work, but I think the same applies to other fields too:
+
+> All of us who do creative work, we get into it because we have good taste. But there is this gap. For the first couple years you make stuff, it’s just not that good. It’s trying to be good, it has potential, but it’s not. But your taste, the thing that got you into the game, is still killer. And your taste is why your work disappoints you. A lot of people never get past this phase, they quit. [...] It is only by going through a volume of work that you will close that gap, and your work will be as good as your ambitions. -- [Ira Glass](https://www.goodreads.com/quotes/309485-nobody-tells-this-to-people-who-are-beginners-i-wish)
+
+## 8. Invest in compounding assets
+
+> Compound interest is the eighth wonder of the world. He who understands it, earns it ... he who doesn't ... pays it. -- [attributed to Albert Einstein](https://www.goodreads.com/quotes/76863-compound-interest-is-the-eighth-wonder-of-the-world-he)
+
+Let's look at the effect of compounding over time at different interest rates:
+
+| Interest rate | 5 years | 10 years | 20 years | 30 years | 40 years |
+|--------|--------|----------|----------|----------|----------|
+| 1%           | 1.051x  | 1.104x   | 1.219x   | 1.348x   | 1.491x   |
+| 2%           | 1.104x  | 1.219x   | 1.486x   | 1.999x   | 2.807x   |
+| 5%           | 1.276x  | 1.629x   | 2.653x   | 4.322x   | 8.142x   |
+| 10%          | 1.610x  | 2.594x   | 6.727x   | 17.449x  | 57.275x  |
+
+Compounding, meaning interest earned on interest, is the central force in building long term wealth. Get on the train early. A $1,000 investment at age 25 that grows at 5% real interest rate will be worth $2,653 at age 45 and $8,142 at age 65.
+
+Stock and real estate ownership is the most attainable form of compounding for most people. For those with an entrepreneurial spirit, high willingness to work long hours and take on risk, direct ownership of a business can be even more powerful as it can compound at a faster rate and use more leverage.
+
+Social media following can also compound. The more people follow and share your work, the more others will hear about it.
+
+There are other pursuits that accumulate, but don't necessarily compound:
+
+- Reputation: Build a reputation as a trustworthy partner and reliable worker. Get invited to work on long-term projects with high leverage.
+- Skills: Become a top expert in your niche over time. Build a solid skill foundation and layer increasingly complex expertise on top. Use automation and delegation to decouple the number of hours worked from the output.
+- Habits: Each time you successfully repeat a behavior, you strengthen the habit and make it easier to repeat. Mastering one habit builds confidence that you can succeed with another habit.
+
+## 9. Be patient and decisive
+
+The world is overflowing with opportunities. Most are a waste of time, but some gems are hidden among them and go to those that act quickly. This suggests a "tight aggressive" approach: Keep an eye out for opportunities - pass on those that don't match your criteria, but when the right one presents itself, be decisive like a heron picking a fish out of a lake.
+
+> You should be very thoughtful and realize in most things (relationships, work, even in learning) what you’re trying to do is find the thing you can go all-in on to earn compound interest. -- Naval Ravikant, in [The Almanack of Naval Ravikant](https://goodreads.com/book/show/54898389-the-almanack-of-naval-ravikant)
+
+Similarly, Charlie Munger described his investment style as "extreme patience combined with extreme decisiveness".
+
+In his article on the topic, [Tynan](https://tynan.com/patient/) stresses that this approach only works when the standards you set are achievable. Patience combined with unrealistic standards means waiting forever and missing out on smaller improvements over the status quo.
+
+## 10. Create a high surface area for luck
+
+Many things rely on lucky encounters: meeting your future partner, applying for a job at the right time, finding an investor for your startup, getting a good deal on a house. You can either wait for the lucky encounter to magically find you and complain in the meantime that you're unlucky, or you can actively increase the probability of it happening by putting yourself in situations where it's more likely to happen. Imagine that you're trying to catch fish swimming down a river. You can hold your hand into the water and hope that a fish will swim into it, or you can cast a huge net across the river, virtually guaranteeing a catch.
+
+Some ideas for increasing "luck" in your career:
+
+- Create a LinkedIn profile and connect with people in your field.
+- Work in public: write a blog, make videos, publish open source software.
+- Move to a city that is a hub for your field.
+- Join professional associations.
+- Attend conferences and networking events.
+
+More generally, default to saying "yes" to opportunities, especially at the beginning of your career. Tell people what you're looking for instead of hoping that they read your mind.
+
+## 11. Manage your information diet
+
+News websites and social media platforms are incentivized to serve you content that draws attention. Outrageous stories and clickbait are effective at this, but are not useful for you. A constant feed of all the worst things happening anywhere in the world is not good emotionally. The vast majority of this information is not actionable. Rolf Dobelli wrote about this topic [in depth](https://gwern.net/doc/culture/2010-dobelli.pdf) in 2010, also going into how constant consumption of short-form content can erode attention for longer, higher quality content.
+
+Therefore, I suggest limiting how often you consume news and where you get it from. For most people, a weekly check-in is enough. That leaves you six days without distractions and lets events play out and facts get clarified. If something is more urgent, you'll hear people talking about it or you'll be informed by an emergency notification on your phone. Regarding sources, I suggest finding ones that are as fact-based and unbiased as possible. For social media, I suggest liberal muting of words, selecting "not interested" on posts and unfollowing accounts. By doing this regularly and following more people relevant to my interests, I now find that X and LinkedIn serve me a dense stream of high quality content.
+
+If a particular policy, conflict or other issue is important to you, invest time into a proper deep dive. Read information from multiple sources. Be wary that each side will only present information that is favorable to them. Find analogies from history to understand potential developments and second order effects. For other issues, make use of your right to be agnostic. You don't have to carry the burden of holding an opinion on everything.
+
+> You always own the option of having no opinion. There is never any need to get worked up or to trouble your soul about things you can't control. These things are not asking to be judged by you. Leave them alone. --[Marcus Aurelius](https://www.goodreads.com/quotes/685645-you-always-own-the-option-of-having-no-opinion-there)
+
+## 12. Expect people to act according to their incentives
+
+Some examples: companies optimize for shareholder value, politicians optimize for approval within election cycles, students optimize for highest grades with the least effort, employees prioritize projects that lead to a promotion.
+
+Expecting individuals in a system to act against their own incentives is unrealistic. If you are in a position to set up incentives for others, consider what behavior will maximize their reward with the least effort.
+
+> Show me the incentive and I'll show you the outcome. --[Charlie Munger](https://www.goodreads.com/quotes/11903426-show-me-the-incentive-and-i-ll-show-you-the-outcome)
+
+On a personal level, expecting individuals and organizations to act in accordance with their incentives is also a way to avoid disappointment.
+
+> Never attribute to malice or stupidity that which can be explained by moderately rational individuals following incentives in a complex system. --[Hubbard, Douglas W.](https://www.goodreads.com/quotes/939233-explanations-involving-conspiracy-greed-and-even-stupidity-are-easier-to)
+
+## 13. Play long-term games with long-term people
+
+A key result in game theory is that the dominant strategy in the [Prisoner's Dilemma](https://en.wikipedia.org/wiki/Prisoner's_dilemma) is to defect, and that this ends up with both players in worse positions than if they had cooperated. But in the absence of trust, they can't cooperate. The solution is to play a repeated game and punish defections. Then, the incentives favor cooperation. I first encountered this during my studies in economics, and was delighted to find it again in [The Almanack of Naval Ravikant](https://goodreads.com/book/show/54898389-the-almanack-of-naval-ravikant).
+
+This extends to business. When working together for the long term, the incentives favor cooperation and better outcomes can be achieved for both parties. In practical terms, this means that it's wise to keep investing in your long-term relationships and to guard your reputation. Being known as a reliable partner is invaluable. You'll receive access to sensitive information, be given more autonomy and considered for promotions. You can simplify deals and omit formalisms that are only necessary in one-time interactions without trust. Over time, a network of people that know you as a reliable partner will yield a stream of opportunities to make mutually beneficial deals.
+
+## 14. Externalize memory
+
+The brain is an imperfect storage of information, meanwhile we all carry around computers that are exceptionally good at it. Besides the actual risk of forgetting, constantly recounting all of your to-dos and appointments is a source of stress. I consider having a calendar, a to do list and a (digital) notebook essential.
+
+One of the main concepts in David Allen's [Getting Things Done](https://www.goodreads.com/book/show/1633.Getting_Things_Done) is "ubiquitous capture", meaning that tasks are captured in writing ASAP. This removes the possibility of forgetting and eases the burden on memory. The concrete solution, whether it's an app, a simple text file or a physical notebook doesn't matter nearly as much as getting into the habit of using it.
+
+In addition to transactional notes, I also find that keeping a long term archive of ideas, inspirations and reflections is valuable. It lets me pick up where I left off, make connections between seemingly disparate things.
+
+## 15. Use writing as a tool of thinking
+
+Holding and expanding complex lines of thinking in the brain is hard. By writing things down you can concentrate on one aspect at a time and consider more information than your mental RAM can hold. Further, writing serves as a forcing function for concreteness. Paul Graham puts this eloquently in his article "[Putting ideas into words](https://paulgraham.com/words.html)".
+
+In addition to free-form exploration of an idea, concept or decision, you can employ structured formats. They can bring out new perspectives and make writing easier by setting up boxes that can be filled with content. Some examples:
+
+- Chair dialogue: an imagined dialogue between representatives of opposing options
+- SWOT analysis: a list of strengths, weaknesses, opportunities and threats for an organization
+- [Fear setting](https://tim.blog/2017/05/15/fear-setting/): a list of what can go wrong, along with remedies
+- Goal breakdown: list the detailed action steps needed to achieve a goal, to turn an abstract desire into compact to-dos
+- Personal wiki: summaries of topics, connected by links and with references to sources. If this sounds interesting and you're technically inclined, check out my [article](/blog/quarto-wiki) about using [Quarto](https://quarto.org/) to build a personal wiki.
+
+## 16. Judge yourself by how well you played your hand
+
+There are many situations where you can do everything right, but still lose due to bad luck. It's important not to take away the wrong lessons from such situations.
+
+Let's imagine someone offered you the following game: roll a die, and if it comes up with any number greater than 1, they will double your bet. Otherwise, you lose the bet. You play the game and roll a 1. Was it a mistake to play? In results-oriented thinking, yes. If you hadn't played, you wouldn't have lost your bet. But is that a good lesson to learn here? No, because the bet is lopsided in your favor and in expectation you can make money here.
+
+Bets in real life are not so obvious, but can be just as lopsided in your favor. So consider replacing the question "Did I win?" with "Given the information I had at the time, did I make the choice that maximized the expected value?". This is a key frame for poker players and financial investors. Originally I learned it from Magic: The Gathering players Marshall Sutcliffe and Brian Wong in a [podcast](https://lrcast.com/limited-resources-226-rotty-and-application-of-tools/).
+
+## 17. Protect your slack
+
+Make sure that you're not constantly booked at 100% of your hours, attention, monetary and emotional capacity. It's not sustainable and binds your options: you can't relax, explore or invest into other things. Protecting your slack is your responsibility - you are the only one with a full overview of commitments and how full your batteries are. Zvi Mowshowitz goes into greater detail in his excellent [article](https://thezvi.substack.com/p/slack) on the subject.
+
+A way to guard slack is to consider the full costs of actions and purchases. Let's consider the purchase of a product. The obvious cost is the price tag. Money spent here can't be spent elsewhere. If purchased on finance, future income is consumed. In addition, there are hidden costs: storage (rent for the space the item will occupy), cleaning, repairs and finally disposal. Similar logic can be applied to time commitments.
+
+Some deals are worth it, most are not. Further guiding ideas may be to consider that "lack of time is a lack of priorities" (Tim Ferriss) and using the maxim "hell yeah or no" (Derek Sivers) in decision making.
+
+## 18. Apply the Pareto Principle
+
+The [Pareto Principle](https://en.wikipedia.org/wiki/Pareto_principle), also called the 80/20 rule states that 80% of useful outcomes usually stem from 20% of the inputs. Its inversion is that 80% of the inputs only amount to 20% of the outcomes - meaning they're not very productive. The exact distribution depends on the task at hand, but the general principle is useful as a rule of thumb to identify useful and wasted effort. I first came across the principle in Tim Ferriss' [The Four Hour Workweek](https://www.goodreads.com/book/show/368593.The_4_Hour_Workweek).
+
+I suggest two questions to separate the 20% from the 80%:
+
+- In the past 6 months, which actions have had the greatest impact on your results?
+- If you had to do your work in half the time, how would you do it?
+
+For the 80% of less useful activities, start by asking whether the task really needs to be done. Don't invent work and don't do things only for convention or appearance. Next, see if the task can be automated with machines or software. In our age of AI, this becomes possible for more and more tasks. Finally, if it can't be automated, consider outsourcing it. This frees up time and resources for the 20% of most useful activities. Pour more into them until they reach their scaling limit.
+
+## 19. Celebrate what you have
+
+"If I can't be happy now, I will never be happy." is a reminder to myself in objectively good times to occasionally leave the hamster wheel and reflect on what's important. There is a lot to be grateful for. Modern life offers amenities that were luxuries in the past. Running water, heating and cooling, year-round fresh produce, access to vast amounts of knowledge and entertainment, instant global communication. Things that used to be unaffordable for most are now in reach of many: air travel, computers, home appliances.
+
+Gratitude is a cheat code for your utility function. It's a multiplier to the enjoyment of experiences, plus a base happiness constant just for the pleasure of being alive. Even better, someone who is grateful will be a more pleasant partner, parent, friend and colleague, and attract more good things.
+
+So how to be grateful? That depends on the person, but here are some ideas for practicing both reflective and active gratitude:
+
+- Keep a gratitude journal.
+- Take photos and look at them to remember good times.
+- Reflect on history and the experiences of less fortunate people. The horrors of war, famine, slavery, black death, child mortality ... being free from these is a blessing.
+- Consciously shift your focus to the present and your sensations. How food tastes, how the air fills your lungs, how the sun feels on your skin. It's good to be alive.
+- Celebrate your health by using your body. Run, jump, play, dance, swim... happiness comes from the body. Health is the easiest blessing to take for granted.
+- Celebrate your freedom: explore a place you haven't been to before, make spontaneous plans, try a new food.
+
+## 20. Just do it
+
+If something is important to you, act on it. Whether it's founding a company, changing jobs, starting an education, taking an exam, traveling, moving, asking someone out, ending a bad relationship, or having a child. The stars will never align perfectly. Preparation can turn into procrastination, or be a pretense to hide fear. If you are thinking hard, and there are good arguments for doing and waiting, side with doing. Windows of opportunity close, some gradually and some suddenly.
+
+The [fear setting](https://tim.blog/2017/05/15/fear-setting/) technique from Tim Ferriss I mentioned earlier is a good way to discern real danger from imagined danger. It's also a way to identify the ways and degree to which a decision can be reversed or amended.
+
+Even when not mulling a big decision, it can be good to get a "reminder that you can just do stuff" as [Ellie Huxtable](https://x.com/ellie_huxtable/status/1843021953508253779) aptly put it. Use your freedoms, even just to show that you can still do new things.

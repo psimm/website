@@ -18,9 +18,7 @@ about:
 
 Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. Besides coding, I enjoy writing and speaking about data science. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de).
 
-My current focus is aspect-based sentiment analysis using LLMs. My team and I are building a data pipeline for [review analysis](https://www.teamq.de/blog/152/ai_reviews).
-
-The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
+My current focus is aspect-based sentiment analysis using LLMs. My team and I are building [AspectWise](/projects/aspectwise/), a data pipeline for review analysis.
 
 Some things I enjoy outside of work:
 
@@ -28,6 +26,12 @@ Some things I enjoy outside of work:
 - Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/projects).
 - Parks and gardens, especially Japanese gardens. I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
+- Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
 
+### Contact
+
+The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
+
+### About this website
 
 This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website).
