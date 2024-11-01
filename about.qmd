@@ -1,6 +1,6 @@
 ---
 title: "About"
-image: assets/profile.jpg
+image: assets/profile.webp
 about:
   template: solana
   links:
@@ -24,7 +24,7 @@ Some things I enjoy outside of work:
 
 - [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid) and [Figgie](https://www.figgie.com).
 - Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/projects).
-- Parks and gardens, especially Japanese gardens. I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
+- Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
 - Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
 
