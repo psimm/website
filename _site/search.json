@@ -735,32 +735,46 @@
     "text": "🗓️ Event\nResearch Plus by DGOF\n\n\n📅 Date\n13 September 2018\n\n\n📍 Location\nCologne, Germany\n\n\n🌐 Language\nGerman\n\n\n📥 Materials\nSlides (PDF)\n\n\n💻 App\nBusiness Game\n\n\n\nA presentation of the research project I conducted at Aalborg University for my master thesis. I investigated the use of artificial intelligence (AI) in managerial decision making by example of a business game. Six human participants competed against an AI agent. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. While playing, human participants gave a think-aloud protocol. Among other results, the study found architectural parallels in thought processes, qualitative differences in decisions due to AI’s lack of reciprocity, and potential problems in value alignment."
   },
   {
-    "objectID": "projects/cosmention/index.html",
-    "href": "projects/cosmention/index.html",
-    "title": "Cosmention",
+    "objectID": "projects/gpexp/index.html",
+    "href": "projects/gpexp/index.html",
+    "title": "Global Patent Explorer",
     "section": "",
-    "text": "Cosmention was an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard. Over 100 million social media posts and more than 10 million customer reviews were collected and analyzed using machine learning models.\nI am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and used by dm, the largest drug store chain in Europe.\nThe SaaS offering is not available to the public anymore, but the landing page can still be viewed as an archive.\n\nI presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.de, the largest German market research website.\nTech stack: R, Shiny, spaCy (Python), AWS, Docker, Postgres, Snowflake"
+    "text": "Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. The Shiny App visualizes the results of a paper on natural language processing on patent texts:\n\nD.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html\n\n\nThe app’s code is available on Github.\nThis tool lets users map and visualize inventive and innovative activity around the globe. The explorer relies on a series of novel indicators that combine insights from large-scale natural language processing and established patent analysis techniques and provide insights about dimensions such as technological originality or future orientation. Users can explore the dataset on country or city level, select time-ranges and technologies. The app features rich visualizations including a world map, network plots that show relations between countries and cities, and customizable statistical plots.\nThe app is a winner of the first IPSDM (Intellectual property statistics for descision makers) “Big Data Analytics” Challenge (2018) by the European Union Intellectual Property Office.\n\nI also presented the app at the GOR 2019 conference. You can find the slides here.\nTech stack: R, Shiny"
   },
   {
-    "objectID": "projects/bachelorthesis/index.html",
-    "href": "projects/bachelorthesis/index.html",
-    "title": "Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?",
+    "objectID": "projects/stakex/index.html",
+    "href": "projects/stakex/index.html",
+    "title": "StakeX - Organizational Networks from Web Research",
     "section": "",
-    "text": "In 2014, there was an increase in the number of news papers and streaming services that offered users the option to pay for an ad-free version of their website. As an aspiring economist, I wondered how much users would be willing to pay for such a service. To find out, I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis (PDF) was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.\n\nPhoto by Justus Menke on Unsplash"
+    "text": "StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:\n\nmethods for gathering public data on relevant stakeholders\nbuilding a network based on sociological theory\nanalyzing the network through use of force-based layout algorithms and centrality statistics\nextracting valuable insights for customers\n\nTo learn more about the method, see the slides of the talk by Thomas Perry and me or check the methods section of the demo app.\nI led the development of two Shiny apps for this project. The first is a CRUD app that facilitates data entry into a PostgreSQL database and ensures data integrity. The second is a platform for interactive data analysis featuring graphs with visNetwork and maps with leaflet. Both are hosted on EC2 instances on AWS.\nTech stack: R, PostgreSQL, AWS EC2"
   },
   {
-    "objectID": "projects/masterthesis/index.html",
-    "href": "projects/masterthesis/index.html",
-    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
+    "objectID": "projects/aspectwise/index.html",
+    "href": "projects/aspectwise/index.html",
+    "title": "AspectWise",
     "section": "",
-    "text": "My master thesis (PDF) investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.\nI also gave a talk about it at a Research Plus conference in Cologne. You can find the slides here.\nCurrent AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker. This idea of an artificial business decision maker is studied along four research questions.\n\nHow do AI and human thought processes differ?\nDo AIs and humans make qualitatively different business decisions?\nWhat are the dynamics of competition and cooperation between humans and AI?\nAre there potential problems in value alignment between a business and its AI?\n\n\nThe study approaches these questions by example of a business game. You can play the game online here. The code for the game is available on Github.\nThe game depicts competition between two firms in a consumer goods market and emphasizes innovation and imitation strategies in product development, as well as vertical and horizontal product differentiation. It is played by an AI and human participants. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. Six human participants played two games each against that agent. While playing, they gave a think-aloud protocol. The research questions are answered by combining insights from a content analysis of the protocols and an analysis of the AI’s architecture and processes.\nThe AI combines forward reasoning using tree search and evaluation of situations with artificial neural networks. This parallels humans’ thought processes that combine conscious, effortful thinking with unconscious, effortless evaluation. The differences lie in AI’s superior computational abilities, humans’ superior ability to learn from small samples and humans’ conscious and unconscious social behavior and emotions. The absence of this social behavior causes AI to act qualitatively differently – to consider actions that humans do not. This divergence can take the form of breaches of norms of reciprocity and unorthodox pursuit of a utility function. Instructing an AI is difficult, because humans have utility functions with many inputs that have complex relationships among each other, and may be unaware of elements until they come to bear. Value alignment is an on- going challenge for businesses and policy makers. Further, firms have to learn how to best incorporate AI in their decision making. This includes training employees in the use of AI assistants, developing transparent algorithms and developing an awareness for situations in which the use of AI is inappropriate for technical, legal or social reasons."
+    "text": "Q Agentur für Forschung offers a service for automated analysis of customer reviews in any product category in any European language. I’m the inventor and lead developer. We build on our research in aspect-based sentiment analysis (ABSA). Since our paper on the SemEval benchmark, we have re-thought ABSA from the ground up and developed a labeling scheme and model that allows for fine-grained analysis of customer reviews. See this example:\n\n\n\nAspect-based sentiment analysis\n\n\nThis model is the core of our pipeline. There are two other steps: review collection and reporting.\n\n\n\nData pipeline\n\n\nEverything’s automated in Dagster with data quality checks at every step. Here’s the full stack:\n\n\n\nCategory\nTechnology\n\n\n\n\nData\nWeb scraping services accessed via API\n\n\nData Warehouse\nMotherDuck\n\n\nData Transformation\ndbt, polars\n\n\nOrchestrator\nDagster\n\n\nModels\nFine-tuned LLMs + Prompt engineering\n\n\nExperiment Tracking\nWeights & Biases\n\n\nLabeling Tool\nCustom Shiny for Python app\n\n\nReporting\nQuarto\n\n\n\nThe project leverages several machine learning models for ABSA, text classification, translation, and summarization.\nSee the AspectWise website and a case study for more details."
   },
   {
-    "objectID": "talks.html",
-    "href": "talks.html",
-    "title": "Talks",
+    "objectID": "projects/texttunnel/index.html",
+    "href": "projects/texttunnel/index.html",
+    "title": "Python package texttunnel",
     "section": "",
-    "text": "4th Day of Business Psychology\n\n\n\n\n\n\nPaul Simmering\n\n\nMay 3, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI Revolutionizes Content Analysis in Market Research\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 24, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI in Market Research - Case Studies\n\n\n\n\n\n\nPaul Simmering and Oliver Tabino\n\n\nApr 16, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFinding Answers Summit\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere do LLMs fit in NLP Pipelines?\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nMar 9, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.\nThe package is MIT-licensed and available on Github and PyPi.\nAn introduction with a business use case is available on the Q Insight Agency blog."
+  },
+  {
+    "objectID": "imprint.html",
+    "href": "imprint.html",
+    "title": "Imprint",
+    "section": "",
+    "text": "Information pursuant to § 5 TMG\nPaul Simmering\nJägerhofallee 30\n71638 Ludwigsburg\n\n\nE-Mail: paul@simmering.dev"
+  },
+  {
+    "objectID": "imprint.html#contact",
+    "href": "imprint.html#contact",
+    "title": "Imprint",
+    "section": "",
+    "text": "E-Mail: paul@simmering.dev"
   },
   {
     "objectID": "principles.html",
@@ -910,46 +924,123 @@
     "text": "20. Just do it\nIf something is important to you, act on it. Whether it’s founding a company, changing jobs, starting an education, taking an exam, traveling, moving, asking someone out, ending a bad relationship, or having a child. The stars will never align perfectly. Preparation can turn into procrastination, or be a pretense to hide fear. If you are thinking hard, and there are good arguments for doing and waiting, side with doing. Windows of opportunity close, some gradually and some suddenly.\nThe fear setting technique from Tim Ferriss I mentioned earlier is a good way to discern real danger from imagined danger. It’s also a way to identify the ways and degree to which a decision can be reversed or amended.\nEven when not mulling a big decision, it can be good to get a “reminder that you can just do stuff” as Ellie Huxtable aptly put it. Use your freedoms, even just to show that you can still do new things."
   },
   {
-    "objectID": "imprint.html",
-    "href": "imprint.html",
-    "title": "Imprint",
+    "objectID": "talks.html",
+    "href": "talks.html",
+    "title": "Talks",
     "section": "",
-    "text": "Information pursuant to § 5 TMG\nPaul Simmering\nJägerhofallee 30\n71638 Ludwigsburg\n\n\nE-Mail: paul@simmering.dev"
+    "text": "4th Day of Business Psychology\n\n\n\n\n\n\nPaul Simmering\n\n\nMay 3, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI Revolutionizes Content Analysis in Market Research\n\n\n\n\n\n\nPaul Simmering\n\n\nApr 24, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI in Market Research - Case Studies\n\n\n\n\n\n\nPaul Simmering and Oliver Tabino\n\n\nApr 16, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFinding Answers Summit\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere do LLMs fit in NLP Pipelines?\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nMar 9, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGPT-4 and Alternatives in Practice: Quality, Implementation, Cost and Data Privacy\n\n\n\n\n\n\nPaul Simmering\n\n\nOct 26, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLarge Language Models for Aspect-Based Sentiment Analysis\n\n\n\n\n\n\nPaul Simmering and Paavo Huoviala\n\n\nSep 21, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAI for Social Media Monitoring at dm\n\n\n\n\n\n\nPaul Simmering\n\n\nNov 25, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStakeX - Organizational Networks from Web Research\n\n\n\n\n\n\nThomas Perry and Paul Simmering\n\n\nSep 28, 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR Shiny for Interactive Data Visualization – A Case Study\n\n\n\n\n\n\nPaul Simmering\n\n\nMar 8, 2019\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHuman and AI Decision Making in a Game of Innovation and Imitation\n\n\n\n\n\n\nPaul Simmering\n\n\nSep 13, 2018\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\nPaul Simmering and Daniel S. Hain\n\n\nSep 27, 2017\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInnovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model\n\n\n\n\n\n\n\n\n\nMay 31, 2017\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "imprint.html#contact",
-    "href": "imprint.html#contact",
-    "title": "Imprint",
+    "objectID": "projects/masterthesis/index.html",
+    "href": "projects/masterthesis/index.html",
+    "title": "Human and AI Decision Making in a Game of Innovation and Imitation",
     "section": "",
-    "text": "E-Mail: paul@simmering.dev"
+    "text": "My master thesis (PDF) investigates the use of artificial intelligence (AI) in managerial decision making. The thesis was supervised by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki at Aalborg University.\nI also gave a talk about it at a Research Plus conference in Cologne. You can find the slides here.\nCurrent AI is narrow, specialized for single tasks and cannot be applied to others. However, recent developments in general game-playing algorithms suggest that AI will become more generally applicable. In managerial decision making, it could be used as a decision support systems or as an autonomous decision maker. This idea of an artificial business decision maker is studied along four research questions.\n\nHow do AI and human thought processes differ?\nDo AIs and humans make qualitatively different business decisions?\nWhat are the dynamics of competition and cooperation between humans and AI?\nAre there potential problems in value alignment between a business and its AI?\n\n\nThe study approaches these questions by example of a business game. You can play the game online here. The code for the game is available on Github.\nThe game depicts competition between two firms in a consumer goods market and emphasizes innovation and imitation strategies in product development, as well as vertical and horizontal product differentiation. It is played by an AI and human participants. The agent combines Monte Carlo Tree Search with prediction of outcomes using an artificial neural network. Six human participants played two games each against that agent. While playing, they gave a think-aloud protocol. The research questions are answered by combining insights from a content analysis of the protocols and an analysis of the AI’s architecture and processes.\nThe AI combines forward reasoning using tree search and evaluation of situations with artificial neural networks. This parallels humans’ thought processes that combine conscious, effortful thinking with unconscious, effortless evaluation. The differences lie in AI’s superior computational abilities, humans’ superior ability to learn from small samples and humans’ conscious and unconscious social behavior and emotions. The absence of this social behavior causes AI to act qualitatively differently – to consider actions that humans do not. This divergence can take the form of breaches of norms of reciprocity and unorthodox pursuit of a utility function. Instructing an AI is difficult, because humans have utility functions with many inputs that have complex relationships among each other, and may be unaware of elements until they come to bear. Value alignment is an on- going challenge for businesses and policy makers. Further, firms have to learn how to best incorporate AI in their decision making. This includes training employees in the use of AI assistants, developing transparent algorithms and developing an awareness for situations in which the use of AI is inappropriate for technical, legal or social reasons."
   },
   {
-    "objectID": "projects/texttunnel/index.html",
-    "href": "projects/texttunnel/index.html",
-    "title": "Python package texttunnel",
+    "objectID": "projects/bachelorthesis/index.html",
+    "href": "projects/bachelorthesis/index.html",
+    "title": "Do Internet Users have a Positive Willingness-To-Pay for Ad-free Usage of Websites?",
     "section": "",
-    "text": "texttunnel is a Python package for efficient interaction with the OpenAI API. I developed it in collaboration with Paavo Huoviala at Q Insight Agency.\nThe package is MIT-licensed and available on Github and PyPi.\nAn introduction with a business use case is available on the Q Insight Agency blog."
+    "text": "In 2014, there was an increase in the number of news papers and streaming services that offered users the option to pay for an ad-free version of their website. As an aspiring economist, I wondered how much users would be willing to pay for such a service. To find out, I conducted an online survey and economic experiment and analyzed the results using logistic regression. The thesis (PDF) was supervised by Prof. Dr. Gerhard Riener at University of Mannheim.\n\nPhoto by Justus Menke on Unsplash"
   },
   {
-    "objectID": "projects/aspectwise/index.html",
-    "href": "projects/aspectwise/index.html",
-    "title": "AspectWise",
+    "objectID": "projects/cosmention/index.html",
+    "href": "projects/cosmention/index.html",
+    "title": "Cosmention",
     "section": "",
-    "text": "Q Agentur für Forschung offers a service for automated analysis of customer reviews in any product category in any European language. I’m the inventor and lead developer. We build on our research in aspect-based sentiment analysis (ABSA). Since our paper on the SemEval benchmark, we have re-thought ABSA from the ground up and developed a labeling scheme and model that allows for fine-grained analysis of customer reviews. See this example:\n\n\n\nAspect-based sentiment analysis\n\n\nThis model is the core of our pipeline. There are two other steps: review collection and reporting.\n\n\n\nData pipeline\n\n\nEverything’s automated in Dagster with data quality checks at every step. Here’s the full stack:\n\n\n\nCategory\nTechnology\n\n\n\n\nData\nWeb scraping services accessed via API\n\n\nData Warehouse\nMotherDuck\n\n\nData Transformation\ndbt, polars\n\n\nOrchestrator\nDagster\n\n\nModels\nFine-tuned LLMs + Prompt engineering\n\n\nExperiment Tracking\nWeights & Biases\n\n\nLabeling Tool\nCustom Shiny for Python app\n\n\nReporting\nQuarto\n\n\n\nThe project leverages several machine learning models for ABSA, text classification, translation, and summarization.\nSee the AspectWise website and a case study for more details."
+    "text": "Cosmention was an AI-powered social media monitoring tool for the cosmetics industry. A fully automated data pipeline starting from social media APIs and ending in a customizable dashboard. Over 100 million social media posts and more than 10 million customer reviews were collected and analyzed using machine learning models.\nI am the inventor and lead developer and started the project as an independent SaaS offering. It was acquired by Q Insight Agency and used by dm, the largest drug store chain in Europe.\nThe SaaS offering is not available to the public anymore, but the landing page can still be viewed as an archive.\n\nI presented the data pipeline in 2021 at the BVM (German association of social and market researchers) symposium on artificial intelligence and wrote an article on Marktforschung.de, the largest German market research website.\nTech stack: R, Shiny, spaCy (Python), AWS, Docker, Postgres, Snowflake"
   },
   {
-    "objectID": "projects/stakex/index.html",
-    "href": "projects/stakex/index.html",
-    "title": "StakeX - Organizational Networks from Web Research",
+    "objectID": "japanese_gardens.html",
+    "href": "japanese_gardens.html",
+    "title": "Japanese Gardens",
     "section": "",
-    "text": "StakeX is a network analysis approach for public relations projects. It is in use at Q Insight Agency with clients in public transportation and the energy sector. The approach consists of:\n\nmethods for gathering public data on relevant stakeholders\nbuilding a network based on sociological theory\nanalyzing the network through use of force-based layout algorithms and centrality statistics\nextracting valuable insights for customers\n\nTo learn more about the method, see the slides of the talk by Thomas Perry and me or check the methods section of the demo app.\nI led the development of two Shiny apps for this project. The first is a CRUD app that facilitates data entry into a PostgreSQL database and ensures data integrity. The second is a platform for interactive data analysis featuring graphs with visNetwork and maps with leaflet. Both are hosted on EC2 instances on AWS.\nTech stack: R, PostgreSQL, AWS EC2"
+    "text": "Photos of Japanese gardens I’ve visited. Click to enlarge."
   },
   {
-    "objectID": "projects/gpexp/index.html",
-    "href": "projects/gpexp/index.html",
-    "title": "Global Patent Explorer",
-    "section": "",
-    "text": "Freeelance work for Aalborg University, commissioned by Assoc. Prof. Daniel S. Hain and Assoc. Prof. Roman Jurowetzki. The Shiny App visualizes the results of a paper on natural language processing on patent texts:\n\nD.S. Hain, R. Jurowetzki, T. Buchmann, P. Wolf (2018), A Vector Worth a Thousand Counts: A Temporal Semantic Similarity Approach to Patent Impact Prediction. Available at http://vbn.aau.dk/en/publications/a-vector-worth-a-thousand-counts(855d9758-d017-4b4a-baf5-8b7e72a1c223).html\n\n\nThe app’s code is available on Github.\nThis tool lets users map and visualize inventive and innovative activity around the globe. The explorer relies on a series of novel indicators that combine insights from large-scale natural language processing and established patent analysis techniques and provide insights about dimensions such as technological originality or future orientation. Users can explore the dataset on country or city level, select time-ranges and technologies. The app features rich visualizations including a world map, network plots that show relations between countries and cities, and customizable statistical plots.\nThe app is a winner of the first IPSDM (Intellectual property statistics for descision makers) “Big Data Analytics” Challenge (2018) by the European Union Intellectual Property Office.\n\nI also presented the app at the GOR 2019 conference. You can find the slides here.\nTech stack: R, Shiny"
+    "objectID": "japanese_gardens.html#ginkaku-ji-kyoto",
+    "href": "japanese_gardens.html#ginkaku-ji-kyoto",
+    "title": "Japanese Gardens",
+    "section": "Ginkaku-ji, Kyoto",
+    "text": "Ginkaku-ji, Kyoto"
+  },
+  {
+    "objectID": "japanese_gardens.html#tenryu-ji-kyoto",
+    "href": "japanese_gardens.html#tenryu-ji-kyoto",
+    "title": "Japanese Gardens",
+    "section": "Tenryu-ji, Kyoto",
+    "text": "Tenryu-ji, Kyoto"
+  },
+  {
+    "objectID": "japanese_gardens.html#hakusasonso-hashimoto-kansetsu-museum-kyoto",
+    "href": "japanese_gardens.html#hakusasonso-hashimoto-kansetsu-museum-kyoto",
+    "title": "Japanese Gardens",
+    "section": "Hakusasonso Hashimoto Kansetsu Museum, Kyoto",
+    "text": "Hakusasonso Hashimoto Kansetsu Museum, Kyoto"
+  },
+  {
+    "objectID": "japanese_gardens.html#arashiyama-bamboo-grove-kyoto",
+    "href": "japanese_gardens.html#arashiyama-bamboo-grove-kyoto",
+    "title": "Japanese Gardens",
+    "section": "Arashiyama Bamboo Grove, Kyoto",
+    "text": "Arashiyama Bamboo Grove, Kyoto"
+  },
+  {
+    "objectID": "japanese_gardens.html#koko-en-himeji",
+    "href": "japanese_gardens.html#koko-en-himeji",
+    "title": "Japanese Gardens",
+    "section": "Koko-en, Himeji",
+    "text": "Koko-en, Himeji"
+  },
+  {
+    "objectID": "japanese_gardens.html#nara-park-nara",
+    "href": "japanese_gardens.html#nara-park-nara",
+    "title": "Japanese Gardens",
+    "section": "Nara Park, Nara",
+    "text": "Nara Park, Nara\nPark with deer."
+  },
+  {
+    "objectID": "japanese_gardens.html#hamarikyu-garden-tokyo",
+    "href": "japanese_gardens.html#hamarikyu-garden-tokyo",
+    "title": "Japanese Gardens",
+    "section": "Hamarikyu Garden, Tokyo",
+    "text": "Hamarikyu Garden, Tokyo"
+  },
+  {
+    "objectID": "japanese_gardens.html#hibiya-park-tokyo",
+    "href": "japanese_gardens.html#hibiya-park-tokyo",
+    "title": "Japanese Gardens",
+    "section": "Hibiya Park, Tokyo",
+    "text": "Hibiya Park, Tokyo\nNested in Ginza."
+  },
+  {
+    "objectID": "japanese_gardens.html#kiyosumi-garden-tokyo",
+    "href": "japanese_gardens.html#kiyosumi-garden-tokyo",
+    "title": "Japanese Gardens",
+    "section": "Kiyosumi Garden, Tokyo",
+    "text": "Kiyosumi Garden, Tokyo"
+  },
+  {
+    "objectID": "japanese_gardens.html#kokyo-gaien-national-garden-tokyo",
+    "href": "japanese_gardens.html#kokyo-gaien-national-garden-tokyo",
+    "title": "Japanese Gardens",
+    "section": "Kokyo Gaien National Garden, Tokyo",
+    "text": "Kokyo Gaien National Garden, Tokyo"
+  },
+  {
+    "objectID": "japanese_gardens.html#shinjuku-gyoen-national-garden-tokyo",
+    "href": "japanese_gardens.html#shinjuku-gyoen-national-garden-tokyo",
+    "title": "Japanese Gardens",
+    "section": "Shinjuku Gyoen National Garden, Tokyo",
+    "text": "Shinjuku Gyoen National Garden, Tokyo"
+  },
+  {
+    "objectID": "japanese_gardens.html#blühendes-barock-ludwigsburg",
+    "href": "japanese_gardens.html#blühendes-barock-ludwigsburg",
+    "title": "Japanese Gardens",
+    "section": "Blühendes Barock, Ludwigsburg",
+    "text": "Blühendes Barock, Ludwigsburg\nClose to home."
   },
   {
     "objectID": "talks/emaee2017/index.html",
