@@ -4,7 +4,7 @@ author: "Paul Simmering"
 date: "2024-11-24"
 bibliography: bibliography.bib  
 categories: ["Machine Learning", "Python"]
-image: "image.png"
+image: "image.webp"
 cache: false
 toc: true
 format:

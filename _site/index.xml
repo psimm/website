@@ -138,7 +138,7 @@ graph TB
 <section id="semeval-2014-task-4" class="level3">
 <h3 class="anchored" data-anchor-id="semeval-2014-task-4">SemEval 2014 Task 4</h3>
 <p>I’m using the SemEval 2014 Task 4 dataset by <span class="citation" data-cites="pontiki_semeval">Pontiki et al. (2014)</span>. The <a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">dataset</a> is available on Hugging Face. This is a cleaned version of the original XML files consisting of train and test splits. The small number of examples with the “conflict” label are excluded, as is common in the literature.</p>
-<div id="e4d63c27" class="cell" data-execution_count="1">
+<div id="e866490d" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
@@ -166,7 +166,7 @@ font-style: inherit;">+</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/data/test-00000-of-00001.parquet"</span>)</span></code></pre></div>
 </div>
-<div id="806f0c13" class="cell" data-execution_count="2">
+<div id="4b979050" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
@@ -227,53 +227,53 @@ font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"examples"</span>])</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div id="rqftrwueta" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="24">
+<div id="kwilbrabpm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#rqftrwueta table {
+#kwilbrabpm table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#rqftrwueta thead, tbody, tfoot, tr, td, th { border-style: none; }
+#kwilbrabpm thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#rqftrwueta p { margin: 0; padding: 0; }
- #rqftrwueta .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #rqftrwueta .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #rqftrwueta .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #rqftrwueta .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #rqftrwueta .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #rqftrwueta .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #rqftrwueta .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #rqftrwueta .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #rqftrwueta .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #rqftrwueta .gt_column_spanner_outer:first-child { padding-left: 0; }
- #rqftrwueta .gt_column_spanner_outer:last-child { padding-right: 0; }
- #rqftrwueta .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #rqftrwueta .gt_spanner_row { border-bottom-style: hidden; }
- #rqftrwueta .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #rqftrwueta .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #rqftrwueta .gt_from_md> :first-child { margin-top: 0; }
- #rqftrwueta .gt_from_md> :last-child { margin-bottom: 0; }
- #rqftrwueta .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #rqftrwueta .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #rqftrwueta .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #rqftrwueta .gt_row_group_first td { border-top-width: 2px; }
- #rqftrwueta .gt_row_group_first th { border-top-width: 2px; }
- #rqftrwueta .gt_striped { background-color: rgba(128,128,128,0.05); }
- #rqftrwueta .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #rqftrwueta .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #rqftrwueta .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #rqftrwueta .gt_left { text-align: left; }
- #rqftrwueta .gt_center { text-align: center; }
- #rqftrwueta .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #rqftrwueta .gt_font_normal { font-weight: normal; }
- #rqftrwueta .gt_font_bold { font-weight: bold; }
- #rqftrwueta .gt_font_italic { font-style: italic; }
- #rqftrwueta .gt_super { font-size: 65%; }
- #rqftrwueta .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #rqftrwueta .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#kwilbrabpm p { margin: 0; padding: 0; }
+ #kwilbrabpm .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #kwilbrabpm .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #kwilbrabpm .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #kwilbrabpm .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #kwilbrabpm .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #kwilbrabpm .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #kwilbrabpm .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #kwilbrabpm .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #kwilbrabpm .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #kwilbrabpm .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #kwilbrabpm .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #kwilbrabpm .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #kwilbrabpm .gt_spanner_row { border-bottom-style: hidden; }
+ #kwilbrabpm .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #kwilbrabpm .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #kwilbrabpm .gt_from_md> :first-child { margin-top: 0; }
+ #kwilbrabpm .gt_from_md> :last-child { margin-bottom: 0; }
+ #kwilbrabpm .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #kwilbrabpm .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #kwilbrabpm .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #kwilbrabpm .gt_row_group_first td { border-top-width: 2px; }
+ #kwilbrabpm .gt_row_group_first th { border-top-width: 2px; }
+ #kwilbrabpm .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #kwilbrabpm .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #kwilbrabpm .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #kwilbrabpm .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #kwilbrabpm .gt_left { text-align: left; }
+ #kwilbrabpm .gt_center { text-align: center; }
+ #kwilbrabpm .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #kwilbrabpm .gt_font_normal { font-weight: normal; }
+ #kwilbrabpm .gt_font_bold { font-weight: bold; }
+ #kwilbrabpm .gt_font_italic { font-style: italic; }
+ #kwilbrabpm .gt_super { font-size: 65%; }
+ #kwilbrabpm .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #kwilbrabpm .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -326,7 +326,7 @@ font-style: inherit;">"examples"</span>])</span></code></pre></div>
 <section id="pydantic-models-for-absa" class="level3">
 <h3 class="anchored" data-anchor-id="pydantic-models-for-absa">Pydantic models for ABSA</h3>
 <p>We create classes to represent the input and output of the task using the data validation library <a href="https://docs.pydantic.dev/latest/">Pydantic</a>. This helps with validating the data and provides a structured output format for predictor. The <code>Field</code> class is used to describe the expected data type. Their descriptions match the ones used in <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. This is a form of prompting, but DSPy also supports automatically setting the structure’s descriptions using the <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed#optimizing-typed-predictors"><code>optimize_signature</code></a> optimizer. In this experiment I’ll stick with the original descriptions and only vary the normal prompt and few-shot examples.</p>
-<div id="7ea8efd9" class="cell" data-execution_count="3">
+<div id="28302a82" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
@@ -485,7 +485,7 @@ font-style: inherit;">"An array of aspects and their polarities. If no aspects a
 <section id="transform-dataset-to-dspy-examples" class="level3">
 <h3 class="anchored" data-anchor-id="transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</h3>
 <p>Each row in the dataset needs to be turned into an instance of the <code>dspy.Example</code> class. The <code>with_inputs</code> method is used to tell DSPy which column contains the input. Other columns are used as expected model outputs.</p>
-<div id="fa9baa0f" class="cell" data-execution_count="4">
+<div id="7e4c7234" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> json</span>
@@ -541,11 +541,11 @@ font-weight: bold;
 font-style: inherit;">in</span> test.to_dicts()]</span></code></pre></div>
 </div>
 <p>Let’s look at the first example.</p>
-<div id="80905d6d" class="cell" data-execution_count="5">
+<div id="07cbc197" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainset[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>Example({'text': 'I charge it at night and skip taking the cord with me because of the good battery life.', 'aspects': Aspects(aspects=[Aspect(term='cord', polarity='neutral'), Aspect(term='battery life', polarity='positive')])}) (input_keys={'text'})</code></pre>
 </div>
 </div>
@@ -554,7 +554,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="creating-a-dspy-typed-predictor">Creating a DSPy typed predictor</h3>
 <p>In DSPy, a module is a language model and a way of prompting. They can also consist of multiple requests and also include external tools such as a vector database for retrieval augmented generation. In this example, we have a single request using few-shot examples and chain of thought.</p>
 <p>In order to be able to parse the output as a dictionary, the LLM must output valid JSON. Therefore I’ll use a <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed">Typed Predictor</a> in DSPy, which is similar to structured outputs via instructor or a similar library.</p>
-<div id="b08481e5" class="cell" data-execution_count="6">
+<div id="3a44b159" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -573,7 +573,7 @@ font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span></code><
 </div>
 <p>We also need to choose a language model. DSPy works with OpenAI, Anthropic, Ollama, vllm and other OpenAI-compatible platforms and libraries. This is powered by <a href="https://github.com/BerriAI/litellm">litellm</a> under the hood.</p>
 <p>For this article, I’ll use OpenAI’s gpt-4o-mini as well as the 70B version of Meta’s Llama 3.1 hosted on <a href="https://fireworks.ai">fireworks.ai</a>. Fireworks.ai generously supplied me with credits as part of the <a href="https://maven.com/parlance-labs/fine-tuning?utm_campaign=d45fef&amp;utm_medium=partner&amp;utm_source=instructor">Mastering LLMs For Developers &amp; Data Scientists</a> course.</p>
-<div id="1d75c5fd" class="cell" data-execution_count="7">
+<div id="c5f63bb3" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># FIREWORKS_AI_API_KEY environment variable must be set.</span></span>
@@ -618,21 +618,21 @@ font-style: inherit;">=</span>lm)</span></code></pre></div>
 <section id="optimization" class="level2">
 <h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
 <p>Let’s run a single example to check that everything is working.</p>
-<div id="6400007f" class="cell" data-execution_count="8">
+<div id="cf73e57f" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">predictor(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"The pizza was great, but the service was terrible"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <pre><code>Prediction(
-    rationale='We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".',
+    reasoning='The text expresses a mixed sentiment towards the pizza place, with a positive sentiment towards the pizza and a negative sentiment towards the service.',
     aspects=Aspects(aspects=[Aspect(term='pizza', polarity='positive'), Aspect(term='service', polarity='negative')])
 )</code></pre>
 </div>
 </div>
 <p>That’s a good start. I’m a fan of <a href="https://hamel.dev/blog/posts/prompt/">Hamel Husain’s advice</a> to always demand: “Show me the prompt”, so let’s check what DSPy actually sent to OpenAI:</p>
-<div id="4c90494d" class="cell" data-execution_count="9">
+<div id="a7cd2295" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">lm.inspect_history(n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -643,7 +643,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 
 
 
-[2024-11-24T16:59:23.683795]
+[2024-11-24T17:27:26.491140]
 
 System message:
 
@@ -651,7 +651,7 @@ Your input fields are:
 1. `text` (Input)
 
 Your output fields are:
-1. `rationale` (str): ${produce the aspects}. We ...
+1. `reasoning` (str)
 2. `aspects` (Aspects)
 
 All interactions will be structured in the following way, with the appropriate values filled in.
@@ -659,8 +659,8 @@ All interactions will be structured in the following way, with the appropriate v
 [[ ## text ## ]]
 {text}
 
-[[ ## rationale ## ]]
-{rationale}
+[[ ## reasoning ## ]]
+{reasoning}
 
 [[ ## aspects ## ]]
 {aspects}        # note: the value you produce must be pareseable according to the following JSON schema: {"type": "object", "$defs": {"Aspect": {"type": "object", "properties": {"polarity": {"type": "string", "description": "The polarity expressed towards the aspect term. Valid polarities are ‘positive’, ‘neutral’, ‘negative'.", "enum": ["positive", "neutral", "negative"], "title": "Polarity"}, "term": {"type": "string", "description": "An aspect term, which is a verbatim text snippet. Single or multiword terms naming particular aspects of the reviewed product or service.", "title": "Term"}}, "required": ["term", "polarity"], "title": "Aspect"}}, "properties": {"aspects": {"type": "array", "description": "An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array.", "items": {"$ref": "#/$defs/Aspect"}, "title": "Aspects"}}, "required": ["aspects"], "title": "Aspects"}
@@ -676,13 +676,13 @@ User message:
 [[ ## text ## ]]
 The pizza was great, but the service was terrible
 
-Respond with the corresponding output fields, starting with the field `[[ ## rationale ## ]]`, then `[[ ## aspects ## ]]` (must be formatted as a valid Python Aspects), and then ending with the marker for `[[ ## completed ## ]]`.
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## aspects ## ]]` (must be formatted as a valid Python Aspects), and then ending with the marker for `[[ ## completed ## ]]`.
 
 
 Response:
 
-[[ ## rationale ## ]]
-We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".
+[[ ## reasoning ## ]]
+The text expresses a mixed sentiment towards the pizza place, with a positive sentiment towards the pizza and a negative sentiment towards the service.
 
 [[ ## aspects ## ]]
 {"aspects": [{"term": "pizza", "polarity": "positive"}, {"term": "service", "polarity": "negative"}]}
@@ -699,7 +699,7 @@ We produce the aspects by identifying the terms "pizza" and "service" as aspects
 <section id="specify-the-evaluation-function" class="level3">
 <h3 class="anchored" data-anchor-id="specify-the-evaluation-function">Specify the evaluation function</h3>
 <p>An evaluation function takes an example and a prediction and returns an F1 score. A true positive is a predicted aspect that is also in the gold answer, a false positive is a predicted aspect that is not in the gold answer, and a false negative is a gold answer aspect that is not predicted. Here are the precision, recall, and F1 score functions.</p>
-<div id="e0f4ac0e" class="cell" data-execution_count="10">
+<div id="90d3bff6" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -825,7 +825,7 @@ background-color: null;
 font-style: inherit;">+</span> rec)</span></code></pre></div>
 </div>
 <p>Next is the evaluation function which compares the gold and predicted aspects. To count as a true positive, both the term and the polarity have to be correct. As it is conventional on this benchmark, the case where both the gold answers and the prediction are empty is treated as a correct prediction of no aspects.</p>
-<div id="1da9c83f" class="cell" data-execution_count="11">
+<div id="df620918" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -904,7 +904,7 @@ font-weight: bold;
 font-style: inherit;">return</span> f1_score(tp, fp, fn)</span></code></pre></div>
 </div>
 <p>Let’s try the evaluation function with a single example. We expect the F1 score to be 1.0, because the prediction matches the gold answer exactly.</p>
-<div id="b9859938" class="cell" data-execution_count="12">
+<div id="7fb184ab" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">example <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Example(</span>
@@ -948,7 +948,7 @@ font-style: inherit;">=</span> predictor(text<span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">=</span>example.text)</span>
 <span id="cb15-11">evaluate_absa(example, prediction)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>1.0</code></pre>
 </div>
 </div>
@@ -957,7 +957,7 @@ font-style: inherit;">=</span>example.text)</span>
 <h3 class="anchored" data-anchor-id="optimizers">Optimizers</h3>
 <p>DSPy has a variety of <a href="https://dspy.ai/learn/optimization/optimizers/?h=optimizers">optimizers</a>, loops that change the prompt and/or few-shot examples and evaluate the performance. They’re analogous to optimizers like SGD and Adam in PyTorch. The choice of optimizer depends on the task, the amount of labeled data and the computational resources available. As we have a large labeled dataset, it’s not necessary to have the model bootstrap artificial examples. Our 2023 paper found that fine-tuning yields the best results, but the goal of this article is to showcase DSPy’s prompt optimization.</p>
 <p>The most powerful optimizer available for a prompting approach for this task is <a href="[Multiprompt Instruction PRoposal Optimizer Version 2](https://dspy.ai/deep-dive/optimizers/miprov2/?h=miprov)">MIPROv2</a> (Multiprompt Instruction PRoposal Optimizer Version 2) by <span class="citation" data-cites="opsahlong2024optimizinginstructionsdemonstrationsmultistage">Opsahl-Ong et al. (2024)</span>. MIPROv2 uses Bayesian optimization to find an optimal combination of few-shot examples and prompt instructions.</p>
-<div id="78b264c7" class="cell" data-execution_count="13">
+<div id="6ae24c04" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">optimizer_settings <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
@@ -988,7 +988,7 @@ background-color: null;
 font-style: inherit;">**</span>optimizer_settings)</span></code></pre></div>
 </div>
 <p>The final step is to call the <code>compile</code> method, which starts the optimization process. After about 5 minutes, the best prompt and few-shot examples are saved to a JSON file.</p>
-<div id="53f24104" class="cell" data-execution_count="14">
+<div id="0b7c0035" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Define settings for the comilation step of the optimizer.</span></span>
@@ -1066,7 +1066,7 @@ font-style: inherit;">**</span>compile_settings</span>
 background-color: null;
 font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
 <p>Let’s check if we can load it again:</p>
-<div id="e98c9a29" class="cell" data-execution_count="15">
+<div id="6b55443e" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">optimized_predictor <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.ChainOfThought(signature<span class="op" style="color: #5E5E5E;
@@ -1079,7 +1079,7 @@ background-color: null;
 font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
 </div>
 <p>Again: “Show me the prompt”.</p>
-<div id="3116b963" class="cell" data-execution_count="16">
+<div id="6705d997" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(optimized_predictor.extended_signature.instructions)</span></code></pre></div>
@@ -1088,7 +1088,7 @@ font-style: inherit;">print</span>(optimized_predictor.extended_signature.instru
 </div>
 </div>
 <p>and show me the chosen few-shot examples:</p>
-<div id="5d7b99dd" class="cell" data-execution_count="17">
+<div id="fabf4e5f" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -1124,7 +1124,7 @@ The powerpoint opened seamlessly in the apple and the mac hooked up to the proje
 <section id="evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
 <p>So far, we’ve only evaluated on the validation part of the training set (this was automatically done by DSPy). Let’s evaluate the optimized predictor on the test set.</p>
-<div id="65a92f06" class="cell" data-execution_count="18">
+<div id="c6a1b79c" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">evaluator <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Evaluate(</span>
@@ -1146,7 +1146,7 @@ background-color: null;
 font-style: inherit;">12</span>,</span>
 <span id="cb25-6">)</span></code></pre></div>
 </div>
-<div id="2c18976a" class="cell" data-execution_count="19">
+<div id="d17740f0" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">score <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre></div>
@@ -1156,7 +1156,7 @@ font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre
 <section id="hyperparameter-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="hyperparameter-optimization">Hyperparameter optimization</h2>
 <p>What would happen if we changed the hyperparameters? Let’s do a grid search over the number of few-shot examples and the number of trials, as well as try different models.</p>
-<div id="61f77534" class="cell" data-execution_count="20">
+<div id="21bcbe4f" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> itertools</span>
@@ -1252,7 +1252,7 @@ font-style: inherit;">list</span>(</span>
 <span id="cb27-27">)</span></code></pre></div>
 </div>
 <p>This results in a grid with 48 combinations. Next, we iterate over the grid, perform the optimization run and save the results to Weights &amp; Biases.</p>
-<div id="d3b43809" class="cell" data-execution_count="21">
+<div id="a2297618" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> os</span>
@@ -1591,7 +1591,7 @@ font-style: inherit;">"f1"</span>: score})</span>
 <p>In the 2023 paper, co-author and I manually crafted prompts and chose few-shot examples that, in our opinion, illustrated the task well. Inference was done using the OpenAI API and using function calling to ensure structured outputs. To make the comparison fair, we’ll now use the same prompts within DSPy.</p>
 <p>The manual prompts and few-shot examples are available on <a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/configs/manual_prompt.json">Github</a>.</p>
 <p>The models <code>gpt-4-0613</code> and <code>gpt-3.5-turbo-0613</code> that were used in the 2023 paper are no longer available on the OpenAI API. Therefore, we use the closest substitutes here.</p>
-<div id="3ce453ea" class="cell" data-execution_count="22">
+<div id="6a252023" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">models <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -1722,7 +1722,7 @@ font-style: inherit;">"configs/manual_prompt.json"</span>)</span></code></pre></
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
 <p>We load the results from the Weights &amp; Biases project and show the most relevant columns for a comparison of the runs.</p>
-<div id="17064435" class="cell" data-execution_count="23">
+<div id="57e57065" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> wandb</span>
@@ -1808,7 +1808,7 @@ font-style: inherit;">"f1"</span>],</span>
 background-color: null;
 font-style: inherit;">=</span> pl.DataFrame(results)</span></code></pre></div>
 </div>
-<div id="78203b73" class="cell" data-execution_count="24">
+<div id="7258567e" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">table_df <span class="op" style="color: #5E5E5E;
@@ -1972,53 +1972,53 @@ background-color: null;
 font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
 <span id="cb31-42">)</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
-<div id="detajkqwna" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="43">
+<div id="ktbvjwmhdt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#detajkqwna table {
+#ktbvjwmhdt table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#detajkqwna thead, tbody, tfoot, tr, td, th { border-style: none; }
+#ktbvjwmhdt thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#detajkqwna p { margin: 0; padding: 0; }
- #detajkqwna .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #detajkqwna .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #detajkqwna .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #detajkqwna .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #detajkqwna .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #detajkqwna .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #detajkqwna .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #detajkqwna .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #detajkqwna .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #detajkqwna .gt_column_spanner_outer:first-child { padding-left: 0; }
- #detajkqwna .gt_column_spanner_outer:last-child { padding-right: 0; }
- #detajkqwna .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #detajkqwna .gt_spanner_row { border-bottom-style: hidden; }
- #detajkqwna .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #detajkqwna .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #detajkqwna .gt_from_md> :first-child { margin-top: 0; }
- #detajkqwna .gt_from_md> :last-child { margin-bottom: 0; }
- #detajkqwna .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #detajkqwna .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #detajkqwna .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #detajkqwna .gt_row_group_first td { border-top-width: 2px; }
- #detajkqwna .gt_row_group_first th { border-top-width: 2px; }
- #detajkqwna .gt_striped { background-color: rgba(128,128,128,0.05); }
- #detajkqwna .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #detajkqwna .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #detajkqwna .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #detajkqwna .gt_left { text-align: left; }
- #detajkqwna .gt_center { text-align: center; }
- #detajkqwna .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #detajkqwna .gt_font_normal { font-weight: normal; }
- #detajkqwna .gt_font_bold { font-weight: bold; }
- #detajkqwna .gt_font_italic { font-style: italic; }
- #detajkqwna .gt_super { font-size: 65%; }
- #detajkqwna .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #detajkqwna .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#ktbvjwmhdt p { margin: 0; padding: 0; }
+ #ktbvjwmhdt .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ktbvjwmhdt .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ktbvjwmhdt .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ktbvjwmhdt .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ktbvjwmhdt .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ktbvjwmhdt .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ktbvjwmhdt .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ktbvjwmhdt .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ktbvjwmhdt .gt_spanner_row { border-bottom-style: hidden; }
+ #ktbvjwmhdt .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ktbvjwmhdt .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ktbvjwmhdt .gt_from_md> :first-child { margin-top: 0; }
+ #ktbvjwmhdt .gt_from_md> :last-child { margin-bottom: 0; }
+ #ktbvjwmhdt .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ktbvjwmhdt .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ktbvjwmhdt .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ktbvjwmhdt .gt_row_group_first td { border-top-width: 2px; }
+ #ktbvjwmhdt .gt_row_group_first th { border-top-width: 2px; }
+ #ktbvjwmhdt .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #ktbvjwmhdt .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ktbvjwmhdt .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ktbvjwmhdt .gt_left { text-align: left; }
+ #ktbvjwmhdt .gt_center { text-align: center; }
+ #ktbvjwmhdt .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ktbvjwmhdt .gt_font_normal { font-weight: normal; }
+ #ktbvjwmhdt .gt_font_bold { font-weight: bold; }
+ #ktbvjwmhdt .gt_font_italic { font-style: italic; }
+ #ktbvjwmhdt .gt_super { font-size: 65%; }
+ #ktbvjwmhdt .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ktbvjwmhdt .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -2433,7 +2433,7 @@ font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API const
 <section id="impact-of-hyperparameters" class="level3">
 <h3 class="anchored" data-anchor-id="impact-of-hyperparameters">Impact of hyperparameters</h3>
 <p>To understand which factors significantly influence the F1 score, we’ll run a simple linear regression analysis. The manual runs are excluded. To analyze the impact of the model choice, we’ll create a boolean variable for <code>gpt-4o-mini</code> and treat <code>llama-v3p1-70b-instruct</code> as the baseline.</p>
-<div id="5b890162" class="cell" data-execution_count="25">
+<div id="c6cc6bf1" class="cell" data-execution_count="25">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><span class="im" style="color: #00769E;
@@ -2636,53 +2636,53 @@ font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="22">
-<div id="syexemyoco" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="44">
+<div id="pdzhhqikif" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#syexemyoco table {
+#pdzhhqikif table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#syexemyoco thead, tbody, tfoot, tr, td, th { border-style: none; }
+#pdzhhqikif thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#syexemyoco p { margin: 0; padding: 0; }
- #syexemyoco .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #syexemyoco .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #syexemyoco .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #syexemyoco .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #syexemyoco .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #syexemyoco .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #syexemyoco .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #syexemyoco .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #syexemyoco .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #syexemyoco .gt_column_spanner_outer:first-child { padding-left: 0; }
- #syexemyoco .gt_column_spanner_outer:last-child { padding-right: 0; }
- #syexemyoco .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #syexemyoco .gt_spanner_row { border-bottom-style: hidden; }
- #syexemyoco .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #syexemyoco .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #syexemyoco .gt_from_md> :first-child { margin-top: 0; }
- #syexemyoco .gt_from_md> :last-child { margin-bottom: 0; }
- #syexemyoco .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #syexemyoco .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #syexemyoco .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #syexemyoco .gt_row_group_first td { border-top-width: 2px; }
- #syexemyoco .gt_row_group_first th { border-top-width: 2px; }
- #syexemyoco .gt_striped { background-color: rgba(128,128,128,0.05); }
- #syexemyoco .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #syexemyoco .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #syexemyoco .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #syexemyoco .gt_left { text-align: left; }
- #syexemyoco .gt_center { text-align: center; }
- #syexemyoco .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #syexemyoco .gt_font_normal { font-weight: normal; }
- #syexemyoco .gt_font_bold { font-weight: bold; }
- #syexemyoco .gt_font_italic { font-style: italic; }
- #syexemyoco .gt_super { font-size: 65%; }
- #syexemyoco .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #syexemyoco .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#pdzhhqikif p { margin: 0; padding: 0; }
+ #pdzhhqikif .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #pdzhhqikif .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #pdzhhqikif .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #pdzhhqikif .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #pdzhhqikif .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #pdzhhqikif .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #pdzhhqikif .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #pdzhhqikif .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #pdzhhqikif .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #pdzhhqikif .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #pdzhhqikif .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #pdzhhqikif .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #pdzhhqikif .gt_spanner_row { border-bottom-style: hidden; }
+ #pdzhhqikif .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #pdzhhqikif .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #pdzhhqikif .gt_from_md> :first-child { margin-top: 0; }
+ #pdzhhqikif .gt_from_md> :last-child { margin-bottom: 0; }
+ #pdzhhqikif .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #pdzhhqikif .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #pdzhhqikif .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #pdzhhqikif .gt_row_group_first td { border-top-width: 2px; }
+ #pdzhhqikif .gt_row_group_first th { border-top-width: 2px; }
+ #pdzhhqikif .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #pdzhhqikif .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #pdzhhqikif .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #pdzhhqikif .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #pdzhhqikif .gt_left { text-align: left; }
+ #pdzhhqikif .gt_center { text-align: center; }
+ #pdzhhqikif .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #pdzhhqikif .gt_font_normal { font-weight: normal; }
+ #pdzhhqikif .gt_font_bold { font-weight: bold; }
+ #pdzhhqikif .gt_font_italic { font-style: italic; }
+ #pdzhhqikif .gt_super { font-size: 65%; }
+ #pdzhhqikif .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #pdzhhqikif .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -2836,7 +2836,7 @@ Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for
   <category>Python</category>
   <guid>https://simmering.dev/blog/absa-with-dspy/</guid>
   <pubDate>Sat, 23 Nov 2024 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/absa-with-dspy/image.png" medium="image" type="image/png" height="144" width="144"/>
+  <media:content url="https://simmering.dev/blog/absa-with-dspy/image.webp" medium="image" type="image/webp"/>
 </item>
 <item>
   <title>From 5-7-5 to Thousand Lines: The Case for Longer Prompts</title>
