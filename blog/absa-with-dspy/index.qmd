@@ -544,7 +544,7 @@ for model in models:
 We load the results from the Weights & Biases project and show the most relevant columns for a comparison of the runs.
 
 ```{python}
-#| code-fold: true
+# | code-fold: true
 import wandb
 
 api = wandb.Api()
@@ -605,14 +605,14 @@ table_df = (
 GT(table_df).tab_header("SemEval 2014 Task 4 1+2 Few-Shot Predictors").cols_label(
     model="Model",
     method="Method",
-    demos="Labeled + Bootstrapped Demos",
+    demos="Examples¹",
     num_trials="Trials",
-    chain_of_thought="Chain of Thought",
-    f1="F1 Score",
+    chain_of_thought="CoT",
+    f1="F1",
 ).cols_align(align="right", columns=["demos", "num_trials", "f1"]).fmt_number(
     columns=["f1"], decimals=2
 ).tab_source_note(
-    "Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."
+    "¹ Bootstrapped + labeled examples. Notes: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."
 )
 ```
 

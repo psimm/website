@@ -138,7 +138,7 @@ graph TB
 <section id="semeval-2014-task-4" class="level3">
 <h3 class="anchored" data-anchor-id="semeval-2014-task-4">SemEval 2014 Task 4</h3>
 <p>I’m using the SemEval 2014 Task 4 dataset by <span class="citation" data-cites="pontiki_semeval">Pontiki et al. (2014)</span>. The <a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">dataset</a> is available on Hugging Face. This is a cleaned version of the original XML files consisting of train and test splits. The small number of examples with the “conflict” label are excluded, as is common in the literature.</p>
-<div id="0ef6fab2" class="cell" data-execution_count="1">
+<div id="18b1fdbf" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
@@ -166,7 +166,7 @@ font-style: inherit;">+</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/data/test-00000-of-00001.parquet"</span>)</span></code></pre></div>
 </div>
-<div id="406ffc38" class="cell" data-execution_count="2">
+<div id="2f82510d" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
@@ -227,53 +227,53 @@ font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"examples"</span>])</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="23">
-<div id="ayevanschm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="64">
+<div id="dtobuafneq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#ayevanschm table {
+#dtobuafneq table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#ayevanschm thead, tbody, tfoot, tr, td, th { border-style: none; }
+#dtobuafneq thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#ayevanschm p { margin: 0; padding: 0; }
- #ayevanschm .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #ayevanschm .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #ayevanschm .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #ayevanschm .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #ayevanschm .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ayevanschm .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ayevanschm .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ayevanschm .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #ayevanschm .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #ayevanschm .gt_column_spanner_outer:first-child { padding-left: 0; }
- #ayevanschm .gt_column_spanner_outer:last-child { padding-right: 0; }
- #ayevanschm .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #ayevanschm .gt_spanner_row { border-bottom-style: hidden; }
- #ayevanschm .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #ayevanschm .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #ayevanschm .gt_from_md> :first-child { margin-top: 0; }
- #ayevanschm .gt_from_md> :last-child { margin-bottom: 0; }
- #ayevanschm .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #ayevanschm .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #ayevanschm .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #ayevanschm .gt_row_group_first td { border-top-width: 2px; }
- #ayevanschm .gt_row_group_first th { border-top-width: 2px; }
- #ayevanschm .gt_striped { background-color: rgba(128,128,128,0.05); }
- #ayevanschm .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ayevanschm .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #ayevanschm .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #ayevanschm .gt_left { text-align: left; }
- #ayevanschm .gt_center { text-align: center; }
- #ayevanschm .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #ayevanschm .gt_font_normal { font-weight: normal; }
- #ayevanschm .gt_font_bold { font-weight: bold; }
- #ayevanschm .gt_font_italic { font-style: italic; }
- #ayevanschm .gt_super { font-size: 65%; }
- #ayevanschm .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #ayevanschm .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#dtobuafneq p { margin: 0; padding: 0; }
+ #dtobuafneq .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #dtobuafneq .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #dtobuafneq .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #dtobuafneq .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #dtobuafneq .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #dtobuafneq .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #dtobuafneq .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #dtobuafneq .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #dtobuafneq .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #dtobuafneq .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #dtobuafneq .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #dtobuafneq .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #dtobuafneq .gt_spanner_row { border-bottom-style: hidden; }
+ #dtobuafneq .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #dtobuafneq .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #dtobuafneq .gt_from_md> :first-child { margin-top: 0; }
+ #dtobuafneq .gt_from_md> :last-child { margin-bottom: 0; }
+ #dtobuafneq .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #dtobuafneq .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #dtobuafneq .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #dtobuafneq .gt_row_group_first td { border-top-width: 2px; }
+ #dtobuafneq .gt_row_group_first th { border-top-width: 2px; }
+ #dtobuafneq .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #dtobuafneq .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #dtobuafneq .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #dtobuafneq .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #dtobuafneq .gt_left { text-align: left; }
+ #dtobuafneq .gt_center { text-align: center; }
+ #dtobuafneq .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #dtobuafneq .gt_font_normal { font-weight: normal; }
+ #dtobuafneq .gt_font_bold { font-weight: bold; }
+ #dtobuafneq .gt_font_italic { font-style: italic; }
+ #dtobuafneq .gt_super { font-size: 65%; }
+ #dtobuafneq .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #dtobuafneq .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -326,7 +326,7 @@ font-style: inherit;">"examples"</span>])</span></code></pre></div>
 <section id="pydantic-models-for-absa" class="level3">
 <h3 class="anchored" data-anchor-id="pydantic-models-for-absa">Pydantic models for ABSA</h3>
 <p>We create classes to represent the input and output of the task using the data validation library <a href="https://docs.pydantic.dev/latest/">Pydantic</a>. This helps with validating the data and provides a structured output format for predictor. The <code>Field</code> class is used to describe the expected data type. Their descriptions match the ones used in <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. This is a form of prompting, but DSPy also supports automatically setting the structure’s descriptions using the <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed#optimizing-typed-predictors"><code>optimize_signature</code></a> optimizer. In this experiment I’ll stick with the original descriptions and only vary the normal prompt and few-shot examples.</p>
-<div id="f73834a8" class="cell" data-execution_count="3">
+<div id="a4dd88aa" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
@@ -485,7 +485,7 @@ font-style: inherit;">"An array of aspects and their polarities. If no aspects a
 <section id="transform-dataset-to-dspy-examples" class="level3">
 <h3 class="anchored" data-anchor-id="transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</h3>
 <p>Each row in the dataset needs to be turned into an instance of the <code>dspy.Example</code> class. The <code>with_inputs</code> method is used to tell DSPy which column contains the input. Other columns are used as expected model outputs.</p>
-<div id="9167f499" class="cell" data-execution_count="4">
+<div id="eee70433" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> json</span>
@@ -541,11 +541,11 @@ font-weight: bold;
 font-style: inherit;">in</span> test.to_dicts()]</span></code></pre></div>
 </div>
 <p>Let’s look at the first example.</p>
-<div id="6735261a" class="cell" data-execution_count="5">
+<div id="4c0541ef" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainset[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="67">
 <pre><code>Example({'text': 'I charge it at night and skip taking the cord with me because of the good battery life.', 'aspects': Aspects(aspects=[Aspect(term='cord', polarity='neutral'), Aspect(term='battery life', polarity='positive')])}) (input_keys={'text'})</code></pre>
 </div>
 </div>
@@ -554,7 +554,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="creating-a-dspy-typed-predictor">Creating a DSPy typed predictor</h3>
 <p>In DSPy, a module is a language model and a way of prompting. They can also consist of multiple requests and also include external tools such as a vector database for retrieval augmented generation. In this example, we have a single request using few-shot examples and chain of thought.</p>
 <p>In order to be able to parse the output as a dictionary, the LLM must output valid JSON. Therefore I’ll use a <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed">Typed Predictor</a> in DSPy, which is similar to structured outputs via instructor or a similar library.</p>
-<div id="483094b2" class="cell" data-execution_count="6">
+<div id="63be21c3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -573,7 +573,7 @@ font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span></code><
 </div>
 <p>We also need to choose a language model. DSPy works with OpenAI, Anthropic, Ollama, vllm and other OpenAI-compatible platforms and libraries. This is powered by <a href="https://github.com/BerriAI/litellm">litellm</a> under the hood.</p>
 <p>For this article, I’ll use OpenAI’s gpt-4o-mini as well as the 70B version of Meta’s Llama 3.1 hosted on <a href="https://fireworks.ai">fireworks.ai</a>. Fireworks.ai generously supplied me with credits as part of the <a href="https://maven.com/parlance-labs/fine-tuning?utm_campaign=d45fef&amp;utm_medium=partner&amp;utm_source=instructor">Mastering LLMs For Developers &amp; Data Scientists</a> course.</p>
-<div id="bddc1b73" class="cell" data-execution_count="7">
+<div id="eb316c14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># FIREWORKS_AI_API_KEY environment variable must be set.</span></span>
@@ -618,13 +618,13 @@ font-style: inherit;">=</span>lm)</span></code></pre></div>
 <section id="optimization" class="level2">
 <h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
 <p>Let’s run a single example to check that everything is working.</p>
-<div id="c8d1ad1e" class="cell" data-execution_count="8">
+<div id="403facc0" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">predictor(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"The pizza was great, but the service was terrible"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="70">
 <pre><code>Prediction(
     reasoning='The text expresses a mixed sentiment towards the pizza place, with a positive sentiment towards the pizza and a negative sentiment towards the service.',
     aspects=Aspects(aspects=[Aspect(term='pizza', polarity='positive'), Aspect(term='service', polarity='negative')])
@@ -632,7 +632,7 @@ font-style: inherit;">"The pizza was great, but the service was terrible"</span>
 </div>
 </div>
 <p>That’s a good start. I’m a fan of <a href="https://hamel.dev/blog/posts/prompt/">Hamel Husain’s advice</a> to always demand: “Show me the prompt”, so let’s check what DSPy actually sent to OpenAI:</p>
-<div id="4bad820f" class="cell" data-execution_count="9">
+<div id="76fe1dda" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">lm.inspect_history(n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -643,7 +643,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 
 
 
-[2024-11-24T17:39:18.219499]
+[2024-11-24T17:53:03.524266]
 
 System message:
 
@@ -699,7 +699,7 @@ The text expresses a mixed sentiment towards the pizza place, with a positive se
 <section id="specify-the-evaluation-function" class="level3">
 <h3 class="anchored" data-anchor-id="specify-the-evaluation-function">Specify the evaluation function</h3>
 <p>An evaluation function takes an example and a prediction and returns an F1 score. A true positive is a predicted aspect that is also in the gold answer, a false positive is a predicted aspect that is not in the gold answer, and a false negative is a gold answer aspect that is not predicted. Here are the precision, recall, and F1 score functions.</p>
-<div id="4850db28" class="cell" data-execution_count="10">
+<div id="308753b7" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -825,7 +825,7 @@ background-color: null;
 font-style: inherit;">+</span> rec)</span></code></pre></div>
 </div>
 <p>Next is the evaluation function which compares the gold and predicted aspects. To count as a true positive, both the term and the polarity have to be correct. As it is conventional on this benchmark, the case where both the gold answers and the prediction are empty is treated as a correct prediction of no aspects.</p>
-<div id="a16a6302" class="cell" data-execution_count="11">
+<div id="f0b061cf" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -904,7 +904,7 @@ font-weight: bold;
 font-style: inherit;">return</span> f1_score(tp, fp, fn)</span></code></pre></div>
 </div>
 <p>Let’s try the evaluation function with a single example. We expect the F1 score to be 1.0, because the prediction matches the gold answer exactly.</p>
-<div id="2392dde9" class="cell" data-execution_count="12">
+<div id="fbc64887" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">example <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Example(</span>
@@ -948,7 +948,7 @@ font-style: inherit;">=</span> predictor(text<span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">=</span>example.text)</span>
 <span id="cb15-11">evaluate_absa(example, prediction)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div class="cell-output cell-output-display" data-execution_count="74">
 <pre><code>1.0</code></pre>
 </div>
 </div>
@@ -957,7 +957,7 @@ font-style: inherit;">=</span>example.text)</span>
 <h3 class="anchored" data-anchor-id="optimizers">Optimizers</h3>
 <p>DSPy has a variety of <a href="https://dspy.ai/learn/optimization/optimizers/?h=optimizers">optimizers</a>, loops that change the prompt and/or few-shot examples and evaluate the performance. They’re analogous to optimizers like SGD and Adam in PyTorch. The choice of optimizer depends on the task, the amount of labeled data and the computational resources available. As we have a large labeled dataset, it’s not necessary to have the model bootstrap artificial examples. Our 2023 paper found that fine-tuning yields the best results, but the goal of this article is to showcase DSPy’s prompt optimization.</p>
 <p>The most powerful optimizer available for a prompting approach for this task is <a href="[Multiprompt Instruction PRoposal Optimizer Version 2](https://dspy.ai/deep-dive/optimizers/miprov2/?h=miprov)">MIPROv2</a> (Multiprompt Instruction PRoposal Optimizer Version 2) by <span class="citation" data-cites="opsahlong2024optimizinginstructionsdemonstrationsmultistage">Opsahl-Ong et al. (2024)</span>. MIPROv2 uses Bayesian optimization to find an optimal combination of few-shot examples and prompt instructions.</p>
-<div id="d73cafa2" class="cell" data-execution_count="13">
+<div id="0cd4cd78" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">optimizer_settings <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
@@ -988,7 +988,7 @@ background-color: null;
 font-style: inherit;">**</span>optimizer_settings)</span></code></pre></div>
 </div>
 <p>The final step is to call the <code>compile</code> method, which starts the optimization process. After about 5 minutes, the best prompt and few-shot examples are saved to a JSON file.</p>
-<div id="62fec25a" class="cell" data-execution_count="14">
+<div id="51700dbb" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Define settings for the comilation step of the optimizer.</span></span>
@@ -1066,7 +1066,7 @@ font-style: inherit;">**</span>compile_settings</span>
 background-color: null;
 font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
 <p>Let’s check if we can load it again:</p>
-<div id="7286beab" class="cell" data-execution_count="15">
+<div id="1a6d5997" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">optimized_predictor <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.ChainOfThought(signature<span class="op" style="color: #5E5E5E;
@@ -1079,7 +1079,7 @@ background-color: null;
 font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
 </div>
 <p>Again: “Show me the prompt”.</p>
-<div id="99386197" class="cell" data-execution_count="16">
+<div id="fba49e46" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(optimized_predictor.extended_signature.instructions)</span></code></pre></div>
@@ -1088,7 +1088,7 @@ font-style: inherit;">print</span>(optimized_predictor.extended_signature.instru
 </div>
 </div>
 <p>and show me the chosen few-shot examples:</p>
-<div id="0475d08c" class="cell" data-execution_count="17">
+<div id="8549f46c" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -1124,7 +1124,7 @@ The powerpoint opened seamlessly in the apple and the mac hooked up to the proje
 <section id="evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
 <p>So far, we’ve only evaluated on the validation part of the training set (this was automatically done by DSPy). Let’s evaluate the optimized predictor on the test set.</p>
-<div id="2ab8a72d" class="cell" data-execution_count="18">
+<div id="1c37ea07" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">evaluator <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Evaluate(</span>
@@ -1146,7 +1146,7 @@ background-color: null;
 font-style: inherit;">12</span>,</span>
 <span id="cb25-6">)</span></code></pre></div>
 </div>
-<div id="37ba93bc" class="cell" data-execution_count="19">
+<div id="51d31d0c" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">score <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre></div>
@@ -1156,7 +1156,7 @@ font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre
 <section id="hyperparameter-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="hyperparameter-optimization">Hyperparameter optimization</h2>
 <p>What would happen if we changed the hyperparameters? Let’s do a grid search over the number of few-shot examples and the number of trials, as well as try different models.</p>
-<div id="2187123c" class="cell" data-execution_count="20">
+<div id="5090ef8f" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> itertools</span>
@@ -1252,7 +1252,7 @@ font-style: inherit;">list</span>(</span>
 <span id="cb27-27">)</span></code></pre></div>
 </div>
 <p>This results in a grid with 48 combinations. Next, we iterate over the grid, perform the optimization run and save the results to Weights &amp; Biases.</p>
-<div id="c4713c45" class="cell" data-execution_count="21">
+<div id="cd42949c" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> os</span>
@@ -1591,7 +1591,7 @@ font-style: inherit;">"f1"</span>: score})</span>
 <p>In the 2023 paper, co-author and I manually crafted prompts and chose few-shot examples that, in our opinion, illustrated the task well. Inference was done using the OpenAI API and using function calling to ensure structured outputs. To make the comparison fair, we’ll now use the same prompts within DSPy.</p>
 <p>The manual prompts and few-shot examples are available on <a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/configs/manual_prompt.json">Github</a>.</p>
 <p>The models <code>gpt-4-0613</code> and <code>gpt-3.5-turbo-0613</code> that were used in the 2023 paper are no longer available on the OpenAI API. Therefore, we use the closest substitutes here.</p>
-<div id="0f120d3e" class="cell" data-execution_count="22">
+<div id="9c20633a" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">models <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -1722,7 +1722,7 @@ font-style: inherit;">"configs/manual_prompt.json"</span>)</span></code></pre></
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
 <p>We load the results from the Weights &amp; Biases project and show the most relevant columns for a comparison of the runs.</p>
-<div id="ec5a24f6" class="cell" data-execution_count="23">
+<div id="87f0018a" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
@@ -1927,7 +1927,7 @@ font-style: inherit;">"Method"</span>,</span>
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Labeled + Bootstrapped Demos"</span>,</span>
+font-style: inherit;">"Examples¹"</span>,</span>
 <span id="cb30-62">    num_trials<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -1937,12 +1937,12 @@ font-style: inherit;">"Trials"</span>,</span>
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Chain of Thought"</span>,</span>
+font-style: inherit;">"CoT"</span>,</span>
 <span id="cb30-64">    f1<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"F1 Score"</span>,</span>
+font-style: inherit;">"F1"</span>,</span>
 <span id="cb30-65">).cols_align(align<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -1968,56 +1968,56 @@ font-style: inherit;">2</span></span>
 <span id="cb30-67">).tab_source_note(</span>
 <span id="cb30-68">    <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
+font-style: inherit;">"¹ Bootstrapped + labeled examples. Notes: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
 <span id="cb30-69">)</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="41">
-<div id="gpqzjniepg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="82">
+<div id="ocfiytvhqv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#gpqzjniepg table {
+#ocfiytvhqv table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#gpqzjniepg thead, tbody, tfoot, tr, td, th { border-style: none; }
+#ocfiytvhqv thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#gpqzjniepg p { margin: 0; padding: 0; }
- #gpqzjniepg .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #gpqzjniepg .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #gpqzjniepg .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #gpqzjniepg .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #gpqzjniepg .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #gpqzjniepg .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #gpqzjniepg .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #gpqzjniepg .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #gpqzjniepg .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #gpqzjniepg .gt_column_spanner_outer:first-child { padding-left: 0; }
- #gpqzjniepg .gt_column_spanner_outer:last-child { padding-right: 0; }
- #gpqzjniepg .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #gpqzjniepg .gt_spanner_row { border-bottom-style: hidden; }
- #gpqzjniepg .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #gpqzjniepg .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #gpqzjniepg .gt_from_md> :first-child { margin-top: 0; }
- #gpqzjniepg .gt_from_md> :last-child { margin-bottom: 0; }
- #gpqzjniepg .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #gpqzjniepg .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #gpqzjniepg .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #gpqzjniepg .gt_row_group_first td { border-top-width: 2px; }
- #gpqzjniepg .gt_row_group_first th { border-top-width: 2px; }
- #gpqzjniepg .gt_striped { background-color: rgba(128,128,128,0.05); }
- #gpqzjniepg .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #gpqzjniepg .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #gpqzjniepg .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #gpqzjniepg .gt_left { text-align: left; }
- #gpqzjniepg .gt_center { text-align: center; }
- #gpqzjniepg .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #gpqzjniepg .gt_font_normal { font-weight: normal; }
- #gpqzjniepg .gt_font_bold { font-weight: bold; }
- #gpqzjniepg .gt_font_italic { font-style: italic; }
- #gpqzjniepg .gt_super { font-size: 65%; }
- #gpqzjniepg .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #gpqzjniepg .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#ocfiytvhqv p { margin: 0; padding: 0; }
+ #ocfiytvhqv .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ocfiytvhqv .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ocfiytvhqv .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ocfiytvhqv .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ocfiytvhqv .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ocfiytvhqv .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ocfiytvhqv .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ocfiytvhqv .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ocfiytvhqv .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ocfiytvhqv .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ocfiytvhqv .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ocfiytvhqv .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ocfiytvhqv .gt_spanner_row { border-bottom-style: hidden; }
+ #ocfiytvhqv .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ocfiytvhqv .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ocfiytvhqv .gt_from_md> :first-child { margin-top: 0; }
+ #ocfiytvhqv .gt_from_md> :last-child { margin-bottom: 0; }
+ #ocfiytvhqv .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ocfiytvhqv .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ocfiytvhqv .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ocfiytvhqv .gt_row_group_first td { border-top-width: 2px; }
+ #ocfiytvhqv .gt_row_group_first th { border-top-width: 2px; }
+ #ocfiytvhqv .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #ocfiytvhqv .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ocfiytvhqv .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ocfiytvhqv .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ocfiytvhqv .gt_left { text-align: left; }
+ #ocfiytvhqv .gt_center { text-align: center; }
+ #ocfiytvhqv .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ocfiytvhqv .gt_font_normal { font-weight: normal; }
+ #ocfiytvhqv .gt_font_bold { font-weight: bold; }
+ #ocfiytvhqv .gt_font_italic { font-style: italic; }
+ #ocfiytvhqv .gt_super { font-size: 65%; }
+ #ocfiytvhqv .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ocfiytvhqv .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -2030,9 +2030,9 @@ font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API const
 <th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
 <th id="Method" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Method</th>
 <th id="Trials" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Trials</th>
-<th id="Labeled + Bootstrapped Demos" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Labeled + Bootstrapped Demos</th>
-<th id="Chain of Thought" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Chain of Thought</th>
-<th id="F1 Score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">F1 Score</th>
+<th id="Examples¹" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Examples¹</th>
+<th id="CoT" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">CoT</th>
+<th id="F1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">F1</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -2414,7 +2414,7 @@ font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API const
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
 <tr class="odd">
-<td colspan="6" class="gt_sourcenote">Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper.</td>
+<td colspan="6" class="gt_sourcenote">¹ Bootstrapped + labeled examples. Notes: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper.</td>
 </tr>
 </tfoot>
 
@@ -2432,7 +2432,7 @@ font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API const
 <section id="impact-of-hyperparameters" class="level3">
 <h3 class="anchored" data-anchor-id="impact-of-hyperparameters">Impact of hyperparameters</h3>
 <p>To understand which factors significantly influence the F1 score, we’ll run a simple linear regression analysis. The manual runs are excluded. To analyze the impact of the model choice, we’ll create a boolean variable for <code>gpt-4o-mini</code> and treat <code>llama-v3p1-70b-instruct</code> as the baseline.</p>
-<div id="6af8bb73" class="cell" data-execution_count="24">
+<div id="11739ae2" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><span class="im" style="color: #00769E;
@@ -2635,53 +2635,53 @@ font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span></code></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="42">
-<div id="lqefdaedlz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="83">
+<div id="zzbfwvekpu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#lqefdaedlz table {
+#zzbfwvekpu table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#lqefdaedlz thead, tbody, tfoot, tr, td, th { border-style: none; }
+#zzbfwvekpu thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#lqefdaedlz p { margin: 0; padding: 0; }
- #lqefdaedlz .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #lqefdaedlz .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #lqefdaedlz .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #lqefdaedlz .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #lqefdaedlz .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #lqefdaedlz .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #lqefdaedlz .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #lqefdaedlz .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #lqefdaedlz .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #lqefdaedlz .gt_column_spanner_outer:first-child { padding-left: 0; }
- #lqefdaedlz .gt_column_spanner_outer:last-child { padding-right: 0; }
- #lqefdaedlz .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #lqefdaedlz .gt_spanner_row { border-bottom-style: hidden; }
- #lqefdaedlz .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #lqefdaedlz .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #lqefdaedlz .gt_from_md> :first-child { margin-top: 0; }
- #lqefdaedlz .gt_from_md> :last-child { margin-bottom: 0; }
- #lqefdaedlz .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #lqefdaedlz .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #lqefdaedlz .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #lqefdaedlz .gt_row_group_first td { border-top-width: 2px; }
- #lqefdaedlz .gt_row_group_first th { border-top-width: 2px; }
- #lqefdaedlz .gt_striped { background-color: rgba(128,128,128,0.05); }
- #lqefdaedlz .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #lqefdaedlz .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #lqefdaedlz .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #lqefdaedlz .gt_left { text-align: left; }
- #lqefdaedlz .gt_center { text-align: center; }
- #lqefdaedlz .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #lqefdaedlz .gt_font_normal { font-weight: normal; }
- #lqefdaedlz .gt_font_bold { font-weight: bold; }
- #lqefdaedlz .gt_font_italic { font-style: italic; }
- #lqefdaedlz .gt_super { font-size: 65%; }
- #lqefdaedlz .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #lqefdaedlz .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#zzbfwvekpu p { margin: 0; padding: 0; }
+ #zzbfwvekpu .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #zzbfwvekpu .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #zzbfwvekpu .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #zzbfwvekpu .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #zzbfwvekpu .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #zzbfwvekpu .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #zzbfwvekpu .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #zzbfwvekpu .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #zzbfwvekpu .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #zzbfwvekpu .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #zzbfwvekpu .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #zzbfwvekpu .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #zzbfwvekpu .gt_spanner_row { border-bottom-style: hidden; }
+ #zzbfwvekpu .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #zzbfwvekpu .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #zzbfwvekpu .gt_from_md> :first-child { margin-top: 0; }
+ #zzbfwvekpu .gt_from_md> :last-child { margin-bottom: 0; }
+ #zzbfwvekpu .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #zzbfwvekpu .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #zzbfwvekpu .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #zzbfwvekpu .gt_row_group_first td { border-top-width: 2px; }
+ #zzbfwvekpu .gt_row_group_first th { border-top-width: 2px; }
+ #zzbfwvekpu .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #zzbfwvekpu .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #zzbfwvekpu .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #zzbfwvekpu .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #zzbfwvekpu .gt_left { text-align: left; }
+ #zzbfwvekpu .gt_center { text-align: center; }
+ #zzbfwvekpu .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #zzbfwvekpu .gt_font_normal { font-weight: normal; }
+ #zzbfwvekpu .gt_font_bold { font-weight: bold; }
+ #zzbfwvekpu .gt_font_italic { font-style: italic; }
+ #zzbfwvekpu .gt_super { font-size: 65%; }
+ #zzbfwvekpu .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #zzbfwvekpu .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
