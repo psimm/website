@@ -12,8 +12,9 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 
 | Blog | Description |
 |------|-------------|
+| [dottxt](https://blog.dottxt.co) | Cutting edge research and practical tools for structured generation with LLMs |
 | [Eugene Yan](https://eugeneyan.com/writing/) | Applied machine learning, data science career advice, and technical writing tips |
-| [Hamel Husain](https://hamel.dev) | Practical LLM engineering from an AI consultant |
+| [Hamel Husain](https://hamel.dev) | Practical LLM engineering from an experienced AI consultant |
 | [Simon Willison](https://simonwillison.net) | Developer and open source maintainer sharing close commentary on news relating to AI and other current technologies |
 | [Chip Huyen](https://huyenchip.com/blog/) | In depth tutorials and deep dives into machine learning concepts |
 | [Vicki Boykis](https://vickiboykis.com) | Data science, machine learning, and tech industry commentary with a focus on MLOps |
