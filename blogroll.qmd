@@ -1,0 +1,96 @@
+---
+title: "Blogroll"
+author: "Paul Simmering"
+date: "2024-11-24"
+toc: true
+---
+
+I'm a fan of classic blogs. The quality of content is usually higher than on social media and the longer form allows for more depth. In contrast to social media, I never feel like that I'm wasting time when reading good blogs. The open RSS format can be used with many different readers and it's easy to download things to read offline. If you're looking for recommendations, here are the blogs that I read regularly, organized by topic.
+
+
+## Machine learning
+
+| Blog | Description |
+|------|-------------|
+| [Eugene Yan](https://eugeneyan.com/writing/) | Applied machine learning, data science career advice, and technical writing tips |
+| [Hamel Husain](https://hamel.dev) | Practical LLM engineering from an AI consultant |
+| [Simon Willison](https://simonwillison.net) | Developer and open source maintainer sharing close commentary on news relating to AI and other current technologies |
+| [Chip Huyen](https://huyenchip.com/blog/) | In depth tutorials and deep dives into machine learning concepts |
+| [Vicki Boykis](https://vickiboykis.com) | Data science, machine learning, and tech industry commentary with a focus on MLOps |
+| [Phil Schmid](https://www.philschmid.de) | Tutorials and guides focused on transformers and LLMs, especially with Hugging Face |
+| [Hugging Face](https://huggingface.co/blog) | Latest developments in machine learning, focusing on transformers and open source AI |
+| [NVIDIA](https://blogs.nvidia.com) | Updates on AI hardware, software, and research from the leading GPU manufacturer |
+| [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
+| [Francois Chollet](https://fchollet.substack.com) | AI philosophy and technical insights from the creator of Keras |
+| [Zvi Mowshowitz](https://thezvi.wordpress.com) | Analysis of AI progress and risk from a rationalist perspective |
+| [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
+| [Near](https://near.blog) | Independent AI research and commentary, as well as nutrition and productivity advice |
+
+## Data visualization
+
+| Blog | Description |
+|------|-------------|
+| [Storytelling with Data](https://www.storytellingwithdata.com/blog/) | Practical tips and examples for creating effective data visualizations and presentations |
+| [Datawrapper](https://blog.datawrapper.de) | Tutorials and best practices for creating charts and maps, with a focus on journalism |
+| [The Pudding](https://pudding.cool) | Visual essays using data and creative storytelling to explore culture, entertainment, and society |
+
+## Technology & programming
+
+| Blog | Description |
+|------|-------------|
+| [Erik Bernhardsson](https://erikbern.com) | CEO of Modal writing about tech, management and startups |
+| [Gergely Orosz](https://blog.pragmaticengineer.com) | In-depth articles about software engineering, tech leadership and the business of technology |
+| [Mitchell Hashimoto](https://mitchellh.com/writing) | Founder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture |
+| [Spotify Engineering](https://engineering.atspotify.com) | Technical blog covering Spotify's engineering culture, architecture and development practices |
+| [David Heinemeier Hansson](https://world.hey.com/dhh) | Creator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique |
+| [Ines Montani](https://staysaasy.com) | Co-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business |
+| [Stephen Wolfram](https://writings.stephenwolfram.com) | Creator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence |
+| [Ben Kuhn](https://www.benkuhn.net) | CTO of Wave writing thoughtful analyses of technology, productivity and effective altruism |
+
+## Business & Finance
+
+| Blog | Description |
+|------|-------------|
+| [Lyn Alden](https://www.lynalden.com) | Investment research and macroeconomic analysis with focus on long-term value investing |
+| [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models with a focus on aggregation theory |
+| [Patio11](https://www.bitsaboutmoney.com/archive/) | Deep dives into fintech, payments infrastructure, and software business strategy |
+| [Packy McCormick](https://www.notboring.co) | Long-form analysis of tech companies, startups, and emerging technologies with an optimistic outlook |
+| [Mr. Money Mustache](https://www.mrmoneymustache.com/blog/) | Personal finance and early retirement through frugality and sustainable living |
+| [Gerd Kommer](https://gerd-kommer.de/blog/) | German language blog about evidence-based investing and personal finance |
+| [Frugalisten](https://frugalisten.de) | German language blog about personal finance, frugal living and parenting |
+
+## Design, communication, marketing
+
+| Blog | Description |
+|------|-------------|
+| [iA](https://ia.net/news) | Design agency known for minimalist aesthetics and thoughtful writing about design, typography and digital tools |
+| [Seth Godin](https://seths.blog) | Daily insights about marketing, leadership and creating meaningful work in the digital age |
+
+## Data driven world improvement
+
+| Blog | Description |
+|------|-------------|
+| [80,000 Hours](https://80000hours.org/all-articles/) | Research and career advice focused on solving the world's most pressing problems |
+| [Our World in Data](https://ourworldindata.org) | Comprehensive data visualizations and research on global issues like poverty, health, and climate change |
+
+## Personal development & productivity
+
+| Blog | Description |
+|------|-------------|
+| [Matt Might](https://matt.might.net/articles/) | Computer science professor sharing advice on academia, productivity and technical writing |
+| [Scott Young](https://www.scotthyoung.com/blog/) | Learning techniques, self-education experiments and cognitive psychology insights |
+| [Tim Urban](https://tim.blog) | Interviews and articles about performance optimization, business and personal development |
+| [Derek Sivers](https://sive.rs/blog) | Entrepreneur sharing unconventional wisdom about life, business and decision making |
+| [Tynan](https://tynan.com) | Optimizes his life in unusual ways, from sharing a private island with friends to building custom arcade machines |
+| [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
+| [Zen Habits](https://zenhabits.net) | Minimalist and zen lifestyle advice from a father of 6 |
+
+## Fun
+
+| Blog | Description |
+|------|-------------|
+| [Tim Urban](https://waitbutwhy.com) | Long-form illustrated essays explaining complex topics with humor and stick figures |
+| [Randall Munroe](https://xkcd.com) | Relatable and educational internet comics |
+| [Aella](https://aella.substack.com) | Sex worker and researcher doing sociological surveys |
+
+Are you writing a blog that I might enjoy? [Send me an email](mailto:paul@simmering.dev) and let me know! I'll add it to the list.

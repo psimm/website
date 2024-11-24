@@ -214,7 +214,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2024-11-01T12:34:30.046Z</lastmod>
+    <lastmod>2024-11-24T18:41:10.267Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/absa-with-dspy/index.html</loc>
@@ -223,5 +223,13 @@
   <url>
     <loc>https://simmering.dev/talks/dgofkiforumpitch2024/index.html</loc>
     <lastmod>2024-11-24T17:56:12.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/recommendations.html</loc>
+    <lastmod>2024-11-24T18:40:14.919Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blogroll.html</loc>
+    <lastmod>2024-11-24T19:05:06.137Z</lastmod>
   </url>
 </urlset>

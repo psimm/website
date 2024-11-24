@@ -27,6 +27,7 @@ Some things I enjoy outside of work:
 - Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - Design and typography. Some examples: [Berkeley Graphics](https://berkeleygraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
 - Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
+- Reading blogs. Check out my [blogroll](/blogroll.qmd) for recommendations.
 
 ### Contact
 
