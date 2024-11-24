@@ -544,6 +544,7 @@ for model in models:
 We load the results from the Weights & Biases project and show the most relevant columns for a comparison of the runs.
 
 ```{python}
+#| code-fold: true
 import wandb
 
 api = wandb.Api()
@@ -570,10 +571,7 @@ for run in runs:
     )
 
 results_df = pl.DataFrame(results)
-```
 
-```{python}
-#| code-fold: true
 table_df = (
     results_df.with_columns(
         method=pl.when(pl.col("run_name").str.contains("manual"))
