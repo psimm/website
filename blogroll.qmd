@@ -48,17 +48,23 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Stephen Wolfram](https://writings.stephenwolfram.com) | Creator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence |
 | [Ben Kuhn](https://www.benkuhn.net) | CTO of Wave writing thoughtful analyses of technology, productivity and effective altruism |
 
-## Business & Finance
+## Finance
 
 | Blog | Description |
 |------|-------------|
-| [Lyn Alden](https://www.lynalden.com) | Investment research and macroeconomic analysis with focus on long-term value investing |
-| [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models with a focus on aggregation theory |
 | [Patio11](https://www.bitsaboutmoney.com/archive/) | Deep dives into fintech, payments infrastructure, and software business strategy |
-| [Packy McCormick](https://www.notboring.co) | Long-form analysis of tech companies, startups, and emerging technologies with an optimistic outlook |
+| [Lyn Alden](https://www.lynalden.com) | Investment research and macroeconomic analysis with focus on long-term value investing |
 | [Mr. Money Mustache](https://www.mrmoneymustache.com/blog/) | Personal finance and early retirement through frugality and sustainable living |
 | [Gerd Kommer](https://gerd-kommer.de/blog/) | German language blog about evidence-based investing and personal finance |
 | [Frugalisten](https://frugalisten.de) | German language blog about personal finance, frugal living and parenting |
+
+## Business and Entrepreneurship
+
+| Blog | Description |
+|------|-------------|
+| [Paul Graham's Essays](https://paulgraham.com/articles.html) | Essays on startup strategy, technology, and philosophy by a co-founder of Y Combinator |
+| [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models with a focus on aggregation theory |
+| [Packy McCormick](https://www.notboring.co) | Long-form analysis of tech companies, startups, and emerging technologies with an optimistic outlook |
 
 ## Design, Communication, Marketing
 
