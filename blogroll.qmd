@@ -90,8 +90,9 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 
 | Blog | Description |
 |------|-------------|
-| [Tim Urban](https://waitbutwhy.com) | Long-form illustrated essays explaining complex topics with humor and stick figures |
-| [Randall Munroe](https://xkcd.com) | Relatable and educational internet comics |
+| [Wait But Why](https://waitbutwhy.com) | Long-form illustrated essays explaining complex topics with humor and stick figures by Tim Urban |
+| [XKCD](https://xkcd.com) | Relatable and educational internet comics by Randall Munroe |
+| [KIOSK](https://kiosk.substack.com) | Comics and news from British illustrator and writer Owen Pomery |
 | [Aella](https://aella.substack.com) | Sex worker and researcher doing sociological surveys |
 
 Are you writing a blog that I might enjoy? [Send me an email](mailto:paul@simmering.dev) and let me know! I'll add it to the list.
