@@ -1,0 +1,27 @@
+---
+title: "DGOF KI Forum Pitch"
+date: 2024-09-26
+author: "Paul Simmering"
+location: "Online"
+categories:
+  - pitch
+image: "aspectwise_pitch.png"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [DGOF KI Forum Pitch](https://www.marktforschung.de/webinar/dgof-ki-forum-pitch/) |
+| 📅 Date | 26 September 2024 |
+| 📍 Location | Online |
+| 🌐 Language | German |
+| 📥 Materials | [Slides](/talks/dgofkiforumpitch2024/aspectwise_pitch.pdf) |
+
+![](finalist.png){width=20%}
+
+The DGOF KI Forum is a group of industry and academic researchers interested in applications of AI in market research. This was a pitch competition for the best new AI applications in market research.
+
+I pitched [AspectWise](http://aspectwise.teamq.de), an AI-powered data pipeline for analysis of product reviews.
+
+The pitch was preceded by a nomination phase in which AspectWise was chosen as one of the top 5 projects. My colleague Oliver Tabino and me were [interviewed](https://www.marktforschung.de/marktforschung/a/es-gibt-natuerliche-zahlreiche-herausforderungen-die-mit-ki-zu-tun-haben/) by Marktforschung.de.
+
+Congratulations to [Inspirient](https://www.inspirient.de/) who won the pitch competition!

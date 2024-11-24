@@ -1,6 +1,6 @@
 ---
 title: "Where do LLMs fit in NLP Pipelines?"
-date: 2024-03-09
+date: 2024-02-21
 author: "Paul Simmering and Paavo Huoviala"
 categories:
   - conference
@@ -22,7 +22,7 @@ Large language models (LLMs) can perform classic tasks in natural language proce
 
 ## Methods & data
 
-This study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are as- sessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models.
+This study utilizes a mixed-method approach of benchmarks, economic analysis and two case studies. Model performance and speed are assessed on benchmarks. Economic considerations stem from prices for machine learning workloads on cloud platforms. The first case study is on social media monitoring of a patient community. It is centered on an LLM that performs multiple tasks using in-context instructions. The second case is large-scale monitoring of cosmetics trends using a modular pipeline of small models.
 
 ## Results
 
