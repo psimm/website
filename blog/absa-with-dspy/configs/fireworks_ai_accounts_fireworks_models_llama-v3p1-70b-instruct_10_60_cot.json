@@ -1,0 +1,85 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "Thus, when you carry it at a slanted angle, the screen will \"topple\" or \"slide\" down, if you understand what I mean.",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[{\"term\":\"screen\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Our server was very helpful and friendly.",
+        "aspects": "{\"aspects\":[{\"term\":\"server\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Saturday, Nov. 6th I had a group from work come in with about 35 people and the staff was amazing to accomodate us.",
+        "aspects": "{\"aspects\":[{\"term\":\"staff\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "HP refused to give me a new one and Wal Mart refused to take it back.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "There are differences that you need to know and take time to learn.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Emilio, the owner, is often sitting in the front table greeting guests as they come and go.",
+        "aspects": "{\"aspects\":[{\"term\":\"owner\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "It's perfect for everything and runs faster than an average pc!",
+        "aspects": "{\"aspects\":[{\"term\":\"runs\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I have had the netbook for 2 months and I love it, I read some reviews that say netbooks are slow but it does not seem any slower than the other computers I use.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I have had laptops in the past and I thought why not give these small netbooks a try.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The display is beyond horrible.",
+        "aspects": "{\"aspects\":[{\"term\":\"display\",\"polarity\":\"negative\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a customer review analyst, and you need to extract the key aspects or features mentioned in a laptop or netbook review. Given the fields `text`, produce the fields `aspects` by carefully reading the review and identifying the specific features or aspects that the customer is discussing, such as battery life, GUI, or applications. Provide a clear and concise list of these aspects.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

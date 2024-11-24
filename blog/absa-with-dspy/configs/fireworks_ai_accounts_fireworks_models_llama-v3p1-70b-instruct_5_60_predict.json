@@ -1,0 +1,40 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "text": "There's nice and quiet, small but enough for 6 (or more).",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Its a great place for a casual date or to entertain clients for lunch.",
+      "aspects": "{\"aspects\":[{\"term\":\"lunch\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "This is my first computer purchase",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Its very nice and once you learn the features you will be so happy to have such a sophisticated computer.",
+      "aspects": "{\"aspects\":[{\"term\":\"features\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "The space is a bit too small for live music, so on  jazz nights, it can be loud and cramped.",
+      "aspects": "{\"aspects\":[{\"term\":\"live music\",\"polarity\":\"neutral\"},{\"term\":\"space\",\"polarity\":\"negative\"},{\"term\":\"jazz nights\",\"polarity\":\"neutral\"}]}"
+    }
+  ],
+  "signature": {
+    "instructions": "Given a text review, identify and extract the specific aspects or features of the laptop or netbook that are mentioned, such as battery life, GUI, or applications.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

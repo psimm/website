@@ -1,0 +1,101 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).",
+      "aspects": "{\"aspects\":[{\"term\":\"TFT panel\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "But we had paid for bluetooth, and there was none.",
+      "aspects": "{\"aspects\":[{\"term\":\"bluetooth\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "The powerpoint opened seamlessly in the apple and the mac hooked up to the projector so easily it was almost scary.",
+      "aspects": "{\"aspects\":[{\"term\":\"powerpoint\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I looked around and based off my price\/features comparison from a brand I trusted I landed here.",
+      "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"neutral\"},{\"term\":\"features\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "I took it to friend who temporarily fixed it and I finally paid about 1500 for the extended warranty.",
+      "aspects": "{\"aspects\":[{\"term\":\"extended warranty\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "I am however pleased that it is still hanging in there.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I'm stuck w\/ a broken computer.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "My MacBook is faster than any comparable PC.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "It is extremely user friendly and intuitive.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "May, the owner always has a smile on her and will warmly greet you.",
+      "aspects": "{\"aspects\":[{\"term\":\"owner\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "The display is beyond horrible.",
+      "aspects": "{\"aspects\":[{\"term\":\"display\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "The owner and staff are all Japanese as well and that adds to the entire ambiance.",
+      "aspects": "{\"aspects\":[{\"term\":\"staff\",\"polarity\":\"positive\"},{\"term\":\"ambiance\",\"polarity\":\"positive\"},{\"term\":\"owner\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "A tip for people looking into this computer: DO NOT BUY IT save up a bit more money and buy a computer that will last.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "This laptop is a great price and has a sleek look.",
+      "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"positive\"},{\"term\":\"look\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I have been to Roth's twice and both times were very disappointing.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Very satisfied.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Yes, I have it on the highest available setting.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "So I called Compaq, and after being on the phone for 3 hours, i finally got a replacement which I shouldn't have had a problem getting since it was under warranty.",
+      "aspects": "{\"aspects\":[{\"term\":\"warranty\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "I felt as though I were eating in Paris.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Good bagels and good cream cheese.",
+      "aspects": "{\"aspects\":[{\"term\":\"bagels\",\"polarity\":\"positive\"},{\"term\":\"cream cheese\",\"polarity\":\"positive\"}]}"
+    }
+  ],
+  "signature": {
+    "instructions": "Given a text review of a product, identify the specific aspects or features mentioned in the review and determine the sentiment expressed towards each aspect, returning a list of aspects with their corresponding sentiment polarities.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

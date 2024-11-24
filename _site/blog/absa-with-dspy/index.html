@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2024-11-24">
+
+<title>Aspect-based Sentiment Analysis with DSPy – Paul Simmering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5b23f965110aab6ec963605a5d74d02e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-0717d87082b15f7faae65ec2fd0c44fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/paul_simmering"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Aspect-based Sentiment Analysis with DSPy</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Machine Learning</div>
+                <div class="quarto-category">Python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 24, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dspy-programming-not-prompting-llms" id="toc-dspy-programming-not-prompting-llms" class="nav-link active" data-scroll-target="#dspy-programming-not-prompting-llms">DSPy: Programming — not prompting — LLMs</a>
+  <ul class="collapse">
+  <li><a href="#experiment-setup" id="toc-experiment-setup" class="nav-link" data-scroll-target="#experiment-setup">Experiment setup</a></li>
+  </ul></li>
+  <li><a href="#dataset-for-aspect-based-sentiment-analysis" id="toc-dataset-for-aspect-based-sentiment-analysis" class="nav-link" data-scroll-target="#dataset-for-aspect-based-sentiment-analysis">Dataset for Aspect-based Sentiment Analysis</a>
+  <ul class="collapse">
+  <li><a href="#semeval-2014-task-4" id="toc-semeval-2014-task-4" class="nav-link" data-scroll-target="#semeval-2014-task-4">SemEval 2014 Task 4</a></li>
+  </ul></li>
+  <li><a href="#model-definition" id="toc-model-definition" class="nav-link" data-scroll-target="#model-definition">Model Definition</a>
+  <ul class="collapse">
+  <li><a href="#pydantic-models-for-absa" id="toc-pydantic-models-for-absa" class="nav-link" data-scroll-target="#pydantic-models-for-absa">Pydantic models for ABSA</a></li>
+  <li><a href="#transform-dataset-to-dspy-examples" id="toc-transform-dataset-to-dspy-examples" class="nav-link" data-scroll-target="#transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</a></li>
+  <li><a href="#creating-a-dspy-typed-predictor" id="toc-creating-a-dspy-typed-predictor" class="nav-link" data-scroll-target="#creating-a-dspy-typed-predictor">Creating a DSPy typed predictor</a></li>
+  </ul></li>
+  <li><a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization">Optimization</a>
+  <ul class="collapse">
+  <li><a href="#specify-the-evaluation-function" id="toc-specify-the-evaluation-function" class="nav-link" data-scroll-target="#specify-the-evaluation-function">Specify the evaluation function</a></li>
+  <li><a href="#optimizers" id="toc-optimizers" class="nav-link" data-scroll-target="#optimizers">Optimizers</a></li>
+  </ul></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  <li><a href="#hyperparameter-optimization" id="toc-hyperparameter-optimization" class="nav-link" data-scroll-target="#hyperparameter-optimization">Hyperparameter optimization</a></li>
+  <li><a href="#comparison-with-manual-prompts" id="toc-comparison-with-manual-prompts" class="nav-link" data-scroll-target="#comparison-with-manual-prompts">Comparison with manual prompts</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and discussion</a>
+  <ul class="collapse">
+  <li><a href="#comparison-to-the-2023-manual-prompts" id="toc-comparison-to-the-2023-manual-prompts" class="nav-link" data-scroll-target="#comparison-to-the-2023-manual-prompts">Comparison to the 2023 manual prompts</a></li>
+  <li><a href="#impact-of-hyperparameters" id="toc-impact-of-hyperparameters" class="nav-link" data-scroll-target="#impact-of-hyperparameters">Impact of hyperparameters</a></li>
+  <li><a href="#few-shot-examples" id="toc-few-shot-examples" class="nav-link" data-scroll-target="#few-shot-examples">Few-shot examples</a></li>
+  <li><a href="#chain-of-thought-cot" id="toc-chain-of-thought-cot" class="nav-link" data-scroll-target="#chain-of-thought-cot">Chain of thought (CoT)</a></li>
+  <li><a href="#model-choice" id="toc-model-choice" class="nav-link" data-scroll-target="#model-choice">Model choice</a></li>
+  <li><a href="#number-of-trials" id="toc-number-of-trials" class="nav-link" data-scroll-target="#number-of-trials">Number of trials</a></li>
+  </ul></li>
+  <li><a href="#review-of-dspy" id="toc-review-of-dspy" class="nav-link" data-scroll-target="#review-of-dspy">Review of DSPy</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Last year, my colleague Paavo Huoviala and I explored prompting and fine-tuning large language models for aspect-based sentiment analysis (ABSA) <span class="citation" data-cites="simmering2023large">(<a href="#ref-simmering2023large" role="doc-biblioref">Simmering and Huoviala 2023</a>)</span>. Like many researchers at the time, we spent considerable effort manually crafting prompts and selecting few-shot examples. But what if we could automate this process? Enter DSPy - a Python library that automatically optimizes LLM prompts. In this article, I’ll revisit our ABSA experiments using DSPy’s automated approach instead of manual prompt engineering.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Resource</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>💻 Code</td>
+<td><a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/index.qmd">GitHub</a></td>
+</tr>
+<tr class="even">
+<td>📊 Experiments</td>
+<td><a href="https://wandb.ai/psimm/absa-dspy">Weights &amp; Biases project</a></td>
+</tr>
+<tr class="odd">
+<td>📝 Dataset</td>
+<td><a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">Hugging Face Hub</a></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+DSPy version 2.5.32
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>DSPy is in rapid development. I’ve encountered outdated tutorials, dead links in the documentation and deprecation warnings. The code of this article may not work with future versions.</p>
+</div>
+</div>
+</div>
+<section id="dspy-programming-not-prompting-llms" class="level2">
+<h2 class="anchored" data-anchor-id="dspy-programming-not-prompting-llms">DSPy: Programming — not prompting — LLMs</h2>
+<p><img src="dspy_logo.webp" class="img-fluid" style="width:50.0%"></p>
+<p><a href="https://dspy.ai">DSPy</a> is a Python library developed by Stanford NLP. Rather than manually crafting prompts and seeing them break whenever something changes elsewhere in the pipeline, DSPy automates the process of finding the optimal prompts. The documentation has an <a href="https://dspy.ai/learn/">overview</a> of the main building blocks of the library. In this article, I’ll introduce the elements needed to optimize a structured prediction task, using ABSA as an example.</p>
+<section id="experiment-setup" class="level3">
+<h3 class="anchored" data-anchor-id="experiment-setup">Experiment setup</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#2d3748',
+    'primaryBorderColor': '#90cdf4',
+    'lineColor': '#64748b',
+    'secondaryColor': '#ffffff',
+    'tertiaryColor': '#ffffff',
+    'fontSize': '22px',
+    'labelFontSize': '18px',
+    'edgeLabelFontSize': '18px'
+  }
+}}%%
+graph TB
+    %% Define styles
+    classDef default fill:#ffffff,stroke:#90cdf4,stroke-width:2px
+    classDef highlight fill:#fdf2f8,stroke:#ed64a6,stroke-width:3px
+    classDef api fill:#ffffff,stroke:#4fd1c5,stroke-width:2px
+    
+    subgraph Data ["1️⃣ Data"]
+        D1[SemEval Dataset] --&gt; |"Transform"| D2[DSPy Examples]
+    end
+    
+    subgraph Definition ["2️⃣ Model Definition"]
+        M2[Pydantic Models] --&gt; |"Define Structure"| M1[DSPy Signature]
+        M1 --&gt; |"Initialize"| M3[Predictor]
+        M4[Language Models] --&gt; |"Power"| M3
+        A1[OpenAI API] --&gt; |"Provide"| M4
+        A2[Fireworks.ai API] --&gt; |"Provide"| M4
+    end
+    
+    subgraph Optimization ["3️⃣ Optimization"]
+        O1[Evaluation Function] --&gt; |"Guide"| O2[MIPROv2 Optimizer]
+        M3 --&gt; |"Optimize"| O2
+        D2 --&gt; |"Train"| O2
+        O2 --&gt; |"Output"| O3[Optimized Predictor]
+    end
+    
+    subgraph Evaluation ["4️⃣ Evaluation"]
+        O3 --&gt; |"Test"| E1[Test Set Evaluation]
+        O1 --&gt; |"Measure"| E1
+        E1 --&gt; |"Log"| E2[Weights &amp; Biases]
+    end
+
+    %% Apply styles
+    class O2 highlight
+    class A1,A2,E2 api
+    
+    %% Links between subgraphs
+    linkStyle default stroke:#64748b,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The steps will be explained in the following sections.</p>
+</section>
+</section>
+<section id="dataset-for-aspect-based-sentiment-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-for-aspect-based-sentiment-analysis">Dataset for Aspect-based Sentiment Analysis</h2>
+<p>The goal of ABSA is to analyze a review and extract the discussed aspects of a product or service and the sentiment towards each aspect. For example, the review “The pizza was great, but the service was terrible” contains two aspects: “pizza” (positive) and “service” (negative). There are more advanced variants of ABSA, but for this article I’ll focus on the basic task. I will also let a single model handle the extraction and the classification.</p>
+<section id="semeval-2014-task-4" class="level3">
+<h3 class="anchored" data-anchor-id="semeval-2014-task-4">SemEval 2014 Task 4</h3>
+<p>I’m using the SemEval 2014 Task 4 dataset by <span class="citation" data-cites="pontiki_semeval">Pontiki et al. (<a href="#ref-pontiki_semeval" role="doc-biblioref">2014</a>)</span>. The <a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">dataset</a> is available on Hugging Face. This is a cleaned version of the original XML files consisting of train and test splits. The small number of examples with the “conflict” label are excluded, as is common in the literature.</p>
+<div id="e4d63c27" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"hf://datasets/psimm/absa-semeval2014-alpaca"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pl.read_parquet(url <span class="op">+</span> <span class="st">"/data/train-00000-of-00001.parquet"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> pl.read_parquet(url <span class="op">+</span> <span class="st">"/data/test-00000-of-00001.parquet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="806f0c13" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>overview <span class="op">=</span> (</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    train.vstack(test)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"split"</span>, <span class="st">"domain"</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    .agg(examples<span class="op">=</span>pl.<span class="bu">len</span>())</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"split"</span>, <span class="st">"domain"</span>, descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>GT(overview).tab_header(<span class="st">"SemEval 2014 Task 4 Dataset"</span>).cols_label(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    split<span class="op">=</span><span class="st">"Split"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    domain<span class="op">=</span><span class="st">"Domain"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    examples<span class="op">=</span><span class="st">"Examples"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>).cols_align(align<span class="op">=</span><span class="st">"right"</span>, columns<span class="op">=</span>[<span class="st">"examples"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="rqftrwueta" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#rqftrwueta table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#rqftrwueta thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#rqftrwueta p { margin: 0; padding: 0; }
+ #rqftrwueta .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #rqftrwueta .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #rqftrwueta .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #rqftrwueta .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #rqftrwueta .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rqftrwueta .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #rqftrwueta .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #rqftrwueta .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #rqftrwueta .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #rqftrwueta .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #rqftrwueta .gt_spanner_row { border-bottom-style: hidden; }
+ #rqftrwueta .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #rqftrwueta .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #rqftrwueta .gt_from_md> :first-child { margin-top: 0; }
+ #rqftrwueta .gt_from_md> :last-child { margin-bottom: 0; }
+ #rqftrwueta .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #rqftrwueta .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #rqftrwueta .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #rqftrwueta .gt_row_group_first td { border-top-width: 2px; }
+ #rqftrwueta .gt_row_group_first th { border-top-width: 2px; }
+ #rqftrwueta .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #rqftrwueta .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rqftrwueta .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #rqftrwueta .gt_left { text-align: left; }
+ #rqftrwueta .gt_center { text-align: center; }
+ #rqftrwueta .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #rqftrwueta .gt_font_normal { font-weight: normal; }
+ #rqftrwueta .gt_font_bold { font-weight: bold; }
+ #rqftrwueta .gt_font_italic { font-style: italic; }
+ #rqftrwueta .gt_super { font-size: 65%; }
+ #rqftrwueta .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #rqftrwueta .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="3" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 Dataset</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Split" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Split</th>
+<th id="Domain" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Domain</th>
+<th id="Examples" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Examples</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">train</td>
+<td class="gt_row gt_left">restaurants</td>
+<td class="gt_row gt_right">2957</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">train</td>
+<td class="gt_row gt_left">laptops</td>
+<td class="gt_row gt_right">3002</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">test</td>
+<td class="gt_row gt_left">restaurants</td>
+<td class="gt_row gt_right">786</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">test</td>
+<td class="gt_row gt_left">laptops</td>
+<td class="gt_row gt_right">786</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<p>The dataset contains a similar number of restaurant and laptop reviews.</p>
+<p>The goal is to choose the optimal prompt and few-shot examples to maximize the F1 score of the aspect extraction and classification. To achieve this, DSPy needs to be able to evaluate the metrics and a training set to learn from.</p>
+</section>
+</section>
+<section id="model-definition" class="level2">
+<h2 class="anchored" data-anchor-id="model-definition">Model Definition</h2>
+<section id="pydantic-models-for-absa" class="level3">
+<h3 class="anchored" data-anchor-id="pydantic-models-for-absa">Pydantic models for ABSA</h3>
+<p>We create classes to represent the input and output of the task using the data validation library <a href="https://docs.pydantic.dev/latest/">Pydantic</a>. This helps with validating the data and provides a structured output format for predictor. The <code>Field</code> class is used to describe the expected data type. Their descriptions match the ones used in <span class="citation" data-cites="simmering2023large">(<a href="#ref-simmering2023large" role="doc-biblioref">Simmering and Huoviala 2023</a>)</span>. This is a form of prompting, but DSPy also supports automatically setting the structure’s descriptions using the <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed#optimizing-typed-predictors"><code>optimize_signature</code></a> optimizer. In this experiment I’ll stick with the original descriptions and only vary the normal prompt and few-shot examples.</p>
+<div id="7ea8efd9" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Input(BaseModel):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    text: <span class="bu">str</span> <span class="op">=</span> Field()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Aspect(BaseModel):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    term: <span class="bu">str</span> <span class="op">=</span> Field(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"An aspect term, which is a verbatim text snippet. Single or multiword terms naming particular aspects of the reviewed product or service."</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    polarity: Literal[<span class="st">"positive"</span>, <span class="st">"neutral"</span>, <span class="st">"negative"</span>] <span class="op">=</span> Field(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"The polarity expressed towards the aspect term. Valid polarities are ‘positive’, ‘neutral’, ‘negative'."</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__hash__</span>(<span class="va">self</span>):</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">        Make the aspect hashable to enable set operations in evaluation.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">        Hash is case-insensitive.</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">hash</span>((<span class="va">self</span>.term.lower(), <span class="va">self</span>.polarity.lower()))</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">        Define equality for case-insensitive comparison.</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(other, Aspect):</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.term.lower() <span class="op">==</span> other.term.lower()</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> <span class="va">self</span>.polarity.lower() <span class="op">==</span> other.polarity.lower()</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Aspects(BaseModel):</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    aspects: <span class="bu">list</span>[Aspect] <span class="op">=</span> Field(</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array."</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>__hash__</code> and <code>__eq__</code> methods will be helpful for evaluation, because they allow for use of set operations to compare gold and predicted aspects.</p>
+</section>
+<section id="transform-dataset-to-dspy-examples" class="level3">
+<h3 class="anchored" data-anchor-id="transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</h3>
+<p>Each row in the dataset needs to be turned into an instance of the <code>dspy.Example</code> class. The <code>with_inputs</code> method is used to tell DSPy which column contains the input. Other columns are used as expected model outputs.</p>
+<div id="fa9baa0f" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dspy</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_example(row):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dspy.Example(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>row[<span class="st">"input"</span>],</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        aspects<span class="op">=</span>Aspects(aspects<span class="op">=</span>json.loads(row[<span class="st">"output"</span>])[<span class="st">"aspects"</span>]),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ).with_inputs(<span class="st">"text"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>trainset <span class="op">=</span> [to_example(row) <span class="cf">for</span> row <span class="kw">in</span> train.to_dicts()]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>testset <span class="op">=</span> [to_example(row) <span class="cf">for</span> row <span class="kw">in</span> test.to_dicts()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s look at the first example.</p>
+<div id="80905d6d" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trainset[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>Example({'text': 'I charge it at night and skip taking the cord with me because of the good battery life.', 'aspects': Aspects(aspects=[Aspect(term='cord', polarity='neutral'), Aspect(term='battery life', polarity='positive')])}) (input_keys={'text'})</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-a-dspy-typed-predictor" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-dspy-typed-predictor">Creating a DSPy typed predictor</h3>
+<p>In DSPy, a module is a language model and a way of prompting. They can also consist of multiple requests and also include external tools such as a vector database for retrieval augmented generation. In this example, we have a single request using few-shot examples and chain of thought.</p>
+<p>In order to be able to parse the output as a dictionary, the LLM must output valid JSON. Therefore I’ll use a <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed">Typed Predictor</a> in DSPy, which is similar to structured outputs via instructor or a similar library.</p>
+<div id="b08481e5" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AbsaSignature(dspy.Signature):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    text: Input <span class="op">=</span> dspy.InputField()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    aspects: Aspects <span class="op">=</span> dspy.OutputField()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> dspy.ChainOfThought(AbsaSignature)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We also need to choose a language model. DSPy works with OpenAI, Anthropic, Ollama, vllm and other OpenAI-compatible platforms and libraries. This is powered by <a href="https://github.com/BerriAI/litellm">litellm</a> under the hood.</p>
+<p>For this article, I’ll use OpenAI’s gpt-4o-mini as well as the 70B version of Meta’s Llama 3.1 hosted on <a href="https://fireworks.ai">fireworks.ai</a>. Fireworks.ai generously supplied me with credits as part of the <a href="https://maven.com/parlance-labs/fine-tuning?utm_campaign=d45fef&amp;utm_medium=partner&amp;utm_source=instructor">Mastering LLMs For Developers &amp; Data Scientists</a> course.</p>
+<div id="1d75c5fd" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># FIREWORKS_AI_API_KEY environment variable must be set.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> dspy.LM(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    api_base<span class="op">=</span><span class="st">"https://api.fireworks.ai/inference/v1/"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.0</span>,  <span class="co"># best for structured outputs</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    cache<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">250</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>dspy.configure(lm<span class="op">=</span>lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="optimization" class="level2">
+<h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+<p>Let’s run a single example to check that everything is working.</p>
+<div id="6400007f" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>predictor(text<span class="op">=</span><span class="st">"The pizza was great, but the service was terrible"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>Prediction(
+    rationale='We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".',
+    aspects=Aspects(aspects=[Aspect(term='pizza', polarity='positive'), Aspect(term='service', polarity='negative')])
+)</code></pre>
+</div>
+</div>
+<p>That’s a good start. I’m a fan of <a href="https://hamel.dev/blog/posts/prompt/">Hamel Husain’s advice</a> to always demand: “Show me the prompt”, so let’s check what DSPy actually sent to OpenAI:</p>
+<div id="4c90494d" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lm.inspect_history(n<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+
+
+[2024-11-24T16:59:23.683795]
+
+System message:
+
+Your input fields are:
+1. `text` (Input)
+
+Your output fields are:
+1. `rationale` (str): ${produce the aspects}. We ...
+2. `aspects` (Aspects)
+
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## text ## ]]
+{text}
+
+[[ ## rationale ## ]]
+{rationale}
+
+[[ ## aspects ## ]]
+{aspects}        # note: the value you produce must be pareseable according to the following JSON schema: {"type": "object", "$defs": {"Aspect": {"type": "object", "properties": {"polarity": {"type": "string", "description": "The polarity expressed towards the aspect term. Valid polarities are ‘positive’, ‘neutral’, ‘negative'.", "enum": ["positive", "neutral", "negative"], "title": "Polarity"}, "term": {"type": "string", "description": "An aspect term, which is a verbatim text snippet. Single or multiword terms naming particular aspects of the reviewed product or service.", "title": "Term"}}, "required": ["term", "polarity"], "title": "Aspect"}}, "properties": {"aspects": {"type": "array", "description": "An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array.", "items": {"$ref": "#/$defs/Aspect"}, "title": "Aspects"}}, "required": ["aspects"], "title": "Aspects"}
+
+[[ ## completed ## ]]
+
+In adhering to this structure, your objective is: 
+        Given the fields `text`, produce the fields `aspects`.
+
+
+User message:
+
+[[ ## text ## ]]
+The pizza was great, but the service was terrible
+
+Respond with the corresponding output fields, starting with the field `[[ ## rationale ## ]]`, then `[[ ## aspects ## ]]` (must be formatted as a valid Python Aspects), and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+Response:
+
+[[ ## rationale ## ]]
+We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".
+
+[[ ## aspects ## ]]
+{"aspects": [{"term": "pizza", "polarity": "positive"}, {"term": "service", "polarity": "negative"}]}
+
+[[ ## completed ## ]]
+
+
+
+
+</code></pre>
+</div>
+</div>
+<p>Verbose but it works. It doesn’t use function calling or a different way to get structured outputs, so there is some chance of getting an invalid JSON.</p>
+<section id="specify-the-evaluation-function" class="level3">
+<h3 class="anchored" data-anchor-id="specify-the-evaluation-function">Specify the evaluation function</h3>
+<p>An evaluation function takes an example and a prediction and returns an F1 score. A true positive is a predicted aspect that is also in the gold answer, a false positive is a predicted aspect that is not in the gold answer, and a false negative is a gold answer aspect that is not predicted. Here are the precision, recall, and F1 score functions.</p>
+<div id="e0f4ac0e" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> precision(tp: <span class="bu">int</span>, fp: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Handle division by zero</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span> <span class="cf">if</span> tp <span class="op">+</span> fp <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> tp <span class="op">/</span> (tp <span class="op">+</span> fp)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall(tp: <span class="bu">int</span>, fn: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span> <span class="cf">if</span> tp <span class="op">+</span> fn <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f1_score(tp: <span class="bu">int</span>, fp: <span class="bu">int</span>, fn: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    prec <span class="op">=</span> precision(tp, fp)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    rec <span class="op">=</span> recall(tp, fn)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span> <span class="cf">if</span> prec <span class="op">+</span> rec <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">2</span> <span class="op">*</span> (prec <span class="op">*</span> rec) <span class="op">/</span> (prec <span class="op">+</span> rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next is the evaluation function which compares the gold and predicted aspects. To count as a true positive, both the term and the polarity have to be correct. As it is conventional on this benchmark, the case where both the gold answers and the prediction are empty is treated as a correct prediction of no aspects.</p>
+<div id="1da9c83f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_absa(example: dspy.Example, prediction: Aspects, trace<span class="op">=</span><span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    gold_aspects <span class="op">=</span> <span class="bu">set</span>(example.aspects.aspects)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    pred_aspects <span class="op">=</span> <span class="bu">set</span>(prediction.aspects.aspects)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> <span class="bu">len</span>(gold_aspects <span class="op">&amp;</span> pred_aspects)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> <span class="bu">len</span>(pred_aspects <span class="op">-</span> gold_aspects)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> <span class="bu">len</span>(gold_aspects <span class="op">-</span> pred_aspects)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(gold_aspects) <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> <span class="bu">len</span>(pred_aspects) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        tp <span class="op">+=</span> <span class="dv">1</span>  <span class="co"># correct prediction of no aspects</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> f1_score(tp, fp, fn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s try the evaluation function with a single example. We expect the F1 score to be 1.0, because the prediction matches the gold answer exactly.</p>
+<div id="b9859938" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>example <span class="op">=</span> dspy.Example(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span><span class="st">"The pizza was great, but the service was terrible"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    aspects<span class="op">=</span>Aspects(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        aspects<span class="op">=</span>[</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            Aspect(term<span class="op">=</span><span class="st">"pizza"</span>, polarity<span class="op">=</span><span class="st">"positive"</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            Aspect(term<span class="op">=</span><span class="st">"service"</span>, polarity<span class="op">=</span><span class="st">"negative"</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>).with_inputs(<span class="st">"text"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> predictor(text<span class="op">=</span>example.text)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>evaluate_absa(example, prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>1.0</code></pre>
+</div>
+</div>
+</section>
+<section id="optimizers" class="level3">
+<h3 class="anchored" data-anchor-id="optimizers">Optimizers</h3>
+<p>DSPy has a variety of <a href="https://dspy.ai/learn/optimization/optimizers/?h=optimizers">optimizers</a>, loops that change the prompt and/or few-shot examples and evaluate the performance. They’re analogous to optimizers like SGD and Adam in PyTorch. The choice of optimizer depends on the task, the amount of labeled data and the computational resources available. As we have a large labeled dataset, it’s not necessary to have the model bootstrap artificial examples. Our 2023 paper found that fine-tuning yields the best results, but the goal of this article is to showcase DSPy’s prompt optimization.</p>
+<p>The most powerful optimizer available for a prompting approach for this task is <a href="[Multiprompt Instruction PRoposal Optimizer Version 2](https://dspy.ai/deep-dive/optimizers/miprov2/?h=miprov)">MIPROv2</a> (Multiprompt Instruction PRoposal Optimizer Version 2) by <span class="citation" data-cites="opsahlong2024optimizinginstructionsdemonstrationsmultistage">Opsahl-Ong et al. (<a href="#ref-opsahlong2024optimizinginstructionsdemonstrationsmultistage" role="doc-biblioref">2024</a>)</span>. MIPROv2 uses Bayesian optimization to find an optimal combination of few-shot examples and prompt instructions.</p>
+<div id="78b264c7" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>optimizer_settings <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    metric<span class="op">=</span>evaluate_absa,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    num_threads<span class="op">=</span><span class="dv">12</span>,  <span class="co"># make parallel requests to Fireworks.ai</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    max_errors<span class="op">=</span><span class="dv">1000</span>,  <span class="co"># keep going even when invalid JSON is returned</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> dspy.teleprompt.MIPROv2(<span class="op">**</span>optimizer_settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The final step is to call the <code>compile</code> method, which starts the optimization process. After about 5 minutes, the best prompt and few-shot examples are saved to a JSON file.</p>
+<div id="53f24104" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define settings for the comilation step of the optimizer.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>compile_settings <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    minibatch_size<span class="op">=</span><span class="dv">50</span>,  <span class="co"># evaluate changes on a subset of the validation set</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    minibatch_full_eval_steps<span class="op">=</span><span class="dv">10</span>,  <span class="co"># evaluate on the full validation set after every 10 steps</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    max_labeled_demos<span class="op">=</span><span class="dv">4</span>,  <span class="co"># the number of few-shot examples to use</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    max_bootstrapped_demos<span class="op">=</span><span class="dv">1</span>,  <span class="co"># not required because we have labeled examples, but setting it to 0 causes an error during sampling</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    num_trials<span class="op">=</span><span class="dv">3</span>,  <span class="co"># how many combinations of few-shot examples and prompt instructions to try</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    seed<span class="op">=</span><span class="dv">42</span>,  <span class="co"># for reproducibility</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    requires_permission_to_run<span class="op">=</span><span class="va">False</span>,  <span class="co"># skip confirmation dialog</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We save the optimized predictor to a JSON file. It’s a small config file listing the chosen few-shot examples and the optimized prompt.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>optimized_predictor <span class="op">=</span> optimizer.<span class="bu">compile</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    student<span class="op">=</span>predictor, trainset<span class="op">=</span>trainset, <span class="op">**</span>compile_settings</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>optimized_predictor.save(<span class="st">"configs/absa_model.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s check if we can load it again:</p>
+<div id="e98c9a29" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>optimized_predictor <span class="op">=</span> dspy.ChainOfThought(signature<span class="op">=</span>AbsaSignature)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>optimized_predictor.load(path<span class="op">=</span><span class="st">"configs/absa_model.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Again: “Show me the prompt”.</p>
+<div id="3116b963" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(optimized_predictor.extended_signature.instructions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>You are a product reviewer tasked with analyzing customer feedback for laptops and netbooks. Given the fields `text`, which contains a customer review, produce the fields `aspects`, which should include the specific features or aspects of the laptop or netbook mentioned in the review, along with their corresponding sentiment or polarity.</code></pre>
+</div>
+</div>
+<p>and show me the chosen few-shot examples:</p>
+<div id="5d7b99dd" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> demo <span class="kw">in</span> optimized_predictor.demos[:<span class="dv">3</span>]:  <span class="co"># first 3 examples</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(demo[<span class="st">"text"</span>])</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(demo[<span class="st">"aspects"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).
+{"aspects":[{"term":"TFT panel","polarity":"negative"}]}
+But we had paid for bluetooth, and there was none.
+{"aspects":[{"term":"bluetooth","polarity":"negative"}]}
+The powerpoint opened seamlessly in the apple and the mac hooked up to the projector so easily it was almost scary.
+{"aspects":[{"term":"powerpoint","polarity":"positive"}]}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<p>So far, we’ve only evaluated on the validation part of the training set (this was automatically done by DSPy). Let’s evaluate the optimized predictor on the test set.</p>
+<div id="65a92f06" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> dspy.Evaluate(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    devset<span class="op">=</span>testset,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    metric<span class="op">=</span>evaluate_absa,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    display_progress<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    num_threads<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2c18976a" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> evaluator(optimized_predictor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The first run yields an F1 score of 47.6. That’s rather poor, but the compiler settings only allow for 4 labeled examples and 1 bootstrapped example and only 3 trials.</p>
+</section>
+<section id="hyperparameter-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-optimization">Hyperparameter optimization</h2>
+<p>What would happen if we changed the hyperparameters? Let’s do a grid search over the number of few-shot examples and the number of trials, as well as try different models.</p>
+<div id="61f77534" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>max_labeled_demos <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">40</span>]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>num_trials <span class="op">=</span> [<span class="dv">15</span>, <span class="dv">30</span>, <span class="dv">60</span>]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>chain_of_thought <span class="op">=</span> [<span class="va">True</span>, <span class="va">False</span>]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>default_lm_settings <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.0</span>,  <span class="co"># best for structured outputs, no creativity needed</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    cache<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">250</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>lm_settings <span class="op">=</span> [</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: <span class="st">"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"api_base"</span>: <span class="st">"https://api.fireworks.ai/inference/v1/"</span>,</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>default_lm_settings,</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: <span class="st">"gpt-4o-mini-2024-07-18"</span>,</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>default_lm_settings,</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> <span class="bu">list</span>(</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    itertools.product(max_labeled_demos, num_trials, chain_of_thought, lm_settings)</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This results in a grid with 48 combinations. Next, we iterate over the grid, perform the optimization run and save the results to Weights &amp; Biases.</p>
+<div id="d3b43809" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wandb</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> os.getenv(<span class="st">"FIREWORKS_AI_API_KEY"</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>, <span class="st">"FIREWORKS_AI_API_KEY is not set."</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> os.getenv(<span class="st">"OPENAI_API_KEY"</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>, <span class="st">"OPENAI_API_KEY is not set."</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> max_labeled_demos, num_trials, chain_of_thought, lm_settings <span class="kw">in</span> tqdm(grid):</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate a filename for the run</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    modelname <span class="op">=</span> lm_settings[<span class="st">"model"</span>].replace(<span class="st">"/"</span>, <span class="st">"_"</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    cot_name <span class="op">=</span> <span class="st">"cot"</span> <span class="cf">if</span> chain_of_thought <span class="cf">else</span> <span class="st">"predict"</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    run_name <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>modelname<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>max_labeled_demos<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>num_trials<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>cot_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    filepath <span class="op">=</span> <span class="st">"configs/"</span> <span class="op">+</span> run_name <span class="op">+</span> <span class="st">".json"</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(filepath):</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Skipping </span><span class="sc">{</span>run_name<span class="sc">}</span><span class="ss"> because it already exists."</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Running </span><span class="sc">{</span>run_name<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create fresh copies of settings for this run</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    run_compile_settings <span class="op">=</span> deepcopy(compile_settings)</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    run_optimizer_settings <span class="op">=</span> deepcopy(optimizer_settings)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update settings</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    run_compile_settings[<span class="st">"max_labeled_demos"</span>] <span class="op">=</span> max_labeled_demos</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>    run_compile_settings[<span class="st">"num_trials"</span>] <span class="op">=</span> num_trials</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> chain_of_thought:</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>        predictor <span class="op">=</span> dspy.ChainOfThought(AbsaSignature)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>        predictor <span class="op">=</span> dspy.Predict(AbsaSignature)</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Do an optimization run and evaluate the resulting model</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        dspy.configure(lm<span class="op">=</span>dspy.LM(<span class="op">**</span>lm_settings))</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>        optimizer <span class="op">=</span> dspy.teleprompt.MIPROv2(<span class="op">**</span>run_optimizer_settings)</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>        optimized_predictor <span class="op">=</span> optimizer.<span class="bu">compile</span>(</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>            student<span class="op">=</span>predictor, trainset<span class="op">=</span>trainset, <span class="op">**</span>run_compile_settings</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>        score <span class="op">=</span> evaluator(optimized_predictor)</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(</span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Failed run with settings: max_labeled_demos=</span><span class="sc">{</span>max_labeled_demos<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"num_trials=</span><span class="sc">{</span>num_trials<span class="sc">}</span><span class="ss">, model=</span><span class="sc">{</span>lm_settings[<span class="st">'model'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span><span class="bu">str</span>(e)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>    optimized_predictor.save(filepath)</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Log experiment to W&amp;B</span></span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>    config <span class="op">=</span> {</span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output_schema"</span>: Aspects.model_json_schema(),</span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>        <span class="st">"compile_settings"</span>: run_compile_settings,</span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>        <span class="st">"optimizer_settings"</span>: run_optimizer_settings,</span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chain_of_thought"</span>: chain_of_thought,</span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lm_settings"</span>: lm_settings,</span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> wandb.init(project<span class="op">=</span><span class="st">"absa-dspy"</span>, config<span class="op">=</span>config, name<span class="op">=</span>run_name) <span class="im">as</span> run:</span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>        wandb.log({<span class="st">"f1"</span>: score})</span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a>        wandb.save(filepath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="comparison-with-manual-prompts" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-with-manual-prompts">Comparison with manual prompts</h2>
+<p>In the 2023 paper, co-author and I manually crafted prompts and chose few-shot examples that, in our opinion, illustrated the task well. Inference was done using the OpenAI API and using function calling to ensure structured outputs. To make the comparison fair, we’ll now use the same prompts within DSPy.</p>
+<p>The manual prompts and few-shot examples are available on <a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/configs/manual_prompt.json">Github</a>.</p>
+<p>The models <code>gpt-4-0613</code> and <code>gpt-3.5-turbo-0613</code> that were used in the 2023 paper are no longer available on the OpenAI API. Therefore, we use the closest substitutes here.</p>
+<div id="3ce453ea" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gpt-4o-2024-11-20"</span>,  <span class="co"># similar to gpt-4-0613</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gpt-3.5-turbo-0125"</span>,  <span class="co"># similar to gpt-3.5-turbo-0613</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gpt-4o-mini-2024-07-18"</span>,  <span class="co"># reference</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>manual_predictor <span class="op">=</span> dspy.Predict(AbsaSignature)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>manual_predictor.load(path<span class="op">=</span><span class="st">"configs/manual_prompt.json"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> model <span class="kw">in</span> models:</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    lm <span class="op">=</span> dspy.LM(</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        cache<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        max_tokens<span class="op">=</span><span class="dv">250</span>,</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    dspy.configure(lm<span class="op">=</span>lm)</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> evaluator(manual_predictor)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    runname <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">_manual_prompt"</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    config <span class="op">=</span> {</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output_schema"</span>: Aspects.model_json_schema(),</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"compile_settings"</span>: {</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_labeled_demos"</span>: <span class="bu">len</span>(manual_predictor.demos),</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_bootstrapped_demos"</span>: <span class="dv">0</span>,</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lm_settings"</span>: {</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"model"</span>: model,</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> wandb.init(project<span class="op">=</span><span class="st">"absa-dspy"</span>, name<span class="op">=</span>runname, config<span class="op">=</span>config) <span class="im">as</span> run:</span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>        wandb.log({<span class="st">"f1"</span>: score})</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>        wandb.save(<span class="st">"configs/manual_prompt.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
+<p>We load the results from the Weights &amp; Biases project and show the most relevant columns for a comparison of the runs.</p>
+<div id="17064435" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wandb</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>api <span class="op">=</span> wandb.Api()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all runs from the project</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> api.runs(<span class="st">"psimm/absa-dspy"</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> runs:</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    results.append(</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"run_name"</span>: run.name,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"model"</span>: run.config[<span class="st">"lm_settings"</span>][<span class="st">"model"</span>],</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_demos"</span>: run.config[<span class="st">"compile_settings"</span>][<span class="st">"max_labeled_demos"</span>],</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_bootstrapped_demos"</span>: run.config[<span class="st">"compile_settings"</span>][</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"max_bootstrapped_demos"</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"num_trials"</span>: run.config.get(<span class="st">"compile_settings"</span>, {}).get(</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"num_trials"</span>, <span class="va">None</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"chain_of_thought"</span>: run.config[<span class="st">"chain_of_thought"</span>],</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"f1"</span>: run.summary[<span class="st">"f1"</span>],</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pl.DataFrame(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="78203b73" class="cell" data-execution_count="24">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>table_df <span class="op">=</span> (</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    results_df.with_columns(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        method<span class="op">=</span>pl.when(pl.col(<span class="st">"run_name"</span>).<span class="bu">str</span>.contains(<span class="st">"manual"</span>))</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        .then(pl.lit(<span class="st">"Manual (2023)"</span>))</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        .otherwise(pl.lit(<span class="st">"DSPy"</span>)),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>pl.col(<span class="st">"model"</span>).<span class="bu">str</span>.replace(</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fireworks_ai/accounts/fireworks/models/"</span>, <span class="st">""</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        demos<span class="op">=</span>pl.when(pl.col(<span class="st">"max_bootstrapped_demos"</span>) <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        .then(pl.col(<span class="st">"max_demos"</span>).cast(pl.Utf8))</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        .otherwise(</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>            pl.col(<span class="st">"max_demos"</span>).cast(pl.Utf8)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> <span class="st">" + "</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> pl.col(<span class="st">"max_bootstrapped_demos"</span>).cast(pl.Utf8)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        chain_of_thought<span class="op">=</span>pl.when(pl.col(<span class="st">"chain_of_thought"</span>))</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        .then(pl.lit(<span class="st">"✅"</span>))</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        .otherwise(pl.lit(<span class="st">"❌"</span>)),</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"f1"</span>, descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    .select(</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>,</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"method"</span>,</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"num_trials"</span>,</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"demos"</span>,</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chain_of_thought"</span>,</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"f1"</span>,</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>GT(table_df).tab_header(<span class="st">"SemEval 2014 Task 4 1+2 Few-Shot Predictors"</span>).cols_label(</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"Model"</span>,</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span><span class="st">"Method"</span>,</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>    demos<span class="op">=</span><span class="st">"Labeled + Bootstrapped Demos"</span>,</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    num_trials<span class="op">=</span><span class="st">"Trials"</span>,</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    chain_of_thought<span class="op">=</span><span class="st">"Chain of Thought"</span>,</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    f1<span class="op">=</span><span class="st">"F1 Score"</span>,</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>).cols_align(align<span class="op">=</span><span class="st">"right"</span>, columns<span class="op">=</span>[<span class="st">"demos"</span>, <span class="st">"num_trials"</span>, <span class="st">"f1"</span>]).fmt_number(</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"f1"</span>], decimals<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>).tab_source_note(</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div id="detajkqwna" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#detajkqwna table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#detajkqwna thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#detajkqwna p { margin: 0; padding: 0; }
+ #detajkqwna .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #detajkqwna .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #detajkqwna .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #detajkqwna .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #detajkqwna .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #detajkqwna .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #detajkqwna .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #detajkqwna .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #detajkqwna .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #detajkqwna .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #detajkqwna .gt_spanner_row { border-bottom-style: hidden; }
+ #detajkqwna .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #detajkqwna .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #detajkqwna .gt_from_md> :first-child { margin-top: 0; }
+ #detajkqwna .gt_from_md> :last-child { margin-bottom: 0; }
+ #detajkqwna .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #detajkqwna .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #detajkqwna .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #detajkqwna .gt_row_group_first td { border-top-width: 2px; }
+ #detajkqwna .gt_row_group_first th { border-top-width: 2px; }
+ #detajkqwna .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #detajkqwna .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #detajkqwna .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #detajkqwna .gt_left { text-align: left; }
+ #detajkqwna .gt_center { text-align: center; }
+ #detajkqwna .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #detajkqwna .gt_font_normal { font-weight: normal; }
+ #detajkqwna .gt_font_bold { font-weight: bold; }
+ #detajkqwna .gt_font_italic { font-style: italic; }
+ #detajkqwna .gt_super { font-size: 65%; }
+ #detajkqwna .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #detajkqwna .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="6" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 1+2 Few-Shot Predictors</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
+<th id="Method" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Method</th>
+<th id="Trials" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Trials</th>
+<th id="Labeled + Bootstrapped Demos" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Labeled + Bootstrapped Demos</th>
+<th id="Chain of Thought" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Chain of Thought</th>
+<th id="F1 Score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">F1 Score</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-2024-11-20</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">71.28</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">62.83</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">61.49</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">61.34</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.32</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">60.27</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.80</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.60</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.32</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.83</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.79</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.79</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.36</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.98</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.84</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-3.5-turbo-0125</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.45</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">56.46</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">55.67</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">54.90</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.33</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.09</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.09</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">53.70</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">53.70</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">53.05</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">52.64</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">51.19</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">51.19</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">50.90</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">50.90</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.97</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.74</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.47</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">48.63</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">47.73</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">47.30</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">46.46</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">46.31</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="6" class="gt_sourcenote">Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper.</td>
+</tr>
+</tfoot>
+
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<section id="comparison-to-the-2023-manual-prompts" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-to-the-2023-manual-prompts">Comparison to the 2023 manual prompts</h3>
+<p>The DSPy runs are competitive with the manually crafted prompts from the 2023 paper. In contrast to the manual prompt, DSPy instructions are relatively short and emphasize the use of few-shot examples to illustrate the task.</p>
+</section>
+<section id="impact-of-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-hyperparameters">Impact of hyperparameters</h3>
+<p>To understand which factors significantly influence the F1 score, we’ll run a simple linear regression analysis. The manual runs are excluded. To analyze the impact of the model choice, we’ll create a boolean variable for <code>gpt-4o-mini</code> and treat <code>llama-v3p1-70b-instruct</code> as the baseline.</p>
+<div id="5b890162" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data for regression</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>reg_df <span class="op">=</span> results_df.<span class="bu">filter</span>(</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>pl.col(<span class="st">"run_name"</span>).<span class="bu">str</span>.contains(<span class="st">"manual"</span>),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"model"</span>).<span class="bu">str</span>.contains(<span class="st">"gpt-4o-mini"</span>) <span class="op">|</span> pl.col(<span class="st">"model"</span>).<span class="bu">str</span>.contains(<span class="st">"llama"</span>),</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>).with_columns(  <span class="co"># exclude manual prompts</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"model"</span>).<span class="bu">str</span>.contains(<span class="st">"gpt-4o-mini"</span>).alias(<span class="st">"is_gpt4_mini"</span>),</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to pandas and ensure numeric types</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> reg_df.select(</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"max_demos"</span>, <span class="st">"chain_of_thought"</span>, <span class="st">"num_trials"</span>, <span class="st">"is_gpt4_mini"</span>]</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>).to_pandas()</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert boolean columns to int</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>bool_columns <span class="op">=</span> [<span class="st">"chain_of_thought"</span>, <span class="st">"is_gpt4_mini"</span>]</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> bool_columns:</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    X[col] <span class="op">=</span> X[col].astype(<span class="bu">int</span>)</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> reg_df.select(<span class="st">"f1"</span>).to_pandas()</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add constant for intercept</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit regression</span></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(reg_df)</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> model.rsquared</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results using GT</span></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>    model.summary().tables[<span class="dv">1</span>],</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[</span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Parameter"</span>,</span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Coefficient"</span>,</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Std Error"</span>,</span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"t"</span>,</span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p&gt;|t|"</span>,</span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"[0.025"</span>,</span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0.975]"</span>,</span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.iloc[<span class="dv">1</span>:]  <span class="co"># remove row with repeated column names</span></span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>GT(df).tab_header(</span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Hyperparameter Analysis"</span>, subtitle<span class="op">=</span><span class="st">"Dependent variable: F1 score"</span></span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a>).cols_align(align<span class="op">=</span><span class="st">"right"</span>).tab_source_note(<span class="ss">f"n=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> runs, R²=</span><span class="sc">{</span>r2<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div id="syexemyoco" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#syexemyoco table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#syexemyoco thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#syexemyoco p { margin: 0; padding: 0; }
+ #syexemyoco .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #syexemyoco .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #syexemyoco .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #syexemyoco .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #syexemyoco .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #syexemyoco .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #syexemyoco .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #syexemyoco .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #syexemyoco .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #syexemyoco .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #syexemyoco .gt_spanner_row { border-bottom-style: hidden; }
+ #syexemyoco .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #syexemyoco .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #syexemyoco .gt_from_md> :first-child { margin-top: 0; }
+ #syexemyoco .gt_from_md> :last-child { margin-bottom: 0; }
+ #syexemyoco .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #syexemyoco .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #syexemyoco .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #syexemyoco .gt_row_group_first td { border-top-width: 2px; }
+ #syexemyoco .gt_row_group_first th { border-top-width: 2px; }
+ #syexemyoco .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #syexemyoco .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #syexemyoco .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #syexemyoco .gt_left { text-align: left; }
+ #syexemyoco .gt_center { text-align: center; }
+ #syexemyoco .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #syexemyoco .gt_font_normal { font-weight: normal; }
+ #syexemyoco .gt_font_bold { font-weight: bold; }
+ #syexemyoco .gt_font_italic { font-style: italic; }
+ #syexemyoco .gt_super { font-size: 65%; }
+ #syexemyoco .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #syexemyoco .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="7" class="gt_heading gt_title gt_font_normal">Hyperparameter Analysis</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="7" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Dependent variable: F1 score</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Parameter</th>
+<th id="Coefficient" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Coefficient</th>
+<th id="Std Error" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Std Error</th>
+<th id="t" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">t</th>
+<th id="p&amp;gt;|t|" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p&gt;|t|</th>
+<th id="[0.025" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">[0.025</th>
+<th id="0.975]" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">0.975]</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">const</td>
+<td class="gt_row gt_right">49.3654</td>
+<td class="gt_row gt_right">1.457</td>
+<td class="gt_row gt_right">33.885</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">46.419</td>
+<td class="gt_row gt_right">52.312</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">max_demos</td>
+<td class="gt_row gt_right">0.2021</td>
+<td class="gt_row gt_right">0.042</td>
+<td class="gt_row gt_right">4.794</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">0.117</td>
+<td class="gt_row gt_right">0.287</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">chain_of_thought</td>
+<td class="gt_row gt_right">-4.3317</td>
+<td class="gt_row gt_right">1.038</td>
+<td class="gt_row gt_right">-4.172</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">-6.432</td>
+<td class="gt_row gt_right">-2.232</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">num_trials</td>
+<td class="gt_row gt_right">0.1062</td>
+<td class="gt_row gt_right">0.027</td>
+<td class="gt_row gt_right">3.892</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">0.051</td>
+<td class="gt_row gt_right">0.161</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">is_gpt4_mini</td>
+<td class="gt_row gt_right">2.2964</td>
+<td class="gt_row gt_right">1.016</td>
+<td class="gt_row gt_right">2.260</td>
+<td class="gt_row gt_right">0.029</td>
+<td class="gt_row gt_right">0.241</td>
+<td class="gt_row gt_right">4.351</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="7" class="gt_sourcenote">n=44 runs, R²=0.56</td>
+</tr>
+</tfoot>
+
+</table>
+
+
+</div>
+        
+</div>
+</div>
+</section>
+<section id="few-shot-examples" class="level3">
+<h3 class="anchored" data-anchor-id="few-shot-examples">Few-shot examples</h3>
+<p>More examples are generally better, as indicated by the positive coefficient in the regression. However, the top runs didn’t use more than 20 examples, indicating that there are diminishing returns.</p>
+</section>
+<section id="chain-of-thought-cot" class="level3">
+<h3 class="anchored" data-anchor-id="chain-of-thought-cot">Chain of thought (CoT)</h3>
+<p>Runs where the model was instructed to perform an intermediate reasoning step yielded worse results than those without. This is an unusual result - typically CoT helps LLMs achieve better results, for example the main advantage of OpenAI’s <code>o1-preview</code> over <code>gpt-4o</code> is the advanced CoT that is built into it. However, on this structured task, CoT reasoning seems to be detrimental and a waste of output tokens.</p>
+</section>
+<section id="model-choice" class="level3">
+<h3 class="anchored" data-anchor-id="model-choice">Model choice</h3>
+<ul>
+<li><code>gpt-4o-mini-2024-07-18</code> seems to have an edge over <code>llama-v3p1-70b-instruct</code>, but the confidence interval is wide.</li>
+<li><code>gpt-4o-2024-11-20</code> performs better than the other models that were tested. I expect that performance of similar sized models such as <code>Llama 3.1 405B</code> will be similar. Due to cost considerations, I’ve skipped the optimization of a large model with DSPy.</li>
+<li><code>gpt-3.5-turbo-0125</code> performed better than <code>gpt-4o-mini-2024-07-18</code>, but worse than the deprecated <code>gpt-3.5-turbo-0613</code> performed during the experiments for the 2023 paper (57.45 vs.&nbsp;65.65 F1 Score).</li>
+</ul>
+</section>
+<section id="number-of-trials" class="level3">
+<h3 class="anchored" data-anchor-id="number-of-trials">Number of trials</h3>
+<p>Using more trials is associated with higher F1 scores. However, the table also shows setups with identical results at 15, 30 and 60 trials. Going beyond 60 trials isn’t likely to be helpful.</p>
+</section>
+</section>
+<section id="review-of-dspy" class="level2">
+<h2 class="anchored" data-anchor-id="review-of-dspy">Review of DSPy</h2>
+<p>Here are my conclusions based on this experiment.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pros ✅</strong></p>
+<ul>
+<li>Creates prompts that are as good as or better than manually crafted prompts.</li>
+<li>No need to manually craft prompts, leading to faster iteration speed.</li>
+<li>Able to deal with multi-step workflows.</li>
+<li>Naturally encourages a structured approach focused on evaluation.</li>
+<li>Supports many LLMs, via APIs and locally.</li>
+<li>Lightweight JSON export of the optimized prompts.</li>
+<li>Supports custom evaluation metrics.</li>
+<li>Built-in threading and caching, which saved me time and money.</li>
+<li>Actively developed and has a large community.</li>
+<li>Lots of <a href="https://github.com/stanfordnlp/dspy/tree/main/examples">tutorial notebooks</a>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Cons ❌</strong></p>
+<ul>
+<li>Generated prompts seem too short to explain the nuances of the task. The examples have to implicitly explain the annotation rules.</li>
+<li>Loss of control over the exact prompt. But arguably, if you want to control the prompt DSPy is not the approach to go for anyway.</li>
+<li>Structured output is not guaranteed, because it’s based on prompting only. Integration with function calling, JSON mode or constrained generation APIs and libraries would improve the reliability of the format.</li>
+<li>Steep learning curve with many concepts to understand.</li>
+<li>I encountered some bugs and deprecated functions and tutorials.</li>
+</ul>
+</div>
+</div>
+<p>DSPy is a great alternative to manual prompting, especially for tasks that have clear evaluation metrics and are demonstrable using few-shot examples.</p>
+<p>Another feature that I haven’t explored here is the fine-tuning <a href="https://dspy.ai/learn/optimization/optimizers/?h=fine#automatic-finetuning">optimizer</a> of DSPy that actually modifies the model weights. It’s promising for this task, as a fine-tuned <code>gpt-3.5-turbo-0613</code> is still the <a href="https://paperswithcode.com/sota/aspect-based-sentiment-analysis-on-semeval-6">record holder</a> at an F1 score of 83.76.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-opsahlong2024optimizinginstructionsdemonstrationsmultistage" class="csl-entry" role="listitem">
+Opsahl-Ong, Krista, Michael J Ryan, Josh Purtell, David Broman, Christopher Potts, Matei Zaharia, and Omar Khattab. 2024. <span>“Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs.”</span> <a href="https://arxiv.org/abs/2406.11695">https://arxiv.org/abs/2406.11695</a>.
+</div>
+<div id="ref-pontiki_semeval" class="csl-entry" role="listitem">
+Pontiki, Maria, Dimitris Galanis, John Pavlopoulos, Harris Papageorgiou, Ion Androutsopoulos, and Suresh Manandhar. 2014. <span>“<span>SemEval</span>-2014 <span>Task</span> 4: <span>Aspect</span> <span>Based</span> <span>Sentiment</span> <span>Analysis</span>.”</span> In <em>Proceedings of the 8th <span>International</span> <span>Workshop</span> on <span>Semantic</span> <span>Evaluation</span> (<span>SemEval</span> 2014)</em>, 27–35. Dublin, Ireland: Association for Computational Linguistics. <a href="https://doi.org/10.3115/v1/S14-2004">https://doi.org/10.3115/v1/S14-2004</a>.
+</div>
+<div id="ref-simmering2023large" class="csl-entry" role="listitem">
+Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for Aspect-Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2310.18025">https://arxiv.org/abs/2310.18025</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/simmering\.dev");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | This website doesn’t use cookies.
+<script data-goatcounter="https://simmering.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

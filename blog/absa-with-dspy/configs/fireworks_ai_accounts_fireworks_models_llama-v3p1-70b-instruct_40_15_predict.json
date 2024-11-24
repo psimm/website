@@ -1,0 +1,181 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "Hats off to the chef.",
+      "aspects": "{\"aspects\":[{\"term\":\"chef\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I can render AVCHD movies with little effort, which was a problem for most pc's unless you had a quad core I7.",
+      "aspects": "{\"aspects\":[{\"term\":\"quad core I7\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I would highly recommend this one to my friends",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I will have to say that I love my MacBook Pro!",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I went with him and we picked this one.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Also, HDD secures inside using rails, and there is only one set on the main hard drive.",
+      "aspects": "{\"aspects\":[{\"term\":\"HDD\",\"polarity\":\"positive\"},{\"term\":\"rails\",\"polarity\":\"neutral\"},{\"term\":\"hard drive\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "Would buy 100 more of these if I could.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "When this happened I would have to completely power off my computer and restart it.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Delivery is fast too.",
+      "aspects": "{\"aspects\":[{\"term\":\"Delivery\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "One, owning a mac is essentially a full production studio (in the case of a mac book a portable version).",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Worth the trip from Manhattan.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Similar to other Indian restaurants, they use the dinner special to attract customers at the door.",
+      "aspects": "{\"aspects\":[{\"term\":\"dinner special\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "It is so nice not to worry about that and the extra expense that comes along with the necessary virus protection on PC's.",
+      "aspects": "{\"aspects\":[{\"term\":\"virus protection\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "During our meal, the management came over and checked on us and even bought us a round of drinks.",
+      "aspects": "{\"aspects\":[{\"term\":\"management\",\"polarity\":\"positive\"},{\"term\":\"meal\",\"polarity\":\"neutral\"},{\"term\":\"round of drinks\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "falls into the case.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Thinking about returning it",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "NO good.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I tell everyone I see out looking to get this or another Toshiba.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "If you'd like to have a nice light meal with an asian accent, Long Tan is a good place on the slope.",
+      "aspects": "{\"aspects\":[{\"term\":\"meal\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I would easly reccomend this laptop to a friend.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "That's how frustrating it was.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "My chow fun and chow see was really bland and oily.",
+      "aspects": "{\"aspects\":[{\"term\":\"chow fun and chow see\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "I have had no luck with staples or HP to resolve this problem.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "The Prix Fixe menu is worth every penny and you get more than enough (both in quantity AND quality).",
+      "aspects": "{\"aspects\":[{\"term\":\"Prix Fixe menu\",\"polarity\":\"positive\"},{\"term\":\"quantity\",\"polarity\":\"positive\"},{\"term\":\"quality\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "The computer is a dream come true.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I had this computer for one month and had to send it in for repair.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Another issue I have with it is the battery.",
+      "aspects": "{\"aspects\":[{\"term\":\"battery\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "It is by far my favorite restaurant in Brooklyn.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I constantly had to send my laptop in for services every 3 months and it always seems to be the same problem that they said they had already fixed.",
+      "aspects": "{\"aspects\":[{\"term\":\"services\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "As of a couple weeks ago the middle portion of the laptop from top to bottom,,,about 4 inches across is hardly visible.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Got a little loud after 8pm when the joint got full.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Which was way too much money.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Yes, they use fancy ingredients, but even fancy ingredients don't make for good pizza unless someone knows how to get the crust right.",
+      "aspects": "{\"aspects\":[{\"term\":\"ingredients\",\"polarity\":\"positive\"},{\"term\":\"ingredients\",\"polarity\":\"positive\"},{\"term\":\"pizza\",\"polarity\":\"negative\"},{\"term\":\"crust\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "Perhaps.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "The food is a diamond in rough -- the food is delicious and homemade with the perfect balance of herbs and tomatoes.",
+      "aspects": "{\"aspects\":[{\"term\":\"food\",\"polarity\":\"positive\"},{\"term\":\"food\",\"polarity\":\"positive\"},{\"term\":\"herbs\",\"polarity\":\"positive\"},{\"term\":\"tomatoes\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "It's not a recommendation, it' a plea.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "my information was all lost (my fault, I know, but I never thought I would need to back up my information on a brand new Mac, the paragon of all computers!",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I regret buying it before understanding how awful it is to use.",
+      "aspects": "{\"aspects\":[{\"term\":\"use\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "Came fully loaded - good.",
+      "aspects": "{\"aspects\":[{\"term\":\"loaded\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "Delicious food at a great price but do not go here on a cold day and sit by the front door.",
+      "aspects": "{\"aspects\":[{\"term\":\"food\",\"polarity\":\"positive\"},{\"term\":\"price\",\"polarity\":\"positive\"},{\"term\":\"front door\",\"polarity\":\"neutral\"}]}"
+    }
+  ],
+  "signature": {
+    "instructions": "You are a product analyst tasked with identifying key features of laptops and netbooks that customers love or hate. Given a customer review, extract the specific aspects or features mentioned in the text, such as battery life, GUI, or applications. Produce a list of these aspects, which will help inform product development and improvement. Given the fields `text`, produce the fields `aspects`.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

@@ -10,8 +10,2834 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.5.57</generator>
-<lastBuildDate>Sat, 31 Aug 2024 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.33</generator>
+<lastBuildDate>Sat, 23 Nov 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Aspect-based Sentiment Analysis with DSPy</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/absa-with-dspy/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Last year, my colleague Paavo Huoviala and I explored prompting and fine-tuning large language models for aspect-based sentiment analysis (ABSA) <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. Like many researchers at the time, we spent considerable effort manually crafting prompts and selecting few-shot examples. But what if we could automate this process? Enter DSPy - a Python library that automatically optimizes LLM prompts. In this article, I’ll revisit our ABSA experiments using DSPy’s automated approach instead of manual prompt engineering.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Resource</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>💻 Code</td>
+<td><a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/index.qmd">GitHub</a></td>
+</tr>
+<tr class="even">
+<td>📊 Experiments</td>
+<td><a href="https://wandb.ai/psimm/absa-dspy">Weights &amp; Biases project</a></td>
+</tr>
+<tr class="odd">
+<td>📝 Dataset</td>
+<td><a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">Hugging Face Hub</a></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+DSPy version 2.5.32
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>DSPy is in rapid development. I’ve encountered outdated tutorials, dead links in the documentation and deprecation warnings. The code of this article may not work with future versions.</p>
+</div>
+</div>
+</div>
+<section id="dspy-programming-not-prompting-llms" class="level2">
+<h2 class="anchored" data-anchor-id="dspy-programming-not-prompting-llms">DSPy: Programming — not prompting — LLMs</h2>
+<p><img src="https://simmering.dev/blog/absa-with-dspy/dspy_logo.webp" class="img-fluid" style="width:50.0%"></p>
+<p><a href="https://dspy.ai">DSPy</a> is a Python library developed by Stanford NLP. Rather than manually crafting prompts and seeing them break whenever something changes elsewhere in the pipeline, DSPy automates the process of finding the optimal prompts. The documentation has an <a href="https://dspy.ai/learn/">overview</a> of the main building blocks of the library. In this article, I’ll introduce the elements needed to optimize a structured prediction task, using ABSA as an example.</p>
+<section id="experiment-setup" class="level3">
+<h3 class="anchored" data-anchor-id="experiment-setup">Experiment setup</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#2d3748',
+    'primaryBorderColor': '#90cdf4',
+    'lineColor': '#64748b',
+    'secondaryColor': '#ffffff',
+    'tertiaryColor': '#ffffff',
+    'fontSize': '22px',
+    'labelFontSize': '18px',
+    'edgeLabelFontSize': '18px'
+  }
+}}%%
+graph TB
+    %% Define styles
+    classDef default fill:#ffffff,stroke:#90cdf4,stroke-width:2px
+    classDef highlight fill:#fdf2f8,stroke:#ed64a6,stroke-width:3px
+    classDef api fill:#ffffff,stroke:#4fd1c5,stroke-width:2px
+    
+    subgraph Data ["1️⃣ Data"]
+        D1[SemEval Dataset] --&gt; |"Transform"| D2[DSPy Examples]
+    end
+    
+    subgraph Definition ["2️⃣ Model Definition"]
+        M2[Pydantic Models] --&gt; |"Define Structure"| M1[DSPy Signature]
+        M1 --&gt; |"Initialize"| M3[Predictor]
+        M4[Language Models] --&gt; |"Power"| M3
+        A1[OpenAI API] --&gt; |"Provide"| M4
+        A2[Fireworks.ai API] --&gt; |"Provide"| M4
+    end
+    
+    subgraph Optimization ["3️⃣ Optimization"]
+        O1[Evaluation Function] --&gt; |"Guide"| O2[MIPROv2 Optimizer]
+        M3 --&gt; |"Optimize"| O2
+        D2 --&gt; |"Train"| O2
+        O2 --&gt; |"Output"| O3[Optimized Predictor]
+    end
+    
+    subgraph Evaluation ["4️⃣ Evaluation"]
+        O3 --&gt; |"Test"| E1[Test Set Evaluation]
+        O1 --&gt; |"Measure"| E1
+        E1 --&gt; |"Log"| E2[Weights &amp; Biases]
+    end
+
+    %% Apply styles
+    class O2 highlight
+    class A1,A2,E2 api
+    
+    %% Links between subgraphs
+    linkStyle default stroke:#64748b,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The steps will be explained in the following sections.</p>
+</section>
+</section>
+<section id="dataset-for-aspect-based-sentiment-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-for-aspect-based-sentiment-analysis">Dataset for Aspect-based Sentiment Analysis</h2>
+<p>The goal of ABSA is to analyze a review and extract the discussed aspects of a product or service and the sentiment towards each aspect. For example, the review “The pizza was great, but the service was terrible” contains two aspects: “pizza” (positive) and “service” (negative). There are more advanced variants of ABSA, but for this article I’ll focus on the basic task. I will also let a single model handle the extraction and the classification.</p>
+<section id="semeval-2014-task-4" class="level3">
+<h3 class="anchored" data-anchor-id="semeval-2014-task-4">SemEval 2014 Task 4</h3>
+<p>I’m using the SemEval 2014 Task 4 dataset by <span class="citation" data-cites="pontiki_semeval">Pontiki et al. (2014)</span>. The <a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">dataset</a> is available on Hugging Face. This is a cleaned version of the original XML files consisting of train and test splits. The small number of examples with the “conflict” label are excluded, as is common in the literature.</p>
+<div id="e4d63c27" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hf://datasets/psimm/absa-semeval2014-alpaca"</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_parquet(url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/data/train-00000-of-00001.parquet"</span>)</span>
+<span id="cb1-6">test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_parquet(url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/data/test-00000-of-00001.parquet"</span>)</span></code></pre></div>
+</div>
+<div id="806f0c13" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> great_tables <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> GT</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">overview <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (</span>
+<span id="cb2-4">    train.vstack(test)</span>
+<span id="cb2-5">    .group_by([<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"split"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"domain"</span>])</span>
+<span id="cb2-6">    .agg(examples<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>())</span>
+<span id="cb2-7">    .sort(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"split"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"domain"</span>, descending<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb2-8">)</span>
+<span id="cb2-9">GT(overview).tab_header(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SemEval 2014 Task 4 Dataset"</span>).cols_label(</span>
+<span id="cb2-10">    split<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Split"</span>,</span>
+<span id="cb2-11">    domain<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Domain"</span>,</span>
+<span id="cb2-12">    examples<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Examples"</span>,</span>
+<span id="cb2-13">).cols_align(align<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>, columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"examples"</span>])</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="rqftrwueta" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#rqftrwueta table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#rqftrwueta thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#rqftrwueta p { margin: 0; padding: 0; }
+ #rqftrwueta .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #rqftrwueta .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #rqftrwueta .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #rqftrwueta .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #rqftrwueta .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rqftrwueta .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #rqftrwueta .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #rqftrwueta .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #rqftrwueta .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #rqftrwueta .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #rqftrwueta .gt_spanner_row { border-bottom-style: hidden; }
+ #rqftrwueta .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #rqftrwueta .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #rqftrwueta .gt_from_md> :first-child { margin-top: 0; }
+ #rqftrwueta .gt_from_md> :last-child { margin-bottom: 0; }
+ #rqftrwueta .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #rqftrwueta .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #rqftrwueta .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #rqftrwueta .gt_row_group_first td { border-top-width: 2px; }
+ #rqftrwueta .gt_row_group_first th { border-top-width: 2px; }
+ #rqftrwueta .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #rqftrwueta .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rqftrwueta .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #rqftrwueta .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #rqftrwueta .gt_left { text-align: left; }
+ #rqftrwueta .gt_center { text-align: center; }
+ #rqftrwueta .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #rqftrwueta .gt_font_normal { font-weight: normal; }
+ #rqftrwueta .gt_font_bold { font-weight: bold; }
+ #rqftrwueta .gt_font_italic { font-style: italic; }
+ #rqftrwueta .gt_super { font-size: 65%; }
+ #rqftrwueta .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #rqftrwueta .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="3" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 Dataset</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Split" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Split</th>
+<th id="Domain" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Domain</th>
+<th id="Examples" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Examples</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">train</td>
+<td class="gt_row gt_left">restaurants</td>
+<td class="gt_row gt_right">2957</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">train</td>
+<td class="gt_row gt_left">laptops</td>
+<td class="gt_row gt_right">3002</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">test</td>
+<td class="gt_row gt_left">restaurants</td>
+<td class="gt_row gt_right">786</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">test</td>
+<td class="gt_row gt_left">laptops</td>
+<td class="gt_row gt_right">786</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<p>The dataset contains a similar number of restaurant and laptop reviews.</p>
+<p>The goal is to choose the optimal prompt and few-shot examples to maximize the F1 score of the aspect extraction and classification. To achieve this, DSPy needs to be able to evaluate the metrics and a training set to learn from.</p>
+</section>
+</section>
+<section id="model-definition" class="level2">
+<h2 class="anchored" data-anchor-id="model-definition">Model Definition</h2>
+<section id="pydantic-models-for-absa" class="level3">
+<h3 class="anchored" data-anchor-id="pydantic-models-for-absa">Pydantic models for ABSA</h3>
+<p>We create classes to represent the input and output of the task using the data validation library <a href="https://docs.pydantic.dev/latest/">Pydantic</a>. This helps with validating the data and provides a structured output format for predictor. The <code>Field</code> class is used to describe the expected data type. Their descriptions match the ones used in <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. This is a form of prompting, but DSPy also supports automatically setting the structure’s descriptions using the <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed#optimizing-typed-predictors"><code>optimize_signature</code></a> optimizer. In this experiment I’ll stick with the original descriptions and only vary the normal prompt and few-shot examples.</p>
+<div id="7ea8efd9" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Literal</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BaseModel, Field</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Input(BaseModel):</span>
+<span id="cb3-6">    text: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Field()</span>
+<span id="cb3-7"></span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Aspect(BaseModel):</span>
+<span id="cb3-10">    term: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Field(</span>
+<span id="cb3-11">        description<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"An aspect term, which is a verbatim text snippet. Single or multiword terms naming particular aspects of the reviewed product or service."</span></span>
+<span id="cb3-12">    )</span>
+<span id="cb3-13">    polarity: Literal[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"positive"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"neutral"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"negative"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Field(</span>
+<span id="cb3-14">        description<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The polarity expressed towards the aspect term. Valid polarities are ‘positive’, ‘neutral’, ‘negative'."</span></span>
+<span id="cb3-15">    )</span>
+<span id="cb3-16"></span>
+<span id="cb3-17">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__hash__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-18">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Make the aspect hashable to enable set operations in evaluation.</span></span>
+<span id="cb3-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Hash is case-insensitive.</span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb3-22">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hash</span>((<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.term.lower(), <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.polarity.lower()))</span>
+<span id="cb3-23"></span>
+<span id="cb3-24">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__eq__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb3-25">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Define equality for case-insensitive comparison.</span></span>
+<span id="cb3-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb3-28">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">isinstance</span>(other, Aspect):</span>
+<span id="cb3-29">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb3-30">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> (</span>
+<span id="cb3-31">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.term.lower() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> other.term.lower()</span>
+<span id="cb3-32">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.polarity.lower() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> other.polarity.lower()</span>
+<span id="cb3-33">        )</span>
+<span id="cb3-34"></span>
+<span id="cb3-35"></span>
+<span id="cb3-36"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Aspects(BaseModel):</span>
+<span id="cb3-37">    aspects: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[Aspect] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Field(</span>
+<span id="cb3-38">        description<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array."</span></span>
+<span id="cb3-39">    )</span></code></pre></div>
+</div>
+<p>The <code>__hash__</code> and <code>__eq__</code> methods will be helpful for evaluation, because they allow for use of set operations to compare gold and predicted aspects.</p>
+</section>
+<section id="transform-dataset-to-dspy-examples" class="level3">
+<h3 class="anchored" data-anchor-id="transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</h3>
+<p>Each row in the dataset needs to be turned into an instance of the <code>dspy.Example</code> class. The <code>with_inputs</code> method is used to tell DSPy which column contains the input. Other columns are used as expected model outputs.</p>
+<div id="fa9baa0f" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> json</span>
+<span id="cb4-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dspy</span>
+<span id="cb4-3"></span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> to_example(row):</span>
+<span id="cb4-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> dspy.Example(</span>
+<span id="cb4-7">        text<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>row[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input"</span>],</span>
+<span id="cb4-8">        aspects<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Aspects(aspects<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>json.loads(row[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"output"</span>])[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aspects"</span>]),</span>
+<span id="cb4-9">    ).with_inputs(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>)</span>
+<span id="cb4-10"></span>
+<span id="cb4-11"></span>
+<span id="cb4-12">trainset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [to_example(row) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> train.to_dicts()]</span>
+<span id="cb4-13">testset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [to_example(row) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> test.to_dicts()]</span></code></pre></div>
+</div>
+<p>Let’s look at the first example.</p>
+<div id="80905d6d" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainset[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>Example({'text': 'I charge it at night and skip taking the cord with me because of the good battery life.', 'aspects': Aspects(aspects=[Aspect(term='cord', polarity='neutral'), Aspect(term='battery life', polarity='positive')])}) (input_keys={'text'})</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-a-dspy-typed-predictor" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-dspy-typed-predictor">Creating a DSPy typed predictor</h3>
+<p>In DSPy, a module is a language model and a way of prompting. They can also consist of multiple requests and also include external tools such as a vector database for retrieval augmented generation. In this example, we have a single request using few-shot examples and chain of thought.</p>
+<p>In order to be able to parse the output as a dictionary, the LLM must output valid JSON. Therefore I’ll use a <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed">Typed Predictor</a> in DSPy, which is similar to structured outputs via instructor or a similar library.</p>
+<div id="b08481e5" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> AbsaSignature(dspy.Signature):</span>
+<span id="cb7-2">    text: Input <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.InputField()</span>
+<span id="cb7-3">    aspects: Aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.OutputField()</span>
+<span id="cb7-4"></span>
+<span id="cb7-5"></span>
+<span id="cb7-6">predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span></code></pre></div>
+</div>
+<p>We also need to choose a language model. DSPy works with OpenAI, Anthropic, Ollama, vllm and other OpenAI-compatible platforms and libraries. This is powered by <a href="https://github.com/BerriAI/litellm">litellm</a> under the hood.</p>
+<p>For this article, I’ll use OpenAI’s gpt-4o-mini as well as the 70B version of Meta’s Llama 3.1 hosted on <a href="https://fireworks.ai">fireworks.ai</a>. Fireworks.ai generously supplied me with credits as part of the <a href="https://maven.com/parlance-labs/fine-tuning?utm_campaign=d45fef&amp;utm_medium=partner&amp;utm_source=instructor">Mastering LLMs For Developers &amp; Data Scientists</a> course.</p>
+<div id="1d75c5fd" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># FIREWORKS_AI_API_KEY environment variable must be set.</span></span>
+<span id="cb8-2"></span>
+<span id="cb8-3">lm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.LM(</span>
+<span id="cb8-4">    api_base<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://api.fireworks.ai/inference/v1/"</span>,</span>
+<span id="cb8-5">    model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct"</span>,</span>
+<span id="cb8-6">    temperature<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># best for structured outputs</span></span>
+<span id="cb8-7">    cache<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb8-8">    max_tokens<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,</span>
+<span id="cb8-9">)</span>
+<span id="cb8-10">dspy.configure(lm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>lm)</span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="optimization" class="level2">
+<h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+<p>Let’s run a single example to check that everything is working.</p>
+<div id="6400007f" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">predictor(text<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The pizza was great, but the service was terrible"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>Prediction(
+    rationale='We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".',
+    aspects=Aspects(aspects=[Aspect(term='pizza', polarity='positive'), Aspect(term='service', polarity='negative')])
+)</code></pre>
+</div>
+</div>
+<p>That’s a good start. I’m a fan of <a href="https://hamel.dev/blog/posts/prompt/">Hamel Husain’s advice</a> to always demand: “Show me the prompt”, so let’s check what DSPy actually sent to OpenAI:</p>
+<div id="4c90494d" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">lm.inspect_history(n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+
+
+[2024-11-24T16:59:23.683795]
+
+System message:
+
+Your input fields are:
+1. `text` (Input)
+
+Your output fields are:
+1. `rationale` (str): ${produce the aspects}. We ...
+2. `aspects` (Aspects)
+
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## text ## ]]
+{text}
+
+[[ ## rationale ## ]]
+{rationale}
+
+[[ ## aspects ## ]]
+{aspects}        # note: the value you produce must be pareseable according to the following JSON schema: {"type": "object", "$defs": {"Aspect": {"type": "object", "properties": {"polarity": {"type": "string", "description": "The polarity expressed towards the aspect term. Valid polarities are ‘positive’, ‘neutral’, ‘negative'.", "enum": ["positive", "neutral", "negative"], "title": "Polarity"}, "term": {"type": "string", "description": "An aspect term, which is a verbatim text snippet. Single or multiword terms naming particular aspects of the reviewed product or service.", "title": "Term"}}, "required": ["term", "polarity"], "title": "Aspect"}}, "properties": {"aspects": {"type": "array", "description": "An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array.", "items": {"$ref": "#/$defs/Aspect"}, "title": "Aspects"}}, "required": ["aspects"], "title": "Aspects"}
+
+[[ ## completed ## ]]
+
+In adhering to this structure, your objective is: 
+        Given the fields `text`, produce the fields `aspects`.
+
+
+User message:
+
+[[ ## text ## ]]
+The pizza was great, but the service was terrible
+
+Respond with the corresponding output fields, starting with the field `[[ ## rationale ## ]]`, then `[[ ## aspects ## ]]` (must be formatted as a valid Python Aspects), and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+Response:
+
+[[ ## rationale ## ]]
+We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".
+
+[[ ## aspects ## ]]
+{"aspects": [{"term": "pizza", "polarity": "positive"}, {"term": "service", "polarity": "negative"}]}
+
+[[ ## completed ## ]]
+
+
+
+
+</code></pre>
+</div>
+</div>
+<p>Verbose but it works. It doesn’t use function calling or a different way to get structured outputs, so there is some chance of getting an invalid JSON.</p>
+<section id="specify-the-evaluation-function" class="level3">
+<h3 class="anchored" data-anchor-id="specify-the-evaluation-function">Specify the evaluation function</h3>
+<p>An evaluation function takes an example and a prediction and returns an F1 score. A true positive is a predicted aspect that is also in the gold answer, a false positive is a predicted aspect that is not in the gold answer, and a false negative is a gold answer aspect that is not predicted. Here are the precision, recall, and F1 score functions.</p>
+<div id="e0f4ac0e" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> precision(tp: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, fp: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb13-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Handle division by zero</span></span>
+<span id="cb13-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> fp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> fp)</span>
+<span id="cb13-4"></span>
+<span id="cb13-5"></span>
+<span id="cb13-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> recall(tp: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, fn: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb13-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> fn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> fn)</span>
+<span id="cb13-8"></span>
+<span id="cb13-9"></span>
+<span id="cb13-10"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> f1_score(tp: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, fp: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, fn: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb13-11">    prec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> precision(tp, fp)</span>
+<span id="cb13-12">    rec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> recall(tp, fn)</span>
+<span id="cb13-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> prec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> rec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (prec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> rec) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (prec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> rec)</span></code></pre></div>
+</div>
+<p>Next is the evaluation function which compares the gold and predicted aspects. To count as a true positive, both the term and the polarity have to be correct. As it is conventional on this benchmark, the case where both the gold answers and the prediction are empty is treated as a correct prediction of no aspects.</p>
+<div id="1da9c83f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> evaluate_absa(example: dspy.Example, prediction: Aspects, trace<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb14-2">    gold_aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(example.aspects.aspects)</span>
+<span id="cb14-3">    pred_aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(prediction.aspects.aspects)</span>
+<span id="cb14-4"></span>
+<span id="cb14-5">    tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(gold_aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> pred_aspects)</span>
+<span id="cb14-6">    fp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(pred_aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> gold_aspects)</span>
+<span id="cb14-7">    fn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(gold_aspects <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pred_aspects)</span>
+<span id="cb14-8"></span>
+<span id="cb14-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(gold_aspects) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(pred_aspects) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb14-10">        tp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># correct prediction of no aspects</span></span>
+<span id="cb14-11"></span>
+<span id="cb14-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> f1_score(tp, fp, fn)</span></code></pre></div>
+</div>
+<p>Let’s try the evaluation function with a single example. We expect the F1 score to be 1.0, because the prediction matches the gold answer exactly.</p>
+<div id="b9859938" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">example <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.Example(</span>
+<span id="cb15-2">    text<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The pizza was great, but the service was terrible"</span>,</span>
+<span id="cb15-3">    aspects<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Aspects(</span>
+<span id="cb15-4">        aspects<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[</span>
+<span id="cb15-5">            Aspect(term<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>, polarity<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"positive"</span>),</span>
+<span id="cb15-6">            Aspect(term<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"service"</span>, polarity<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"negative"</span>),</span>
+<span id="cb15-7">        ]</span>
+<span id="cb15-8">    ),</span>
+<span id="cb15-9">).with_inputs(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>)</span>
+<span id="cb15-10">prediction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> predictor(text<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>example.text)</span>
+<span id="cb15-11">evaluate_absa(example, prediction)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>1.0</code></pre>
+</div>
+</div>
+</section>
+<section id="optimizers" class="level3">
+<h3 class="anchored" data-anchor-id="optimizers">Optimizers</h3>
+<p>DSPy has a variety of <a href="https://dspy.ai/learn/optimization/optimizers/?h=optimizers">optimizers</a>, loops that change the prompt and/or few-shot examples and evaluate the performance. They’re analogous to optimizers like SGD and Adam in PyTorch. The choice of optimizer depends on the task, the amount of labeled data and the computational resources available. As we have a large labeled dataset, it’s not necessary to have the model bootstrap artificial examples. Our 2023 paper found that fine-tuning yields the best results, but the goal of this article is to showcase DSPy’s prompt optimization.</p>
+<p>The most powerful optimizer available for a prompting approach for this task is <a href="[Multiprompt Instruction PRoposal Optimizer Version 2](https://dspy.ai/deep-dive/optimizers/miprov2/?h=miprov)">MIPROv2</a> (Multiprompt Instruction PRoposal Optimizer Version 2) by <span class="citation" data-cites="opsahlong2024optimizinginstructionsdemonstrationsmultistage">Opsahl-Ong et al. (2024)</span>. MIPROv2 uses Bayesian optimization to find an optimal combination of few-shot examples and prompt instructions.</p>
+<div id="78b264c7" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">optimizer_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb17-2">    metric<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>evaluate_absa,</span>
+<span id="cb17-3">    num_threads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make parallel requests to Fireworks.ai</span></span>
+<span id="cb17-4">    max_errors<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># keep going even when invalid JSON is returned</span></span>
+<span id="cb17-5">)</span>
+<span id="cb17-6">optimizer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.teleprompt.MIPROv2(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>optimizer_settings)</span></code></pre></div>
+</div>
+<p>The final step is to call the <code>compile</code> method, which starts the optimization process. After about 5 minutes, the best prompt and few-shot examples are saved to a JSON file.</p>
+<div id="53f24104" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define settings for the comilation step of the optimizer.</span></span>
+<span id="cb18-2">compile_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb18-3">    minibatch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># evaluate changes on a subset of the validation set</span></span>
+<span id="cb18-4">    minibatch_full_eval_steps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># evaluate on the full validation set after every 10 steps</span></span>
+<span id="cb18-5">    max_labeled_demos<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the number of few-shot examples to use</span></span>
+<span id="cb18-6">    max_bootstrapped_demos<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># not required because we have labeled examples, but setting it to 0 causes an error during sampling</span></span>
+<span id="cb18-7">    num_trials<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many combinations of few-shot examples and prompt instructions to try</span></span>
+<span id="cb18-8">    seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for reproducibility</span></span>
+<span id="cb18-9">    requires_permission_to_run<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># skip confirmation dialog</span></span>
+<span id="cb18-10">)</span></code></pre></div>
+</div>
+<p>We save the optimized predictor to a JSON file. It’s a small config file listing the chosen few-shot examples and the optimized prompt.</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">optimized_predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> optimizer.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">compile</span>(</span>
+<span id="cb19-2">    student<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>predictor, trainset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>trainset, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>compile_settings</span>
+<span id="cb19-3">)</span>
+<span id="cb19-4">optimized_predictor.save(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
+<p>Let’s check if we can load it again:</p>
+<div id="e98c9a29" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">optimized_predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.ChainOfThought(signature<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>AbsaSignature)</span>
+<span id="cb20-2">optimized_predictor.load(path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
+</div>
+<p>Again: “Show me the prompt”.</p>
+<div id="3116b963" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(optimized_predictor.extended_signature.instructions)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>You are a product reviewer tasked with analyzing customer feedback for laptops and netbooks. Given the fields `text`, which contains a customer review, produce the fields `aspects`, which should include the specific features or aspects of the laptop or netbook mentioned in the review, along with their corresponding sentiment or polarity.</code></pre>
+</div>
+</div>
+<p>and show me the chosen few-shot examples:</p>
+<div id="5d7b99dd" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> demo <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> optimized_predictor.demos[:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]:  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># first 3 examples</span></span>
+<span id="cb23-2">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(demo[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>])</span>
+<span id="cb23-3">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(demo[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aspects"</span>])</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).
+{"aspects":[{"term":"TFT panel","polarity":"negative"}]}
+But we had paid for bluetooth, and there was none.
+{"aspects":[{"term":"bluetooth","polarity":"negative"}]}
+The powerpoint opened seamlessly in the apple and the mac hooked up to the projector so easily it was almost scary.
+{"aspects":[{"term":"powerpoint","polarity":"positive"}]}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<p>So far, we’ve only evaluated on the validation part of the training set (this was automatically done by DSPy). Let’s evaluate the optimized predictor on the test set.</p>
+<div id="65a92f06" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">evaluator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.Evaluate(</span>
+<span id="cb25-2">    devset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>testset,</span>
+<span id="cb25-3">    metric<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>evaluate_absa,</span>
+<span id="cb25-4">    display_progress<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb25-5">    num_threads<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>,</span>
+<span id="cb25-6">)</span></code></pre></div>
+</div>
+<div id="2c18976a" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre></div>
+</div>
+<p>The first run yields an F1 score of 47.6. That’s rather poor, but the compiler settings only allow for 4 labeled examples and 1 bootstrapped example and only 3 trials.</p>
+</section>
+<section id="hyperparameter-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-optimization">Hyperparameter optimization</h2>
+<p>What would happen if we changed the hyperparameters? Let’s do a grid search over the number of few-shot examples and the number of trials, as well as try different models.</p>
+<div id="61f77534" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> itertools</span>
+<span id="cb27-2"></span>
+<span id="cb27-3">max_labeled_demos <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>]</span>
+<span id="cb27-4">num_trials <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>]</span>
+<span id="cb27-5">chain_of_thought <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>]</span>
+<span id="cb27-6"></span>
+<span id="cb27-7">default_lm_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb27-8">    temperature<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># best for structured outputs, no creativity needed</span></span>
+<span id="cb27-9">    cache<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb27-10">    max_tokens<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,</span>
+<span id="cb27-11">)</span>
+<span id="cb27-12"></span>
+<span id="cb27-13">lm_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb27-14">    {</span>
+<span id="cb27-15">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct"</span>,</span>
+<span id="cb27-16">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"api_base"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://api.fireworks.ai/inference/v1/"</span>,</span>
+<span id="cb27-17">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>default_lm_settings,</span>
+<span id="cb27-18">    },</span>
+<span id="cb27-19">    {</span>
+<span id="cb27-20">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-mini-2024-07-18"</span>,</span>
+<span id="cb27-21">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>default_lm_settings,</span>
+<span id="cb27-22">    },</span>
+<span id="cb27-23">]</span>
+<span id="cb27-24"></span>
+<span id="cb27-25">grid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb27-26">    itertools.product(max_labeled_demos, num_trials, chain_of_thought, lm_settings)</span>
+<span id="cb27-27">)</span></code></pre></div>
+</div>
+<p>This results in a grid with 48 combinations. Next, we iterate over the grid, perform the optimization run and save the results to Weights &amp; Biases.</p>
+<div id="d3b43809" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb28-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> copy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> deepcopy</span>
+<span id="cb28-3"></span>
+<span id="cb28-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> wandb</span>
+<span id="cb28-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> tqdm <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> tqdm</span>
+<span id="cb28-6"></span>
+<span id="cb28-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> os.getenv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FIREWORKS_AI_API_KEY"</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FIREWORKS_AI_API_KEY is not set."</span></span>
+<span id="cb28-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> os.getenv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OPENAI_API_KEY"</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OPENAI_API_KEY is not set."</span></span>
+<span id="cb28-9"></span>
+<span id="cb28-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> max_labeled_demos, num_trials, chain_of_thought, lm_settings <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> tqdm(grid):</span>
+<span id="cb28-11"></span>
+<span id="cb28-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate a filename for the run</span></span>
+<span id="cb28-13">    modelname <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> lm_settings[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>].replace(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_"</span>)</span>
+<span id="cb28-14">    cot_name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cot"</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> chain_of_thought <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"predict"</span></span>
+<span id="cb28-15">    run_name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>modelname<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>max_labeled_demos<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>num_trials<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>cot_name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb28-16">    filepath <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"configs/"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> run_name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".json"</span></span>
+<span id="cb28-17"></span>
+<span id="cb28-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> os.path.exists(filepath):</span>
+<span id="cb28-19">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Skipping </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>run_name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> because it already exists."</span>)</span>
+<span id="cb28-20">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">continue</span></span>
+<span id="cb28-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb28-22">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Running </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>run_name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">."</span>)</span>
+<span id="cb28-23"></span>
+<span id="cb28-24">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create fresh copies of settings for this run</span></span>
+<span id="cb28-25">    run_compile_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> deepcopy(compile_settings)</span>
+<span id="cb28-26">    run_optimizer_settings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> deepcopy(optimizer_settings)</span>
+<span id="cb28-27"></span>
+<span id="cb28-28">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Update settings</span></span>
+<span id="cb28-29">    run_compile_settings[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_labeled_demos"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> max_labeled_demos</span>
+<span id="cb28-30">    run_compile_settings[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num_trials</span>
+<span id="cb28-31"></span>
+<span id="cb28-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> chain_of_thought:</span>
+<span id="cb28-33">        predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span>
+<span id="cb28-34">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb28-35">        predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.Predict(AbsaSignature)</span>
+<span id="cb28-36"></span>
+<span id="cb28-37">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Do an optimization run and evaluate the resulting model</span></span>
+<span id="cb28-38">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">try</span>:</span>
+<span id="cb28-39">        dspy.configure(lm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>dspy.LM(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>lm_settings))</span>
+<span id="cb28-40">        optimizer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.teleprompt.MIPROv2(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>run_optimizer_settings)</span>
+<span id="cb28-41">        optimized_predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> optimizer.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">compile</span>(</span>
+<span id="cb28-42">            student<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>predictor, trainset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>trainset, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>run_compile_settings</span>
+<span id="cb28-43">        )</span>
+<span id="cb28-44">        score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluator(optimized_predictor)</span>
+<span id="cb28-45">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Exception</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> e:</span>
+<span id="cb28-46">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(</span>
+<span id="cb28-47">            <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Failed run with settings: max_labeled_demos=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>max_labeled_demos<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, "</span></span>
+<span id="cb28-48">            <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"num_trials=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>num_trials<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, model=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>lm_settings[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'model'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb28-49">        )</span>
+<span id="cb28-50">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Error: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(e)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb28-51">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">continue</span></span>
+<span id="cb28-52"></span>
+<span id="cb28-53">    optimized_predictor.save(filepath)</span>
+<span id="cb28-54"></span>
+<span id="cb28-55">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Log experiment to W&amp;B</span></span>
+<span id="cb28-56">    config <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {</span>
+<span id="cb28-57">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"output_schema"</span>: Aspects.model_json_schema(),</span>
+<span id="cb28-58">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compile_settings"</span>: run_compile_settings,</span>
+<span id="cb28-59">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"optimizer_settings"</span>: run_optimizer_settings,</span>
+<span id="cb28-60">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>: chain_of_thought,</span>
+<span id="cb28-61">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lm_settings"</span>: lm_settings,</span>
+<span id="cb28-62">    }</span>
+<span id="cb28-63"></span>
+<span id="cb28-64">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> wandb.init(project<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"absa-dspy"</span>, config<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>config, name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>run_name) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> run:</span>
+<span id="cb28-65">        wandb.log({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>: score})</span>
+<span id="cb28-66">        wandb.save(filepath)</span></code></pre></div>
+</div>
+</section>
+<section id="comparison-with-manual-prompts" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-with-manual-prompts">Comparison with manual prompts</h2>
+<p>In the 2023 paper, co-author and I manually crafted prompts and chose few-shot examples that, in our opinion, illustrated the task well. Inference was done using the OpenAI API and using function calling to ensure structured outputs. To make the comparison fair, we’ll now use the same prompts within DSPy.</p>
+<p>The manual prompts and few-shot examples are available on <a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/configs/manual_prompt.json">Github</a>.</p>
+<p>The models <code>gpt-4-0613</code> and <code>gpt-3.5-turbo-0613</code> that were used in the 2023 paper are no longer available on the OpenAI API. Therefore, we use the closest substitutes here.</p>
+<div id="3ce453ea" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">models <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb29-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-2024-11-20"</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># similar to gpt-4-0613</span></span>
+<span id="cb29-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-3.5-turbo-0125"</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># similar to gpt-3.5-turbo-0613</span></span>
+<span id="cb29-4">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-mini-2024-07-18"</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># reference</span></span>
+<span id="cb29-5">]</span>
+<span id="cb29-6"></span>
+<span id="cb29-7">manual_predictor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.Predict(AbsaSignature)</span>
+<span id="cb29-8">manual_predictor.load(path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"configs/manual_prompt.json"</span>)</span>
+<span id="cb29-9"></span>
+<span id="cb29-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> model <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> models:</span>
+<span id="cb29-11">    lm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dspy.LM(</span>
+<span id="cb29-12">        model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>model,</span>
+<span id="cb29-13">        temperature<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb29-14">        cache<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb29-15">        max_tokens<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,</span>
+<span id="cb29-16">    )</span>
+<span id="cb29-17">    dspy.configure(lm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>lm)</span>
+<span id="cb29-18">    score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluator(manual_predictor)</span>
+<span id="cb29-19">    runname <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>model<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_manual_prompt"</span></span>
+<span id="cb29-20"></span>
+<span id="cb29-21">    config <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {</span>
+<span id="cb29-22">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"output_schema"</span>: Aspects.model_json_schema(),</span>
+<span id="cb29-23">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compile_settings"</span>: {</span>
+<span id="cb29-24">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_labeled_demos"</span>: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(manual_predictor.demos),</span>
+<span id="cb29-25">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_bootstrapped_demos"</span>: <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb29-26">        },</span>
+<span id="cb29-27">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lm_settings"</span>: {</span>
+<span id="cb29-28">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>: model,</span>
+<span id="cb29-29">        },</span>
+<span id="cb29-30">    }</span>
+<span id="cb29-31"></span>
+<span id="cb29-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> wandb.init(project<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"absa-dspy"</span>, name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>runname, config<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>config) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> run:</span>
+<span id="cb29-33">        wandb.log({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>: score})</span>
+<span id="cb29-34">        wandb.save(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"configs/manual_prompt.json"</span>)</span></code></pre></div>
+</div>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
+<p>We load the results from the Weights &amp; Biases project and show the most relevant columns for a comparison of the runs.</p>
+<div id="17064435" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> wandb</span>
+<span id="cb30-2"></span>
+<span id="cb30-3">api <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> wandb.Api()</span>
+<span id="cb30-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get all runs from the project</span></span>
+<span id="cb30-5">runs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> api.runs(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"psimm/absa-dspy"</span>)</span>
+<span id="cb30-6"></span>
+<span id="cb30-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert to DataFrame</span></span>
+<span id="cb30-8">results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb30-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> run <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> runs:</span>
+<span id="cb30-10">    results.append(</span>
+<span id="cb30-11">        {</span>
+<span id="cb30-12">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"run_name"</span>: run.name,</span>
+<span id="cb30-13">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>: run.config[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lm_settings"</span>][<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>],</span>
+<span id="cb30-14">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_demos"</span>: run.config[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compile_settings"</span>][<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_labeled_demos"</span>],</span>
+<span id="cb30-15">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_bootstrapped_demos"</span>: run.config[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compile_settings"</span>][</span>
+<span id="cb30-16">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_bootstrapped_demos"</span></span>
+<span id="cb30-17">            ],</span>
+<span id="cb30-18">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>: run.config.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"compile_settings"</span>, {}).get(</span>
+<span id="cb30-19">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span></span>
+<span id="cb30-20">            ),</span>
+<span id="cb30-21">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>: run.config[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>],</span>
+<span id="cb30-22">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>: run.summary[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>],</span>
+<span id="cb30-23">        }</span>
+<span id="cb30-24">    )</span>
+<span id="cb30-25"></span>
+<span id="cb30-26">results_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.DataFrame(results)</span></code></pre></div>
+</div>
+<div id="78203b73" class="cell" data-execution_count="24">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">table_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (</span>
+<span id="cb31-2">    results_df.with_columns(</span>
+<span id="cb31-3">        method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.when(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"run_name"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.contains(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"manual"</span>))</span>
+<span id="cb31-4">        .then(pl.lit(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Manual (2023)"</span>))</span>
+<span id="cb31-5">        .otherwise(pl.lit(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DSPy"</span>)),</span>
+<span id="cb31-6">        model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.replace(</span>
+<span id="cb31-7">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fireworks_ai/accounts/fireworks/models/"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span></span>
+<span id="cb31-8">        ),</span>
+<span id="cb31-9">        demos<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.when(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_bootstrapped_demos"</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb31-10">        .then(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_demos"</span>).cast(pl.Utf8))</span>
+<span id="cb31-11">        .otherwise(</span>
+<span id="cb31-12">            pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_demos"</span>).cast(pl.Utf8)</span>
+<span id="cb31-13">            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" + "</span></span>
+<span id="cb31-14">            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_bootstrapped_demos"</span>).cast(pl.Utf8)</span>
+<span id="cb31-15">        ),</span>
+<span id="cb31-16">        chain_of_thought<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.when(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>))</span>
+<span id="cb31-17">        .then(pl.lit(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"✅"</span>))</span>
+<span id="cb31-18">        .otherwise(pl.lit(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"❌"</span>)),</span>
+<span id="cb31-19">    )</span>
+<span id="cb31-20">    .sort(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>, descending<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb31-21">    .select(</span>
+<span id="cb31-22">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>,</span>
+<span id="cb31-23">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"method"</span>,</span>
+<span id="cb31-24">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>,</span>
+<span id="cb31-25">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"demos"</span>,</span>
+<span id="cb31-26">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>,</span>
+<span id="cb31-27">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>,</span>
+<span id="cb31-28">    )</span>
+<span id="cb31-29">)</span>
+<span id="cb31-30"></span>
+<span id="cb31-31">GT(table_df).tab_header(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SemEval 2014 Task 4 1+2 Few-Shot Predictors"</span>).cols_label(</span>
+<span id="cb31-32">    model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Model"</span>,</span>
+<span id="cb31-33">    method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Method"</span>,</span>
+<span id="cb31-34">    demos<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Labeled + Bootstrapped Demos"</span>,</span>
+<span id="cb31-35">    num_trials<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Trials"</span>,</span>
+<span id="cb31-36">    chain_of_thought<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Chain of Thought"</span>,</span>
+<span id="cb31-37">    f1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"F1 Score"</span>,</span>
+<span id="cb31-38">).cols_align(align<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>, columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"demos"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>]).fmt_number(</span>
+<span id="cb31-39">    columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>], decimals<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb31-40">).tab_source_note(</span>
+<span id="cb31-41">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
+<span id="cb31-42">)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div id="detajkqwna" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#detajkqwna table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#detajkqwna thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#detajkqwna p { margin: 0; padding: 0; }
+ #detajkqwna .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #detajkqwna .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #detajkqwna .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #detajkqwna .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #detajkqwna .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #detajkqwna .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #detajkqwna .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #detajkqwna .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #detajkqwna .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #detajkqwna .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #detajkqwna .gt_spanner_row { border-bottom-style: hidden; }
+ #detajkqwna .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #detajkqwna .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #detajkqwna .gt_from_md> :first-child { margin-top: 0; }
+ #detajkqwna .gt_from_md> :last-child { margin-bottom: 0; }
+ #detajkqwna .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #detajkqwna .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #detajkqwna .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #detajkqwna .gt_row_group_first td { border-top-width: 2px; }
+ #detajkqwna .gt_row_group_first th { border-top-width: 2px; }
+ #detajkqwna .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #detajkqwna .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #detajkqwna .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #detajkqwna .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #detajkqwna .gt_left { text-align: left; }
+ #detajkqwna .gt_center { text-align: center; }
+ #detajkqwna .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #detajkqwna .gt_font_normal { font-weight: normal; }
+ #detajkqwna .gt_font_bold { font-weight: bold; }
+ #detajkqwna .gt_font_italic { font-style: italic; }
+ #detajkqwna .gt_super { font-size: 65%; }
+ #detajkqwna .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #detajkqwna .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="6" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 1+2 Few-Shot Predictors</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
+<th id="Method" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Method</th>
+<th id="Trials" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Trials</th>
+<th id="Labeled + Bootstrapped Demos" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Labeled + Bootstrapped Demos</th>
+<th id="Chain of Thought" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Chain of Thought</th>
+<th id="F1 Score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">F1 Score</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-2024-11-20</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">71.28</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">62.83</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">61.49</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">61.34</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.87</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">60.32</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">60.27</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.80</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.68</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.60</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">59.32</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.83</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.79</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.79</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">58.36</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.98</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.84</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-3.5-turbo-0125</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">57.45</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">56.46</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">Manual (2023)</td>
+<td class="gt_row gt_right">None</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">55.67</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">54.90</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.33</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.09</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">40 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">54.09</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">53.70</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">53.70</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">53.05</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">52.64</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">51.19</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">51.19</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">51.16</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">50.90</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">50.90</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.97</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">gpt-4o-mini-2024-07-18</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.74</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">20 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">49.47</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">48.63</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">47.73</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">47.30</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">5 + 1</td>
+<td class="gt_row gt_left">❌</td>
+<td class="gt_row gt_right">46.46</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">llama-v3p1-70b-instruct</td>
+<td class="gt_row gt_left">DSPy</td>
+<td class="gt_row gt_right">15</td>
+<td class="gt_row gt_right">10 + 1</td>
+<td class="gt_row gt_left">✅</td>
+<td class="gt_row gt_right">46.31</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="6" class="gt_sourcenote">Note: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper.</td>
+</tr>
+</tfoot>
+
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<section id="comparison-to-the-2023-manual-prompts" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-to-the-2023-manual-prompts">Comparison to the 2023 manual prompts</h3>
+<p>The DSPy runs are competitive with the manually crafted prompts from the 2023 paper. In contrast to the manual prompt, DSPy instructions are relatively short and emphasize the use of few-shot examples to illustrate the task.</p>
+</section>
+<section id="impact-of-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-hyperparameters">Impact of hyperparameters</h3>
+<p>To understand which factors significantly influence the F1 score, we’ll run a simple linear regression analysis. The manual runs are excluded. To analyze the impact of the model choice, we’ll create a boolean variable for <code>gpt-4o-mini</code> and treat <code>llama-v3p1-70b-instruct</code> as the baseline.</p>
+<div id="5b890162" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> statsmodels.api <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> sm</span>
+<span id="cb32-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb32-3"></span>
+<span id="cb32-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Prepare data for regression</span></span>
+<span id="cb32-5">reg_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> results_df.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(</span>
+<span id="cb32-6">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"run_name"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.contains(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"manual"</span>),</span>
+<span id="cb32-7">    pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.contains(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-mini"</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.contains(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"llama"</span>),</span>
+<span id="cb32-8">).with_columns(  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># exclude manual prompts</span></span>
+<span id="cb32-9">    pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.contains(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gpt-4o-mini"</span>).alias(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"is_gpt4_mini"</span>),</span>
+<span id="cb32-10">)</span>
+<span id="cb32-11"></span>
+<span id="cb32-12"></span>
+<span id="cb32-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert to pandas and ensure numeric types</span></span>
+<span id="cb32-14">X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg_df.select(</span>
+<span id="cb32-15">    [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"max_demos"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"num_trials"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"is_gpt4_mini"</span>]</span>
+<span id="cb32-16">).to_pandas()</span>
+<span id="cb32-17"></span>
+<span id="cb32-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert boolean columns to int</span></span>
+<span id="cb32-19">bool_columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chain_of_thought"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"is_gpt4_mini"</span>]</span>
+<span id="cb32-20"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> col <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> bool_columns:</span>
+<span id="cb32-21">    X[col] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X[col].astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb32-22"></span>
+<span id="cb32-23">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg_df.select(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f1"</span>).to_pandas()</span>
+<span id="cb32-24"></span>
+<span id="cb32-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add constant for intercept</span></span>
+<span id="cb32-26">X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sm.add_constant(X)</span>
+<span id="cb32-27"></span>
+<span id="cb32-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fit regression</span></span>
+<span id="cb32-29">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb32-30">n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(reg_df)</span>
+<span id="cb32-31">r2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> model.rsquared</span>
+<span id="cb32-32"></span>
+<span id="cb32-33"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Print results using GT</span></span>
+<span id="cb32-34">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(</span>
+<span id="cb32-35">    model.summary().tables[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],</span>
+<span id="cb32-36">    columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[</span>
+<span id="cb32-37">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Parameter"</span>,</span>
+<span id="cb32-38">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Coefficient"</span>,</span>
+<span id="cb32-39">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Std Error"</span>,</span>
+<span id="cb32-40">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"t"</span>,</span>
+<span id="cb32-41">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"p&gt;|t|"</span>,</span>
+<span id="cb32-42">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[0.025"</span>,</span>
+<span id="cb32-43">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.975]"</span>,</span>
+<span id="cb32-44">    ],</span>
+<span id="cb32-45">)</span>
+<span id="cb32-46"></span>
+<span id="cb32-47">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.iloc[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># remove row with repeated column names</span></span>
+<span id="cb32-48"></span>
+<span id="cb32-49">GT(df).tab_header(</span>
+<span id="cb32-50">    title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hyperparameter Analysis"</span>, subtitle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dependent variable: F1 score"</span></span>
+<span id="cb32-51">).cols_align(align<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>).tab_source_note(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"n=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> runs, R²=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>r2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div id="syexemyoco" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#syexemyoco table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#syexemyoco thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#syexemyoco p { margin: 0; padding: 0; }
+ #syexemyoco .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #syexemyoco .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #syexemyoco .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #syexemyoco .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #syexemyoco .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #syexemyoco .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #syexemyoco .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #syexemyoco .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #syexemyoco .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #syexemyoco .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #syexemyoco .gt_spanner_row { border-bottom-style: hidden; }
+ #syexemyoco .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #syexemyoco .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #syexemyoco .gt_from_md> :first-child { margin-top: 0; }
+ #syexemyoco .gt_from_md> :last-child { margin-bottom: 0; }
+ #syexemyoco .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #syexemyoco .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #syexemyoco .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #syexemyoco .gt_row_group_first td { border-top-width: 2px; }
+ #syexemyoco .gt_row_group_first th { border-top-width: 2px; }
+ #syexemyoco .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #syexemyoco .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #syexemyoco .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #syexemyoco .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #syexemyoco .gt_left { text-align: left; }
+ #syexemyoco .gt_center { text-align: center; }
+ #syexemyoco .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #syexemyoco .gt_font_normal { font-weight: normal; }
+ #syexemyoco .gt_font_bold { font-weight: bold; }
+ #syexemyoco .gt_font_italic { font-style: italic; }
+ #syexemyoco .gt_super { font-size: 65%; }
+ #syexemyoco .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #syexemyoco .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="7" class="gt_heading gt_title gt_font_normal">Hyperparameter Analysis</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="7" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Dependent variable: F1 score</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Parameter</th>
+<th id="Coefficient" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Coefficient</th>
+<th id="Std Error" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Std Error</th>
+<th id="t" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">t</th>
+<th id="p&amp;gt;|t|" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p&gt;|t|</th>
+<th id="[0.025" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">[0.025</th>
+<th id="0.975]" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">0.975]</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">const</td>
+<td class="gt_row gt_right">49.3654</td>
+<td class="gt_row gt_right">1.457</td>
+<td class="gt_row gt_right">33.885</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">46.419</td>
+<td class="gt_row gt_right">52.312</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">max_demos</td>
+<td class="gt_row gt_right">0.2021</td>
+<td class="gt_row gt_right">0.042</td>
+<td class="gt_row gt_right">4.794</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">0.117</td>
+<td class="gt_row gt_right">0.287</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">chain_of_thought</td>
+<td class="gt_row gt_right">-4.3317</td>
+<td class="gt_row gt_right">1.038</td>
+<td class="gt_row gt_right">-4.172</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">-6.432</td>
+<td class="gt_row gt_right">-2.232</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">num_trials</td>
+<td class="gt_row gt_right">0.1062</td>
+<td class="gt_row gt_right">0.027</td>
+<td class="gt_row gt_right">3.892</td>
+<td class="gt_row gt_right">0.000</td>
+<td class="gt_row gt_right">0.051</td>
+<td class="gt_row gt_right">0.161</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">is_gpt4_mini</td>
+<td class="gt_row gt_right">2.2964</td>
+<td class="gt_row gt_right">1.016</td>
+<td class="gt_row gt_right">2.260</td>
+<td class="gt_row gt_right">0.029</td>
+<td class="gt_row gt_right">0.241</td>
+<td class="gt_row gt_right">4.351</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="7" class="gt_sourcenote">n=44 runs, R²=0.56</td>
+</tr>
+</tfoot>
+
+</table>
+
+
+</div>
+        
+</div>
+</div>
+</section>
+<section id="few-shot-examples" class="level3">
+<h3 class="anchored" data-anchor-id="few-shot-examples">Few-shot examples</h3>
+<p>More examples are generally better, as indicated by the positive coefficient in the regression. However, the top runs didn’t use more than 20 examples, indicating that there are diminishing returns.</p>
+</section>
+<section id="chain-of-thought-cot" class="level3">
+<h3 class="anchored" data-anchor-id="chain-of-thought-cot">Chain of thought (CoT)</h3>
+<p>Runs where the model was instructed to perform an intermediate reasoning step yielded worse results than those without. This is an unusual result - typically CoT helps LLMs achieve better results, for example the main advantage of OpenAI’s <code>o1-preview</code> over <code>gpt-4o</code> is the advanced CoT that is built into it. However, on this structured task, CoT reasoning seems to be detrimental and a waste of output tokens.</p>
+</section>
+<section id="model-choice" class="level3">
+<h3 class="anchored" data-anchor-id="model-choice">Model choice</h3>
+<ul>
+<li><code>gpt-4o-mini-2024-07-18</code> seems to have an edge over <code>llama-v3p1-70b-instruct</code>, but the confidence interval is wide.</li>
+<li><code>gpt-4o-2024-11-20</code> performs better than the other models that were tested. I expect that performance of similar sized models such as <code>Llama 3.1 405B</code> will be similar. Due to cost considerations, I’ve skipped the optimization of a large model with DSPy.</li>
+<li><code>gpt-3.5-turbo-0125</code> performed better than <code>gpt-4o-mini-2024-07-18</code>, but worse than the deprecated <code>gpt-3.5-turbo-0613</code> performed during the experiments for the 2023 paper (57.45 vs.&nbsp;65.65 F1 Score).</li>
+</ul>
+</section>
+<section id="number-of-trials" class="level3">
+<h3 class="anchored" data-anchor-id="number-of-trials">Number of trials</h3>
+<p>Using more trials is associated with higher F1 scores. However, the table also shows setups with identical results at 15, 30 and 60 trials. Going beyond 60 trials isn’t likely to be helpful.</p>
+</section>
+</section>
+<section id="review-of-dspy" class="level2">
+<h2 class="anchored" data-anchor-id="review-of-dspy">Review of DSPy</h2>
+<p>Here are my conclusions based on this experiment.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pros ✅</strong></p>
+<ul>
+<li>Creates prompts that are as good as or better than manually crafted prompts.</li>
+<li>No need to manually craft prompts, leading to faster iteration speed.</li>
+<li>Able to deal with multi-step workflows.</li>
+<li>Naturally encourages a structured approach focused on evaluation.</li>
+<li>Supports many LLMs, via APIs and locally.</li>
+<li>Lightweight JSON export of the optimized prompts.</li>
+<li>Supports custom evaluation metrics.</li>
+<li>Built-in threading and caching, which saved me time and money.</li>
+<li>Actively developed and has a large community.</li>
+<li>Lots of <a href="https://github.com/stanfordnlp/dspy/tree/main/examples">tutorial notebooks</a>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Cons ❌</strong></p>
+<ul>
+<li>Generated prompts seem too short to explain the nuances of the task. The examples have to implicitly explain the annotation rules.</li>
+<li>Loss of control over the exact prompt. But arguably, if you want to control the prompt DSPy is not the approach to go for anyway.</li>
+<li>Structured output is not guaranteed, because it’s based on prompting only. Integration with function calling, JSON mode or constrained generation APIs and libraries would improve the reliability of the format.</li>
+<li>Steep learning curve with many concepts to understand.</li>
+<li>I encountered some bugs and deprecated functions and tutorials.</li>
+</ul>
+</div>
+</div>
+<p>DSPy is a great alternative to manual prompting, especially for tasks that have clear evaluation metrics and are demonstrable using few-shot examples.</p>
+<p>Another feature that I haven’t explored here is the fine-tuning <a href="https://dspy.ai/learn/optimization/optimizers/?h=fine#automatic-finetuning">optimizer</a> of DSPy that actually modifies the model weights. It’s promising for this task, as a fine-tuned <code>gpt-3.5-turbo-0613</code> is still the <a href="https://paperswithcode.com/sota/aspect-based-sentiment-analysis-on-semeval-6">record holder</a> at an F1 score of 83.76.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-opsahlong2024optimizinginstructionsdemonstrationsmultistage" class="csl-entry">
+Opsahl-Ong, Krista, Michael J Ryan, Josh Purtell, David Broman, Christopher Potts, Matei Zaharia, and Omar Khattab. 2024. <span>“Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs.”</span> <a href="https://arxiv.org/abs/2406.11695">https://arxiv.org/abs/2406.11695</a>.
+</div>
+<div id="ref-pontiki_semeval" class="csl-entry">
+Pontiki, Maria, Dimitris Galanis, John Pavlopoulos, Harris Papageorgiou, Ion Androutsopoulos, and Suresh Manandhar. 2014. <span>“<span>SemEval</span>-2014 <span>Task</span> 4: <span>Aspect</span> <span>Based</span> <span>Sentiment</span> <span>Analysis</span>.”</span> In <em>Proceedings of the 8th <span>International</span> <span>Workshop</span> on <span>Semantic</span> <span>Evaluation</span> (<span>SemEval</span> 2014)</em>, 27–35. Dublin, Ireland: Association for Computational Linguistics. <a href="https://doi.org/10.3115/v1/S14-2004">https://doi.org/10.3115/v1/S14-2004</a>.
+</div>
+<div id="ref-simmering2023large" class="csl-entry">
+Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for Aspect-Based Sentiment Analysis.”</span> <a href="https://arxiv.org/abs/2310.18025">https://arxiv.org/abs/2310.18025</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Machine Learning</category>
+  <category>Python</category>
+  <guid>https://simmering.dev/blog/absa-with-dspy/</guid>
+  <pubDate>Sat, 23 Nov 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/absa-with-dspy/image.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
 <item>
   <title>From 5-7-5 to Thousand Lines: The Case for Longer Prompts</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -7418,136 +10244,6 @@ font-style: inherit;">1</span>],</span>
   <guid>https://simmering.dev/blog/llm-future/</guid>
   <pubDate>Fri, 20 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/llm-future/image.png" medium="image" type="image/png" height="81" width="144"/>
-</item>
-<item>
-  <title>A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/ai-assistants/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>AI assistants like <a href="https://github.com/features/copilot">Github Copilot</a> and <a href="https://chat.openai.com">ChatGPT</a> promise breakthrough productivity improvements for developers. In this article, I’ll explore how these tools can be used in a data science workflow and evaluate their usefulness across 5 real-world tasks.</p>
-<p>The main takeaway: Assistants greatly speed up coding using common libraries, but are less helpful for other tasks that go into a successful project.</p>
-<section id="my-setup-vscode-raycast-ai" class="level2">
-<h2 class="anchored" data-anchor-id="my-setup-vscode-raycast-ai">My setup: VSCode + Raycast AI</h2>
-<p>Before we dive into the tasks, let me describe my setup. I use VSCode with Copilot and GPT-4 via <a href="https://www.raycast.com">Raycast AI</a>. Raycast AI provides a chat box that connects to GPT-4 and has a shortcut and one-tap copy of suggested code. I also have some shortcuts in Raycast AI to speed up my workflow:</p>
-<ul>
-<li>Find bugs in my code</li>
-<li>Improve this code</li>
-<li>Explain code step by step</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/ai-assistants/raycast_commands.png" class="img-fluid figure-img"></p>
-<figcaption>Raycast Commands</figcaption>
-</figure>
-</div>
-<p>As an example, running “Improve this code” on a selection of text will send it to GPT-4, with the instruction</p>
-<blockquote class="blockquote">
-<p>Check the following code and give advice on how to make it more reliable, secure and easy to read.</p>
-</blockquote>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/ai-assistants/raycast_command_detail.png" class="img-fluid figure-img"></p>
-<figcaption>Raycast Commands Detail</figcaption>
-</figure>
-</div>
-</section>
-<section id="example-tasks" class="level2">
-<h2 class="anchored" data-anchor-id="example-tasks">Example tasks</h2>
-<p>As a data scientist on a small team, I wear many hats, from machine learning engineer to cloud architect. Consequently, I often have to work with languages, libraries and tools that I don’t have much experience with.</p>
-<p>Here are 5 tasks I worked on in the last few weeks and my evaluation of how much AI tools have helped me.</p>
-<section id="writing-a-python-script-to-evaluate-a-model" class="level3">
-<h3 class="anchored" data-anchor-id="writing-a-python-script-to-evaluate-a-model">1. Writing a Python script to evaluate a model</h3>
-<p>The first task was to write a Python script to evaluate <a href="https://learn.microsoft.com/en-us/azure/cognitive-services/language-service/personally-identifiable-information/how-to-call">Azure’s PII redaction API</a> on a dataset of social media posts containing PII. The task mainly involved writing pandas code to load data and calculate metrics. Copilot was helpful in speeding up the process by suggesting entire sections of code that I could use without modifications.</p>
-<p>Usefulness: 5/5</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/ai-assistants/pandas.png" class="img-fluid figure-img"></p>
-<figcaption>Pandas</figcaption>
-</figure>
-</div>
-</section>
-<section id="defining-aws-infrastructure-using-terraform" class="level3">
-<h3 class="anchored" data-anchor-id="defining-aws-infrastructure-using-terraform">2. Defining AWS infrastructure using Terraform</h3>
-<p>Next, a colleague and I set up a database migration using <a href="https://aws.amazon.com/dms/">AWS Database Migration Service (DMS)</a>, set up via <a href="https://www.terraform.io/">Terraform</a>. I asked GPT-4 to generate the configuration, and then I asked it more detailed questions, such as how to convert data types. However, the model frequently hallucinated: it made up options that don’t actually exist in AWS DMS. Overall, it was more confusing than helpful.</p>
-<p>Usefulness: 1/5</p>
-</section>
-<section id="creating-testing-and-documenting-models-in-dbt" class="level3">
-<h3 class="anchored" data-anchor-id="creating-testing-and-documenting-models-in-dbt">3. Creating, testing and documenting models in dbt</h3>
-<p>I created, tested, and documented models in <a href="https://www.getdbt.com/">dbt</a>. Copilot made writing SQL for the models faster and was especially good at speeding up my workflow of documenting those models in the schema.yml files. However, since it didn’t know the database schema, it hallucinated tables and columns that don’t exist. GPT-4 was useful for thinking through the deployment of dbt-core on AWS ECS, especially the use of environment variables and the project.yml config file.</p>
-<p>Usefulness: 3/5</p>
-</section>
-<section id="adjusting-a-web-scraper-in-javascript" class="level3">
-<h3 class="anchored" data-anchor-id="adjusting-a-web-scraper-in-javascript">4. Adjusting a web scraper in JavaScript</h3>
-<p>For the next task, I heavily relied on GPT-4. I had to adjust a web scraper to cover a different path of the target website. The scraper is written in JavaScript, which I’m not familiar with. Here, the “explain step-by-step” shortcut was helpful. GPT-4 was like an expert JS dev patiently explaining the code line by line. However, GPT-4 couldn’t see the target website and didn’t have access to the website’s html. Copying it over was tedious. I found it easier to use the <a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb">SelectorGadget</a> Chrome extension to find relevant CSS selectors.</p>
-<p>Usefulness: 4/5</p>
-</section>
-<section id="choosing-a-dashboard-tool" class="level3">
-<h3 class="anchored" data-anchor-id="choosing-a-dashboard-tool">5. Choosing a dashboard tool</h3>
-<p>A new project required building a dashboard, and it was my task to evaluate tools based on features, usability, and price. I tested many GUI-based tools (Metabase, Superset, Tableau, PowerBI and others). GPT-4 could list relevant decision criteria but couldn’t make the decision for me. It wasn’t useful as an information source because of the knowledge cutoff in 2021.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/ai-assistants/dashboard.png" class="img-fluid figure-img"></p>
-<figcaption>Dashboard</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="takeaways" class="level2">
-<h2 class="anchored" data-anchor-id="takeaways">10 Takeaways</h2>
-<ul>
-<li>Copilot and GPT-4 are at their best helping to write code in commonly used libraries like pandas.</li>
-<li>As text-based models, Copilot and GPT-4 provide better help for code (text) based apps than GUIs.</li>
-<li>AI assistants are at their best in small projects with a low number of files, ideally just one notebook.</li>
-<li>They are ideal for working on simple tasks in languages that you’re not familiar with.</li>
-<li>The models don’t have the context of your project, company, and client, which are critical for more strategic decisions.</li>
-<li>There’s no good tooling for showing GPT-4 data frames or tables in SQL. This limitation means it can’t contribute to the interpretation.</li>
-<li>The 2021 training data cutoff for GPT-4 diminishes its usefulness for information retrieval.</li>
-<li>Rubber duck debugging is an effective technique for overcoming blocks. Now we have v2 with a duck that can reply. Chatting with GPT-4 about programming challenges helped me.</li>
-<li>LLMs are best for delegating details, so you can focus on the bigger picture. Knowing what and how to ask is critical and being aware of typical sources of hallucinations.</li>
-<li>GPT-4 currently can’t run a non-trivial data science project by itself. It’s more independent than Copilot but not good enough to be an autopilot.</li>
-</ul>
-</section>
-<section id="differentiating-yourself-as-a-data-scientist-in-an-ai-future" class="level2">
-<h2 class="anchored" data-anchor-id="differentiating-yourself-as-a-data-scientist-in-an-ai-future">Differentiating yourself as a data scientist in an AI-future</h2>
-<p>So what sets a successful data scientist apart in a world with powerful AI assistants?</p>
-<ul>
-<li>Understanding of the domain and business</li>
-<li>Building trust with clients</li>
-<li>Identifying the right questions to work on and the best format to report answers</li>
-<li>Systems design and overview of the project</li>
-<li>Detect hallucinations of AI models</li>
-</ul>
-<p><strong>Knowing how to code</strong> is not enough to differentiate oneself.</p>
-</section>
-<section id="early-on-the-long-arc-of-innovation" class="level2">
-<h2 class="anchored" data-anchor-id="early-on-the-long-arc-of-innovation">Early on the long arc of innovation</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/ai-assistants/arcs.png" class="img-fluid figure-img"></p>
-<figcaption>Long Arc of Innovation</figcaption>
-</figure>
-</div>
-<p>While the hype it peaking, it’s still early days for the technology. Today’s tools are like black and white TV in the 1960s and the future will bring tools equivalent to OLED 4k TVs. In the next few months already, we’ll see better models thanks to:</p>
-<ul>
-<li>Larger context windows enable models to take more information into account: GPT-4 supports up to 32k tokens, whereas GPT-3.5 was limited to 4k</li>
-<li>Plugins and chains via <a href="https://openai.com/blog/chatgpt-plugins">ChatGPT plugins</a> and the <a href="https://github.com/hwchase17/langchain">langchain</a> library. These give models access to the browser, <a href="https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/">Wolfram Alpha</a> and more</li>
-<li>Let models store context information and access data via LlamaIndex Integration into more developer tasks, such as pull requests via <a href="https://github.com/features/preview/copilot-x">Github Copilot X</a></li>
-<li>Agents that recursively call GPT-4, see <a href="https://github.com/Torantulino/Auto-GPT">Auto-GPT</a></li>
-</ul>
-
-
-</section>
-
- ]]></description>
-  <category>Productivity</category>
-  <guid>https://simmering.dev/blog/ai-assistants/</guid>
-  <pubDate>Sun, 09 Apr 2023 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/ai-assistants/image.png" medium="image" type="image/png" height="140" width="144"/>
 </item>
 </channel>
 </rss>

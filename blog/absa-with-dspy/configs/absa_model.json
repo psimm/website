@@ -1,0 +1,61 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).",
+        "rationale": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[{\"term\":\"TFT panel\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "But we had paid for bluetooth, and there was none.",
+        "aspects": "{\"aspects\":[{\"term\":\"bluetooth\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "The powerpoint opened seamlessly in the apple and the mac hooked up to the projector so easily it was almost scary.",
+        "aspects": "{\"aspects\":[{\"term\":\"powerpoint\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I looked around and based off my price\/features comparison from a brand I trusted I landed here.",
+        "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"neutral\"},{\"term\":\"features\",\"polarity\":\"neutral\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${produce the aspects}. We ..."
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a product reviewer tasked with analyzing customer feedback for laptops and netbooks. Given the fields `text`, which contains a customer review, produce the fields `aspects`, which should include the specific features or aspects of the laptop or netbook mentioned in the review, along with their corresponding sentiment or polarity.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${produce the aspects}. We ..."
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

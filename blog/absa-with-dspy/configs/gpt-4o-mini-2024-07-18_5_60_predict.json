@@ -1,0 +1,41 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "Great battery, speed, display.",
+      "aspects": "{\"aspects\":[{\"term\":\"battery\",\"polarity\":\"positive\"},{\"term\":\"speed\",\"polarity\":\"positive\"},{\"term\":\"display\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "Our server was very helpful and friendly.",
+      "aspects": "{\"aspects\":[{\"term\":\"server\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "Saturday, Nov. 6th I had a group from work come in with about 35 people and the staff was amazing to accomodate us.",
+      "aspects": "{\"aspects\":[{\"term\":\"staff\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "HP refused to give me a new one and Wal Mart refused to take it back.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "There are differences that you need to know and take time to learn.",
+      "aspects": "{\"aspects\":[]}"
+    }
+  ],
+  "signature": {
+    "instructions": "You are a sentiment analysis expert. Given the text input, identify and extract specific aspects or features related to user experiences with electronic devices, particularly focusing on sentiments regarding portability, functionalities, reliability, and customer service. Produce a list of relevant aspects based on the provided text.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

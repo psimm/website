@@ -1,0 +1,65 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "Great battery, speed, display.",
+        "reasoning": "The text expresses positive sentiments towards the battery, speed, and display of a product, indicating satisfaction with these aspects.",
+        "aspects": "{\"aspects\":[{\"term\":\"battery\",\"polarity\":\"positive\"},{\"term\":\"speed\",\"polarity\":\"positive\"},{\"term\":\"display\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Our server was very helpful and friendly.",
+        "aspects": "{\"aspects\":[{\"term\":\"server\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Saturday, Nov. 6th I had a group from work come in with about 35 people and the staff was amazing to accomodate us.",
+        "aspects": "{\"aspects\":[{\"term\":\"staff\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "HP refused to give me a new one and Wal Mart refused to take it back.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "There are differences that you need to know and take time to learn.",
+        "aspects": "{\"aspects\":[]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a sentiment analyst tasked with interpreting user feedback on electronic devices. Given the input `text`, produce the fields `reasoning` and `aspects` that explain the sentiment expressed and categorize the relevant aspects of the feedback.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}
