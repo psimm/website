@@ -1,0 +1,85 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "A hearty two thumbs up!",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I am bringing my whole family back next time.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The i5 blows my desktop out of the water when it comes to rendering videos.",
+        "aspects": "{\"aspects\":[{\"term\":\"i5\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Went there and had a combination of different seafood dishes and appetizers.",
+        "aspects": "{\"aspects\":[{\"term\":\"seafood dishes\",\"polarity\":\"neutral\"},{\"term\":\"appetizers\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "Save your money and go for a better device.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The fried rice is amazing here.",
+        "aspects": "{\"aspects\":[{\"term\":\"fried rice\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Within 3 weeks the same issues started happening AGAIN.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "lots of preloaded software.",
+        "aspects": "{\"aspects\":[{\"term\":\"preloaded software\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "My main reason to convert was the imovie program.",
+        "aspects": "{\"aspects\":[{\"term\":\"imovie program\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Typing on the keyboard becomes uncomfortable after extended use due to the sharp edges that your wrists rest on.",
+        "aspects": "{\"aspects\":[{\"term\":\"keyboard\",\"polarity\":\"negative\"},{\"term\":\"edges\",\"polarity\":\"negative\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "Finally!",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Tell them Herky sent you and get a free confused look from the waiter.",
+      "aspects": "{\"aspects\":[{\"term\":\"waiter\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "This is a great laptop and I would recommend it to anyone.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I would highly recommend it.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "However, in the summer of 2003, it seems the management has changed and the great big door has been replaced for a glass front ridding itself of the dark romantic getup.",
+      "aspects": "{\"aspects\":[{\"term\":\"management\",\"polarity\":\"neutral\"},{\"term\":\"door\",\"polarity\":\"positive\"},{\"term\":\"glass front\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "Once you step into Cosette, you're miraculously in a small, off-the-beaten path Parisian bistro.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "The minute you fire it up it's all good, very easy user interface.",
+      "aspects": "{\"aspects\":[{\"term\":\"user interface\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I think locals rate this place so high.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I was taught to use Photoshop and was amazed.",
+      "aspects": "{\"aspects\":[{\"term\":\"Photoshop\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "One drawback, I wish the keys were backlit.",
+      "aspects": "{\"aspects\":[{\"term\":\"keys\",\"polarity\":\"negative\"}]}"
+    }
+  ],
+  "signature": {
+    "instructions": "You are a sentiment analysis expert, and you have been tasked with identifying the sentiment expressed towards specific aspects of a product or service in a given text. Given the text, produce a list of aspects with their corresponding sentiment polarities. For example, if the text is \"Two words: Free wine\", you would output aspects=[Aspect(term='wine', polarity='positive')]. Please analyze the text and provide the list of aspects with their sentiment polarities.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

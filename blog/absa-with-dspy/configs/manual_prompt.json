@@ -1,0 +1,60 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "text": "Drivers updated ok but the BIOS update froze the system up and the computer shut down.",
+      "aspects": "{\"aspects\":[{\"term\":\"Drivers\",\"polarity\":\"positive\"},{\"term\":\"BIOS update\",\"polarity\":\"negative\"},{\"term\":\"system\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "The food was absolutely amazing!!",
+      "aspects": "{\"aspects\":[{\"term\":\"food\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I have had to send in my laptop three times to get it fixed.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "So, the menu is written in chalk above your head and it all sounds delicious.",
+      "aspects": "{\"aspects\":[{\"term\":\"menu\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "EITHER THE COMPUTER IS TOO SLOW TO DETECT THE KEYS TYPED (THIS IS UNLIKELY AS I AM A SLOW TYPIST) OR THE KEYBOARD SIMPLY DOES NOT DETECT THE KEYS BEING TYPED.",
+      "aspects": "{\"aspects\":[{\"term\":\"KEYS\",\"polarity\":\"negative\"},{\"term\":\"KEYBOARD\",\"polarity\":\"negative\"},{\"term\":\"KEYS\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "The service was bad, the food took to forever to come, we sat on the upper level.",
+      "aspects": "{\"aspects\":[{\"term\":\"service\",\"polarity\":\"negative\"},{\"term\":\"food\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "-4 RAM slots, 2 HDD Bays*, 16GB RAM support -No Wireless Issues, at least for me.",
+      "aspects": "{\"aspects\":[{\"term\":\"RAM slots\",\"polarity\":\"neutral\"},{\"term\":\"HDD Bays\",\"polarity\":\"neutral\"},{\"term\":\"16GB RAM support\",\"polarity\":\"neutral\"},{\"term\":\"Wireless\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "Definitely worth the trip to Battery Park City!",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Mine came at $1,700 w/o a DVD burner (!).",
+      "aspects": "{\"aspects\":[{\"term\":\"DVD burner\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "I liked the food at this quasi-thai restaurant.",
+      "aspects": "{\"aspects\":[{\"term\":\"food\",\"polarity\":\"positive\"},{\"term\":\"quasi-thai\",\"polarity\":\"positive\"}]}"
+    }
+  ],
+  "signature": {
+    "instructions": "These guidelines detail Aspect Based Sentiment Analysis Annotation for restaurant and laptop customer reviews. The aim is to determine aspect terms and their sentiment polarities within sentences. Aspect terms are words or phrases describing the specific attributes of the target entity. Sentiment polarity can be positive, negative, or neutral. For aspect terms, annotators should mark nominal phrases explicitly mentioning aspects and verbs or verbal names aspects. Subjectivity indicators, references to the target entity as a whole, and the name, type, or model of the laptop or restaurant should not be considered as aspect terms. Also, pronouns and implicit aspect terms should not be annotated. For sentiment polarity, an aspect term should be classified as positive or negative if the sentence expresses a positive or negative opinion. Neutral polarity should be assigned when a neutral sentiment or factual information is given about an aspect, or when the sentiment is inferred but not explicit. Given the fields `text`, produce the fields `aspects`.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

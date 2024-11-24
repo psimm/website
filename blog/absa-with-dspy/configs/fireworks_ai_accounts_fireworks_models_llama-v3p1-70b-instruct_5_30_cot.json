@@ -1,0 +1,65 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "Finally!",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Tell them Herky sent you and get a free confused look from the waiter.",
+        "aspects": "{\"aspects\":[{\"term\":\"waiter\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "This is a great laptop and I would recommend it to anyone.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I would highly recommend it.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "However, in the summer of 2003, it seems the management has changed and the great big door has been replaced for a glass front ridding itself of the dark romantic getup.",
+        "aspects": "{\"aspects\":[{\"term\":\"management\",\"polarity\":\"neutral\"},{\"term\":\"door\",\"polarity\":\"positive\"},{\"term\":\"glass front\",\"polarity\":\"negative\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "Given a customer review, extract the specific aspects or features mentioned in the text, such as battery life, GUI, or applications, and provide a step-by-step reasoning for how you identified those aspects.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

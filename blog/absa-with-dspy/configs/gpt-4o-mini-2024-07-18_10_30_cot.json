@@ -1,0 +1,85 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "It has been my first choice ever since I discovered it .",
+        "reasoning": "The text expresses a positive sentiment towards a particular choice that the speaker has made, indicating satisfaction and preference.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I've been there a few times, and I usually end up sitting next to some pretty odd people.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Few viruses to catch;",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Its fast and another thing I like is that it has three USB ports.",
+        "aspects": "{\"aspects\":[{\"term\":\"USB ports\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Its a good laptop for its value.",
+        "aspects": "{\"aspects\":[{\"term\":\"value\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I'll be back soon.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I am not much of a computer techie, so I can understand some of\u00a0the internal problems, though I do have trend micro as an antiviral program.",
+        "aspects": "{\"aspects\":[{\"term\":\"trend micro\",\"polarity\":\"neutral\"},{\"term\":\"antiviral program\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "Sauce was watery and the food didn't have much flavor.",
+        "aspects": "{\"aspects\":[{\"term\":\"Sauce\",\"polarity\":\"negative\"},{\"term\":\"food\",\"polarity\":\"negative\"},{\"term\":\"flavor\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "If you wrote a bad review, it's because you don't understand what Rao's is all about.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "the mouse pad and buttons are the worst i've ever seen.",
+        "aspects": "{\"aspects\":[{\"term\":\"mouse pad\",\"polarity\":\"negative\"},{\"term\":\"buttons\",\"polarity\":\"negative\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a product analyst. Given the text describing user experiences with electronic devices, analyze the content and extract specific aspects related to sentiment. Produce the fields `reasoning` and `aspects` based on the provided text.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

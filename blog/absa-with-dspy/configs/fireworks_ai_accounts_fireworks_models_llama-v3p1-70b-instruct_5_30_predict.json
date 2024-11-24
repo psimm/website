@@ -1,0 +1,41 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "A hearty two thumbs up!",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I am bringing my whole family back next time.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "The i5 blows my desktop out of the water when it comes to rendering videos.",
+      "aspects": "{\"aspects\":[{\"term\":\"i5\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "Went there and had a combination of different seafood dishes and appetizers.",
+      "aspects": "{\"aspects\":[{\"term\":\"seafood dishes\",\"polarity\":\"neutral\"},{\"term\":\"appetizers\",\"polarity\":\"neutral\"}]}"
+    },
+    {
+      "text": "Save your money and go for a better device.",
+      "aspects": "{\"aspects\":[]}"
+    }
+  ],
+  "signature": {
+    "instructions": "Given a text review, identify and extract the specific aspects or features of the laptop or netbook that are mentioned, such as battery life, GUI, or applications.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}

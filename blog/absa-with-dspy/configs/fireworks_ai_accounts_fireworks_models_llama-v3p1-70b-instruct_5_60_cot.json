@@ -1,0 +1,65 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "I charge it at night and skip taking the cord with me because of the good battery life.",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[{\"term\":\"battery life\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "More times that not the screen pops up saying I have a bad internet connection, or the page can't be displayed.",
+        "aspects": "{\"aspects\":[{\"term\":\"internet connection\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "You must have the crabmeat lasagna which is out of this world and the chocolate bread pudding for dessert.",
+        "aspects": "{\"aspects\":[{\"term\":\"crabmeat lasagna\",\"polarity\":\"positive\"},{\"term\":\"chocolate bread pudding\",\"polarity\":\"positive\"},{\"term\":\"dessert\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I have other computers that get strong signals that don't drop in places that this \"net\"book loses its signal.",
+        "aspects": "{\"aspects\":[{\"term\":\"signals\",\"polarity\":\"positive\"},{\"term\":\"signal\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "I work around the corner and tried it with a colleague for the first time.",
+        "aspects": "{\"aspects\":[]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "Given a customer review, extract the specific aspects or features mentioned in the text, such as battery life, GUI, or applications, and provide a step-by-step reasoning for how you identified those aspects.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "A hearty two thumbs up!",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I am bringing my whole family back next time.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The i5 blows my desktop out of the water when it comes to rendering videos.",
+        "aspects": "{\"aspects\":[{\"term\":\"i5\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Went there and had a combination of different seafood dishes and appetizers.",
+        "aspects": "{\"aspects\":[{\"term\":\"seafood dishes\",\"polarity\":\"neutral\"},{\"term\":\"appetizers\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "Save your money and go for a better device.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The fried rice is amazing here.",
+        "aspects": "{\"aspects\":[{\"term\":\"fried rice\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Within 3 weeks the same issues started happening AGAIN.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "lots of preloaded software.",
+        "aspects": "{\"aspects\":[{\"term\":\"preloaded software\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "My main reason to convert was the imovie program.",
+        "aspects": "{\"aspects\":[{\"term\":\"imovie program\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Typing on the keyboard becomes uncomfortable after extended use due to the sharp edges that your wrists rest on.",
+        "aspects": "{\"aspects\":[{\"term\":\"keyboard\",\"polarity\":\"negative\"},{\"term\":\"edges\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "The rep did not even answer my question, I had to ask him, if he understood what I ask or if he spoke english because he didn't even try to acknowledge my question.",
+        "aspects": "{\"aspects\":[{\"term\":\"rep\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "After 2 months of complaints, Asus finally sent the right power supply to my techies.",
+        "aspects": "{\"aspects\":[{\"term\":\"power supply\",\"polarity\":\"neutral\"},{\"term\":\"techies\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "For great chinese food nearby, you have Wu Liang Ye and Grand Sichuan just a block away.",
+        "aspects": "{\"aspects\":[{\"term\":\"chinese food\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I'm going back to PC.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The reflectiveness of the display is only a minor inconvenience if you work in a controlled-lighting environment like me (I prefer it dark) or if you can crank up the brightness.",
+        "aspects": "{\"aspects\":[{\"term\":\"display\",\"polarity\":\"negative\"},{\"term\":\"brightness\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "Summary: HP knew they were shipping out bad BIOS and did nothing proactive to resolve it.",
+        "aspects": "{\"aspects\":[{\"term\":\"BIOS\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Processor - When compared to my 3 week old Early 2011 edition there I barely experience any difference in performance (2.3 GHz v\/s 2.4 GHz).",
+        "aspects": "{\"aspects\":[{\"term\":\"Processor\",\"polarity\":\"neutral\"},{\"term\":\"performance\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "i have eaten here a handful of times, for no reason besides sheer convenience.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I shipped out on Saturday, July 17.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "But too far east!",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Every driver on the drivers\/applications DVD is everything you will need for a reload.",
+        "aspects": "{\"aspects\":[{\"term\":\"driver\",\"polarity\":\"positive\"},{\"term\":\"drivers\/applications DVD\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I'm having the laptop returned unrepaired since paying $176 every 3  months just isn't worth it (that's about how long the port seems to  last).",
+        "aspects": "{\"aspects\":[{\"term\":\"port\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Please be aware that it's CASH or AMEX only!",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Worth the trip from Manhattan.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "It was loaded with Windows Vista Home Premium--delivered with only 1GB of RAM, and it was a *dog*.",
+        "aspects": "{\"aspects\":[{\"term\":\"Windows Vista Home Premium\",\"polarity\":\"neutral\"},{\"term\":\"1GB of RAM\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Because we did not purchase the extended warranty in time, we are on the hook for the repair.",
+        "aspects": "{\"aspects\":[{\"term\":\"extended warranty\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "They were served warm and had a soft fluffy interior.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "When I got my laptop back after this first instance it worked okay for a little bit then I started expeirencing issues again, everything from programs and drivers failing again, to it powering off for no reason, to locking up and freezing and just all sorts of issues.",
+        "aspects": "{\"aspects\":[{\"term\":\"programs\",\"polarity\":\"negative\"},{\"term\":\"drivers\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "the mcbook pro notebook will make it easy for you to write and read your emails at blazing speeds.",
+        "aspects": "{\"aspects\":[{\"term\":\"speeds\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I needed a driver for my HP and they would not help me with out me paying over $50 for it.",
+        "aspects": "{\"aspects\":[{\"term\":\"driver\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "It didn't take me long to get switched over to the Mac computer programs and navigation - it's been just fine and like the way this laptop functions much better.",
+        "aspects": "{\"aspects\":[{\"term\":\"programs\",\"polarity\":\"positive\"},{\"term\":\"navigation\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "But the pizza is way to expensive.",
+        "aspects": "{\"aspects\":[{\"term\":\"pizza\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Better stick with another brand.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Other than that, I would recommend this to someone in need of a cheap laptop with semi-decent gaming capabilities.",
+        "aspects": "{\"aspects\":[{\"term\":\"gaming\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "The restaurant was packed at first, so we waited at the bar for about 20 minutes before we were seated.",
+        "aspects": "{\"aspects\":[{\"term\":\"bar\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "What a great place.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I recommend getting a reservation even though we saw people seated without one.",
+        "aspects": "{\"aspects\":[{\"term\":\"reservation\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "I have been to Mary's many times and I like it.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "None of the techs at HP knew what they were doing.",
+        "aspects": "{\"aspects\":[{\"term\":\"techs at HP\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "After about a week I finally got it back and was told that the motherboard had failed and so they installed a new motherboard.",
+        "aspects": "{\"aspects\":[{\"term\":\"motherboard\",\"polarity\":\"negative\"},{\"term\":\"motherboard\",\"polarity\":\"neutral\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "In a competitive market where user satisfaction can determine the success or failure of a product, analyze the following text about user experiences with laptops. Your task is to extract specific aspects and provide reasoning for your analysis. Given the fields `text`, produce the fields `aspects` to highlight both positive and negative sentiments that could influence customer loyalty.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

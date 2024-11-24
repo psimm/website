@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/absa-with-dspy/index.html",
       "/blog/long-prompts/index.html",
       "/blog/openai_structured_output/index.html",
       "/blog/abstractions/index.html",

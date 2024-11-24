@@ -1,0 +1,205 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).",
+        "reasoning": "Not supplied for this particular example.",
+        "aspects": "{\"aspects\":[{\"term\":\"TFT panel\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "But we had paid for bluetooth, and there was none.",
+        "aspects": "{\"aspects\":[{\"term\":\"bluetooth\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "The powerpoint opened seamlessly in the apple and the mac hooked up to the projector so easily it was almost scary.",
+        "aspects": "{\"aspects\":[{\"term\":\"powerpoint\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I looked around and based off my price\/features comparison from a brand I trusted I landed here.",
+        "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"neutral\"},{\"term\":\"features\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "I took it to friend who temporarily fixed it and I finally paid about 1500 for the extended warranty.",
+        "aspects": "{\"aspects\":[{\"term\":\"extended warranty\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "I am however pleased that it is still hanging in there.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I'm stuck w\/ a broken computer.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "My MacBook is faster than any comparable PC.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "It is extremely user friendly and intuitive.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "May, the owner always has a smile on her and will warmly greet you.",
+        "aspects": "{\"aspects\":[{\"term\":\"owner\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "The display is beyond horrible.",
+        "aspects": "{\"aspects\":[{\"term\":\"display\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "The owner and staff are all Japanese as well and that adds to the entire ambiance.",
+        "aspects": "{\"aspects\":[{\"term\":\"staff\",\"polarity\":\"positive\"},{\"term\":\"ambiance\",\"polarity\":\"positive\"},{\"term\":\"owner\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "A tip for people looking into this computer: DO NOT BUY IT save up a bit more money and buy a computer that will last.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "This laptop is a great price and has a sleek look.",
+        "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"positive\"},{\"term\":\"look\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I have been to Roth's twice and both times were very disappointing.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Very satisfied.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Yes, I have it on the highest available setting.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "So I called Compaq, and after being on the phone for 3 hours, i finally got a replacement which I shouldn't have had a problem getting since it was under warranty.",
+        "aspects": "{\"aspects\":[{\"term\":\"warranty\",\"polarity\":\"neutral\"}]}"
+      },
+      {
+        "text": "I felt as though I were eating in Paris.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Good bagels and good cream cheese.",
+        "aspects": "{\"aspects\":[{\"term\":\"bagels\",\"polarity\":\"positive\"},{\"term\":\"cream cheese\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "The best thing about this laptop is the price along with some of the newer features.",
+        "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"positive\"},{\"term\":\"features\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "You can do it here.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "I finally decided on this laptop because it was the right price for what I need it.",
+        "aspects": "{\"aspects\":[{\"term\":\"price\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "They break down just as often as PCs do, and the only reason they don't get viruses, is because no one makes viruses for them, they're not better in any way, they are worse, try finding virus protection programs for a Mac, they don't exist.",
+        "aspects": "{\"aspects\":[{\"term\":\"virus protection programs for a Mac\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "i would have to say that overall its great!",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Some of the workers ignore me and talk to the female customers, other times, they've skipped my order.",
+        "aspects": "{\"aspects\":[{\"term\":\"workers\",\"polarity\":\"negative\"},{\"term\":\"order\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Garageband is more for the musicians, and the laptop is equipped with a good working microphone, good enough for beginners and musicians at the intermediate level.",
+        "aspects": "{\"aspects\":[{\"term\":\"Garageband\",\"polarity\":\"neutral\"},{\"term\":\"microphone\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Many of my classmates computers hard drives crashed.",
+        "aspects": "{\"aspects\":[{\"term\":\"hard drives\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Best Buy Rocks!",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "The food was authentic.",
+        "aspects": "{\"aspects\":[{\"term\":\"food\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "To my mind much more usable than the toy called an IPad.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Purchased as a gift for a friend.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "If you find yourself in the market for a new laptop (and have the money) don't exclude looking at the MBPs.",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "we split a tasty vegetable samosa and the malai tikka wrap.",
+        "aspects": "{\"aspects\":[{\"term\":\"vegetable samosa\",\"polarity\":\"positive\"},{\"term\":\"malai tikka wrap\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I can't even remember how I finally got it taken care of, but I was done with Sony after that!",
+        "aspects": "{\"aspects\":[]}"
+      },
+      {
+        "text": "Great value, fast delivery- Computer works as if brand new, no problems, very pleased",
+        "aspects": "{\"aspects\":[{\"term\":\"delivery\",\"polarity\":\"positive\"},{\"term\":\"value\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "Adjust the sensitivity since it's not that responsive to begin with.",
+        "aspects": "{\"aspects\":[{\"term\":\"sensitivity\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "Late nite omelletes are not good here, there is no variety!",
+        "aspects": "{\"aspects\":[{\"term\":\"omelletes\",\"polarity\":\"negative\"}]}"
+      },
+      {
+        "text": "All in all, this midtown gem instantly became one of my favorite sushi restaurants in the city.",
+        "aspects": "{\"aspects\":[{\"term\":\"sushi\",\"polarity\":\"positive\"}]}"
+      },
+      {
+        "text": "I love the multi-touch trackpad.",
+        "aspects": "{\"aspects\":[{\"term\":\"multi-touch trackpad\",\"polarity\":\"positive\"}]}"
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `text`, produce the fields `aspects`.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a product analyst. Given the fields `text`, analyze the content and produce the fields `reasoning` and `aspects`. Focus on extracting key features and sentiments expressed in the text while providing a clear step-by-step reasoning process.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "${text}"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Aspects:",
+          "description": "${aspects}"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "I charge it at night and skip taking the cord with me because of the good battery life.",
+      "aspects": "{\"aspects\":[{\"term\":\"battery life\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "More times that not the screen pops up saying I have a bad internet connection, or the page can't be displayed.",
+      "aspects": "{\"aspects\":[{\"term\":\"internet connection\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "You must have the crabmeat lasagna which is out of this world and the chocolate bread pudding for dessert.",
+      "aspects": "{\"aspects\":[{\"term\":\"crabmeat lasagna\",\"polarity\":\"positive\"},{\"term\":\"chocolate bread pudding\",\"polarity\":\"positive\"},{\"term\":\"dessert\",\"polarity\":\"positive\"}]}"
+    },
+    {
+      "text": "I have other computers that get strong signals that don't drop in places that this \"net\"book loses its signal.",
+      "aspects": "{\"aspects\":[{\"term\":\"signals\",\"polarity\":\"positive\"},{\"term\":\"signal\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "I work around the corner and tried it with a colleague for the first time.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "The place is a little tight and on a cold day, the seating by the entranceway can be pretty drafty.",
+      "aspects": "{\"aspects\":[{\"term\":\"seating\",\"polarity\":\"negative\"},{\"term\":\"place\",\"polarity\":\"negative\"}]}"
+    },
+    {
+      "text": "Who knows what will happen later on when they dismantle the whole damn thing?  So, I said I wanted a new set.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "If you had PC for four years I can almost gaurentee that something would of gone wrong by now, maybe even forcing you to replace your entire computer.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "I visited the Apple Store and was impressed with the 17-inch MacBook Pro.",
+      "aspects": "{\"aspects\":[]}"
+    },
+    {
+      "text": "Unless you don't care how long it takes to get going, find something else.",
+      "aspects": "{\"aspects\":[]}"
+    }
+  ],
+  "signature": {
+    "instructions": "Analyze the provided text and identify specific aspects related to user experiences with electronic devices, then classify each aspect by its sentiment as positive or negative.",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Aspects:",
+        "description": "${aspects}"
+      }
+    ]
+  }
+}
