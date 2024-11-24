@@ -20,12 +20,13 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Vicki Boykis](https://vickiboykis.com) | Data science, machine learning, and tech industry commentary with a focus on MLOps |
 | [Phil Schmid](https://www.philschmid.de) | Tutorials and guides focused on transformers and LLMs, especially with Hugging Face and AWS |
 | [Hugging Face](https://huggingface.co/blog) | Latest developments in machine learning, focusing on transformers and open source AI |
-| [NVIDIA](https://blogs.nvidia.com) | Updates on AI hardware, software, and research from the leading GPU manufacturer |
 | [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
 | [Francois Chollet](https://fchollet.substack.com) | AI philosophy and technical insights from the creator of Keras |
 | [Zvi Mowshowitz](https://thezvi.wordpress.com) | Analysis of AI progress and risk from a rationalist perspective |
 | [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
 | [Near](https://near.blog) | Independent AI research and commentary, as well as nutrition and productivity advice |
+| [NVIDIA](https://blogs.nvidia.com) | Updates on AI hardware, software, and research from the leading GPU manufacturer |
+| [PyTorch Blog](https://pytorch.org/blog/) | Latest developments in PyTorch, the popular deep learning library |
 
 ## Data Visualization
 
