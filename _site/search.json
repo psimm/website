@@ -1802,22 +1802,22 @@
     "objectID": "blogroll.html#machine-learning",
     "href": "blogroll.html#machine-learning",
     "title": "Blogroll",
-    "section": "Machine learning",
-    "text": "Machine learning\n\n\n\nBlog\nDescription\n\n\n\n\nEugene Yan\nApplied machine learning, data science career advice, and technical writing tips\n\n\nHamel Husain\nPractical LLM engineering from an AI consultant\n\n\nSimon Willison\nDeveloper and open source maintainer sharing close commentary on news relating to AI and other current technologies\n\n\nChip Huyen\nIn depth tutorials and deep dives into machine learning concepts\n\n\nVicki Boykis\nData science, machine learning, and tech industry commentary with a focus on MLOps\n\n\nPhil Schmid\nTutorials and guides focused on transformers and LLMs, especially with Hugging Face\n\n\nHugging Face\nLatest developments in machine learning, focusing on transformers and open source AI\n\n\nNVIDIA\nUpdates on AI hardware, software, and research from the leading GPU manufacturer\n\n\nSebastian Raschka\nDeep learning education and research insights from an experienced ML educator\n\n\nFrancois Chollet\nAI philosophy and technical insights from the creator of Keras\n\n\nZvi Mowshowitz\nAnalysis of AI progress and risk from a rationalist perspective\n\n\nGwern Branwen\nIn-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology\n\n\nNear\nIndependent AI research and commentary, as well as nutrition and productivity advice"
+    "section": "Machine Learning",
+    "text": "Machine Learning\n\n\n\nBlog\nDescription\n\n\n\n\nEugene Yan\nApplied machine learning, data science career advice, and technical writing tips\n\n\nHamel Husain\nPractical LLM engineering from an AI consultant\n\n\nSimon Willison\nDeveloper and open source maintainer sharing close commentary on news relating to AI and other current technologies\n\n\nChip Huyen\nIn depth tutorials and deep dives into machine learning concepts\n\n\nVicki Boykis\nData science, machine learning, and tech industry commentary with a focus on MLOps\n\n\nPhil Schmid\nTutorials and guides focused on transformers and LLMs, especially with Hugging Face\n\n\nHugging Face\nLatest developments in machine learning, focusing on transformers and open source AI\n\n\nNVIDIA\nUpdates on AI hardware, software, and research from the leading GPU manufacturer\n\n\nSebastian Raschka\nDeep learning education and research insights from an experienced ML educator\n\n\nFrancois Chollet\nAI philosophy and technical insights from the creator of Keras\n\n\nZvi Mowshowitz\nAnalysis of AI progress and risk from a rationalist perspective\n\n\nGwern Branwen\nIn-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology\n\n\nNear\nIndependent AI research and commentary, as well as nutrition and productivity advice"
   },
   {
     "objectID": "blogroll.html#data-visualization",
     "href": "blogroll.html#data-visualization",
     "title": "Blogroll",
-    "section": "Data visualization",
-    "text": "Data visualization\n\n\n\nBlog\nDescription\n\n\n\n\nStorytelling with Data\nPractical tips and examples for creating effective data visualizations and presentations\n\n\nDatawrapper\nTutorials and best practices for creating charts and maps, with a focus on journalism\n\n\nThe Pudding\nVisual essays using data and creative storytelling to explore culture, entertainment, and society"
+    "section": "Data Visualization",
+    "text": "Data Visualization\n\n\n\nBlog\nDescription\n\n\n\n\nStorytelling with Data\nPractical tips and examples for creating effective data visualizations and presentations\n\n\nDatawrapper\nTutorials and best practices for creating charts and maps, with a focus on journalism\n\n\nThe Pudding\nVisual essays using data and creative storytelling to explore culture, entertainment, and society"
   },
   {
     "objectID": "blogroll.html#technology-programming",
     "href": "blogroll.html#technology-programming",
     "title": "Blogroll",
-    "section": "Technology & programming",
-    "text": "Technology & programming\n\n\n\nBlog\nDescription\n\n\n\n\nErik Bernhardsson\nCEO of Modal writing about tech, management and startups\n\n\nGergely Orosz\nIn-depth articles about software engineering, tech leadership and the business of technology\n\n\nMitchell Hashimoto\nFounder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture\n\n\nSpotify Engineering\nTechnical blog covering Spotify’s engineering culture, architecture and development practices\n\n\nDavid Heinemeier Hansson\nCreator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique\n\n\nInes Montani\nCo-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business\n\n\nStephen Wolfram\nCreator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence\n\n\nBen Kuhn\nCTO of Wave writing thoughtful analyses of technology, productivity and effective altruism"
+    "section": "Technology & Programming",
+    "text": "Technology & Programming\n\n\n\nBlog\nDescription\n\n\n\n\nErik Bernhardsson\nCEO of Modal writing about tech, management and startups\n\n\nGergely Orosz\nIn-depth articles about software engineering, tech leadership and the business of technology\n\n\nMitchell Hashimoto\nFounder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture\n\n\nSpotify Engineering\nTechnical blog covering Spotify’s engineering culture, architecture and development practices\n\n\nDavid Heinemeier Hansson\nCreator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique\n\n\nInes Montani\nCo-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business\n\n\nStephen Wolfram\nCreator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence\n\n\nBen Kuhn\nCTO of Wave writing thoughtful analyses of technology, productivity and effective altruism"
   },
   {
     "objectID": "blogroll.html#business-finance",
@@ -1830,8 +1830,8 @@
     "objectID": "blogroll.html#design-communication-marketing",
     "href": "blogroll.html#design-communication-marketing",
     "title": "Blogroll",
-    "section": "Design, communication, marketing",
-    "text": "Design, communication, marketing\n\n\n\nBlog\nDescription\n\n\n\n\niA\nDesign agency known for minimalist aesthetics and thoughtful writing about design, typography and digital tools\n\n\nSeth Godin\nDaily insights about marketing, leadership and creating meaningful work in the digital age"
+    "section": "Design, Communication, Marketing",
+    "text": "Design, Communication, Marketing\n\n\n\nBlog\nDescription\n\n\n\n\niA\nDesign agency known for minimalist aesthetics and thoughtful writing about design, typography and digital tools\n\n\nSeth Godin\nDaily insights about marketing, leadership and creating meaningful work in the digital age"
   },
   {
     "objectID": "blogroll.html#world-improvement",
@@ -1851,14 +1851,14 @@
     "objectID": "blogroll.html#data-driven-world-improvement",
     "href": "blogroll.html#data-driven-world-improvement",
     "title": "Blogroll",
-    "section": "Data driven world improvement",
-    "text": "Data driven world improvement\n\n\n\nBlog\nDescription\n\n\n\n\n80,000 Hours\nResearch and career advice focused on solving the world’s most pressing problems\n\n\nOur World in Data\nComprehensive data visualizations and research on global issues like poverty, health, and climate change"
+    "section": "Data Driven World Improvement",
+    "text": "Data Driven World Improvement\n\n\n\nBlog\nDescription\n\n\n\n\n80,000 Hours\nResearch and career advice focused on solving the world’s most pressing problems\n\n\nOur World in Data\nComprehensive data visualizations and research on global issues like poverty, health, and climate change"
   },
   {
     "objectID": "blogroll.html#personal-development-productivity",
     "href": "blogroll.html#personal-development-productivity",
     "title": "Blogroll",
-    "section": "Personal development & productivity",
-    "text": "Personal development & productivity\n\n\n\nBlog\nDescription\n\n\n\n\nMatt Might\nComputer science professor sharing advice on academia, productivity and technical writing\n\n\nScott Young\nLearning techniques, self-education experiments and cognitive psychology insights\n\n\nTim Urban\nInterviews and articles about performance optimization, business and personal development\n\n\nDerek Sivers\nEntrepreneur sharing unconventional wisdom about life, business and decision making\n\n\nTynan\nOptimizes his life in unusual ways, from sharing a private island with friends to building custom arcade machines\n\n\nJeff Kaufman\nSoftware engineer writing about effective altruism, personal finance and parenting\n\n\nZen Habits\nMinimalist and zen lifestyle advice from a father of 6"
+    "section": "Personal Development & Productivity",
+    "text": "Personal Development & Productivity\n\n\n\nBlog\nDescription\n\n\n\n\nMatt Might\nComputer science professor sharing advice on academia, productivity and technical writing\n\n\nScott Young\nLearning techniques, self-education experiments and cognitive psychology insights\n\n\nTim Urban\nInterviews and articles about performance optimization, business and personal development\n\n\nDerek Sivers\nEntrepreneur sharing unconventional wisdom about life, business and decision making\n\n\nTynan\nOptimizes his life in unusual ways, from sharing a private island with friends to building custom arcade machines\n\n\nJeff Kaufman\nSoftware engineer writing about effective altruism, personal finance and parenting\n\n\nZen Habits\nMinimalist and zen lifestyle advice from a father of 6"
   }
 ]

@@ -8,7 +8,7 @@ toc: true
 I'm a fan of classic blogs. The quality of content is usually higher than on social media and the longer form allows for more depth. In contrast to social media, I never feel like that I'm wasting time when reading good blogs. The open RSS format can be used with many different readers and it's easy to download things to read offline. If you're looking for recommendations, here are the blogs that I read regularly, organized by topic.
 
 
-## Machine learning
+## Machine Learning
 
 | Blog | Description |
 |------|-------------|
@@ -26,7 +26,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
 | [Near](https://near.blog) | Independent AI research and commentary, as well as nutrition and productivity advice |
 
-## Data visualization
+## Data Visualization
 
 | Blog | Description |
 |------|-------------|
@@ -34,7 +34,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Datawrapper](https://blog.datawrapper.de) | Tutorials and best practices for creating charts and maps, with a focus on journalism |
 | [The Pudding](https://pudding.cool) | Visual essays using data and creative storytelling to explore culture, entertainment, and society |
 
-## Technology & programming
+## Technology & Programming
 
 | Blog | Description |
 |------|-------------|
@@ -59,21 +59,21 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Gerd Kommer](https://gerd-kommer.de/blog/) | German language blog about evidence-based investing and personal finance |
 | [Frugalisten](https://frugalisten.de) | German language blog about personal finance, frugal living and parenting |
 
-## Design, communication, marketing
+## Design, Communication, Marketing
 
 | Blog | Description |
 |------|-------------|
 | [iA](https://ia.net/news) | Design agency known for minimalist aesthetics and thoughtful writing about design, typography and digital tools |
 | [Seth Godin](https://seths.blog) | Daily insights about marketing, leadership and creating meaningful work in the digital age |
 
-## Data driven world improvement
+## Data Driven World Improvement
 
 | Blog | Description |
 |------|-------------|
 | [80,000 Hours](https://80000hours.org/all-articles/) | Research and career advice focused on solving the world's most pressing problems |
 | [Our World in Data](https://ourworldindata.org) | Comprehensive data visualizations and research on global issues like poverty, health, and climate change |
 
-## Personal development & productivity
+## Personal Development & Productivity
 
 | Blog | Description |
 |------|-------------|
