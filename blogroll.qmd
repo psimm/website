@@ -17,7 +17,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Simon Willison](https://simonwillison.net) | Developer and open source maintainer sharing close commentary on news relating to AI and other current technologies |
 | [Chip Huyen](https://huyenchip.com/blog/) | In depth tutorials and deep dives into machine learning concepts |
 | [Vicki Boykis](https://vickiboykis.com) | Data science, machine learning, and tech industry commentary with a focus on MLOps |
-| [Phil Schmid](https://www.philschmid.de) | Tutorials and guides focused on transformers and LLMs, especially with Hugging Face |
+| [Phil Schmid](https://www.philschmid.de) | Tutorials and guides focused on transformers and LLMs, especially with Hugging Face and AWS |
 | [Hugging Face](https://huggingface.co/blog) | Latest developments in machine learning, focusing on transformers and open source AI |
 | [NVIDIA](https://blogs.nvidia.com) | Updates on AI hardware, software, and research from the leading GPU manufacturer |
 | [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
@@ -79,9 +79,9 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 |------|-------------|
 | [Matt Might](https://matt.might.net/articles/) | Computer science professor sharing advice on academia, productivity and technical writing |
 | [Scott Young](https://www.scotthyoung.com/blog/) | Learning techniques, self-education experiments and cognitive psychology insights |
-| [Tim Urban](https://tim.blog) | Interviews and articles about performance optimization, business and personal development |
+| [Tim Ferriss](https://tim.blog) | Interviews and articles about performance optimization, business and personal development |
 | [Derek Sivers](https://sive.rs/blog) | Entrepreneur sharing unconventional wisdom about life, business and decision making |
-| [Tynan](https://tynan.com) | Optimizes his life in unusual ways, from sharing a private island with friends to building custom arcade machines |
+| [Tynan](https://tynan.com) | Nomadic author and entrepreneur shares how he optimizes his life in unusual ways, from a private island with friends to building custom arcade machines |
 | [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
 | [Zen Habits](https://zenhabits.net) | Minimalist and zen lifestyle advice from a father of 6 |
 
