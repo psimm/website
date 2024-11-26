@@ -1,0 +1,43 @@
+---
+title: "Publications"
+author: "Paul Simmering"
+date: "2024-11-26"
+---
+
+List of academic and professional publications outside of my blog.
+
+## Papers
+
+Huoviala, Paavo, and Paul Simmering. "Large Language Models for Aspect-Based Sentiment Analysis." arXiv preprint arXiv:2310.18025, 2023. [arXiv](https://arxiv.org/abs/2310.18025)
+
+Simmering, Paul, and Daniel Hain. "Innovation and Imitation Strategies in the Age of the Upgrade: An Agent-Based Simulation Model." Working Paper, European Meeting on Applied Evolutionary Economics, 2017. [PDF](/talks/emaee2017/Simmering_Hain_2017_Innovation_Imitation_Working_Paper.pdf)
+
+## Magazines and Blogs
+
+Simmering, Paul. "Inflationäre Produktbewertungen? - Wie die Sterne-Skala wirklich funktioniert." Marktforschung.de, 2024. [PDF](/assets/pdf/Simmering_2024_Produktbewertungen_Marktforschungde.pdf)
+
+Simmering, Paul. "AI-powered Review Analysis." TeamQ Blog, 2024. [PDF](/assets/pdf/Simmering_2024_AI_Review_Analysis_TeamQ.pdf)
+
+Simmering, Paul. "Texttunnel: Efficient Text Processing with OpenAI." TeamQ Blog, 2023. [PDF](/assets/pdf/Simmering_2023_Texttunnel_TeamQ.pdf)
+
+Huoviala, Paavo, and Paul Simmering. "Large Language Models for Aspect-Based Sentiment Analysis." Research World, 2023. [PDF](/assets/pdf/Simmering_Huoviala_2023_LLM_ABSA_Research_World.pdf)
+
+Perry, Thomas, and Paul Simmering. "10 Challenges of Sentiment Analysis and How to Overcome Them." Research World, 2023. [Part 1](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part1.pdf) | [Part 2](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part2.pdf) | [Part 3](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part3.pdf) | [Part 4](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part4.pdf)
+
+Huoviala, Paavo, Martí Medina-Hernández, Martin Rogosch, Swen Sieben, and Paul Simmering. "Understanding Online Health Issue-Focused Communities with Text Mining." TeamQ Blog, 2022. [PDF](/assets/pdf/Huoviala_et_al_2022_Health_Communities_TeamQ.pdf)
+
+Tabino, Oliver, and Paul Simmering. "Die Schöne und das Biest - Wie wir eine KI für Kosmetik-Produkte trainiert haben." Planung & Analyse, vol. 3, 2022. [PDF](/assets/pdf/Simmering_Tabino_2022_KI_Kosmetik_Planung_Analyse.pdf)
+
+Heß, Roman, and Paul Simmering. "Die Welt der Gamer:innen - Über Subkulturen und gemeinsame Interessen." TeamQ Blog, 2021. [PDF](/assets/pdf/Hess_et_al_2021_Gamer_Subkulturen_TeamQ.pdf)
+
+Simmering, Paul. "Marktforschung als Data Pipeline: Datenflüsse kontinuierlich Analysieren." Marktforschung.de, 2021. [PDF](/assets/pdf/Simmering_2021_Marktforschung_Data_Pipeline_Marktforschungde.pdf)
+
+Sieben, Swen, and Paul Simmering. "Storytelling vs. Dashboards - Wie Sie die richtige Methode zur Datenvisualisierung auswählen." DGOF Kompendium der Online-Forschung, Band 2, Data Visualization, 2021. Editors: Oliver Tabino, Cathleen M. Stützer, Alexandra Wachenfeld-Schell. [PDF](/assets/pdf/Sieben_Simmering_2021_Storytelling_Dashboards_DGOF_Kompendium.pdf)
+
+Simmering, Paul. "Celebration 2020 - R wird 20! Q war in Kopenhagen dabei." TeamQ Blog, 2020. [PDF](/assets/pdf/Simmering_2020_CelebRation_2020_TeamQ.pdf)
+
+Simmering, Paul. "KI - ein Blick in die Black Box." Research & Results, vol. 4, 2019. [PDF](/assets/pdf/Simmering_2019_KI_Research_Results.pdf)
+
+---
+
+Publications are preserved as PDFs to prevent link rot.

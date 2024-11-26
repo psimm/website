@@ -9,8 +9,9 @@ website:
     right:
       - about.qmd
       - index.qmd
-      - projects.qmd
+      - publications.qmd
       - talks.qmd
+      - projects.qmd
       - icon: github
         href: https://github.com/psimm
       - icon: twitter-x

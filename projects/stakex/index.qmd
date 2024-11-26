@@ -20,7 +20,7 @@ StakeX is a network analysis approach  for public relations projects. It is in u
 - analyzing the network through use of force-based layout algorithms and centrality statistics
 - extracting valuable insights for customers
 
-To learn more about the method, see the [slides of the talk](/talk/comes2020/) by Thomas Perry and me or check the methods section of the [demo app](https://teamqapp.de/shiny/stakex_operativ/).
+To learn more about the method, see the [slides of the talk](/talks/comes2020/) by Thomas Perry and me or check the methods section of the [demo app](https://teamqapp.de/shiny/stakex_operativ/).
 
 I led the development of two Shiny apps for this project. The first is a CRUD app that facilitates data entry into a PostgreSQL database and ensures data integrity. The second is a platform for interactive data analysis featuring graphs with [visNetwork](https://datastorm-open.github.io/visNetwork/) and maps with [leaflet](https://rstudio.github.io/leaflet/). Both are hosted on EC2 instances on AWS.
 
