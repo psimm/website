@@ -7,90 +7,90 @@ Photos of Japanese gardens I've visited. Click to enlarge.
 
 ## Ginkaku-ji, Kyoto
 
-![](/assets/ginkaku_ji2.webp){group="gallery"}
+![](assets/image/ginkaku_ji2.webp){group="gallery"}
 
-![](/assets/ginkaku_ji3.webp){group="gallery"}
+![](assets/image/ginkaku_ji3.webp){group="gallery"}
 
-![](/assets/ginkaku_ji4.webp){group="gallery"}
+![](assets/image/ginkaku_ji4.webp){group="gallery"}
 
-![](/assets/ginkaku_ji1.webp){group="gallery"}
+![](assets/image/ginkaku_ji1.webp){group="gallery"}
 
 ## Tenryu-ji, Kyoto
 
-![](/assets/tenryu_ji1.webp){group="gallery"}
+![](assets/image/tenryu_ji1.webp){group="gallery"}
 
-![](/assets/tenryu_ji2.webp){group="gallery"}
+![](assets/image/tenryu_ji2.webp){group="gallery"}
 
 ## Hakusasonso Hashimoto Kansetsu Museum, Kyoto
 
-![](/assets/hakusasonso1.webp){group="gallery"}
+![](assets/image/hakusasonso1.webp){group="gallery"}
 
-![](/assets/hakusasonso2.webp){group="gallery"}
+![](assets/image/hakusasonso2.webp){group="gallery"}
 
-![](/assets/hakusasonso3.webp){group="gallery"}
+![](assets/image/hakusasonso3.webp){group="gallery"}
 
 ## Arashiyama Bamboo Grove, Kyoto
 
-![](/assets/arashiyama1.webp){group="gallery"}
+![](assets/image/arashiyama1.webp){group="gallery"}
 
-![](/assets/arashiyama2.webp){group="gallery"}
+![](assets/image/arashiyama2.webp){group="gallery"}
 
 ## Koko-en, Himeji
 
-![](/assets/kokoen1.webp){group="gallery"}
+![](assets/image/kokoen1.webp){group="gallery"}
 
-![](/assets/kokoen2.webp){group="gallery"}
+![](assets/image/kokoen2.webp){group="gallery"}
 
-![](/assets/kokoen3.webp){group="gallery"}
+![](assets/image/kokoen3.webp){group="gallery"}
 
-![](/assets/kokoen4.webp){group="gallery"}
+![](assets/image/kokoen4.webp){group="gallery"}
 
-![](/assets/kokoen5.webp){group="gallery"}
+![](assets/image/kokoen5.webp){group="gallery"}
 
-![](/assets/kokoen6.webp){group="gallery"}
+![](assets/image/kokoen6.webp){group="gallery"}
 
-![](/assets/kokoen7.webp){group="gallery"}
+![](assets/image/kokoen7.webp){group="gallery"}
 
 ## Nara Park, Nara
 
 Park with deer.
 
-![](/assets/nara1.webp){group="gallery"}
+![](assets/image/nara1.webp){group="gallery"}
 
-![](/assets/nara2.webp){group="gallery"}
+![](assets/image/nara2.webp){group="gallery"}
 
 ## Hamarikyu Garden, Tokyo
 
-![](/assets/hamarikyu1.webp){group="gallery"}
+![](assets/image/hamarikyu1.webp){group="gallery"}
 
 ## Hibiya Park, Tokyo
 
 Nested in Ginza.
 
-![](/assets/hibiya1.webp){group="gallery"}
+![](assets/image/hibiya1.webp){group="gallery"}
 
 ## Kiyosumi Garden, Tokyo
 
-![](/assets/kiyosumi1.webp){group="gallery"}
+![](assets/image/kiyosumi1.webp){group="gallery"}
 
-![](/assets/kiyosumi2.webp){group="gallery"}
+![](assets/image/kiyosumi2.webp){group="gallery"}
 
-![](/assets/kiyosumi3.webp){group="gallery"}
+![](assets/image/kiyosumi3.webp){group="gallery"}
 
 ## Kokyo Gaien National Garden, Tokyo
 
-![](/assets/kokyo_gaien1.webp){group="gallery"}
+![](assets/image/kokyo_gaien1.webp){group="gallery"}
 
 ## Shinjuku Gyoen National Garden, Tokyo
 
-![](/assets/shinjuku_gyoen1.webp){group="gallery"}
+![](assets/image/shinjuku_gyoen1.webp){group="gallery"}
 
-![](/assets/shinjuku_gyoen2.webp){group="gallery"}
+![](assets/image/shinjuku_gyoen2.webp){group="gallery"}
 
 ## Blühendes Barock, Ludwigsburg
 
 Close to home.
 
-![](/assets/bluehendes_barock1.webp){group="gallery"}
+![](assets/image/bluehendes_barock1.webp){group="gallery"}
 
-![](/assets/bluehendes_barock2.webp){group="gallery"}
+![](assets/image/bluehendes_barock2.webp){group="gallery"}

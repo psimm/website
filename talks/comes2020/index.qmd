@@ -18,7 +18,7 @@ image: "image.jpg"
 | 📥 Materials | [Slides (PDF)](perry_simmering_comes_2020.pdf) |
 | 💻 App | [StakeX](https://teamqapp.de/shiny/stakex_operativ/) |
 
-Thomas Perry and me presented the StakeX method, which was developed at Q Insight Agency.
+Thomas Perry and me presented the [StakeX](/projects/stakex) method, which was developed at Q Insight Agency.
 
 Photo by <a href="https://unsplash.com/@alinnnaaaa?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Alina Grubnyak</a> on <a href="https://unsplash.com/s/photos/network?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
   

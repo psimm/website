@@ -1,6 +1,6 @@
 ---
 title: "About"
-image: assets/profile.webp
+image: assets/image/profile.webp
 about:
   template: solana
   links:
@@ -16,11 +16,11 @@ about:
 
 ---
 
-Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. Besides coding, I enjoy writing and speaking about data science. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de).
+Hi! I'm Paul Simmering, a data scientist from Germany specializing in machine learning and natural language processing. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de). 
 
-My current focus is aspect-based sentiment analysis using LLMs. My team and I are building [AspectWise](/projects/aspectwise/), a data pipeline for review analysis.
+My current focus is building end-to-end data pipelines for market research powered by large language models. My team and I are building [AspectWise](/projects/aspectwise/), a data pipeline for review analysis. In addition, I write a blog about machine learning, data engineering and developer productivity.
 
-Some things I enjoy outside of work:
+### Other interests
 
 - [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid) and [Figgie](https://www.figgie.com).
 - Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/projects).
