@@ -484,13 +484,19 @@ for max_labeled_demos, num_trials, chain_of_thought, lm_settings in tqdm(grid):
         "output_schema": Aspects.model_json_schema(),
         "compile_settings": run_compile_settings,
         "optimizer_settings": run_optimizer_settings,
-        "chain_of_thought": chain_of_thought,
         "lm_settings": lm_settings,
     }
 
     with wandb.init(project="absa-dspy", config=config, name=run_name) as run:
         wandb.log({"f1": score})
-        wandb.save(filepath)
+        # Save config to artifact
+        artifact = wandb.Artifact(
+            name=f"dspy_config_{run_name}",
+            type="config", 
+            description=f"Config file for {run_name}"
+        )
+        artifact.add_file(filepath)
+        run.log_artifact(artifact)
 ```
 
 ## Comparison with manual prompts
@@ -536,7 +542,14 @@ for model in models:
 
     with wandb.init(project="absa-dspy", name=runname, config=config) as run:
         wandb.log({"f1": score})
-        wandb.save("configs/manual_prompt.json")
+        # Save manual prompt to artifact
+        artifact = wandb.Artifact(
+            name=f"dspy_config_{runname}",
+            type="model",
+            description="Manual prompt configuration"
+        )
+        artifact.add_file("configs/manual_prompt.json")
+        run.log_artifact(artifact)
 ``` 
 
 ## Results and discussion
@@ -722,8 +735,9 @@ Here are my conclusions based on this experiment.
 ::: {.column width="50%"}
 **Cons ❌**
 
-- Generated prompts seem too short to explain the nuances of the task. The examples have to implicitly explain the annotation rules.
+- Generated prompts seem too short to explain the nuances of the task, placing a lot of burden on the few-shot examples. They need to implicitly explain the annotation rules and cover all relevant cases.
 - Loss of control over the exact prompt. But arguably, if you want to control the prompt DSPy is not the approach to go for anyway.
+- Adds a layer of abstraction to a stack that's already complex.
 - Structured output is not guaranteed, because it's based on prompting only. Integration with function calling, JSON mode or constrained generation APIs and libraries would improve the reliability of the format.
 - Steep learning curve with many concepts to understand.
 - I encountered some bugs and deprecated functions and tutorials.
@@ -731,6 +745,6 @@ Here are my conclusions based on this experiment.
 
 ::::
 
-DSPy is a great alternative to manual prompting, especially for tasks that have clear evaluation metrics and are demonstrable using few-shot examples.
+DSPy is a great alternative to manual prompting, especially for tasks that have a clear evaluation metric and are demonstrable using few-shot examples. The high variability in the results of my grid search experiment indicates that it's necessary to run DSPy multiple times with different settings to find the best performing configuration.
 
-Another feature that I haven't explored here is the fine-tuning [optimizer](https://dspy.ai/learn/optimization/optimizers/?h=fine#automatic-finetuning) of DSPy that actually modifies the model weights. It's promising for this task, as a fine-tuned `gpt-3.5-turbo-0613` is still the [record holder](https://paperswithcode.com/sota/aspect-based-sentiment-analysis-on-semeval-6) at an F1 score of 83.76.
+A feature that I haven't explored here is the fine-tuning [optimizer](https://dspy.ai/learn/optimization/optimizers/?h=fine#automatic-finetuning) of DSPy that actually modifies the model weights. It's promising for this task, as a fine-tuned `gpt-3.5-turbo-0613` is still the [record holder](https://paperswithcode.com/sota/aspect-based-sentiment-analysis-on-semeval-6) at an F1 score of 83.76.
