@@ -699,7 +699,7 @@ More examples are generally better, as indicated by the positive coefficient in 
 
 ### Chain of thought (CoT)
 
-Runs where the model was instructed to perform an intermediate reasoning step yielded worse results than those without. This is an unusual result - typically CoT helps LLMs achieve better results, for example the main advantage of OpenAI's `o1-preview` over `gpt-4o` is the advanced CoT that is built into it. However, on this structured task, CoT reasoning seems to be detrimental and a waste of output tokens.
+Runs where the model was instructed to perform an intermediate reasoning step yielded worse results than those without. This is an unusual result - typically CoT helps LLMs achieve better results, for example the main advantage of OpenAI's `o1-preview` over `gpt-4o` is the advanced CoT that is built into it. However, on this structured task and using DSPy's `Predictor` and `ChainOfThought` classes, CoT seems to be detrimental.
 
 ### Model choice
 
