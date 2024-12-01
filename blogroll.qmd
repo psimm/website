@@ -23,10 +23,8 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
 | [Francois Chollet](https://fchollet.substack.com) | AI philosophy and technical insights from the creator of Keras |
 | [Zvi Mowshowitz](https://thezvi.wordpress.com) | Analysis of AI progress and risk from a rationalist perspective |
-| [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
 | [Near](https://near.blog) | Independent AI research and commentary, as well as nutrition and productivity advice |
-| [NVIDIA](https://blogs.nvidia.com) | Updates on AI hardware, software, and research from the leading GPU manufacturer |
-| [PyTorch Blog](https://pytorch.org/blog/) | Latest developments in PyTorch, the popular deep learning library |
+| [Lilian Weng](https://lilianweng.github.io/) | In-depth LLM research by OpenAI's head of safety and alignment |
 
 ## Data Visualization
 
@@ -43,7 +41,6 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Erik Bernhardsson](https://erikbern.com) | CEO of Modal writing about tech, management and startups |
 | [Gergely Orosz](https://blog.pragmaticengineer.com) | In-depth articles about software engineering, tech leadership and the business of technology |
 | [Mitchell Hashimoto](https://mitchellh.com/writing) | Founder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture |
-| [Spotify Engineering](https://engineering.atspotify.com) | Technical blog covering Spotify's engineering culture, architecture and development practices |
 | [David Heinemeier Hansson](https://world.hey.com/dhh) | Creator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique |
 | [Ines Montani](https://staysaasy.com) | Co-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business |
 | [Stephen Wolfram](https://writings.stephenwolfram.com) | Creator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence |
@@ -65,7 +62,6 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 |------|-------------|
 | [Paul Graham's Essays](https://paulgraham.com/articles.html) | Essays on startup strategy, technology, and philosophy by a co-founder of Y Combinator |
 | [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models with a focus on aggregation theory |
-| [Packy McCormick](https://www.notboring.co) | Long-form analysis of tech companies, startups, and emerging technologies with an optimistic outlook |
 
 ## Design, Communication, Marketing
 
@@ -92,6 +88,13 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Tynan](https://tynan.com) | Nomadic author and entrepreneur shares how he optimizes his life in unusual ways, from a private island with friends to building custom arcade machines |
 | [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
 | [Zen Habits](https://zenhabits.net) | Minimalist and zen lifestyle advice from a father of 6 |
+
+## Deep Dive Essays
+
+| Blog | Description |
+|------|-------------|
+| [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
+| [Dynomight](https://dynomight.net) | Deeply researched essays on health, math, life advice and AI |
 
 ## Fun
 

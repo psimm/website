@@ -20,13 +20,13 @@ Simmering, Paul. "AI-powered Review Analysis." TeamQ Blog, 2024. [PDF](/assets/p
 
 Simmering, Paul. "Texttunnel: Efficient Text Processing with OpenAI." TeamQ Blog, 2023. [PDF](/assets/pdf/Simmering_2023_Texttunnel_TeamQ.pdf)
 
-Huoviala, Paavo, and Paul Simmering. "Large Language Models for Aspect-Based Sentiment Analysis." Research World, 2023. [PDF](/assets/pdf/Simmering_Huoviala_2023_LLM_ABSA_Research_World.pdf)
+Simmering, Paul, and Paavo Huoviala. "Large Language Models for Aspect-Based Sentiment Analysis." Research World, 2023. [PDF](/assets/pdf/Simmering_Huoviala_2023_LLM_ABSA_Research_World.pdf)
 
-Perry, Thomas, and Paul Simmering. "10 Challenges of Sentiment Analysis and How to Overcome Them." Research World, 2023. [Part 1](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part1.pdf) | [Part 2](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part2.pdf) | [Part 3](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part3.pdf) | [Part 4](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part4.pdf)
+Simmering, Paul and Thomas Perry. "10 Challenges of Sentiment Analysis and How to Overcome Them." Research World, 2023. [Part 1](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part1.pdf) | [Part 2](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part2.pdf) | [Part 3](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part3.pdf) | [Part 4](/assets/pdf/Simmering_Perry_2023_Challenges_of_Sentiment_Analysis_Research_World_Part4.pdf)
 
 Huoviala, Paavo, Martí Medina-Hernández, Martin Rogosch, Swen Sieben, and Paul Simmering. "Understanding Online Health Issue-Focused Communities with Text Mining." TeamQ Blog, 2022. [PDF](/assets/pdf/Huoviala_et_al_2022_Health_Communities_TeamQ.pdf)
 
-Tabino, Oliver, and Paul Simmering. "Die Schöne und das Biest - Wie wir eine KI für Kosmetik-Produkte trainiert haben." Planung & Analyse, vol. 3, 2022. [PDF](/assets/pdf/Simmering_Tabino_2022_KI_Kosmetik_Planung_Analyse.pdf)
+Simmering, Paul, and Oliver Tabino. "Die Schöne und das Biest - Wie wir eine KI für Kosmetik-Produkte trainiert haben." Planung & Analyse, vol. 3, 2022. [PDF](/assets/pdf/Simmering_Tabino_2022_KI_Kosmetik_Planung_Analyse.pdf)
 
 Heß, Roman, and Paul Simmering. "Die Welt der Gamer:innen - Über Subkulturen und gemeinsame Interessen." TeamQ Blog, 2021. [PDF](/assets/pdf/Hess_et_al_2021_Gamer_Subkulturen_TeamQ.pdf)
 
