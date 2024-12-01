@@ -67,7 +67,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 
 | Blog | Description |
 |------|-------------|
-| [iA](https://ia.net/news) | Design agency known for minimalist aesthetics and thoughtful writing about design, typography and digital tools |
+| [iA](https://ia.net/news) | Design agency turned software company writing about design, typography and digital tools |
 | [Seth Godin](https://seths.blog) | Daily insights about marketing, leadership and creating meaningful work in the digital age |
 
 ## Data Driven World Improvement
