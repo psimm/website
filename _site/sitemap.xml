@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/abstractions/index.html</loc>
-    <lastmod>2024-09-01T11:46:22.764Z</lastmod>
+    <lastmod>2024-12-14T19:19:35.578Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/echarts4r/index.html</loc>
@@ -231,5 +231,9 @@
   <url>
     <loc>https://simmering.dev/blogroll.html</loc>
     <lastmod>2024-12-01T07:14:23.447Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/context-constrained/index.html</loc>
+    <lastmod>2024-12-14T19:46:51.596Z</lastmod>
   </url>
 </urlset>

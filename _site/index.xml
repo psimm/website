@@ -11,7 +11,55 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.6.33</generator>
-<lastBuildDate>Sat, 23 Nov 2024 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 13 Dec 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Constrained by Context, Not Reasoning</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/context-constrained/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Frontier LLMs rarely give completely wrong answers. Even when their responses aren’t exactly what we need, they’re usually logical given the information provided.</p>
+<p>Recent advances in chain-of-thought reasoning, such as in models like <a href="https://openai.com/index/learning-to-reason-with-llms/">OpenAI’s o1</a> and <a href="https://www.alibabacloud.com/blog/alibaba-cloud-unveils-open-source-ai-reasoning-model-qwq-and-new-image-editing-tool_601813">Alibaba’s QwQ</a>, have led to remarkable achievements. These models now outperform most humans on complex tasks like competition mathematics (AIME 2024) and PhD-level science questions (GPQA Diamond).</p>
+<p>Yet here’s the paradox: despite this impressive reasoning capability, LLMs often struggle to provide immediately useful outputs for everyday professional tasks. Usually, their output has to be edited or the prompt rewritten multiple times to produce a copy-pasteable result. This leads to my thesis: <strong>The real-world effectiveness of LLMs is now limited more by their awareness of context than by their reasoning capabilities</strong>.</p>
+<p>Think of an LLM as a brilliant but newly hired colleague who hasn’t been properly onboarded. While they can tackle complex problems, they miss crucial contextual details required to fit their work into the existing workflows. The challenge isn’t their intelligence—it’s their need for situational awareness.</p>
+<section id="context-makes-outputs-more-useful" class="level2">
+<h2 class="anchored" data-anchor-id="context-makes-outputs-more-useful">Context makes outputs more useful</h2>
+<p>Here are some examples of how adding context lets LLMs produce outputs that are more readily applicable:</p>
+<ul>
+<li>When summarizing a technical document, telling the model “This is for marketing executives who need to understand the business implications” yields very different (and more useful) results than just asking for a summary</li>
+<li>For educational content, specifying “Explain this for a high school student” versus “Explain this for a graduate student” completely changes the depth and terminology used</li>
+<li>In correspondence, sharing details like “This is for a long-time client who prefers informal communication” helps create more appropriately-toned messages For social media, providing examples of past successful posts or a company style guide helps the model match the preferred tone</li>
+<li>In software development, showing the model your existing codebase helps it suggest solutions that integrate seamlessly with your architecture</li>
+<li>During translation work, specifying “This is medical documentation” versus “This is marketing material” ensures appropriate terminology and tone</li>
+</ul>
+</section>
+<section id="infusing-context-actively-and-passively" class="level2">
+<h2 class="anchored" data-anchor-id="infusing-context-actively-and-passively">Infusing context actively and passively</h2>
+<p>It’s tedious to write a detailed briefing each time, just like you wouldn’t want to repeat onboarding of a colleague. Here are ways to reuse prompts or passively infuse context:</p>
+<ul>
+<li>Write a persistent system prompt that’s automatically applied to all conversations. In ChatGPT, you can do this by creating a custom GPT.</li>
+<li>Enable chat history to be able to copy-paste successful prompts into new conversations.</li>
+<li>Turn on features that let the model learn from past interactions (if not dealing with sensitive data).</li>
+<li>When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.</li>
+<li>Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.</li>
+<li>Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.</li>
+</ul>
+<hr>
+<p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-pink-letter-blocks-jbywvpa9vH8?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Productivity</category>
+  <guid>https://simmering.dev/blog/context-constrained/</guid>
+  <pubDate>Fri, 13 Dec 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/context-constrained/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aspect-based Sentiment Analysis with DSPy</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -10206,109 +10254,6 @@ font-style: inherit;">1</span>],</span>
   <guid>https://simmering.dev/blog/dataset-size-vs-correctness/</guid>
   <pubDate>Fri, 27 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/dataset-size-vs-correctness/scale.png" medium="image" type="image/png" height="144" width="144"/>
-</item>
-<item>
-  <title>Future Directions for Large Language Models</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/llm-future/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.</p>
-<p>In this post I’ll discuss 8 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years.</p>
-<blockquote class="blockquote">
-<p>Prediction is very difficult, especially about the future. - Niels Bohr</p>
-</blockquote>
-<section id="calling-apis" class="level2">
-<h2 class="anchored" data-anchor-id="calling-apis">Calling APIs</h2>
-<p>By calling APIs, LLMs can become actors in the real world.</p>
-<p>Some examples of what can be done via API calls:</p>
-<ul>
-<li>Provision a server</li>
-<li>Send an email</li>
-<li>Post a tweet</li>
-<li>Buy a product and have it shipped</li>
-<li>Operate a smart home device (lights, thermostat, lock, etc.)</li>
-<li>Control a robot (vacuum, drone, etc.)</li>
-<li>Send a task to a human worker via a crowdsourcing platform</li>
-</ul>
-<p>As capabilities expand, the need for policy and regulation on this topic rises.</p>
-</section>
-<section id="better-assistants" class="level2">
-<h2 class="anchored" data-anchor-id="better-assistants">Better assistants</h2>
-<p>Siri feels rather underpowered compared to ChatGPT Plus. I expect that to change in the next few years so that phone voice assistants will be able to reliably do more than just set a timer or call a contact.</p>
-<p>What sets Siri, Alexa and Google Assistant apart from ChatGPT is that they can control the phone. They can open apps, make calls, and send messages and are deeply integrated into the phone’s operating system. While ChatGPT, especially ChatGPT Plus is much smarter, it’s trapped in an app.</p>
-<p>A phone assistant with ChatGPT’s smarts, integration with the phone’s operating system and the ability to call functions would be a game changer.</p>
-<p>In addition to assistants, I expect to see LLMs become a standard part of many apps, as Microsoft 365, Notion, Photoshop and others have done.</p>
-</section>
-<section id="llm-agents" class="level2">
-<h2 class="anchored" data-anchor-id="llm-agents">LLM Agents</h2>
-<p>Currently common uses of LLMs primarily treat the model as a source of information and copywriter.</p>
-<p>A more powerful approach is to treat the model as an agent with a task. <a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT</a> and <a href="https://github.com/yoheinakajima/babyagi">BabyAGI</a> are frameworks for this.</p>
-<p>In this approach, the LLM is part of a larger AI system:</p>
-<ul>
-<li>A human provides a directive</li>
-<li>The directive is commited to memory, such as a text file or database</li>
-<li>The LLM is called with the directive as input, along with the current state of the system and available choices</li>
-<li>The LLM can call copies of itself recursively to work on subtasks (e.g.&nbsp;“look up a term on Wikipedia”, “find a photo on Unsplash”)</li>
-<li>This continues until the task is achieved and the LLM returns a result</li>
-</ul>
-<p>The combination of LLM reasoning, recursive calls, memory and the ability to call APIs makes this approach very powerful.</p>
-<p>However, real results have fizzled for these reasons:</p>
-<ul>
-<li>Never ending loops</li>
-<li>Needing too much babysitting to be useful, basically doing the easy part of any task and leaving the hard part to humans</li>
-<li>Producing generic, lame results</li>
-<li>Trouble with parsing information on the web</li>
-</ul>
-<p>The potential is incredible, but there’s still a lot of work to be done.</p>
-</section>
-<section id="a-ceiling-on-the-bigger-is-better-trend" class="level2">
-<h2 class="anchored" data-anchor-id="a-ceiling-on-the-bigger-is-better-trend">A ceiling on the “bigger is better” trend</h2>
-<p>GPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters. Will the bigger = better and more data = better trends continue? In text, the answer is probably no. GPT-4 was trained on almost all human text available on the internet. In terms of volume, there’s not much more text to train on.</p>
-<p>An alternative to getting even more text is to improve the quality of the text used for training. Common crawl, a major component of GPT-4’s training data, is full of spam and low quality content. With less noise, models may also need fewer parameters to achieve the same performance.</p>
-</section>
-<section id="multimodal-models" class="level2">
-<h2 class="anchored" data-anchor-id="multimodal-models">Multimodal models</h2>
-<p>While model’s are hitting the limit on text, there’s still a massive amount of images, video and audio available on the internet waiting to be used for training. Multimodal models, meaning models that can process multiple types of data, are already here. The addition of <a href="https://openai.com/blog/chatgpt-can-now-see-hear-and-speak">image recognition</a> to ChatGPT has unlocked a new level of capabilities, such as interpreting diagrams, assisting blind people or diagnosing repair issues.</p>
-</section>
-<section id="multilingual-or-non-english-llms" class="level2">
-<h2 class="anchored" data-anchor-id="multilingual-or-non-english-llms">Multilingual or non-English LLMs</h2>
-<p>Current LLMs work best on English text. While other languages work decently with OpenAI’s GPT models, performance in open source models like Llama 2 is lacking.</p>
-<p>The economic incentive to train LLMs on non-English text is hugel As an example, I’m excited about the recent publication of <a href="https://laion.ai/blog/leo-lm/">LeoLM</a>, a German LLM and the ongoing <a href="https://txt.cohere.com/aya-multilingual/">AYA project</a> by Cohere.</p>
-<p>Besides the models themselves, tokenization could benefit from a multilingual approach. As the majority of training data is in English and other languages that use the English alphabet, tokenization is optimized for those languages. This leads to a situation where Chinese, Arabic and other languages that use different alphabets are tokenized less efficiently and at <a href="https://denyslinkov.medium.com/why-is-gpt-3-15-77x-more-expensive-for-certain-languages-2b19a4adc4bc">higher cost</a>.</p>
-</section>
-<section id="edge-computing-and-efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="edge-computing-and-efficiency">Edge computing and efficiency</h2>
-<p>The deployment of LLMs is currently held back by their compute demands. Running models like Llama 2 7B requires a top of the line GPU and larger models like Llama 2 70B require a GPU cluster. So typically LLMs are deployed on cloud servers rather than on edge devices.</p>
-<p>Developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, sparse matrices, pruning, and distillation. The <a href="https://hanlab.mit.edu">MIT HAN lab</a> in particular is taking a lead on this.</p>
-<p>I expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops, at lower cost and without the privacy concerns of the cloud. Apple’s recent announcement of better text prediction in <a href="https://www.apple.com/newsroom/2023/06/ios-17-makes-iphone-more-personal-and-intuitive/">iOS 17</a> by using a transformer model on device is an example of this trend, though the model isn’t large enough to be considered an LLM.</p>
-</section>
-<section id="efficient-training-of-specialized-models" class="level2">
-<h2 class="anchored" data-anchor-id="efficient-training-of-specialized-models">Efficient training of specialized models</h2>
-<p>In <a href="https://explosion.ai/blog/against-llm-maximalism">Against LLM maximalism</a>, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks, citing speed, cost, observeability, lack of modularity and measurement difficulties as reasons. He argues that smaller models trained on specialized data are often a better choice.</p>
-<p>In economic terms, running a 1.7T parameter model on a GPU cluster when a 10M parameter model on a CPU would do the job is wasteful.</p>
-<p>But it’s not an either or situation: LLMs can be used to accelerate the training of specialized models. I’m excited about Explosion AI’s development on integrating LLM produced labels into labeling with <a href="https://prodi.gy/docs/large-language-models">Prodigy</a> and expect to see similar developments in other labeling tools.</p>
-<p>Rather than LLMs replacing specialized models, I expect to see them used to accelerate the training of specialized model and an overall increase in the number of models in production.</p>
-</section>
-<section id="conclusion-hype-to-quiet-productivity" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion-hype-to-quiet-productivity">Conclusion: Hype to quiet productivity</h2>
-<blockquote class="blockquote">
-<p>AI is whatever hasn’t been done yet. - Larry Tesler</p>
-</blockquote>
-<p>In the long run, I expect that LLMs will follow the <a href="https://en.wikipedia.org/wiki/AI_effect">AI effect</a> similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Machine Learning</category>
-  <guid>https://simmering.dev/blog/llm-future/</guid>
-  <pubDate>Fri, 20 Oct 2023 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/llm-future/image.png" medium="image" type="image/png" height="81" width="144"/>
 </item>
 </channel>
 </rss>

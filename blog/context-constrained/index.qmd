@@ -1,0 +1,42 @@
+---
+title: "Constrained by Context, Not Reasoning"
+author: "Paul Simmering"
+date: "2024-12-14"
+categories: ["Productivity"]
+image: "image.jpg"
+---
+
+Frontier LLMs rarely give completely wrong answers. Even when their responses aren't exactly what we need, they're usually logical given the information provided.
+
+Recent advances in chain-of-thought reasoning, such as in models like [OpenAI's o1](https://openai.com/index/learning-to-reason-with-llms/) and [Alibaba's QwQ](https://www.alibabacloud.com/blog/alibaba-cloud-unveils-open-source-ai-reasoning-model-qwq-and-new-image-editing-tool_601813), have led to remarkable achievements. These models now outperform most humans on complex tasks like competition mathematics (AIME 2024) and PhD-level science questions (GPQA Diamond).
+
+Yet here's the paradox: despite this impressive reasoning capability, LLMs often struggle to provide immediately useful outputs for everyday professional tasks. Usually, their output has to be edited or the prompt rewritten multiple times to produce a copy-pasteable result. This leads to my thesis: **The real-world effectiveness of LLMs is now limited more by their awareness of context than by their reasoning capabilities**.
+
+Think of an LLM as a brilliant but newly hired colleague who hasn't been properly onboarded. While they can tackle complex problems, they miss crucial contextual details required to fit their work into the existing workflows. The challenge isn't their intelligence—it's their need for situational awareness.
+
+## Context makes outputs more useful
+
+Here are some examples of how adding context lets LLMs produce outputs that are more readily applicable:
+
+- When summarizing a technical document, telling the model "This is for marketing executives who need to understand the business implications" yields very different (and more useful) results than just asking for a summary
+- For educational content, specifying "Explain this for a high school student" versus "Explain this for a graduate student" completely changes the depth and terminology used
+- In correspondence, sharing details like "This is for a long-time client who prefers informal communication" helps create more appropriately-toned messages
+For social media, providing examples of past successful posts or a company style guide helps the model match the preferred tone
+- In software development, showing the model your existing codebase helps it suggest solutions that integrate seamlessly with your architecture
+- During translation work, specifying "This is medical documentation" versus "This is marketing material" ensures appropriate terminology and tone
+
+## Infusing context actively and passively
+
+It's tedious to write a detailed briefing each time, just like you wouldn't want to repeat onboarding of a colleague. Here are ways to reuse prompts or passively infuse context:
+
+- Write a persistent system prompt that's automatically applied to all conversations. In ChatGPT, you can do this by creating a custom GPT.
+- Enable chat history to be able to copy-paste successful prompts into new conversations.
+- Turn on features that let the model learn from past interactions (if not dealing with sensitive data).
+- When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.
+- Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.
+- Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.
+
+---
+
+Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-pink-letter-blocks-jbywvpa9vH8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
