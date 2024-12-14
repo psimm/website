@@ -33,6 +33,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/pydantic-ai/index.html",
       "/blog/absa-with-dspy/index.html",
       "/blog/long-prompts/index.html",
       "/blog/openai_structured_output/index.html",

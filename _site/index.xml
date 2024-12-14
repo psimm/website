@@ -11,7 +11,920 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.6.33</generator>
-<lastBuildDate>Sat, 23 Nov 2024 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Dec 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Type-safe LLM agents with PydanticAI</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/pydantic-ai/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I’m excited for their take on agents. In this article I’ll walk through an example app and comment on my experience developing with PydanticAI.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+PydanticAI version 0.0.9
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.9. Code examples may not work with future versions.</p>
+</div>
+</div>
+</div>
+<ul>
+<li>currently supports OpenAI, Gemini and Groq with more integrations coming soon</li>
+<li>type safe with structured responses including streamed responses</li>
+<li>optional integration with <a href="https://pydantic.dev/logfire">Logfire</a>, a commercial service by the Pydantic team for logging LLM calls</li>
+</ul>
+<p>Type-safety is a big deal in agent development - the more tools an agent has at its disposal and the more complex their arguments are, the higher the risk of type errors.</p>
+<section id="example-app-market-research-knowledge-manager" class="level2">
+<h2 class="anchored" data-anchor-id="example-app-market-research-knowledge-manager">Example app: Market research knowledge manager</h2>
+<p>Large companies conduct market research to understand their customers, competition and market trends. Over time, they amass a library of thousands of reports, tables and transcripts. Knowledge management becomes a challenge, because teams are not aware of existing research.</p>
+<p>Let’s build an example agent that answers questions based on information in a database with multiple tables.</p>
+<section id="database" class="level3">
+<h3 class="anchored" data-anchor-id="database">Database</h3>
+<p>I’m using <a href="https://duckdb.org">DuckDB</a> to create a local database which will be made available to the agent.</p>
+<div id="cf4292ba" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="annotated-cell-1" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> duckdb</span>
+<span id="annotated-cell-1-2"></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target">con <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">connect</span>()</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-4" class="code-annotation-target">con.execute(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INSTALL vss"</span>)</span>
+<span id="annotated-cell-1-5">con.execute(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LOAD vss"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="1">Create an ephemeral in-memory database. In production you’d want to use a persistent database.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="2">Install the vector similarity search extension, which will be needed for fuzzy title matching.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16a5515b0&gt;</code></pre>
+</div>
+</div>
+<p>I’ll insert a set of reports into the database. The data included is fictional and was generated by an LLM. The data consists of 40 reports like this:</p>
+<div id="5ca72cdf" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> great_tables <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> GT</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">reports <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/reports.csv"</span>)</span>
+<span id="cb2-5">GT(reports.head(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>))</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div id="rdkcfuxnag" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#rdkcfuxnag table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#rdkcfuxnag thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#rdkcfuxnag p { margin: 0; padding: 0; }
+ #rdkcfuxnag .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #rdkcfuxnag .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #rdkcfuxnag .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #rdkcfuxnag .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #rdkcfuxnag .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rdkcfuxnag .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rdkcfuxnag .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rdkcfuxnag .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #rdkcfuxnag .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #rdkcfuxnag .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #rdkcfuxnag .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #rdkcfuxnag .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #rdkcfuxnag .gt_spanner_row { border-bottom-style: hidden; }
+ #rdkcfuxnag .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #rdkcfuxnag .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #rdkcfuxnag .gt_from_md> :first-child { margin-top: 0; }
+ #rdkcfuxnag .gt_from_md> :last-child { margin-bottom: 0; }
+ #rdkcfuxnag .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #rdkcfuxnag .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #rdkcfuxnag .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #rdkcfuxnag .gt_row_group_first td { border-top-width: 2px; }
+ #rdkcfuxnag .gt_row_group_first th { border-top-width: 2px; }
+ #rdkcfuxnag .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #rdkcfuxnag .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rdkcfuxnag .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #rdkcfuxnag .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #rdkcfuxnag .gt_left { text-align: left; }
+ #rdkcfuxnag .gt_center { text-align: center; }
+ #rdkcfuxnag .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #rdkcfuxnag .gt_font_normal { font-weight: normal; }
+ #rdkcfuxnag .gt_font_bold { font-weight: bold; }
+ #rdkcfuxnag .gt_font_italic { font-style: italic; }
+ #rdkcfuxnag .gt_super { font-size: 65%; }
+ #rdkcfuxnag .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #rdkcfuxnag .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="id" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">id</th>
+<th id="date" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">date</th>
+<th id="institute" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">institute</th>
+<th id="country" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">country</th>
+<th id="topic" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">topic</th>
+<th id="title" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">title</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">2018-07-20</td>
+<td class="gt_row gt_left">Research DNA GmbH</td>
+<td class="gt_row gt_left">Germany</td>
+<td class="gt_row gt_left">Automotive</td>
+<td class="gt_row gt_left">Global Electric Vehicle Market Outlook 2018-2023</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">2018-08-15</td>
+<td class="gt_row gt_left">Market Insights Inc.</td>
+<td class="gt_row gt_left">USA</td>
+<td class="gt_row gt_left">Healthcare</td>
+<td class="gt_row gt_left">Digital Health Market Size and Growth Analysis</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_left">2018-09-10</td>
+<td class="gt_row gt_left">Global Trends Research</td>
+<td class="gt_row gt_left">UK</td>
+<td class="gt_row gt_left">FMCG</td>
+<td class="gt_row gt_left">Premium Beauty and Personal Care Market Trends</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">4</td>
+<td class="gt_row gt_left">2018-10-05</td>
+<td class="gt_row gt_left">Data Analytics Group</td>
+<td class="gt_row gt_left">Canada</td>
+<td class="gt_row gt_left">Electronics</td>
+<td class="gt_row gt_left">Smartphone Industry Competitive Analysis</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">5</td>
+<td class="gt_row gt_left">2018-11-12</td>
+<td class="gt_row gt_left">Innovative Solutions Ltd.</td>
+<td class="gt_row gt_left">Australia</td>
+<td class="gt_row gt_left">Insurance</td>
+<td class="gt_row gt_left">Insurtech Market Landscape and Opportunities</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+        
+</div>
+</div>
+<p>To make the title searchable, I’ll embed it using an <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embedding endpoint</a>. The result will be stored in a new column with 1536 dimensions.</p>
+<div id="160cb6dd" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> openai <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> OpenAI</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> tqdm <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> tqdm</span>
+<span id="cb3-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pickle</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"></span>
+<span id="cb3-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> embed_text(text: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>]:</span>
+<span id="cb3-7">    client <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> OpenAI()</span>
+<span id="cb3-8">    model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text-embedding-3-small"</span></span>
+<span id="cb3-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> client.embeddings.create(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>text, model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>model).data[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].embedding</span>
+<span id="cb3-10"></span>
+<span id="cb3-11"></span>
+<span id="cb3-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load cache</span></span>
+<span id="cb3-13"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">try</span>:</span>
+<span id="cb3-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title_embeddings_cache.pkl"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rb"</span>) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> f:</span>
+<span id="cb3-15">        cache <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pickle.load(f)</span>
+<span id="cb3-16"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">FileNotFoundError</span>:</span>
+<span id="cb3-17">    cache <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {}</span>
+<span id="cb3-18"></span>
+<span id="cb3-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Embed titles with caching</span></span>
+<span id="cb3-20">title_embeddings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb3-21"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> title <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> tqdm(reports[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>]):</span>
+<span id="cb3-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> title <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> cache:</span>
+<span id="cb3-23">        cache[title] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> embed_text(title)</span>
+<span id="cb3-24">    title_embeddings.append(cache[title])</span>
+<span id="cb3-25"></span>
+<span id="cb3-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Save cache</span></span>
+<span id="cb3-27"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title_embeddings_cache.pkl"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"wb"</span>) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> f:</span>
+<span id="cb3-28">    pickle.dump(cache, f)</span>
+<span id="cb3-29"></span>
+<span id="cb3-30">reports <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reports.with_columns(</span>
+<span id="cb3-31">    pl.Series(</span>
+<span id="cb3-32">        name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title_embedding"</span>,</span>
+<span id="cb3-33">        values<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>title_embeddings,</span>
+<span id="cb3-34">        dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.Array(inner<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pl.Float64, shape<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1536</span>),</span>
+<span id="cb3-35">    )</span>
+<span id="cb3-36">)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  0%|          | 0/40 [00:00&lt;?, ?it/s]100%|██████████| 40/40 [00:00&lt;00:00, 555536.95it/s]</code></pre>
+</div>
+</div>
+<p>Now, I’ll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size <code>ARRAY</code> column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.</p>
+<div id="09175461" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-4" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1">con.execute(</span>
+<span id="annotated-cell-4-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="annotated-cell-4-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    CREATE OR REPLACE TABLE reports AS</span></span>
+<span id="annotated-cell-4-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    SELECT</span></span>
+<span id="annotated-cell-4-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        id::varchar AS id,</span></span>
+<span id="annotated-cell-4-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        date::date AS date,</span></span>
+<span id="annotated-cell-4-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        institute::varchar AS institute,</span></span>
+<span id="annotated-cell-4-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        country::varchar AS country,</span></span>
+<span id="annotated-cell-4-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        topic::varchar AS topic,</span></span>
+<span id="annotated-cell-4-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        title::varchar AS title,</span></span>
+<span id="annotated-cell-4-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        title_embedding::float[1536] AS title_embedding</span></span>
+<span id="annotated-cell-4-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    FROM reports;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-13" class="code-annotation-target"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="annotated-cell-4-14">)</span>
+<span id="annotated-cell-4-15"></span>
+<span id="annotated-cell-4-16">con.execute(</span>
+<span id="annotated-cell-4-17">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(title_embedding) WITH (metric='cosine');"</span></span>
+<span id="annotated-cell-4-18">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="13" data-code-annotation="1">This works because DuckDB can read from a Polars DataFrame.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16a5515b0&gt;</code></pre>
+</div>
+</div>
+<p>I also create a hierarchical navigable small world (HNSW) index on the title embeddings. This enables approximate nearest neighbor search with logarithmic complexity. It’s enabled by the <a href="https://duckdb.org/docs/extensions/vss">vss</a> extension.</p>
+</section>
+<section id="agent" class="level3">
+<h3 class="anchored" data-anchor-id="agent">Agent</h3>
+<p>Let’s set up an agent powered by the <a href="https://groq.com">Groq</a> inference API. It serves a range of open source models. Specifically, I’ll use the <code>llama-3.3-70b-versatile</code> model released by Meta on December 6th. Artificial Analysis has a detailed <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers">report</a> showing that it advanced the speed-accuracy trade-off. The model has tool calling capabilities, which are critical for our use case.</p>
+<div id="666919cb" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="annotated-cell-5" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic_ai <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Agent</span>
+<span id="annotated-cell-5-2"></span>
+<span id="annotated-cell-5-3">agent <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Agent(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-4" class="code-annotation-target">    model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"groq:llama-3.3-70b-versatile"</span>,</span>
+<span id="annotated-cell-5-5">    system_prompt<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"You are a market research expert and answer questions using a database of reports."</span>,</span>
+<span id="annotated-cell-5-6">)</span>
+<span id="annotated-cell-5-7"></span>
+<span id="annotated-cell-5-8">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> agent.run_sync(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Who are you?"</span>)</span>
+<span id="annotated-cell-5-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(result.data)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="1">See the <a href="https://ai.pydantic.dev/api/models/base/#pydantic_ai.models.KnownModelName">KnownModelName</a> documentation for a list of supported models.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>I am a market research expert, providing insights and answers based on a vast database of reports and studies. My expertise spans various industries, markets, and trends, allowing me to offer data-driven information and analysis on a wide range of topics.
+
+With access to a comprehensive library of market research reports, I can provide information on market size, growth prospects, consumer behavior, competitive landscape, and emerging trends. My goal is to assist users in making informed decisions by providing accurate and up-to-date market intelligence.
+
+Whether you're looking for information on a specific industry, market, or trend, I'm here to help. Please feel free to ask me any questions, and I'll do my best to provide you with the insights you need.</code></pre>
+</div>
+</div>
+<p>Let’s add tools to the agent. First, it needs a way to access the database.</p>
+<div id="b2268318" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="annotated-cell-6" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="annotated-cell-6-2"></span>
+<span id="annotated-cell-6-3"></span>
+<span id="annotated-cell-6-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-5" class="code-annotation-target"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> SupportDependencies:</span>
+<span id="annotated-cell-6-6">    db: duckdb.DuckDBPyConnection</span>
+<span id="annotated-cell-6-7"></span>
+<span id="annotated-cell-6-8"></span>
+<span id="annotated-cell-6-9">deps <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SupportDependencies(db<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">A dataclass that contains dependencies needed by the agent.</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>Next, let’s give the agent a tool to search the database of reports. Based on the user’s question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.</p>
+<div id="7b411855" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="annotated-cell-7" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Literal</span>
+<span id="annotated-cell-7-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic_ai <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> RunContext</span>
+<span id="annotated-cell-7-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> validate_call, Field</span>
+<span id="annotated-cell-7-4"></span>
+<span id="annotated-cell-7-5"></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-6" class="code-annotation-target"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@agent.tool</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-7" class="code-annotation-target"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@validate_call</span>(config<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"arbitrary_types_allowed"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>})</span>
+<span id="annotated-cell-7-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> search_reports_by_field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3">3</button><span id="annotated-cell-7-9" class="code-annotation-target">    ctx: RunContext[SupportDependencies],</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="4">4</button><span id="annotated-cell-7-10" class="code-annotation-target">    field: Literal[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"id"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"date"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"institute"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"country"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"topic"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>],</span>
+<span id="annotated-cell-7-11">    value: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Field(</span>
+<span id="annotated-cell-7-12">        description<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The value to search for in the field. Case insensitive."</span></span>
+<span id="annotated-cell-7-13">    ),</span>
+<span id="annotated-cell-7-14">) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="annotated-cell-7-15">    query <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"SELECT date, institute, country, topic, title FROM reports WHERE lower(</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>field<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) = lower(?)"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="5">5</button><span id="annotated-cell-7-16" class="code-annotation-target">    df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ctx.deps.db.execute(query, [value]).df()</span>
+<span id="annotated-cell-7-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> df.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="6">6</button><span id="annotated-cell-7-18" class="code-annotation-target">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"No reports found."</span></span>
+<span id="annotated-cell-7-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> df.to_markdown()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="1">Use the <code>@agent.tool</code> decorator to register the function as a tool.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="7" data-code-annotation="2">Use the <code>@validate_call</code> decorator to enable type checking of the function arguments. <code>arbitrary_types_allowed</code> is required because the <code>RunContext</code> type is not a standard type.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="9" data-code-annotation="3">The <code>RunContext</code> type hint is required for the tool to access the dependencies.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="10" data-code-annotation="4">Tell the model about the available fields in the database and validate that only those are selected.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="16" data-code-annotation="5">The database query returns a pandas DataFrame, which is converted to a markdown-formatted string.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="18" data-code-annotation="6">Provide a clear message if no reports are found. Otherwise, the function would return a markdown table with no rows, which could be confusing.</span>
+</dd>
+</dl>
+</div>
+</div>
+<div id="45e87d8a" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">deps <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SupportDependencies(db<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>con)</span>
+<span id="cb7-2">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> agent.run_sync(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Which reports do we have from Germany?"</span>, deps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>deps)</span>
+<span id="cb7-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(result.data)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We have four reports from Germany:
+1. "Global Electric Vehicle Market Outlook 2018-2023" by Research DNA GmbH, published on July 20, 2018, focusing on the automotive topic.
+2. "Digital Advertising Spend Analysis" by Tech Innovations Ltd., published on March 10, 2020, focusing on the media topic.
+3. "Beverage Market Competitive Analysis" by Research DNA GmbH, published on January 5, 2022, focusing on the FMCG topic.
+4. "Medical Imaging Equipment Market Size" by Tech Innovations Ltd., published on February 1, 2024, focusing on the healthcare topic.</code></pre>
+</div>
+</div>
+<p>This lets the agent execute searches based on the exact match of a field. However, users are unlikely to remember the exact title or id of a report, so let’s also add the ability to search for similar titles.</p>
+<div id="8ab651d1" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@agent.tool</span></span>
+<span id="cb9-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@validate_call</span>(config<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"arbitrary_types_allowed"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>})</span>
+<span id="cb9-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> search_reports_by_title_similarity(</span>
+<span id="cb9-4">    ctx: RunContext[SupportDependencies],</span>
+<span id="cb9-5">    title: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>,</span>
+<span id="cb9-6">) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb9-7">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Embed the title given by the user</span></span>
+<span id="cb9-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">try</span>:</span>
+<span id="cb9-9">        title_embedding <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> embed_text(title)</span>
+<span id="cb9-10">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Exception</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> e:</span>
+<span id="cb9-11">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Error embedding title: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>e<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb9-12"></span>
+<span id="cb9-13">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Search for similar titles</span></span>
+<span id="cb9-14">    title_embedding_str <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"["</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">","</span>.join(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>, title_embedding)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"]"</span></span>
+<span id="cb9-15">    query <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb9-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        SELECT date, institute, country, topic, title</span></span>
+<span id="cb9-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        FROM reports</span></span>
+<span id="cb9-18"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        ORDER BY array_distance(title_embedding, ?::FLOAT[1536])</span></span>
+<span id="cb9-19"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        LIMIT 5</span></span>
+<span id="cb9-20"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb9-21">    df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ctx.deps.db.execute(query, [title_embedding_str]).df()</span>
+<span id="cb9-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> df.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb9-23">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"No reports found."</span></span>
+<span id="cb9-24">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> df.to_markdown()</span></code></pre></div>
+</div>
+<p>Let’s ask the agent about a topic that is not in the database.</p>
+<div id="1d2f4d92" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> agent.run_sync(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Search for reports mentioning quantum computing"</span>, deps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>deps)</span>
+<span id="cb10-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(result.data)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>There are no reports mentioning quantum computing in the database. However, there are reports related to electronics, which may be relevant to the topic of quantum computing. The reports include analyses of the semiconductor industry, gaming hardware market, and smart home devices market. If you're looking for information on quantum computing, you may want to consider searching for reports on related topics such as electronics or technology.</code></pre>
+</div>
+</div>
+<p>To see which tool the agent chose, we can inspect the message history.</p>
+<div id="d1492fe5" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> message <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> result.all_messages():</span>
+<span id="cb12-2">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(message)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SystemPrompt(content='You are a market research expert and answer questions using a database of reports.', role='system')
+UserPrompt(content='Search for reports mentioning quantum computing', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 51, 222055, tzinfo=datetime.timezone.utc), role='user')
+ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "quantum computing"}'), tool_id='call_578v')], timestamp=datetime.datetime(2024, 12, 10, 7, 57, 51, tzinfo=datetime.timezone.utc), role='model-structured-response')
+ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  3 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_578v', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 135190, tzinfo=datetime.timezone.utc), role='tool-return')
+ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Electronics"}'), tool_id='call_7qhz'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Quantum Computing"}'), tool_id='call_b029')], timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, tzinfo=datetime.timezone.utc), role='model-structured-response')
+ToolReturn(tool_name='search_reports_by_field', content='|    | date                | institute               | country   | topic       | title                                    |\n|---:|:--------------------|:------------------------|:----------|:------------|:-----------------------------------------|\n|  0 | 2018-10-05 00:00:00 | Data Analytics Group    | Canada    | Electronics | Smartphone Industry Competitive Analysis |\n|  1 | 2019-09-22 00:00:00 | Tech Research Hub       | Spain     | Electronics | Consumer Electronics Market Overview     |\n|  2 | 2021-01-20 00:00:00 | Food Research Institute | France    | Electronics | Wearable Technology Market Overview      |\n|  3 | 2022-03-10 00:00:00 | Market Insights Inc.    | USA       | Electronics | Gaming Hardware Market Assessment        |\n|  4 | 2023-05-20 00:00:00 | Insightful Reports      | Sweden    | Electronics | Smart Home Devices Market Analysis       |\n|  5 | 2024-04-06 00:00:00 | Education Analytics     | Canada    | Electronics | Semiconductor Industry Analysis          |\n|  6 | 2024-10-12 00:00:00 | AI Research Institute   | Sweden    | Electronics | Mobile Phone Market Forecast             |', tool_id='call_7qhz', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 607684, tzinfo=datetime.timezone.utc), role='tool-return')
+ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_b029', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 607616, tzinfo=datetime.timezone.utc), role='tool-return')
+ModelTextResponse(content="There are no reports mentioning quantum computing in the database. However, there are reports related to electronics, which may be relevant to the topic of quantum computing. The reports include analyses of the semiconductor industry, gaming hardware market, and smart home devices market. If you're looking for information on quantum computing, you may want to consider searching for reports on related topics such as electronics or technology.", timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, tzinfo=datetime.timezone.utc), role='model-text-response')</code></pre>
+</div>
+</div>
+<p>The model ended up making three tool calls:</p>
+<ol type="1">
+<li><code>search_reports_by_title_similarity</code> to find titles similar to “quantum computing”. It got a result but was smart enough to understand that they were not relevant.</li>
+<li><code>search_reports_by_field</code> to find reports with the topic “Electronics”. It got results and again understood that they were not relevant.</li>
+<li><code>search_reports_by_field</code> to find reports with the topic “Quantum Computing” with no results.</li>
+</ol>
+<p>TODO: Talk about what other tools could be added. TODO: Read other examples from PydanticAI documentation.</p>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<section id="comparison-to-other-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-to-other-libraries">Comparison to other libraries</h3>
+<p>PydanticAI is a late entrant to the agent framework space. It joins several established libraries including:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Library</th>
+<th>Description</th>
+<th style="text-align: right;">Github Stars ⭐</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT</a></td>
+<td>AI automation platform with frontend, server and monitoring</td>
+<td style="text-align: right;">169k</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/langchain-ai/langchain">LangChain</a></td>
+<td>Package ecosystem for LLM applications</td>
+<td style="text-align: right;">96k</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/microsoft/autogen">autogen</a></td>
+<td>Multi-agent AI chat framework by Microsoft</td>
+<td style="text-align: right;">36k</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/crewAIInc/crewai">crewAI</a></td>
+<td>Framework for orchestrating role-based AI agents</td>
+<td style="text-align: right;">22k</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/openai/swarm">swarm</a></td>
+<td>Educational framework for multi-agent apps by OpenAI</td>
+<td style="text-align: right;">17k</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/phidatahq/phidata">phidata</a></td>
+<td>Multi-agent backend and chat frontent</td>
+<td style="text-align: right;">16k</td>
+</tr>
+</tbody>
+</table>
+<p>There are dozens of other libraries with fewer stars. In addition, there are libraries specialized for RAG like <a href="https://github.com/run-llama/llama_index">LlamaIndex</a> and <a href="https://github.com/deepset-ai/haystack">Haystack</a>. The competition landscape doesn’t show signs of consolidation or slowing down.</p>
+</section>
+<section id="development-team" class="level3">
+<h3 class="anchored" data-anchor-id="development-team">Development team</h3>
+<p>Pydantic Services, the company behind Pydantic, has raised a $12.5m <a href="https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb">Series A</a> in October 2024. This is great news for the project: funding pays for full time developers. Of course, it raises the question of how Pydantic will make money, and the answer to that is Logfire. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, <a href="https://www.langchain.com/langsmith">LangSmith</a>.</p>
+<p>I just hope that the integration remains optional. While Logfire is a great tool, my team already uses <a href="https://wandb.ai/site/weave/">Weave</a> by Weights &amp; Biases, and having to switch would be a barrier to using PydanticAI.</p>
+</section>
+<section id="review" class="level3">
+<h3 class="anchored" data-anchor-id="review">Review</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pros ✅</strong></p>
+<ul>
+<li>Sensible abstractions that don’t get in the way.</li>
+<li>Type safety and integration with Pydantic.</li>
+<li>Strong reputation of the Pydantic team.</li>
+<li>Pydantic is familiar to many Python developers who will have an easier time learning PydanticAI.</li>
+<li>Great support for streaming responses and async tool calling. This is critical for live chat applications.</li>
+<li>High quality documentation and examples.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Cons ❌</strong></p>
+<ul>
+<li>Launches into a competitive market with many established libraries.</li>
+<li>Early stage of development, so expect breaking changes.</li>
+<li>Limited set of supported model providers, though support for more is coming.</li>
+<li>Economic incentives to lock users into Logfire. This hasn’t happened but is a risk.</li>
+</ul>
+</div>
+</div>
+<p>I’m looking forward to an opportunity to build a full-scale application with PydanticAI.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <category>Python</category>
+  <guid>https://simmering.dev/blog/pydantic-ai/</guid>
+  <pubDate>Mon, 09 Dec 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/pydantic-ai/image.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aspect-based Sentiment Analysis with DSPy</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -3511,17 +4424,9 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
 <section id="keep-your-training-data-portable" class="level3">
 <h3 class="anchored" data-anchor-id="keep-your-training-data-portable">Keep your training data portable</h3>
 <p>The linear progression from low to high abstraction is a simplification. As the ecosystem matures, interoperability increases. For example, Hugging Face Transformers abstracts away the model architecture, but you can still access the PyTorch model and adjust it. Then that model can be deployed to AWS SageMaker. Not all combinations are possible though - for example a GPT model fine-tuned on OpenAI’s API can only run on that account. When it’s cheap to do so, use solutions that have as little lock-in as possible. Especially your training data should remain portable. In a time where research labs one-up each other weekly with better base models, being able to switch to a new model quickly is an advantage.</p>
-</section>
-</section>
-<section id="go-deeper" class="level2">
-<h2 class="anchored" data-anchor-id="go-deeper">Go deeper</h2>
-<p>If you’re interested in the details of the LLM stack, I recommend the following resources:</p>
-<ul>
-<li><a href="https://github.com/lapp0/lm-inference-engines">Open Source LLM Inference Engines Comparison</a></li>
-</ul>
-<p>I’ll keep adding to this list as I find more resources.</p>
 
 
+</section>
 </section>
 
  ]]></description>
@@ -10206,109 +11111,6 @@ font-style: inherit;">1</span>],</span>
   <guid>https://simmering.dev/blog/dataset-size-vs-correctness/</guid>
   <pubDate>Fri, 27 Oct 2023 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/dataset-size-vs-correctness/scale.png" medium="image" type="image/png" height="144" width="144"/>
-</item>
-<item>
-  <title>Future Directions for Large Language Models</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/llm-future/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications in business, education and entertainment.</p>
-<p>In this post I’ll discuss 8 exciting developments in the field of LLMs that I think will be important in the next 1 to 3 years.</p>
-<blockquote class="blockquote">
-<p>Prediction is very difficult, especially about the future. - Niels Bohr</p>
-</blockquote>
-<section id="calling-apis" class="level2">
-<h2 class="anchored" data-anchor-id="calling-apis">Calling APIs</h2>
-<p>By calling APIs, LLMs can become actors in the real world.</p>
-<p>Some examples of what can be done via API calls:</p>
-<ul>
-<li>Provision a server</li>
-<li>Send an email</li>
-<li>Post a tweet</li>
-<li>Buy a product and have it shipped</li>
-<li>Operate a smart home device (lights, thermostat, lock, etc.)</li>
-<li>Control a robot (vacuum, drone, etc.)</li>
-<li>Send a task to a human worker via a crowdsourcing platform</li>
-</ul>
-<p>As capabilities expand, the need for policy and regulation on this topic rises.</p>
-</section>
-<section id="better-assistants" class="level2">
-<h2 class="anchored" data-anchor-id="better-assistants">Better assistants</h2>
-<p>Siri feels rather underpowered compared to ChatGPT Plus. I expect that to change in the next few years so that phone voice assistants will be able to reliably do more than just set a timer or call a contact.</p>
-<p>What sets Siri, Alexa and Google Assistant apart from ChatGPT is that they can control the phone. They can open apps, make calls, and send messages and are deeply integrated into the phone’s operating system. While ChatGPT, especially ChatGPT Plus is much smarter, it’s trapped in an app.</p>
-<p>A phone assistant with ChatGPT’s smarts, integration with the phone’s operating system and the ability to call functions would be a game changer.</p>
-<p>In addition to assistants, I expect to see LLMs become a standard part of many apps, as Microsoft 365, Notion, Photoshop and others have done.</p>
-</section>
-<section id="llm-agents" class="level2">
-<h2 class="anchored" data-anchor-id="llm-agents">LLM Agents</h2>
-<p>Currently common uses of LLMs primarily treat the model as a source of information and copywriter.</p>
-<p>A more powerful approach is to treat the model as an agent with a task. <a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT</a> and <a href="https://github.com/yoheinakajima/babyagi">BabyAGI</a> are frameworks for this.</p>
-<p>In this approach, the LLM is part of a larger AI system:</p>
-<ul>
-<li>A human provides a directive</li>
-<li>The directive is commited to memory, such as a text file or database</li>
-<li>The LLM is called with the directive as input, along with the current state of the system and available choices</li>
-<li>The LLM can call copies of itself recursively to work on subtasks (e.g.&nbsp;“look up a term on Wikipedia”, “find a photo on Unsplash”)</li>
-<li>This continues until the task is achieved and the LLM returns a result</li>
-</ul>
-<p>The combination of LLM reasoning, recursive calls, memory and the ability to call APIs makes this approach very powerful.</p>
-<p>However, real results have fizzled for these reasons:</p>
-<ul>
-<li>Never ending loops</li>
-<li>Needing too much babysitting to be useful, basically doing the easy part of any task and leaving the hard part to humans</li>
-<li>Producing generic, lame results</li>
-<li>Trouble with parsing information on the web</li>
-</ul>
-<p>The potential is incredible, but there’s still a lot of work to be done.</p>
-</section>
-<section id="a-ceiling-on-the-bigger-is-better-trend" class="level2">
-<h2 class="anchored" data-anchor-id="a-ceiling-on-the-bigger-is-better-trend">A ceiling on the “bigger is better” trend</h2>
-<p>GPT-4, the current most capable LLM all around is rumored to have 1.7 trillion parameters. Will the bigger = better and more data = better trends continue? In text, the answer is probably no. GPT-4 was trained on almost all human text available on the internet. In terms of volume, there’s not much more text to train on.</p>
-<p>An alternative to getting even more text is to improve the quality of the text used for training. Common crawl, a major component of GPT-4’s training data, is full of spam and low quality content. With less noise, models may also need fewer parameters to achieve the same performance.</p>
-</section>
-<section id="multimodal-models" class="level2">
-<h2 class="anchored" data-anchor-id="multimodal-models">Multimodal models</h2>
-<p>While model’s are hitting the limit on text, there’s still a massive amount of images, video and audio available on the internet waiting to be used for training. Multimodal models, meaning models that can process multiple types of data, are already here. The addition of <a href="https://openai.com/blog/chatgpt-can-now-see-hear-and-speak">image recognition</a> to ChatGPT has unlocked a new level of capabilities, such as interpreting diagrams, assisting blind people or diagnosing repair issues.</p>
-</section>
-<section id="multilingual-or-non-english-llms" class="level2">
-<h2 class="anchored" data-anchor-id="multilingual-or-non-english-llms">Multilingual or non-English LLMs</h2>
-<p>Current LLMs work best on English text. While other languages work decently with OpenAI’s GPT models, performance in open source models like Llama 2 is lacking.</p>
-<p>The economic incentive to train LLMs on non-English text is hugel As an example, I’m excited about the recent publication of <a href="https://laion.ai/blog/leo-lm/">LeoLM</a>, a German LLM and the ongoing <a href="https://txt.cohere.com/aya-multilingual/">AYA project</a> by Cohere.</p>
-<p>Besides the models themselves, tokenization could benefit from a multilingual approach. As the majority of training data is in English and other languages that use the English alphabet, tokenization is optimized for those languages. This leads to a situation where Chinese, Arabic and other languages that use different alphabets are tokenized less efficiently and at <a href="https://denyslinkov.medium.com/why-is-gpt-3-15-77x-more-expensive-for-certain-languages-2b19a4adc4bc">higher cost</a>.</p>
-</section>
-<section id="edge-computing-and-efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="edge-computing-and-efficiency">Edge computing and efficiency</h2>
-<p>The deployment of LLMs is currently held back by their compute demands. Running models like Llama 2 7B requires a top of the line GPU and larger models like Llama 2 70B require a GPU cluster. So typically LLMs are deployed on cloud servers rather than on edge devices.</p>
-<p>Developers and researchers are working on reducing the compute demands of LLMs through techniques such as quantization, sparse matrices, pruning, and distillation. The <a href="https://hanlab.mit.edu">MIT HAN lab</a> in particular is taking a lead on this.</p>
-<p>I expect these techniques to become more widespread and more effective in the next few years, making it possible to deploy LLMs on edge devices like smartphones and laptops, at lower cost and without the privacy concerns of the cloud. Apple’s recent announcement of better text prediction in <a href="https://www.apple.com/newsroom/2023/06/ios-17-makes-iphone-more-personal-and-intuitive/">iOS 17</a> by using a transformer model on device is an example of this trend, though the model isn’t large enough to be considered an LLM.</p>
-</section>
-<section id="efficient-training-of-specialized-models" class="level2">
-<h2 class="anchored" data-anchor-id="efficient-training-of-specialized-models">Efficient training of specialized models</h2>
-<p>In <a href="https://explosion.ai/blog/against-llm-maximalism">Against LLM maximalism</a>, spaCy creator Matthew Honnibal argues that LLMs are not the best choice for all NLP tasks, citing speed, cost, observeability, lack of modularity and measurement difficulties as reasons. He argues that smaller models trained on specialized data are often a better choice.</p>
-<p>In economic terms, running a 1.7T parameter model on a GPU cluster when a 10M parameter model on a CPU would do the job is wasteful.</p>
-<p>But it’s not an either or situation: LLMs can be used to accelerate the training of specialized models. I’m excited about Explosion AI’s development on integrating LLM produced labels into labeling with <a href="https://prodi.gy/docs/large-language-models">Prodigy</a> and expect to see similar developments in other labeling tools.</p>
-<p>Rather than LLMs replacing specialized models, I expect to see them used to accelerate the training of specialized model and an overall increase in the number of models in production.</p>
-</section>
-<section id="conclusion-hype-to-quiet-productivity" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion-hype-to-quiet-productivity">Conclusion: Hype to quiet productivity</h2>
-<blockquote class="blockquote">
-<p>AI is whatever hasn’t been done yet. - Larry Tesler</p>
-</blockquote>
-<p>In the long run, I expect that LLMs will follow the <a href="https://en.wikipedia.org/wiki/AI_effect">AI effect</a> similar to features like spell checking and translation, which initially stood out as novel AI features but are now seen as standard features of software, quietly delivering value to users.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Machine Learning</category>
-  <guid>https://simmering.dev/blog/llm-future/</guid>
-  <pubDate>Fri, 20 Oct 2023 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/llm-future/image.png" medium="image" type="image/png" height="81" width="144"/>
 </item>
 </channel>
 </rss>
