@@ -3454,30 +3454,31 @@ timezone = ["tzdata"]
 
 [[package]]
 name = "pydantic-ai"
-version = "0.0.9"
+version = "0.0.12"
 description = "Agent Framework / shim to use Pydantic with LLMs"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pydantic_ai-0.0.9-py3-none-any.whl", hash = "sha256:af61d7ba2f3ef2bf6353f921fd50b73b04ec9d259b95eb20d8c4e747f45e1c16"},
-    {file = "pydantic_ai-0.0.9.tar.gz", hash = "sha256:d30ebfee83f18f81052e994db64f1a42eb05827a1895d04489fecd2b27d60037"},
+    {file = "pydantic_ai-0.0.12-py3-none-any.whl", hash = "sha256:0dbfec39744a4ed87467bb0ce34c736cf6b3cade0256a7530e8b4a7c7c916afb"},
+    {file = "pydantic_ai-0.0.12.tar.gz", hash = "sha256:e86ff5e5137be64c247a9ea1cf39867a96a92de28ed60440ec46fcc32ca8916c"},
 ]
 
 [package.dependencies]
-pydantic-ai-slim = {version = "0.0.9", extras = ["groq", "openai", "vertexai"]}
+pydantic-ai-slim = {version = "0.0.12", extras = ["groq", "openai", "vertexai"]}
 
 [package.extras]
-examples = ["pydantic-ai-examples (==0.0.9)"]
+examples = ["pydantic-ai-examples (==0.0.12)"]
+logfire = ["logfire (>=2.3)"]
 
 [[package]]
 name = "pydantic-ai-slim"
-version = "0.0.9"
+version = "0.0.12"
 description = "Agent Framework / shim to use Pydantic with LLMs, slim package"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pydantic_ai_slim-0.0.9-py3-none-any.whl", hash = "sha256:7dae4cd95f93e5c4cd05e2db4ae8b8d473dae67d1b5eab29531f18d794bc1580"},
-    {file = "pydantic_ai_slim-0.0.9.tar.gz", hash = "sha256:7fceecb5afba92445f95094a9aeabb8d727bf29b88a98a1b93329468b5b3e0be"},
+    {file = "pydantic_ai_slim-0.0.12-py3-none-any.whl", hash = "sha256:8b3054229b15f99dc5d85a70ad8e2a70933b0eb7ee0dc8d649b9bc0269863f0c"},
+    {file = "pydantic_ai_slim-0.0.12.tar.gz", hash = "sha256:d4db0daa87cf232b4142cdb831902ddab814239bc5bf4894d01232b1bb37e646"},
 ]
 
 [package.dependencies]
@@ -5806,4 +5807,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.5"
-content-hash = "398c141d5662f433e0ffc30047f514417ea5e4aca9be93aad732f2a5cadf2f85"
+content-hash = "ecf0eee0803754f95e3ac8d9cbaf8c12ee7159e7368d86ce854bf488ad99391b"

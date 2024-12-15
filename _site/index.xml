@@ -11,55 +11,7 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.6.33</generator>
-<lastBuildDate>Fri, 13 Dec 2024 23:00:00 GMT</lastBuildDate>
-<item>
-  <title>Constrained by Context, Not Reasoning</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/context-constrained/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Frontier LLMs rarely give completely wrong answers. Even when their responses aren’t exactly what we need, they’re usually logical given the information provided.</p>
-<p>Recent advances in chain-of-thought reasoning, such as in models like <a href="https://openai.com/index/learning-to-reason-with-llms/">OpenAI’s o1</a> and <a href="https://www.alibabacloud.com/blog/alibaba-cloud-unveils-open-source-ai-reasoning-model-qwq-and-new-image-editing-tool_601813">Alibaba’s QwQ</a>, have led to remarkable achievements. These models now outperform most humans on complex tasks like competition mathematics (AIME 2024) and PhD-level science questions (GPQA Diamond).</p>
-<p>Yet here’s the paradox: despite this impressive reasoning capability, LLMs often struggle to provide immediately useful outputs for everyday professional tasks. Usually, their output has to be edited or the prompt rewritten multiple times to produce a copy-pasteable result. This leads to my thesis: <strong>The real-world effectiveness of LLMs is now limited more by their awareness of context than by their reasoning capabilities</strong>.</p>
-<p>Think of an LLM as a brilliant but newly hired colleague who hasn’t been properly onboarded. While they can tackle complex problems, they miss crucial contextual details required to fit their work into the existing workflows. The challenge isn’t their intelligence—it’s their need for situational awareness.</p>
-<section id="context-makes-outputs-more-useful" class="level2">
-<h2 class="anchored" data-anchor-id="context-makes-outputs-more-useful">Context makes outputs more useful</h2>
-<p>Here are some examples of how adding context lets LLMs produce outputs that are more readily applicable:</p>
-<ul>
-<li>When summarizing a technical document, telling the model “This is for marketing executives who need to understand the business implications” yields very different (and more useful) results than just asking for a summary</li>
-<li>For educational content, specifying “Explain this for a high school student” versus “Explain this for a graduate student” completely changes the depth and terminology used</li>
-<li>In correspondence, sharing details like “This is for a long-time client who prefers informal communication” helps create more appropriately-toned messages For social media, providing examples of past successful posts or a company style guide helps the model match the preferred tone</li>
-<li>In software development, showing the model your existing codebase helps it suggest solutions that integrate seamlessly with your architecture</li>
-<li>During translation work, specifying “This is medical documentation” versus “This is marketing material” ensures appropriate terminology and tone</li>
-</ul>
-</section>
-<section id="infusing-context-actively-and-passively" class="level2">
-<h2 class="anchored" data-anchor-id="infusing-context-actively-and-passively">Infusing context actively and passively</h2>
-<p>It’s tedious to write a detailed briefing each time, just like you wouldn’t want to repeat onboarding of a colleague. Here are ways to reuse prompts or passively infuse context:</p>
-<ul>
-<li>Write a persistent system prompt that’s automatically applied to all conversations. In ChatGPT, you can do this by creating a custom GPT.</li>
-<li>Enable chat history to be able to copy-paste successful prompts into new conversations.</li>
-<li>Turn on features that let the model learn from past interactions (if not dealing with sensitive data).</li>
-<li>When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.</li>
-<li>Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.</li>
-<li>Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.</li>
-</ul>
-<hr>
-<p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-pink-letter-blocks-jbywvpa9vH8?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
-
-
-</section>
-
- ]]></description>
-  <category>Productivity</category>
-  <guid>https://simmering.dev/blog/context-constrained/</guid>
-  <pubDate>Fri, 13 Dec 2024 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/context-constrained/image.jpg" medium="image" type="image/jpeg"/>
-</item>
+<lastBuildDate>Sat, 14 Dec 2024 23:00:00 GMT</lastBuildDate>
 <item>
   <title>Type-safe LLM agents with PydanticAI</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -77,18 +29,18 @@
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-PydanticAI version 0.0.9
+PydanticAI version 0.0.12
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.9. Code examples may not work with future versions.</p>
+<p>PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.12. Code examples may not work with future versions.</p>
 </div>
 </div>
 </div>
 <ul>
-<li>currently supports OpenAI, Gemini and Groq with more integrations coming soon</li>
+<li>currently supports OpenAI, Anthropic, Gemini, Ollama, Groq, Mistral and also has an interface to add more providers</li>
 <li>type safe with structured responses including streamed responses</li>
 <li>optional integration with <a href="https://pydantic.dev/logfire">Logfire</a>, a commercial service by the Pydantic team for logging LLM calls</li>
 </ul>
@@ -100,7 +52,7 @@ PydanticAI version 0.0.9
 <section id="database" class="level3">
 <h3 class="anchored" data-anchor-id="database">Database</h3>
 <p>I’m using <a href="https://duckdb.org">DuckDB</a> to create a local database which will be made available to the agent.</p>
-<div id="cf4292ba" class="cell" data-execution_count="3">
+<div id="bc29b192" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-1" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -128,12 +80,12 @@ font-style: inherit;">"LOAD vss"</span>)</span><div class="code-annotation-gutte
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16a5515b0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16838f870&gt;</code></pre>
 </div>
 </div>
 <p>I’ll insert a set of reports into the database. The data included is fictional and was generated by an LLM. The data consists of 40 reports like this:</p>
-<div id="5ca72cdf" class="cell" data-execution_count="4">
+<div id="4408ee14" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
@@ -153,53 +105,53 @@ font-style: inherit;">"data/reports.csv"</span>)</span>
 <span id="cb2-5">GT(reports.head(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>))</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
-<div id="rdkcfuxnag" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div class="cell-output cell-output-display" data-execution_count="30">
+<div id="ggtxmjgqhw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#rdkcfuxnag table {
+#ggtxmjgqhw table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#rdkcfuxnag thead, tbody, tfoot, tr, td, th { border-style: none; }
+#ggtxmjgqhw thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#rdkcfuxnag p { margin: 0; padding: 0; }
- #rdkcfuxnag .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #rdkcfuxnag .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #rdkcfuxnag .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #rdkcfuxnag .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #rdkcfuxnag .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #rdkcfuxnag .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #rdkcfuxnag .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #rdkcfuxnag .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #rdkcfuxnag .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #rdkcfuxnag .gt_column_spanner_outer:first-child { padding-left: 0; }
- #rdkcfuxnag .gt_column_spanner_outer:last-child { padding-right: 0; }
- #rdkcfuxnag .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #rdkcfuxnag .gt_spanner_row { border-bottom-style: hidden; }
- #rdkcfuxnag .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #rdkcfuxnag .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #rdkcfuxnag .gt_from_md> :first-child { margin-top: 0; }
- #rdkcfuxnag .gt_from_md> :last-child { margin-bottom: 0; }
- #rdkcfuxnag .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #rdkcfuxnag .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #rdkcfuxnag .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #rdkcfuxnag .gt_row_group_first td { border-top-width: 2px; }
- #rdkcfuxnag .gt_row_group_first th { border-top-width: 2px; }
- #rdkcfuxnag .gt_striped { background-color: rgba(128,128,128,0.05); }
- #rdkcfuxnag .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #rdkcfuxnag .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #rdkcfuxnag .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #rdkcfuxnag .gt_left { text-align: left; }
- #rdkcfuxnag .gt_center { text-align: center; }
- #rdkcfuxnag .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #rdkcfuxnag .gt_font_normal { font-weight: normal; }
- #rdkcfuxnag .gt_font_bold { font-weight: bold; }
- #rdkcfuxnag .gt_font_italic { font-style: italic; }
- #rdkcfuxnag .gt_super { font-size: 65%; }
- #rdkcfuxnag .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #rdkcfuxnag .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#ggtxmjgqhw p { margin: 0; padding: 0; }
+ #ggtxmjgqhw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ggtxmjgqhw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ggtxmjgqhw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ggtxmjgqhw .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ggtxmjgqhw .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ggtxmjgqhw .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ggtxmjgqhw .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ggtxmjgqhw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ggtxmjgqhw .gt_spanner_row { border-bottom-style: hidden; }
+ #ggtxmjgqhw .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ggtxmjgqhw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ggtxmjgqhw .gt_from_md> :first-child { margin-top: 0; }
+ #ggtxmjgqhw .gt_from_md> :last-child { margin-bottom: 0; }
+ #ggtxmjgqhw .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ggtxmjgqhw .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ggtxmjgqhw .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ggtxmjgqhw .gt_row_group_first td { border-top-width: 2px; }
+ #ggtxmjgqhw .gt_row_group_first th { border-top-width: 2px; }
+ #ggtxmjgqhw .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #ggtxmjgqhw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ggtxmjgqhw .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ggtxmjgqhw .gt_left { text-align: left; }
+ #ggtxmjgqhw .gt_center { text-align: center; }
+ #ggtxmjgqhw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ggtxmjgqhw .gt_font_normal { font-weight: normal; }
+ #ggtxmjgqhw .gt_font_bold { font-weight: bold; }
+ #ggtxmjgqhw .gt_font_italic { font-style: italic; }
+ #ggtxmjgqhw .gt_super { font-size: 65%; }
+ #ggtxmjgqhw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ggtxmjgqhw .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -264,7 +216,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 </div>
 </div>
 <p>To make the title searchable, I’ll embed it using an <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embedding endpoint</a>. The result will be stored in a new column with 1536 dimensions.</p>
-<div id="160cb6dd" class="cell" data-execution_count="5">
+<div id="9eb89b1f" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> openai <span class="im" style="color: #00769E;
@@ -417,11 +369,11 @@ font-style: inherit;">1536</span>),</span>
 <span id="cb3-35">    )</span>
 <span id="cb3-36">)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>  0%|          | 0/40 [00:00&lt;?, ?it/s]100%|██████████| 40/40 [00:00&lt;00:00, 555536.95it/s]</code></pre>
+<pre><code>  0%|          | 0/40 [00:00&lt;?, ?it/s]100%|██████████| 40/40 [00:00&lt;00:00, 476625.45it/s]</code></pre>
 </div>
 </div>
 <p>Now, I’ll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size <code>ARRAY</code> column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.</p>
-<div id="09175461" class="cell" data-execution_count="6">
+<div id="cb224c72" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-4" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1">con.execute(</span>
 <span id="annotated-cell-4-2">    <span class="st" style="color: #20794D;
 background-color: null;
@@ -474,8 +426,8 @@ font-style: inherit;">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(titl
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="19">
-<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16a5515b0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16838f870&gt;</code></pre>
 </div>
 </div>
 <p>I also create a hierarchical navigable small world (HNSW) index on the title embeddings. This enables approximate nearest neighbor search with logarithmic complexity. It’s enabled by the <a href="https://duckdb.org/docs/extensions/vss">vss</a> extension.</p>
@@ -483,7 +435,7 @@ font-style: inherit;">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(titl
 <section id="agent" class="level3">
 <h3 class="anchored" data-anchor-id="agent">Agent</h3>
 <p>Let’s set up an agent powered by the <a href="https://groq.com">Groq</a> inference API. It serves a range of open source models. Specifically, I’ll use the <code>llama-3.3-70b-versatile</code> model released by Meta on December 6th. Artificial Analysis has a detailed <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers">report</a> showing that it advanced the speed-accuracy trade-off. The model has tool calling capabilities, which are critical for our use case.</p>
-<div id="666919cb" class="cell" data-execution_count="7">
+<div id="4f7c8cf7" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-5" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> pydantic_ai <span class="im" style="color: #00769E;
@@ -522,15 +474,11 @@ font-style: inherit;">print</span>(result.data)</span><div class="code-annotatio
 </dl>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>I am a market research expert, providing insights and answers based on a vast database of reports and studies. My expertise spans various industries, markets, and trends, allowing me to offer data-driven information and analysis on a wide range of topics.
-
-With access to a comprehensive library of market research reports, I can provide information on market size, growth prospects, consumer behavior, competitive landscape, and emerging trends. My goal is to assist users in making informed decisions by providing accurate and up-to-date market intelligence.
-
-Whether you're looking for information on a specific industry, market, or trend, I'm here to help. Please feel free to ask me any questions, and I'll do my best to provide you with the insights you need.</code></pre>
+<pre><code>I am a market research expert, providing insights and answers based on a vast database of reports and studies. My expertise spans various industries, markets, and trends, allowing me to offer data-driven responses to your questions. Whether you're looking for information on consumer behavior, market size, competitive analysis, or emerging trends, I'm here to help. What would you like to know?</code></pre>
 </div>
 </div>
 <p>Let’s add tools to the agent. First, it needs a way to access the database.</p>
-<div id="b2268318" class="cell" data-execution_count="8">
+<div id="85e7b4b2" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-6" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
@@ -563,7 +511,7 @@ font-style: inherit;">=</span>con)</span><div class="code-annotation-gutter-bg">
 </div>
 </div>
 <p>Next, let’s give the agent a tool to search the database of reports. Based on the user’s question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.</p>
-<div id="7b411855" class="cell" data-execution_count="9">
+<div id="3400e2ba" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="annotated-cell-7" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
@@ -690,7 +638,7 @@ font-style: inherit;">return</span> df.to_markdown()</span><div class="code-anno
 </dl>
 </div>
 </div>
-<div id="45e87d8a" class="cell" data-execution_count="10">
+<div id="003a7678" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">deps <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> SupportDependencies(db<span class="op" style="color: #5E5E5E;
@@ -715,7 +663,7 @@ font-style: inherit;">print</span>(result.data)</span></code></pre></div>
 </div>
 </div>
 <p>This lets the agent execute searches based on the exact match of a field. However, users are unlikely to remember the exact title or id of a report, so let’s also add the ability to search for similar titles.</p>
-<div id="8ab651d1" class="cell" data-execution_count="11">
+<div id="2824f1a4" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">@agent.tool</span></span>
@@ -837,7 +785,7 @@ font-weight: bold;
 font-style: inherit;">return</span> df.to_markdown()</span></code></pre></div>
 </div>
 <p>Let’s ask the agent about a topic that is not in the database.</p>
-<div id="1d2f4d92" class="cell" data-execution_count="12">
+<div id="92f045e5" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">result <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> agent.run_sync(<span class="st" style="color: #20794D;
@@ -849,11 +797,11 @@ font-style: inherit;">=</span>deps)</span>
 background-color: null;
 font-style: inherit;">print</span>(result.data)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>There are no reports mentioning quantum computing in the database. However, there are reports related to electronics, which may be relevant to the topic of quantum computing. The reports include analyses of the semiconductor industry, gaming hardware market, and smart home devices market. If you're looking for information on quantum computing, you may want to consider searching for reports on related topics such as electronics or technology.</code></pre>
+<pre><code>Unfortunately, there are no reports in the database that mention quantum computing. The search results show reports from various institutes and countries, but none of them are related to quantum computing. If you're looking for information on this topic, I suggest trying a different search term or checking other databases.</code></pre>
 </div>
 </div>
 <p>To see which tool the agent chose, we can inspect the message history.</p>
-<div id="d1492fe5" class="cell" data-execution_count="13">
+<div id="12a15efe" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -866,13 +814,15 @@ background-color: null;
 font-style: inherit;">print</span>(message)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SystemPrompt(content='You are a market research expert and answer questions using a database of reports.', role='system')
-UserPrompt(content='Search for reports mentioning quantum computing', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 51, 222055, tzinfo=datetime.timezone.utc), role='user')
-ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "quantum computing"}'), tool_id='call_578v')], timestamp=datetime.datetime(2024, 12, 10, 7, 57, 51, tzinfo=datetime.timezone.utc), role='model-structured-response')
-ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  3 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_578v', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 135190, tzinfo=datetime.timezone.utc), role='tool-return')
-ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Electronics"}'), tool_id='call_7qhz'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Quantum Computing"}'), tool_id='call_b029')], timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, tzinfo=datetime.timezone.utc), role='model-structured-response')
-ToolReturn(tool_name='search_reports_by_field', content='|    | date                | institute               | country   | topic       | title                                    |\n|---:|:--------------------|:------------------------|:----------|:------------|:-----------------------------------------|\n|  0 | 2018-10-05 00:00:00 | Data Analytics Group    | Canada    | Electronics | Smartphone Industry Competitive Analysis |\n|  1 | 2019-09-22 00:00:00 | Tech Research Hub       | Spain     | Electronics | Consumer Electronics Market Overview     |\n|  2 | 2021-01-20 00:00:00 | Food Research Institute | France    | Electronics | Wearable Technology Market Overview      |\n|  3 | 2022-03-10 00:00:00 | Market Insights Inc.    | USA       | Electronics | Gaming Hardware Market Assessment        |\n|  4 | 2023-05-20 00:00:00 | Insightful Reports      | Sweden    | Electronics | Smart Home Devices Market Analysis       |\n|  5 | 2024-04-06 00:00:00 | Education Analytics     | Canada    | Electronics | Semiconductor Industry Analysis          |\n|  6 | 2024-10-12 00:00:00 | AI Research Institute   | Sweden    | Electronics | Mobile Phone Market Forecast             |', tool_id='call_7qhz', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 607684, tzinfo=datetime.timezone.utc), role='tool-return')
-ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_b029', timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, 607616, tzinfo=datetime.timezone.utc), role='tool-return')
-ModelTextResponse(content="There are no reports mentioning quantum computing in the database. However, there are reports related to electronics, which may be relevant to the topic of quantum computing. The reports include analyses of the semiconductor industry, gaming hardware market, and smart home devices market. If you're looking for information on quantum computing, you may want to consider searching for reports on related topics such as electronics or technology.", timestamp=datetime.datetime(2024, 12, 10, 7, 57, 52, tzinfo=datetime.timezone.utc), role='model-text-response')</code></pre>
+UserPrompt(content='Search for reports mentioning quantum computing', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 33, 37839, tzinfo=datetime.timezone.utc), role='user')
+ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "quantum computing"}'), tool_id='call_dmmx')], timestamp=datetime.datetime(2024, 12, 15, 10, 55, 33, tzinfo=datetime.timezone.utc), role='model-structured-response')
+ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  3 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_dmmx', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 255689, tzinfo=datetime.timezone.utc), role='tool-return')
+ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Electronics"}'), tool_id='call_s389'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Technology"}'), tool_id='call_n0ze'), ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "Quantum Computing"}'), tool_id='call_qhpp'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "institute", "value": "Market Insights Inc."}'), tool_id='call_jx99')], timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, tzinfo=datetime.timezone.utc), role='model-structured-response')
+ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_s389', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 869134, tzinfo=datetime.timezone.utc), role='tool-return')
+ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_n0ze', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 869189, tzinfo=datetime.timezone.utc), role='tool-return')
+ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  3 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_qhpp', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 35, 282999, tzinfo=datetime.timezone.utc), role='tool-return')
+ToolReturn(tool_name='search_reports_by_field', content='|    | date                | institute            | country   | topic       | title                                          |\n|---:|:--------------------|:---------------------|:----------|:------------|:-----------------------------------------------|\n|  0 | 2018-08-15 00:00:00 | Market Insights Inc. | USA       | Healthcare  | Digital Health Market Size and Growth Analysis |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment              |', tool_id='call_jx99', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 870446, tzinfo=datetime.timezone.utc), role='tool-return')
+ModelTextResponse(content="Unfortunately, there are no reports in the database that mention quantum computing. The search results show reports from various institutes and countries, but none of them are related to quantum computing. If you're looking for information on this topic, I suggest trying a different search term or checking other databases.", timestamp=datetime.datetime(2024, 12, 15, 10, 55, 35, tzinfo=datetime.timezone.utc), role='model-text-response')</code></pre>
 </div>
 </div>
 <p>The model ended up making three tool calls:</p>
@@ -935,7 +885,7 @@ ModelTextResponse(content="There are no reports mentioning quantum computing in 
 <section id="development-team" class="level3">
 <h3 class="anchored" data-anchor-id="development-team">Development team</h3>
 <p>Pydantic Services, the company behind Pydantic, has raised a $12.5m <a href="https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb">Series A</a> in October 2024. This is great news for the project: funding pays for full time developers. Of course, it raises the question of how Pydantic will make money, and the answer to that is Logfire. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, <a href="https://www.langchain.com/langsmith">LangSmith</a>.</p>
-<p>I just hope that the integration remains optional. While Logfire is a great tool, my team already uses <a href="https://wandb.ai/site/weave/">Weave</a> by Weights &amp; Biases, and having to switch would be a barrier to using PydanticAI.</p>
+<p>I just hope that the integration remains optional. While Logfire looks great, my team already uses <a href="https://wandb.ai/site/weave/">Weave</a> by Weights &amp; Biases, and having to switch would be a barrier to adopting PydanticAI.</p>
 </section>
 <section id="review" class="level3">
 <h3 class="anchored" data-anchor-id="review">Review</h3>
@@ -955,12 +905,12 @@ ModelTextResponse(content="There are no reports mentioning quantum computing in 
 <ul>
 <li>Launches into a competitive market with many established libraries.</li>
 <li>Early stage of development, so expect breaking changes.</li>
-<li>Limited set of supported model providers, though support for more is coming.</li>
 <li>Economic incentives to lock users into Logfire. This hasn’t happened but is a risk.</li>
 </ul>
 </div>
 </div>
 <p>I’m looking forward to an opportunity to build a full-scale application with PydanticAI.</p>
+<p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
 
 
 </section>
@@ -970,8 +920,56 @@ ModelTextResponse(content="There are no reports mentioning quantum computing in 
   <category>Machine Learning</category>
   <category>Python</category>
   <guid>https://simmering.dev/blog/pydantic-ai/</guid>
-  <pubDate>Mon, 09 Dec 2024 23:00:00 GMT</pubDate>
+  <pubDate>Sat, 14 Dec 2024 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/pydantic-ai/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Constrained by Context, Not Reasoning</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/context-constrained/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Frontier LLMs rarely give completely wrong answers. Even when their responses aren’t exactly what we need, they’re usually logical given the information provided.</p>
+<p>Recent advances in chain-of-thought reasoning, such as in models like <a href="https://openai.com/index/learning-to-reason-with-llms/">OpenAI’s o1</a> and <a href="https://www.alibabacloud.com/blog/alibaba-cloud-unveils-open-source-ai-reasoning-model-qwq-and-new-image-editing-tool_601813">Alibaba’s QwQ</a>, have led to remarkable achievements. These models now outperform most humans on complex tasks like competition mathematics (AIME 2024) and PhD-level science questions (GPQA Diamond).</p>
+<p>Yet here’s the paradox: despite this impressive reasoning capability, LLMs often struggle to provide immediately useful outputs for everyday professional tasks. Usually, their output has to be edited or the prompt rewritten multiple times to produce a copy-pasteable result. This leads to my thesis: <strong>The real-world effectiveness of LLMs is now limited more by their awareness of context than by their reasoning capabilities</strong>.</p>
+<p>Think of an LLM as a brilliant but newly hired colleague who hasn’t been properly onboarded. While they can tackle complex problems, they miss crucial contextual details required to fit their work into the existing workflows. The challenge isn’t their intelligence—it’s their need for situational awareness.</p>
+<section id="context-makes-outputs-more-useful" class="level2">
+<h2 class="anchored" data-anchor-id="context-makes-outputs-more-useful">Context makes outputs more useful</h2>
+<p>Here are some examples of how adding context lets LLMs produce outputs that are more readily applicable:</p>
+<ul>
+<li>When summarizing a technical document, telling the model “This is for marketing executives who need to understand the business implications” yields very different (and more useful) results than just asking for a summary</li>
+<li>For educational content, specifying “Explain this for a high school student” versus “Explain this for a graduate student” completely changes the depth and terminology used</li>
+<li>In correspondence, sharing details like “This is for a long-time client who prefers informal communication” helps create more appropriately-toned messages For social media, providing examples of past successful posts or a company style guide helps the model match the preferred tone</li>
+<li>In software development, showing the model your existing codebase helps it suggest solutions that integrate seamlessly with your architecture</li>
+<li>During translation work, specifying “This is medical documentation” versus “This is marketing material” ensures appropriate terminology and tone</li>
+</ul>
+</section>
+<section id="infusing-context-actively-and-passively" class="level2">
+<h2 class="anchored" data-anchor-id="infusing-context-actively-and-passively">Infusing context actively and passively</h2>
+<p>It’s tedious to write a detailed briefing each time, just like you wouldn’t want to repeat onboarding of a colleague. Here are ways to reuse prompts or passively infuse context:</p>
+<ul>
+<li>Write a persistent system prompt that’s automatically applied to all conversations. In ChatGPT, you can do this by creating a custom GPT.</li>
+<li>Enable chat history to be able to copy-paste successful prompts into new conversations.</li>
+<li>Turn on features that let the model learn from past interactions (if not dealing with sensitive data).</li>
+<li>When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.</li>
+<li>Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.</li>
+<li>Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.</li>
+</ul>
+<hr>
+<p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-pink-letter-blocks-jbywvpa9vH8?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Productivity</category>
+  <guid>https://simmering.dev/blog/context-constrained/</guid>
+  <pubDate>Fri, 13 Dec 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/context-constrained/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Aspect-based Sentiment Analysis with DSPy</title>

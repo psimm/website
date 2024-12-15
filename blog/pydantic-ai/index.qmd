@@ -1,7 +1,7 @@
 ---
 title: "Type-safe LLM agents with PydanticAI"
 author: "Paul Simmering"
-date: "2024-12-10"
+date: "2024-12-15"
 categories: ["Machine Learning", "Python"]
 image: "image.jpg"
 code-annotations: select
@@ -10,13 +10,13 @@ code-annotations: select
 Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I'm excited for their take on agents. In this article I'll walk through an example app and comment on my experience developing with PydanticAI.
 
 ::: {.callout-note collapse="true"}
-## PydanticAI version 0.0.9
+## PydanticAI version 0.0.12
 
-PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.9. Code examples may not work with future versions.
+PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.12. Code examples may not work with future versions.
 :::
 
 
-- currently supports OpenAI, Gemini and Groq with more integrations coming soon
+- currently supports OpenAI, Anthropic, Gemini, Ollama, Groq, Mistral and also has an interface to add more providers
 - type safe with structured responses including streamed responses
 - optional integration with [Logfire](https://pydantic.dev/logfire), a commercial service by the Pydantic team for logging LLM calls
 
@@ -304,10 +304,11 @@ I just hope that the integration remains optional. While Logfire looks great, my
 
 - Launches into a competitive market with many established libraries.
 - Early stage of development, so expect breaking changes.
-- Limited set of supported model providers, though support for more is coming.
 - Economic incentives to lock users into Logfire. This hasn't happened but is a risk.
 :::
 
 ::::
 
 I'm looking forward to an opportunity to build a full-scale application with PydanticAI.
+
+Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
