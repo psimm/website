@@ -35,6 +35,7 @@ It's tedious to write a detailed briefing each time, just like you wouldn't want
 - When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.
 - Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.
 - Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.
+- Share your screen with an assistant. This [feature](https://beebom.com/how-you-can-try-google-project-astra-stream-realtime/) was added to Google Gemini in December 2024. While my experience testing it was mixed, I think this could become an effective way to continuously share context. It makes most sense with apps that don't have their own built-in assistant.
 
 ---
 

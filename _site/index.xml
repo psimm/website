@@ -958,6 +958,7 @@ ModelTextResponse(content="Unfortunately, there are no reports in the database t
 <li>When writing in an editor enhanced by AI, prefer one long document over spreading content across many shorter documents.</li>
 <li>Work with developer tools like GitHub Copilot or Cursor that read your code base rather than copy-pasting snippets into a separate chat window. This also works for non-coding tasks, such as writing articles.</li>
 <li>Use dictation to speak your prompt effortlessly. Speak about the situation and the task in a stream of consciousness.</li>
+<li>Share your screen with an assistant. This <a href="https://beebom.com/how-you-can-try-google-project-astra-stream-realtime/">feature</a> was added to Google Gemini in December 2024. While my experience testing it was mixed, I think this could become an effective way to continuously share context. It makes most sense with apps that don’t have their own built-in assistant.</li>
 </ul>
 <hr>
 <p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-pink-letter-blocks-jbywvpa9vH8?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
