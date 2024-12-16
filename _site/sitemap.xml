@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2024-11-27T07:04:28.421Z</lastmod>
+    <lastmod>2024-12-15T16:20:57.483Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/openai_structured_output/index.html</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/abstractions/index.html</loc>
-    <lastmod>2024-12-14T19:19:35.578Z</lastmod>
+    <lastmod>2024-12-15T10:46:47.867Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/echarts4r/index.html</loc>
@@ -33,36 +33,40 @@
     <lastmod>2024-05-06T06:34:16.487Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/yarn/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.516Z</lastmod>
+    <loc>https://simmering.dev/blog/pydantic-ai/index.html</loc>
+    <lastmod>2024-12-16T20:07:06.565Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/long-prompts/index.html</loc>
-    <lastmod>2024-09-01T11:59:19.817Z</lastmod>
+    <loc>https://simmering.dev/blog/fast-and-good/index.html</loc>
+    <lastmod>2024-12-15T12:27:21.024Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/structured_output/index.html</loc>
-    <lastmod>2024-07-31T15:04:37.465Z</lastmod>
+    <loc>https://simmering.dev/blog/one-stop-nlp/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.502Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/gold-data/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.466Z</lastmod>
+    <loc>https://simmering.dev/blog/llms-for-absa/index.html</loc>
+    <lastmod>2024-08-07T12:40:50.168Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/absa-with-dspy/index.html</loc>
-    <lastmod>2024-11-27T07:58:05.152Z</lastmod>
+    <loc>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.461Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/quarto-wiki/index.html</loc>
-    <lastmod>2024-07-16T18:57:55.447Z</lastmod>
+    <loc>https://simmering.dev/blog/dataframes/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.460Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/llm-price-performance/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.489Z</lastmod>
+    <loc>https://simmering.dev/blog/data-grug/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.459Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/llm-eval/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.479Z</lastmod>
+    <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.455Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/context-constrained/index.html</loc>
+    <lastmod>2024-12-15T13:02:31.893Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/projects.html</loc>
@@ -173,32 +177,36 @@
     <lastmod>2024-11-24T20:05:25.143Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/ai-assistants/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.455Z</lastmod>
+    <loc>https://simmering.dev/blog/llm-eval/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.479Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/data-grug/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.459Z</lastmod>
+    <loc>https://simmering.dev/blog/llm-price-performance/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.489Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/dataframes/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.460Z</lastmod>
+    <loc>https://simmering.dev/blog/quarto-wiki/index.html</loc>
+    <lastmod>2024-07-16T18:57:55.447Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/dataset-size-vs-correctness/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.461Z</lastmod>
+    <loc>https://simmering.dev/blog/absa-with-dspy/index.html</loc>
+    <lastmod>2024-11-27T07:58:05.152Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/llms-for-absa/index.html</loc>
-    <lastmod>2024-08-07T12:40:50.168Z</lastmod>
+    <loc>https://simmering.dev/blog/gold-data/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.466Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/one-stop-nlp/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.502Z</lastmod>
+    <loc>https://simmering.dev/blog/structured_output/index.html</loc>
+    <lastmod>2024-07-31T15:04:37.465Z</lastmod>
   </url>
   <url>
-    <loc>https://simmering.dev/blog/fast-and-good/index.html</loc>
-    <lastmod>2024-06-24T06:21:20.905Z</lastmod>
+    <loc>https://simmering.dev/blog/long-prompts/index.html</loc>
+    <lastmod>2024-09-01T11:59:19.817Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/yarn/index.html</loc>
+    <lastmod>2024-05-06T06:34:16.516Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/nlp-model-escalation/index.html</loc>
@@ -214,11 +222,11 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/detailed-world/index.html</loc>
-    <lastmod>2024-07-16T18:57:55.434Z</lastmod>
+    <lastmod>2024-12-15T12:28:09.477Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/skills/index.html</loc>
-    <lastmod>2024-05-06T06:34:16.515Z</lastmod>
+    <lastmod>2024-12-15T11:04:42.394Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/modal-twitter/index.html</loc>
@@ -230,10 +238,6 @@
   </url>
   <url>
     <loc>https://simmering.dev/blogroll.html</loc>
-    <lastmod>2024-12-01T07:14:23.447Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/blog/context-constrained/index.html</loc>
-    <lastmod>2024-12-14T19:46:51.596Z</lastmod>
+    <lastmod>2024-12-07T18:07:12.777Z</lastmod>
   </url>
 </urlset>

@@ -131,11 +131,3 @@ High level tools can add a tax, but prices have been decreasing quickly. Managed
 ### Keep your training data portable
 
 The linear progression from low to high abstraction is a simplification. As the ecosystem matures, interoperability increases. For example, Hugging Face Transformers abstracts away the model architecture, but you can still access the PyTorch model and adjust it. Then that model can be deployed to AWS SageMaker. Not all combinations are possible though - for example a GPT model fine-tuned on OpenAI's API can only run on that account. When it's cheap to do so, use solutions that have as little lock-in as possible. Especially your training data should remain portable. In a time where research labs one-up each other weekly with better base models, being able to switch to a new model quickly is an advantage.
-
-## Go deeper
-
-If you're interested in the details of the LLM stack, I recommend the following resources:
-
-- [Open Source LLM Inference Engines Comparison](https://github.com/lapp0/lm-inference-engines)
-
-I'll keep adding to this list as I find more resources.

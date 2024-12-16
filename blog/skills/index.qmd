@@ -27,9 +27,12 @@ A few skills stand out as eternally valuable for anyone in data science. They're
 4. **Effective writing**: Whether it's writing a report, a proposal, a support ticket or an email: Writing with clarity boosts anyone's effectiveness.
 5. **SQL**: This is the only language on the list. SQL is ubiquitous and has been in use for almost 50 years. Being able to access data at the source is essential for anyone working in the data industry. The SQL standard changes very slowly. Different databases implement variants of the language, but the core commands work everywhere.
 6. **Git**: Using version control is non-negotiable when working in a team and Git is the unanimous leading choice.
-7. **Text editor mastery**: Using a text editor or IDE efficiently by touch typing and keyboard shortcuts removes a barrier. Speed isn't the point, it's freeing your mind from needing to expend energy on typing. To safeguard your skill investment, use a free editor that supports many programming languages, for example Visual Studio Code.
 
-If you don't know what to start with, practice a golden long-term skill.
+These are practical skills and overly difficult to get started with. They provide a great foundation that makes a data scientist useful in almost any project. If you are interested in research, go deeper and follow Yann LeCun's advice:
+
+> You should study very basic things that have a long shelf life - mathematics, physics, basic computer science, applied mathematics. Those are things that would be necessary to understand and develop the next generation of AI system
+> 
+> -- [Yann LeCun](https://x.com/moneycontrolcom/status/1849108066706350137), Chief AI Scientist at Meta
 
 ## Pick-one skills
 

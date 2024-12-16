@@ -2,7 +2,7 @@
 title: "The World is Large and Very Detailed"
 author: "Paul Simmering"
 date: "2024-07-13"
-categories: ["Economics", "Entrepreneurship"]
+categories: ["Economics"]
 image: "world.jpg"
 ---
 
