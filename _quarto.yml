@@ -23,11 +23,14 @@ website:
         async src="//gc.zgo.at/count.js"></script>
 format:
   html:
-    theme: simplex
+    theme:
+      light: simplex
+      dark: [simplex, theme-dark.scss]
     css: styles.css
     linkcolor: "#3478C5"
-    highlight-style: a11y
+    highlight-style:
+      light: custom-light.theme
+      dark: custom-dark.theme
     code-overflow: wrap
     code-copy: hover
-    code-block-bg: "#f7f7f7"
     code-block-border-left: "#31BAE9"

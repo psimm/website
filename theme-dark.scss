@@ -1,0 +1,82 @@
+/*-- scss:defaults --*/
+
+// Colors
+$primary: #3478C5;
+$secondary: #6c757d;
+$success: #198754;
+$info: #31BAE9;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #212529;
+
+// Base document colors
+$body-bg: #1a1a1a;
+$body-color: #e9ecef;
+$link-color: $info;
+
+// Navigation
+$navbar-bg: darken($body-bg, 5%);
+$navbar-fg: $body-color;
+$navbar-hl: $info;
+
+$code-bg: darken($body-bg, 3%);
+
+// Inline code
+$code-color: #ff8a8a;
+
+// Cards and callouts
+$card-bg: darken($body-bg, 3%);
+$card-border-color: rgba(255, 255, 255, 0.125);
+
+// Tables
+$table-bg: $body-bg;
+$table-border-color: rgba(255, 255, 255, 0.125);
+
+// Forms
+$input-bg: darken($body-bg, 3%);
+$input-border-color: rgba(255, 255, 255, 0.125);
+$input-color: $body-color;
+
+/*-- scss:rules --*/
+
+// Custom rules
+.card {
+  background-color: $card-bg;
+  border-color: $card-border-color;
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Make sure code blocks are readable
+pre {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Adjust table styles for dark mode
+table {
+  color: $body-color;
+}
+
+// Make blockquotes stand out
+blockquote {
+  border-left: 4px solid $info;
+  background-color: darken($body-bg, 3%);
+}
+
+// Style for code output blocks
+.cell-output {
+    background-color: darken($body-bg, 5%); // Slightly darker than body background
+    color: #d1d1d1; // Light grey text color
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  // If you want to specifically target pre elements within output
+  .cell-output pre {
+    background-color: darken($body-bg, 5%);
+    color: #d1d1d1;
+  }
