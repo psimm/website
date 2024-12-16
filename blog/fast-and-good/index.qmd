@@ -2,7 +2,7 @@
 title: "Fast and good"
 author: "Paul Simmering"
 date: "2024-06-22"
-categories: ["Productivity"]
+categories: ["Productivity", "Advice"]
 image: "good_fast_cheap.png"
 ---
 

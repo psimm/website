@@ -1,10 +1,15 @@
 ---
 title: "Type-safe LLM agents with PydanticAI"
 author: "Paul Simmering"
-date: "2024-12-15"
+date: "2024-12-16"
 categories: ["Machine Learning", "Python"]
 image: "image.jpg"
 code-annotations: select
+toc: true
+format:
+    html:
+        mermaid: 
+          theme: neutral
 ---
 
 Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I'm excited for their take on agents. In this article I'll walk through an example app and comment on my experience developing with PydanticAI.
@@ -12,21 +17,75 @@ Pydantic AI is a new agent framework by the company behind Pydantic, the popular
 ::: {.callout-note collapse="true"}
 ## PydanticAI version 0.0.12
 
-PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.12. Code examples may not work with future versions.
+PydanticAI is in beta. This article is based on version 0.0.12. Code examples may not work with future versions. Limitations that are mentioned may be lifted in future versions.
 :::
 
+::: {.callout-tip collapse="true"}
+## What is an agent?
 
-- currently supports OpenAI, Anthropic, Gemini, Ollama, Groq, Mistral and also has an interface to add more providers
-- type safe with structured responses including streamed responses
+The term "agent" in the context of LLMs refers to a while loop that calls an LLM to solve a problem. The LLM may be equipped with tools, meaning functions that it can supply arguments to and receive results from. To cut through the marketing hype, I suggest just reading the [code](https://github.com/pydantic/pydantic-ai/blob/0475da82d5956a2d65678d464328c8f8f8be2bf1/pydantic_ai_slim/pydantic_ai/agent.py#L244) for PydanticAI's `Agent.run()` method.
+:::
+
+As an agent framework, PydanticAI lets developers define workflows wherein an LLM interprets a user's query and can use tools in multiple steps to answer the question or perform a task. Type safety is a big deal in agent development - the LLM has to call tools with the correct arguments and the tools have to return the correct data type. PydanticAI brings the type safety of Pydantic to this space. This also speeds up development, because type checkers like mypy and pyright can catch errors before the code is run.
+
+In addition to type safety, PydanticAI offers:
+
+- streaming responses, including structured responses
+- support for async tool calling
+- support for multiple LLM providers, including OpenAI, Groq, Anthropic, Gemini, Ollama and Mistral, with more to come
 - optional integration with [Logfire](https://pydantic.dev/logfire), a commercial service by the Pydantic team for logging LLM calls
-
-Type-safety is a big deal in agent development - the more tools an agent has at its disposal and the more complex their arguments are, the higher the risk of type errors.
 
 ## Example app: Market research knowledge manager
 
 Large companies conduct market research to understand their customers, competition and market trends. Over time, they amass a library of thousands of reports, tables and transcripts. Knowledge management becomes a challenge, because teams are not aware of existing research.
 
-Let's build an example agent that answers questions based on information in a database with multiple tables.
+Let's build an example agent that answers questions based on information in a database with multiple tables. Our final agentic RAG system will enable an interaction like this:
+
+```{mermaid}
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#2d3748',
+    'primaryBorderColor': '#90cdf4',
+    'lineColor': '#64748b',
+    'secondaryColor': '#ffffff',
+    'tertiaryColor': '#ffffff',
+    'fontSize': '22px',
+    'labelFontSize': '18px',
+    'edgeLabelFontSize': '18px'
+  }
+}}%%
+graph LR
+    %% Define styles
+    classDef default fill:#ffffff,stroke:#90cdf4,stroke-width:2px
+    classDef highlight fill:#fdf2f8,stroke:#ed64a6,stroke-width:3px
+    classDef api fill:#ffffff,stroke:#4fd1c5,stroke-width:2px
+
+    User([User]) --> |"What reports do we have about electric vehicles?"| Agent
+    Agent --> |"Analyze user query"| Groq[LLM Provider Groq]
+    Groq --> |"Tool selection"| Agent
+    
+    Agent --> |"Search topic='Automotive'"| Tool1[tool: search_reports_by_field]
+    Agent --> |"Search 'electric vehicles'"| Tool2[tool: search_reports_by_title_similarity]
+    
+    Tool1 --> |"Query"| DB[(DuckDB)]
+    Tool2 --> |"Vector similarity"| DB
+    
+    Tool1 --> |"Found 2 reports"| Agent
+    Tool2 --> |"Found similar titles"| Agent
+    
+    Agent --> |"There are 2 reports about EVs:
+    1. German EV Market Analysis 2024
+    2. EV Adoption in Asia"| User
+
+    %% Apply styles
+    class Groq api
+    class DB highlight
+
+    %% Links between nodes
+    linkStyle default stroke:#64748b,stroke-width:2px
+```
 
 ```{python}
 # | echo: false
@@ -50,11 +109,12 @@ nest_asyncio.apply()
 I'm using [DuckDB](https://duckdb.org) to create a local database which will be made available to the agent.
 
 ```{python}
+# | output: false
 import duckdb
 
 con = duckdb.connect()  # <1>
-con.execute("INSTALL vss")  # <2>
-con.execute("LOAD vss")
+con.execute("INSTALL vss;")  # <2>
+con.execute("LOAD vss;")
 ```
 
 1. Create an ephemeral in-memory database. In production you'd want to use a persistent database.
@@ -73,9 +133,9 @@ GT(reports.head(5))
 To make the title searchable, I'll embed it using an [OpenAI embedding endpoint](https://platform.openai.com/docs/guides/embeddings). The result will be stored in a new column with 1536 dimensions.
 
 ```{python}
+# | output: false
 from openai import OpenAI
 from tqdm import tqdm
-import pickle
 
 
 def embed_text(text: str) -> list[float]:
@@ -84,23 +144,7 @@ def embed_text(text: str) -> list[float]:
     return client.embeddings.create(input=text, model=model).data[0].embedding
 
 
-# Load cache
-try:
-    with open("title_embeddings_cache.pkl", "rb") as f:
-        cache = pickle.load(f)
-except FileNotFoundError:
-    cache = {}
-
-# Embed titles with caching
-title_embeddings = []
-for title in tqdm(reports["title"]):
-    if title not in cache:
-        cache[title] = embed_text(title)
-    title_embeddings.append(cache[title])
-
-# Save cache
-with open("title_embeddings_cache.pkl", "wb") as f:
-    pickle.dump(cache, f)
+title_embeddings = [embed_text(title) for title in tqdm(reports["title"])]
 
 reports = reports.with_columns(
     pl.Series(
@@ -114,12 +158,13 @@ reports = reports.with_columns(
 Now, I'll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size `ARRAY` column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.
 
 ```{python}
+# | output: false
 con.execute(
     """
     CREATE OR REPLACE TABLE reports AS
     SELECT
-        id::varchar AS id,
-        date::date AS date,
+        id::integer AS id,
+        year::integer AS year,
         institute::varchar AS institute,
         country::varchar AS country,
         topic::varchar AS topic,
@@ -156,67 +201,148 @@ print(result.data)
 
 1. See the [KnownModelName](https://ai.pydantic.dev/api/models/base/#pydantic_ai.models.KnownModelName) documentation for a list of supported models.
 
-Let's add tools to the agent. First, it needs a way to access the database.
+### Tools
+
+The agent's job will be to answer questions based on the reports in the database. It needs a way to access the database. We can give it a tool, meaning a function that it can call, to query the database. First, it needs a database connection.
 
 ```{python}
 from dataclasses import dataclass
 
 
 @dataclass
-class SupportDependencies:  # <1>
+class AgentDependencies:  # <1>
     db: duckdb.DuckDBPyConnection
 
 
-deps = SupportDependencies(db=con)
+deps = AgentDependencies(db=con)
 ```
 
-1. A dataclass that contains dependencies needed by the agent.
+1. A dataclass that contains dependencies needed by the agent. Additional dependencies can be added as needed.
 
 Next, let's give the agent a tool to search the database of reports. Based on the user's question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.
 
 ```{python}
+import json
 from typing import Literal
 from pydantic_ai import RunContext
 from pydantic import validate_call, Field
 
 
-@agent.tool  # <1>
-@validate_call(config={"arbitrary_types_allowed": True})  # <2>
+def print_df(df: pl.DataFrame) -> str:  # <1>
+    return json.dumps(df.to_dicts())
+
+
+@agent.tool  # <2>
+@validate_call(config={"arbitrary_types_allowed": True})  # <3>
 def search_reports_by_field(
-    ctx: RunContext[SupportDependencies],  # <3>
-    field: Literal["id", "date", "institute", "country", "topic", "title"],  # <4>
+    ctx: RunContext[AgentDependencies],  # <4>
+    field: Literal["id", "year", "institute", "country", "topic", "title"],  # <5>
     value: str = Field(
         description="The value to search for in the field. Case insensitive."
     ),
 ) -> str:
-    query = f"SELECT date, institute, country, topic, title FROM reports WHERE lower({field}) = lower(?)"
-    df = ctx.deps.db.execute(query, [value]).df()  # <5>
+    if field in ["id", "year"]:
+        value = int(value)
+        query = f"SELECT id, year, institute, country, topic, title FROM reports WHERE {field} = ?;"
+    else:
+        query = f"SELECT id, year, institute, country, topic, title FROM reports WHERE lower({field}) = lower(?);"
+    df = ctx.deps.db.execute(query, [value]).pl()  # <6>
     if df.shape[0] == 0:
-        return "No reports found."  # <6>
-    return df.to_markdown()
+        return "No reports found. Try a different field or value, or use the title similarity tool."  # <7>
+    return print_df(df)
 ```
 
-1. Use the `@agent.tool` decorator to register the function as a tool.
-2. Use the `@validate_call` decorator to enable type checking of the function arguments. `arbitrary_types_allowed` is required because the `RunContext` type is not a standard type.
-3. The `RunContext` type hint is required for the tool to access the dependencies.
-4. Tell the model about the available fields in the database and validate that only those are selected.
-5. The database query returns a pandas DataFrame, which is converted to a markdown-formatted string.
-6. Provide a clear message if no reports are found. Otherwise, the function would return a markdown table with no rows, which could be confusing.
+1. A record-oriented JSON representation of the data frame is understand by an LLM.
+2. Use the `@agent.tool` decorator to register the function as a tool.
+3. Use the `@validate_call` decorator to enable type checking of the function arguments. `arbitrary_types_allowed` is required because the `RunContext` type is not a standard type.
+4. The `RunContext` type hint is required for the tool to access the dependencies.
+5. Tell the model about the available fields in the database and validate that only those are selected.
+6. The database query returns a polars DataFrame.
+7. Provide a clear message if no reports are found and hint that another function (which will be introduced later) can be used for fuzzy matching.
+
+This lets the agent execute searches based on the exact match of a field.
 
 ```{python}
-deps = SupportDependencies(db=con)
+deps = AgentDependencies(db=con)
 result = agent.run_sync("Which reports do we have from Germany?", deps=deps)
 print(result.data)
 ```
 
-This lets the agent execute searches based on the exact match of a field. However, users are unlikely to remember the exact title or id of a report, so let's also add the ability to search for similar titles.
+It works, the agent found the 4 reports from Germany. Let's check the exact tool call:
 
 ```{python}
-@agent.tool
+agent.last_run_messages
+```
+
+Here, the model correctly translated the user's question into the tool call with the arguments `{"field": "country", "value": "Germany"}`.
+
+To make it easier to evaluate the agent's output and also make its results useable by other tools, we can create a response model that includes the ids of the identified reports.
+
+```{python}
+from pydantic import BaseModel
+
+
+class AgentResponse(BaseModel):
+    text: str = Field(
+        description="Answer to the user's question in informal language. Don't include the report ids."
+    )
+    relevant_report_ids: set[int] = Field(
+        description="Set of 'id' integer values of the reports that are relevant to the user's question. Only include ids retrieved by the search tools. Never make up ids." # <1>
+    )
+
+
+typed_agent = Agent(
+    model="groq:llama-3.3-70b-versatile",
+    system_prompt="You are a market research expert and answer questions using a database of reports.",
+    result_type=AgentResponse,
+    result_retries=3,  # in case LLM doesn't return a valid JSON
+)
+```
+
+1. This description fixes a common mistake: the LLM would answer with made up ids like 123, 456 when it didn't find any reports.
+
+```{python}
+# | output: false
+# | echo: false
+
+
+@typed_agent.tool
+@validate_call(config={"arbitrary_types_allowed": True})
+def search_reports_by_field(
+    ctx: RunContext[AgentDependencies],
+    field: Literal["id", "year", "institute", "country", "topic", "title"],
+    value: str = Field(
+        description="The value to search for in the field. Case insensitive."
+    ),
+) -> str:
+    if field in ["id", "year"]:
+        value = int(value)
+        query = f"SELECT id, year, institute, country, topic, title FROM reports WHERE {field} = ?;"
+    else:
+        query = f"SELECT id, year, institute, country, topic, title FROM reports WHERE lower({field}) = lower(?);"
+    df = ctx.deps.db.execute(query, [value]).pl()
+    if len(df) == 0:
+        return "No reports found. Try a different field or value, or use the title similarity tool."
+    return print_df(df)
+```
+
+```{python}
+result = typed_agent.run_sync("Which reports do we have from Germany? Tell me their titles and ids", deps=deps)
+print(result.data)
+```
+
+Now we have an agent that returns a type-checked structured response. Note that I've omitted the re-registration of the tool to the new agent instance for brevity.
+
+However, users are unlikely to remember the exact title or id of a report, so let's also add the ability to search for similar titles.
+
+```{python}
+@typed_agent.tool
 @validate_call(config={"arbitrary_types_allowed": True})
 def search_reports_by_title_similarity(
-    ctx: RunContext[SupportDependencies],
-    title: str,
+    ctx: RunContext[AgentDependencies],
+    query: str = Field(
+        description="Use for vector similarity search when exact field search returns no results. This tool finds reports with similar titles."
+    ),
 ) -> str:
     # Embed the title given by the user
     try:
@@ -227,39 +353,110 @@ def search_reports_by_title_similarity(
     # Search for similar titles
     title_embedding_str = "[" + ",".join(map(str, title_embedding)) + "]"
     query = """
-        SELECT date, institute, country, topic, title
+        SELECT id, year, institute, country, topic, title
         FROM reports
         ORDER BY array_distance(title_embedding, ?::FLOAT[1536])
-        LIMIT 5
+        LIMIT 5;
     """
-    df = ctx.deps.db.execute(query, [title_embedding_str]).df()
-    if df.shape[0] == 0:
-        return "No reports found."
-    return df.to_markdown()
+    df = ctx.deps.db.execute(query, [title_embedding_str]).pl()
+    return print_df(df)
 ```
 
 Let's ask the agent about a topic that is not in the database.
 
 ```{python}
-result = agent.run_sync("Search for reports mentioning quantum computing", deps=deps)
+result = typed_agent.run_sync("Search for reports mentioning quantum computing", deps=deps)
 print(result.data)
 ```
 
-To see which tool the agent chose, we can inspect the message history.
+That worked as expected.
+
+## Evals
+
+Automated evaluations are necessary to ensure that an agent is working as expected, and to switch out models, prompts and tools without breaking the app. PydanticAI offers [tools](https://ai.pydantic.dev/testing-evals/) for testing the code (without running a model) and for evaluations. Let's set up a simple evaluation that checks whether the agent correctly answers questions about the database. We measure the precision (how many of the results found are relevant) and recall (how many of the relevant results are found).
 
 ```{python}
-for message in result.all_messages():
-    print(message)
+examples = [
+    {
+        "question": "How many reports do we have from Germany?",
+        "relevant_report_ids": {1, 12, 21, 32},
+    },
+    {
+        "question": "For which countries to we have reports mentioning electric vehicles?",
+        "relevant_report_ids": {1, 25},
+    },
+    {
+        "question": "What reports do we have about the gaming industry?",
+        "relevant_report_ids": {22, 30},
+    },
+    {
+        "question": "What reports do we have about the pet care industry?",
+        "relevant_report_ids": {27},
+    },
+    {
+        "question": "Which reports discuss cyber security insurance?",
+        "relevant_report_ids": {29},
+    },
+    {
+        "question": "What healthcare reports were published in 2024?",
+        "relevant_report_ids": {32, 38},
+    },
+    {
+        "question": "Which reports are about the smartphone or mobile phone market?",
+        "relevant_report_ids": {4, 40},
+    },
+    {
+        "question": "What reports do we have from Market Insights Inc.?",
+        "relevant_report_ids": {2, 22},
+    },
+]
 ```
 
-The model ended up making three tool calls:
+```{python}
+from collections import Counter
 
-1. `search_reports_by_title_similarity` to find titles similar to "quantum computing". It got a result but was smart enough to understand that they were not relevant.
-2. `search_reports_by_field` to find reports with the topic "Electronics". It got results and again understood that they were not relevant.
-3. `search_reports_by_field` to find reports with the topic "Quantum Computing" with no results.
 
-TODO: Talk about what other tools could be added.
-TODO: Read other examples from PydanticAI documentation.
+def eval_example(
+    example: dict[str, str | set[int]], print_errors: bool = False
+) -> dict[str, int]:
+    result = typed_agent.run_sync(example["question"], deps=deps)
+    act, exp = result.data.relevant_report_ids, example["relevant_report_ids"]
+    metrics = Counter(
+        {
+            "tp": len(act & exp),  # <1>
+            "fp": len(act - exp),
+            "fn": len(exp - act),
+        }
+    )
+
+    if print_errors and (metrics["fp"] > 0 or metrics["fn"] > 0):
+        print("Error in evaluation:")
+        print(f"  Question: {example['question']}")
+        print(f"  Found: {act}")
+        print(f"  Expected: {exp}")
+
+    return metrics
+
+
+metric_totals = Counter()
+
+for example in tqdm(examples):  # <2>
+    metrics = eval_example(example)
+    metric_totals += metrics
+
+precision = metric_totals["tp"] / (metric_totals["tp"] + metric_totals["fp"])
+recall = metric_totals["tp"] / (metric_totals["tp"] + metric_totals["fn"])
+
+print(f"Precision: {precision:.2f}, Recall: {recall:.2f}")  # <3>
+```
+
+1. Use set operations to compare the expected and found ids.
+2. This should be parallelized if the number of examples is large.
+3. Precision and recall could also be combined into the F1 score, which is their harmonic mean.
+
+This is a joint evaluation of the agent, the tools and the database. What's missing is an evaluation of the generated text. In a real RAG system, you'd also want separate evaluations of retrieval and result ranking.
+
+The low recall is due to the agent with structured output only trying the `search_reports_by_field` tool. I couldn't find a way to fix this with the current release of the library, but it may be resolved with a recent [PR](https://github.com/pydantic/pydantic-ai/pull/184). 
 
 ## Discussion
 
@@ -274,15 +471,13 @@ PydanticAI is a late entrant to the agent framework space. It joins several esta
 | [autogen](https://github.com/microsoft/autogen) | Multi-agent AI chat framework by Microsoft | 36k |
 | [crewAI](https://github.com/crewAIInc/crewai) | Framework for orchestrating role-based AI agents | 22k |
 | [swarm](https://github.com/openai/swarm) | Educational framework for multi-agent apps by OpenAI | 17k |
-| [phidata](https://github.com/phidatahq/phidata) | Multi-agent backend and chat frontent | 16k |
+| [phidata](https://github.com/phidatahq/phidata) | Multi-agent backend and chat frontend | 16k |
 
 There are dozens of other libraries with fewer stars. In addition, there are libraries specialized for RAG like [LlamaIndex](https://github.com/run-llama/llama_index) and [Haystack](https://github.com/deepset-ai/haystack). The competition landscape doesn't show signs of consolidation or slowing down.
 
 ### Development team
 
-Pydantic Services, the company behind Pydantic, has raised a $12.5m [Series A](https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb) in October 2024. This is great news for the project: funding pays for full time developers. Of course, it raises the question of how Pydantic will make money, and the answer to that is Logfire. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, [LangSmith](https://www.langchain.com/langsmith).
-
-I just hope that the integration remains optional. While Logfire looks great, my team already uses [Weave](https://wandb.ai/site/weave/) by Weights & Biases, and having to switch would be a barrier to adopting PydanticAI.
+Pydantic Services, the company behind Pydantic, has raised a $12.5m [Series A](https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb) in October 2024. This is great news for the project: funding pays for full time developers. It also raises the question of how Pydantic will make money, and the answer to that is Logfire subscriptions. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, [LangSmith](https://www.langchain.com/langsmith). I just hope that the integration remains optional. While Logfire looks great, my team already uses [Weave](https://wandb.ai/site/weave/) by Weights & Biases, and having to switch would be a barrier to adopting PydanticAI.
 
 ### Review
 
@@ -291,12 +486,12 @@ I just hope that the integration remains optional. While Logfire looks great, my
 ::: {.column width="50%"}
 **Pros ✅**
 
-- Sensible abstractions that don't get in the way.
+- Sensible abstractions that don't get in the way and enable coding in a Pythonic style.
 - Type safety and integration with Pydantic.
-- Strong reputation of the Pydantic team.
+- Support for streaming responses and async tool calling. This is critical for live chat applications.
 - Pydantic is familiar to many Python developers who will have an easier time learning PydanticAI.
-- Great support for streaming responses and async tool calling. This is critical for live chat applications.
-- High quality documentation and examples.
+- High quality documentation and examples that also cover tests and evals.
+- Strong reputation of the Pydantic team and high responsiveness in Github issues.
 :::
 
 ::: {.column width="50%"}
@@ -304,11 +499,21 @@ I just hope that the integration remains optional. While Logfire looks great, my
 
 - Launches into a competitive market with many established libraries.
 - Early stage of development, so expect breaking changes.
-- Economic incentives to lock users into Logfire. This hasn't happened but is a risk.
+- Many concepts to learn, but mild compared to langchain which invented its own domain-specific language LCEL.
+- No support for multimodal (image, audio, video) inputs and out yet, but it's [planned](https://github.com/pydantic/pydantic-ai/issues/126).
+- Economic incentives to lock users into Logfire. This hasn't happened but is a risk. 
 :::
 
 ::::
 
-I'm looking forward to an opportunity to build a full-scale application with PydanticAI.
+I'm looking forward to an opportunity to build a full-scale application with PydanticAI. The best place to get started is the [PydanticAI documentation](https://ai.pydantic.dev/).
 
-Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+::: {.callout-tip}
+## Not every app needs an agent framework
+
+A lot can be accomplished by single API calls or by specifying a fixed sequence of calls. That would also work for the example app shown in this article. Unless you truly need the flexibility of an agent framework, you may be better off with plain Python. If all you need is Pydantic + LLM calls, you can use [instructor](https://github.com/jxnl/instructor). [OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/) even supports structured outputs based on Pydantic models without an additional library.
+:::
+
+---
+
+Preview photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>

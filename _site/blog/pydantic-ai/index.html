@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
-<meta name="dcterms.date" content="2024-12-15">
+<meta name="dcterms.date" content="2024-12-16">
 
 <title>Type-safe LLM agents with PydanticAI – Paul Simmering</title>
 <style>
@@ -102,6 +102,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -110,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -194,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 15, 2024</p>
+        <p class="date">December 16, 2024</p>
       </div>
     </div>
     
@@ -205,7 +209,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#example-app-market-research-knowledge-manager" id="toc-example-app-market-research-knowledge-manager" class="nav-link active" data-scroll-target="#example-app-market-research-knowledge-manager">Example app: Market research knowledge manager</a>
+  <ul class="collapse">
+  <li><a href="#database" id="toc-database" class="nav-link" data-scroll-target="#database">Database</a></li>
+  <li><a href="#agent" id="toc-agent" class="nav-link" data-scroll-target="#agent">Agent</a></li>
+  <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
+  </ul></li>
+  <li><a href="#evals" id="toc-evals" class="nav-link" data-scroll-target="#evals">Evals</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul class="collapse">
+  <li><a href="#comparison-to-other-libraries" id="toc-comparison-to-other-libraries" class="nav-link" data-scroll-target="#comparison-to-other-libraries">Comparison to other libraries</a></li>
+  <li><a href="#development-team" id="toc-development-team" class="nav-link" data-scroll-target="#development-team">Development team</a></li>
+  <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -226,29 +250,101 @@ PydanticAI version 0.0.12
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>PydanticAI is currently in beta. The assessment of the library in this article is based on version 0.0.12. Code examples may not work with future versions.</p>
+<p>PydanticAI is in beta. This article is based on version 0.0.12. Code examples may not work with future versions. Limitations that are mentioned may be lifted in future versions.</p>
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is an agent?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The term “agent” in the context of LLMs refers to a while loop that calls an LLM to solve a problem. The LLM may be equipped with tools, meaning functions that it can supply arguments to and receive results from. To cut through the marketing hype, I suggest just reading the <a href="https://github.com/pydantic/pydantic-ai/blob/0475da82d5956a2d65678d464328c8f8f8be2bf1/pydantic_ai_slim/pydantic_ai/agent.py#L244">code</a> for PydanticAI’s <code>Agent.run()</code> method.</p>
+</div>
+</div>
+</div>
+<p>As an agent framework, PydanticAI lets developers define workflows wherein an LLM interprets a user’s query and can use tools in multiple steps to answer the question or perform a task. Type safety is a big deal in agent development - the LLM has to call tools with the correct arguments and the tools have to return the correct data type. PydanticAI brings the type safety of Pydantic to this space. This also speeds up development, because type checkers like mypy and pyright can catch errors before the code is run.</p>
+<p>In addition to type safety, PydanticAI offers:</p>
 <ul>
-<li>currently supports OpenAI, Anthropic, Gemini, Ollama, Groq, Mistral and also has an interface to add more providers</li>
-<li>type safe with structured responses including streamed responses</li>
+<li>streaming responses, including structured responses</li>
+<li>support for async tool calling</li>
+<li>support for multiple LLM providers, including OpenAI, Groq, Anthropic, Gemini, Ollama and Mistral, with more to come</li>
 <li>optional integration with <a href="https://pydantic.dev/logfire">Logfire</a>, a commercial service by the Pydantic team for logging LLM calls</li>
 </ul>
-<p>Type-safety is a big deal in agent development - the more tools an agent has at its disposal and the more complex their arguments are, the higher the risk of type errors.</p>
 <section id="example-app-market-research-knowledge-manager" class="level2">
 <h2 class="anchored" data-anchor-id="example-app-market-research-knowledge-manager">Example app: Market research knowledge manager</h2>
 <p>Large companies conduct market research to understand their customers, competition and market trends. Over time, they amass a library of thousands of reports, tables and transcripts. Knowledge management becomes a challenge, because teams are not aware of existing research.</p>
-<p>Let’s build an example agent that answers questions based on information in a database with multiple tables.</p>
+<p>Let’s build an example agent that answers questions based on information in a database with multiple tables. Our final agentic RAG system will enable an interaction like this:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#2d3748',
+    'primaryBorderColor': '#90cdf4',
+    'lineColor': '#64748b',
+    'secondaryColor': '#ffffff',
+    'tertiaryColor': '#ffffff',
+    'fontSize': '22px',
+    'labelFontSize': '18px',
+    'edgeLabelFontSize': '18px'
+  }
+}}%%
+graph LR
+    %% Define styles
+    classDef default fill:#ffffff,stroke:#90cdf4,stroke-width:2px
+    classDef highlight fill:#fdf2f8,stroke:#ed64a6,stroke-width:3px
+    classDef api fill:#ffffff,stroke:#4fd1c5,stroke-width:2px
+
+    User([User]) --&gt; |"What reports do we have about electric vehicles?"| Agent
+    Agent --&gt; |"Analyze user query"| Groq[LLM Provider Groq]
+    Groq --&gt; |"Tool selection"| Agent
+    
+    Agent --&gt; |"Search topic='Automotive'"| Tool1[tool: search_reports_by_field]
+    Agent --&gt; |"Search 'electric vehicles'"| Tool2[tool: search_reports_by_title_similarity]
+    
+    Tool1 --&gt; |"Query"| DB[(DuckDB)]
+    Tool2 --&gt; |"Vector similarity"| DB
+    
+    Tool1 --&gt; |"Found 2 reports"| Agent
+    Tool2 --&gt; |"Found similar titles"| Agent
+    
+    Agent --&gt; |"There are 2 reports about EVs:
+    1. German EV Market Analysis 2024
+    2. EV Adoption in Asia"| User
+
+    %% Apply styles
+    class Groq api
+    class DB highlight
+
+    %% Links between nodes
+    linkStyle default stroke:#64748b,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <section id="database" class="level3">
 <h3 class="anchored" data-anchor-id="database">Database</h3>
 <p>I’m using <a href="https://duckdb.org">DuckDB</a> to create a local database which will be made available to the agent.</p>
-<div id="bc29b192" class="cell" data-execution_count="3">
+<div id="42de94f8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"INSTALL vss"</span>)</span>
-<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"LOAD vss"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"INSTALL vss;"</span>)</span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"LOAD vss;"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
@@ -261,64 +357,61 @@ PydanticAI version 0.0.12
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16838f870&gt;</code></pre>
-</div>
 </div>
 <p>I’ll insert a set of reports into the database. The data included is fictional and was generated by an LLM. The data consists of 40 reports like this:</p>
-<div id="4408ee14" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> pl.read_csv(<span class="st">"data/reports.csv"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>GT(reports.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
-<div id="ggtxmjgqhw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="5bca465f" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> pl.read_csv(<span class="st">"data/reports.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>GT(reports.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<div id="efmqdqkhdh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#ggtxmjgqhw table {
+#efmqdqkhdh table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#ggtxmjgqhw thead, tbody, tfoot, tr, td, th { border-style: none; }
+#efmqdqkhdh thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#ggtxmjgqhw p { margin: 0; padding: 0; }
- #ggtxmjgqhw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #ggtxmjgqhw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #ggtxmjgqhw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #ggtxmjgqhw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #ggtxmjgqhw .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ggtxmjgqhw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ggtxmjgqhw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #ggtxmjgqhw .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #ggtxmjgqhw .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #ggtxmjgqhw .gt_column_spanner_outer:first-child { padding-left: 0; }
- #ggtxmjgqhw .gt_column_spanner_outer:last-child { padding-right: 0; }
- #ggtxmjgqhw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #ggtxmjgqhw .gt_spanner_row { border-bottom-style: hidden; }
- #ggtxmjgqhw .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #ggtxmjgqhw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #ggtxmjgqhw .gt_from_md> :first-child { margin-top: 0; }
- #ggtxmjgqhw .gt_from_md> :last-child { margin-bottom: 0; }
- #ggtxmjgqhw .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #ggtxmjgqhw .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #ggtxmjgqhw .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #ggtxmjgqhw .gt_row_group_first td { border-top-width: 2px; }
- #ggtxmjgqhw .gt_row_group_first th { border-top-width: 2px; }
- #ggtxmjgqhw .gt_striped { background-color: rgba(128,128,128,0.05); }
- #ggtxmjgqhw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #ggtxmjgqhw .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #ggtxmjgqhw .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #ggtxmjgqhw .gt_left { text-align: left; }
- #ggtxmjgqhw .gt_center { text-align: center; }
- #ggtxmjgqhw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #ggtxmjgqhw .gt_font_normal { font-weight: normal; }
- #ggtxmjgqhw .gt_font_bold { font-weight: bold; }
- #ggtxmjgqhw .gt_font_italic { font-style: italic; }
- #ggtxmjgqhw .gt_super { font-size: 65%; }
- #ggtxmjgqhw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #ggtxmjgqhw .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#efmqdqkhdh p { margin: 0; padding: 0; }
+ #efmqdqkhdh .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #efmqdqkhdh .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #efmqdqkhdh .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #efmqdqkhdh .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #efmqdqkhdh .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #efmqdqkhdh .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #efmqdqkhdh .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #efmqdqkhdh .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #efmqdqkhdh .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #efmqdqkhdh .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #efmqdqkhdh .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #efmqdqkhdh .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #efmqdqkhdh .gt_spanner_row { border-bottom-style: hidden; }
+ #efmqdqkhdh .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #efmqdqkhdh .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #efmqdqkhdh .gt_from_md> :first-child { margin-top: 0; }
+ #efmqdqkhdh .gt_from_md> :last-child { margin-bottom: 0; }
+ #efmqdqkhdh .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #efmqdqkhdh .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #efmqdqkhdh .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #efmqdqkhdh .gt_row_group_first td { border-top-width: 2px; }
+ #efmqdqkhdh .gt_row_group_first th { border-top-width: 2px; }
+ #efmqdqkhdh .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #efmqdqkhdh .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #efmqdqkhdh .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #efmqdqkhdh .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #efmqdqkhdh .gt_left { text-align: left; }
+ #efmqdqkhdh .gt_center { text-align: center; }
+ #efmqdqkhdh .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #efmqdqkhdh .gt_font_normal { font-weight: normal; }
+ #efmqdqkhdh .gt_font_bold { font-weight: bold; }
+ #efmqdqkhdh .gt_font_italic { font-style: italic; }
+ #efmqdqkhdh .gt_super { font-size: 65%; }
+ #efmqdqkhdh .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #efmqdqkhdh .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -326,7 +419,7 @@ PydanticAI version 0.0.12
 <thead>
 <tr class="gt_col_headings header">
 <th id="id" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">id</th>
-<th id="date" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">date</th>
+<th id="year" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">year</th>
 <th id="institute" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">institute</th>
 <th id="country" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">country</th>
 <th id="topic" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">topic</th>
@@ -336,7 +429,7 @@ PydanticAI version 0.0.12
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">2018-07-20</td>
+<td class="gt_row gt_right">2018</td>
 <td class="gt_row gt_left">Research DNA GmbH</td>
 <td class="gt_row gt_left">Germany</td>
 <td class="gt_row gt_left">Automotive</td>
@@ -344,7 +437,7 @@ PydanticAI version 0.0.12
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">2018-08-15</td>
+<td class="gt_row gt_right">2018</td>
 <td class="gt_row gt_left">Market Insights Inc.</td>
 <td class="gt_row gt_left">USA</td>
 <td class="gt_row gt_left">Healthcare</td>
@@ -352,7 +445,7 @@ PydanticAI version 0.0.12
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">3</td>
-<td class="gt_row gt_left">2018-09-10</td>
+<td class="gt_row gt_right">2018</td>
 <td class="gt_row gt_left">Global Trends Research</td>
 <td class="gt_row gt_left">UK</td>
 <td class="gt_row gt_left">FMCG</td>
@@ -360,7 +453,7 @@ PydanticAI version 0.0.12
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">4</td>
-<td class="gt_row gt_left">2018-10-05</td>
+<td class="gt_row gt_right">2018</td>
 <td class="gt_row gt_left">Data Analytics Group</td>
 <td class="gt_row gt_left">Canada</td>
 <td class="gt_row gt_left">Electronics</td>
@@ -368,7 +461,7 @@ PydanticAI version 0.0.12
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">5</td>
-<td class="gt_row gt_left">2018-11-12</td>
+<td class="gt_row gt_right">2018</td>
 <td class="gt_row gt_left">Innovative Solutions Ltd.</td>
 <td class="gt_row gt_left">Australia</td>
 <td class="gt_row gt_left">Insurance</td>
@@ -383,55 +476,35 @@ PydanticAI version 0.0.12
 </div>
 </div>
 <p>To make the title searchable, I’ll embed it using an <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embedding endpoint</a>. The result will be stored in a new column with 1536 dimensions.</p>
-<div id="9eb89b1f" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pickle</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed_text(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">float</span>]:</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> OpenAI()</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> <span class="st">"text-embedding-3-small"</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.embeddings.create(<span class="bu">input</span><span class="op">=</span>text, model<span class="op">=</span>model).data[<span class="dv">0</span>].embedding</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Load cache</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"title_embeddings_cache.pkl"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        cache <span class="op">=</span> pickle.load(f)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    cache <span class="op">=</span> {}</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Embed titles with caching</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>title_embeddings <span class="op">=</span> []</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> title <span class="kw">in</span> tqdm(reports[<span class="st">"title"</span>]):</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> title <span class="kw">not</span> <span class="kw">in</span> cache:</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        cache[title] <span class="op">=</span> embed_text(title)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    title_embeddings.append(cache[title])</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Save cache</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"title_embeddings_cache.pkl"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    pickle.dump(cache, f)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> reports.with_columns(</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    pl.Series(</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"title_embedding"</span>,</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>title_embeddings,</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>pl.Array(inner<span class="op">=</span>pl.Float64, shape<span class="op">=</span><span class="dv">1536</span>),</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  0%|          | 0/40 [00:00&lt;?, ?it/s]100%|██████████| 40/40 [00:00&lt;00:00, 476625.45it/s]</code></pre>
-</div>
+<div id="791e1102" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed_text(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">float</span>]:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> OpenAI()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> <span class="st">"text-embedding-3-small"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.embeddings.create(<span class="bu">input</span><span class="op">=</span>text, model<span class="op">=</span>model).data[<span class="dv">0</span>].embedding</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>title_embeddings <span class="op">=</span> [embed_text(title) <span class="cf">for</span> title <span class="kw">in</span> tqdm(reports[<span class="st">"title"</span>])]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> reports.with_columns(</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    pl.Series(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"title_embedding"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>title_embeddings,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>pl.Array(inner<span class="op">=</span>pl.Float64, shape<span class="op">=</span><span class="dv">1536</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, I’ll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size <code>ARRAY</code> column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.</p>
-<div id="cb224c72" class="cell" data-execution_count="6">
+<div id="f659238e" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>con.execute(</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE OR REPLACE TABLE reports AS</span></span>
 <span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a><span class="st">        id::varchar AS id,</span></span>
-<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a><span class="st">        date::date AS date,</span></span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a><span class="st">        id::integer AS id,</span></span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a><span class="st">        year::integer AS year,</span></span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a><span class="st">        institute::varchar AS institute,</span></span>
 <span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a><span class="st">        country::varchar AS country,</span></span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a><span class="st">        topic::varchar AS topic,</span></span>
@@ -452,16 +525,13 @@ PydanticAI version 0.0.12
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>&lt;duckdb.duckdb.DuckDBPyConnection at 0x16838f870&gt;</code></pre>
-</div>
 </div>
 <p>I also create a hierarchical navigable small world (HNSW) index on the title embeddings. This enables approximate nearest neighbor search with logarithmic complexity. It’s enabled by the <a href="https://duckdb.org/docs/extensions/vss">vss</a> extension.</p>
 </section>
 <section id="agent" class="level3">
 <h3 class="anchored" data-anchor-id="agent">Agent</h3>
 <p>Let’s set up an agent powered by the <a href="https://groq.com">Groq</a> inference API. It serves a range of open source models. Specifically, I’ll use the <code>llama-3.3-70b-versatile</code> model released by Meta on December 6th. Artificial Analysis has a detailed <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers">report</a> showing that it advanced the speed-accuracy trade-off. The model has tool calling capabilities, which are critical for our use case.</p>
-<div id="4f7c8cf7" class="cell" data-execution_count="7">
+<div id="2c7abac9" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> Agent</span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent(</span>
@@ -480,151 +550,303 @@ PydanticAI version 0.0.12
 </dl>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>I am a market research expert, providing insights and answers based on a vast database of reports and studies. My expertise spans various industries, markets, and trends, allowing me to offer data-driven responses to your questions. Whether you're looking for information on consumer behavior, market size, competitive analysis, or emerging trends, I'm here to help. What would you like to know?</code></pre>
+<pre><code>I am a market research expert, providing insights and answers based on a vast database of reports and studies. My expertise spans various industries, markets, and trends, allowing me to offer data-driven information and analysis on a wide range of topics.
+
+With access to a comprehensive library of market research reports, I can provide information on market size, growth prospects, consumer behavior, competitive landscape, and emerging trends. Whether you're looking for information on a specific industry, market, or geographic region, I'm here to help.
+
+What would you like to know?</code></pre>
 </div>
 </div>
-<p>Let’s add tools to the agent. First, it needs a way to access the database.</p>
-<div id="85e7b4b2" class="cell" data-execution_count="8">
+</section>
+<section id="tools" class="level3">
+<h3 class="anchored" data-anchor-id="tools">Tools</h3>
+<p>The agent’s job will be to answer questions based on the reports in the database. It needs a way to access the database. We can give it a tool, meaning a function that it can call, to query the database. First, it needs a database connection.</p>
+<div id="8dd67ca7" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SupportDependencies:</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentDependencies:</span>
 <span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>    db: duckdb.DuckDBPyConnection</span>
 <span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> SupportDependencies(db<span class="op">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">A dataclass that contains dependencies needed by the agent.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">A dataclass that contains dependencies needed by the agent. Additional dependencies can be added as needed.</span>
 </dd>
 </dl>
 </div>
 </div>
 <p>Next, let’s give the agent a tool to search the database of reports. Based on the user’s question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.</p>
-<div id="3400e2ba" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> RunContext</span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> validate_call, Field</span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a></span>
+<div id="de9f9ac4" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> RunContext</span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> validate_call, Field</span>
 <span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a><span class="at">@agent.tool</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-7" class="code-annotation-target"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a><span class="at">@validate_call</span>(config<span class="op">=</span>{<span class="st">"arbitrary_types_allowed"</span>: <span class="va">True</span>})</span>
-<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_reports_by_field(</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3">3</button><span id="annotated-cell-7-9" class="code-annotation-target"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>    ctx: RunContext[SupportDependencies],</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="4">4</button><span id="annotated-cell-7-10" class="code-annotation-target"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>    field: Literal[<span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"institute"</span>, <span class="st">"country"</span>, <span class="st">"topic"</span>, <span class="st">"title"</span>],</span>
-<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a>    value: <span class="bu">str</span> <span class="op">=</span> Field(</span>
-<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"The value to search for in the field. Case insensitive."</span></span>
-<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="ss">f"SELECT date, institute, country, topic, title FROM reports WHERE lower(</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">) = lower(?)"</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="5">5</button><span id="annotated-cell-7-16" class="code-annotation-target"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> ctx.deps.db.execute(query, [value]).df()</span>
-<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="6">6</button><span id="annotated-cell-7-18" class="code-annotation-target"><a href="#annotated-cell-7-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"No reports found."</span></span>
-<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.to_markdown()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-7" class="code-annotation-target"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_df(df: pl.DataFrame) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.dumps(df.to_dicts())</span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-11" class="code-annotation-target"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a><span class="at">@agent.tool</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3">3</button><span id="annotated-cell-7-12" class="code-annotation-target"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a><span class="at">@validate_call</span>(config<span class="op">=</span>{<span class="st">"arbitrary_types_allowed"</span>: <span class="va">True</span>})</span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_reports_by_field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="4">4</button><span id="annotated-cell-7-14" class="code-annotation-target"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>    ctx: RunContext[AgentDependencies],</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="5">5</button><span id="annotated-cell-7-15" class="code-annotation-target"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>    field: Literal[<span class="st">"id"</span>, <span class="st">"year"</span>, <span class="st">"institute"</span>, <span class="st">"country"</span>, <span class="st">"topic"</span>, <span class="st">"title"</span>],</span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a>    value: <span class="bu">str</span> <span class="op">=</span> Field(</span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"The value to search for in the field. Case insensitive."</span></span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> field <span class="kw">in</span> [<span class="st">"id"</span>, <span class="st">"year"</span>]:</span>
+<span id="annotated-cell-7-21"><a href="#annotated-cell-7-21" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> <span class="bu">int</span>(value)</span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-hidden="true" tabindex="-1"></a>        query <span class="op">=</span> <span class="ss">f"SELECT id, year, institute, country, topic, title FROM reports WHERE </span><span class="sc">{</span>field<span class="sc">}</span><span class="ss"> = ?;"</span></span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="annotated-cell-7-24"><a href="#annotated-cell-7-24" aria-hidden="true" tabindex="-1"></a>        query <span class="op">=</span> <span class="ss">f"SELECT id, year, institute, country, topic, title FROM reports WHERE lower(</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">) = lower(?);"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="6">6</button><span id="annotated-cell-7-25" class="code-annotation-target"><a href="#annotated-cell-7-25" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> ctx.deps.db.execute(query, [value]).pl()</span>
+<span id="annotated-cell-7-26"><a href="#annotated-cell-7-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="7">7</button><span id="annotated-cell-7-27" class="code-annotation-target"><a href="#annotated-cell-7-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"No reports found. Try a different field or value, or use the title similarity tool."</span></span>
+<span id="annotated-cell-7-28"><a href="#annotated-cell-7-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> print_df(df)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="1">Use the <code>@agent.tool</code> decorator to register the function as a tool.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="7" data-code-annotation="1">A record-oriented JSON representation of the data frame is understand by an LLM.</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="7" data-code-annotation="2">Use the <code>@validate_call</code> decorator to enable type checking of the function arguments. <code>arbitrary_types_allowed</code> is required because the <code>RunContext</code> type is not a standard type.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="11" data-code-annotation="2">Use the <code>@agent.tool</code> decorator to register the function as a tool.</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="9" data-code-annotation="3">The <code>RunContext</code> type hint is required for the tool to access the dependencies.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="12" data-code-annotation="3">Use the <code>@validate_call</code> decorator to enable type checking of the function arguments. <code>arbitrary_types_allowed</code> is required because the <code>RunContext</code> type is not a standard type.</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="10" data-code-annotation="4">Tell the model about the available fields in the database and validate that only those are selected.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="14" data-code-annotation="4">The <code>RunContext</code> type hint is required for the tool to access the dependencies.</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="16" data-code-annotation="5">The database query returns a pandas DataFrame, which is converted to a markdown-formatted string.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="15" data-code-annotation="5">Tell the model about the available fields in the database and validate that only those are selected.</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="6">6</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="18" data-code-annotation="6">Provide a clear message if no reports are found. Otherwise, the function would return a markdown table with no rows, which could be confusing.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="25" data-code-annotation="6">The database query returns a polars DataFrame.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="27" data-code-annotation="7">Provide a clear message if no reports are found and hint that another function (which will be introduced later) can be used for fuzzy matching.</span>
 </dd>
 </dl>
 </div>
 </div>
-<div id="003a7678" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> SupportDependencies(db<span class="op">=</span>con)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Which reports do we have from Germany?"</span>, deps<span class="op">=</span>deps)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This lets the agent execute searches based on the exact match of a field.</p>
+<div id="21132017" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Which reports do we have from Germany?"</span>, deps<span class="op">=</span>deps)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>We have four reports from Germany:
-1. "Global Electric Vehicle Market Outlook 2018-2023" by Research DNA GmbH, published on July 20, 2018, focusing on the automotive topic.
-2. "Digital Advertising Spend Analysis" by Tech Innovations Ltd., published on March 10, 2020, focusing on the media topic.
-3. "Beverage Market Competitive Analysis" by Research DNA GmbH, published on January 5, 2022, focusing on the FMCG topic.
-4. "Medical Imaging Equipment Market Size" by Tech Innovations Ltd., published on February 1, 2024, focusing on the healthcare topic.</code></pre>
+<pre><code>We have the following reports from Germany:
+
+1. "Global Electric Vehicle Market Outlook 2018-2023" by Research DNA GmbH (2018)
+2. "Digital Advertising Spend Analysis" by Tech Innovations Ltd. (2020)
+3. "Beverage Market Competitive Analysis" by Research DNA GmbH (2022)
+4. "Medical Imaging Equipment Market Size" by Tech Innovations Ltd. (2024)</code></pre>
 </div>
 </div>
-<p>This lets the agent execute searches based on the exact match of a field. However, users are unlikely to remember the exact title or id of a report, so let’s also add the ability to search for similar titles.</p>
-<div id="2824f1a4" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@agent.tool</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">@validate_call</span>(config<span class="op">=</span>{<span class="st">"arbitrary_types_allowed"</span>: <span class="va">True</span>})</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_reports_by_title_similarity(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    ctx: RunContext[SupportDependencies],</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    title: <span class="bu">str</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Embed the title given by the user</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        title_embedding <span class="op">=</span> embed_text(title)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Error embedding title: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Search for similar titles</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    title_embedding_str <span class="op">=</span> <span class="st">"["</span> <span class="op">+</span> <span class="st">","</span>.join(<span class="bu">map</span>(<span class="bu">str</span>, title_embedding)) <span class="op">+</span> <span class="st">"]"</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">"""</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT date, institute, country, topic, title</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM reports</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY array_distance(title_embedding, ?::FLOAT[1536])</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="st">        LIMIT 5</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> ctx.deps.db.execute(query, [title_embedding_str]).df()</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"No reports found."</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.to_markdown()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It works, the agent found the 4 reports from Germany. Let’s check the exact tool call:</p>
+<div id="b5ac74c4" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>agent.last_run_messages</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>[SystemPrompt(content='You are a market research expert and answer questions using a database of reports.', role='system'),
+ UserPrompt(content='Which reports do we have from Germany?', timestamp=datetime.datetime(2024, 12, 16, 20, 7, 25, 345734, tzinfo=datetime.timezone.utc), role='user'),
+ ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "country", "value": "Germany"}'), tool_id='call_g033')], timestamp=datetime.datetime(2024, 12, 16, 20, 7, 25, tzinfo=datetime.timezone.utc), role='model-structured-response'),
+ ToolReturn(tool_name='search_reports_by_field', content='[{"id": 1, "year": 2018, "institute": "Research DNA GmbH", "country": "Germany", "topic": "Automotive", "title": "Global Electric Vehicle Market Outlook 2018-2023"}, {"id": 12, "year": 2020, "institute": "Tech Innovations Ltd.", "country": "Germany", "topic": "Media", "title": "Digital Advertising Spend Analysis"}, {"id": 21, "year": 2022, "institute": "Research DNA GmbH", "country": "Germany", "topic": "FMCG", "title": "Beverage Market Competitive Analysis"}, {"id": 32, "year": 2024, "institute": "Tech Innovations Ltd.", "country": "Germany", "topic": "Healthcare", "title": "Medical Imaging Equipment Market Size"}]', tool_id='call_g033', timestamp=datetime.datetime(2024, 12, 16, 20, 7, 26, 29653, tzinfo=datetime.timezone.utc), role='tool-return'),
+ ModelTextResponse(content='We have the following reports from Germany:\n\n1. "Global Electric Vehicle Market Outlook 2018-2023" by Research DNA GmbH (2018)\n2. "Digital Advertising Spend Analysis" by Tech Innovations Ltd. (2020)\n3. "Beverage Market Competitive Analysis" by Research DNA GmbH (2022)\n4. "Medical Imaging Equipment Market Size" by Tech Innovations Ltd. (2024)', timestamp=datetime.datetime(2024, 12, 16, 20, 7, 26, tzinfo=datetime.timezone.utc), role='model-text-response')]</code></pre>
+</div>
+</div>
+<p>Here, the model correctly translated the user’s question into the tool call with the arguments <code>{"field": "country", "value": "Germany"}</code>.</p>
+<p>To make it easier to evaluate the agent’s output and also make its results useable by other tools, we can create a response model that includes the ids of the identified reports.</p>
+<div id="da0cac3e" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentResponse(BaseModel):</span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    text: <span class="bu">str</span> <span class="op">=</span> Field(</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Answer to the user's question in informal language. Don't include the report ids."</span></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a>    relevant_report_ids: <span class="bu">set</span>[<span class="bu">int</span>] <span class="op">=</span> Field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-9" class="code-annotation-target"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Set of 'id' integer values of the reports that are relevant to the user's question. Only include ids retrieved by the search tools. Never make up ids."</span></span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>typed_agent <span class="op">=</span> Agent(</span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"groq:llama-3.3-70b-versatile"</span>,</span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    system_prompt<span class="op">=</span><span class="st">"You are a market research expert and answer questions using a database of reports."</span>,</span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    result_type<span class="op">=</span>AgentResponse,</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>    result_retries<span class="op">=</span><span class="dv">3</span>,  <span class="co"># in case LLM doesn't return a valid JSON</span></span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="9" data-code-annotation="1">This description fixes a common mistake: the LLM would answer with made up ids like 123, 456 when it didn’t find any reports.</span>
+</dd>
+</dl>
+</div>
+</div>
+<div id="0f85e03c" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> typed_agent.run_sync(<span class="st">"Which reports do we have from Germany? Tell me their titles and ids"</span>, deps<span class="op">=</span>deps)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>text='We have the following reports from Germany: Global Electric Vehicle Market Outlook 2018-2023, Digital Advertising Spend Analysis, Beverage Market Competitive Analysis, and Medical Imaging Equipment Market Size.' relevant_report_ids={32, 1, 12, 21}</code></pre>
+</div>
+</div>
+<p>Now we have an agent that returns a type-checked structured response. Note that I’ve omitted the re-registration of the tool to the new agent instance for brevity.</p>
+<p>However, users are unlikely to remember the exact title or id of a report, so let’s also add the ability to search for similar titles.</p>
+<div id="dc2fbead" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">@typed_agent.tool</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">@validate_call</span>(config<span class="op">=</span>{<span class="st">"arbitrary_types_allowed"</span>: <span class="va">True</span>})</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_reports_by_title_similarity(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    ctx: RunContext[AgentDependencies],</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    query: <span class="bu">str</span> <span class="op">=</span> Field(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Use for vector similarity search when exact field search returns no results. This tool finds reports with similar titles."</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Embed the title given by the user</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        title_embedding <span class="op">=</span> embed_text(title)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Error embedding title: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Search for similar titles</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    title_embedding_str <span class="op">=</span> <span class="st">"["</span> <span class="op">+</span> <span class="st">","</span>.join(<span class="bu">map</span>(<span class="bu">str</span>, title_embedding)) <span class="op">+</span> <span class="st">"]"</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT id, year, institute, country, topic, title</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM reports</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY array_distance(title_embedding, ?::FLOAT[1536])</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="st">        LIMIT 5;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> ctx.deps.db.execute(query, [title_embedding_str]).pl()</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> print_df(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s ask the agent about a topic that is not in the database.</p>
-<div id="92f045e5" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Search for reports mentioning quantum computing"</span>, deps<span class="op">=</span>deps)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="70ab40e7" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> typed_agent.run_sync(<span class="st">"Search for reports mentioning quantum computing"</span>, deps<span class="op">=</span>deps)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Unfortunately, there are no reports in the database that mention quantum computing. The search results show reports from various institutes and countries, but none of them are related to quantum computing. If you're looking for information on this topic, I suggest trying a different search term or checking other databases.</code></pre>
+<pre><code>text='No reports found on quantum computing.' relevant_report_ids=set()</code></pre>
 </div>
 </div>
-<p>To see which tool the agent chose, we can inspect the message history.</p>
-<div id="12a15efe" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> message <span class="kw">in</span> result.all_messages():</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>SystemPrompt(content='You are a market research expert and answer questions using a database of reports.', role='system')
-UserPrompt(content='Search for reports mentioning quantum computing', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 33, 37839, tzinfo=datetime.timezone.utc), role='user')
-ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "quantum computing"}'), tool_id='call_dmmx')], timestamp=datetime.datetime(2024, 12, 15, 10, 55, 33, tzinfo=datetime.timezone.utc), role='model-structured-response')
-ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  3 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_dmmx', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 255689, tzinfo=datetime.timezone.utc), role='tool-return')
-ModelStructuredResponse(calls=[ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Electronics"}'), tool_id='call_s389'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "topic", "value": "Technology"}'), tool_id='call_n0ze'), ToolCall(tool_name='search_reports_by_title_similarity', args=ArgsJson(args_json='{"title": "Quantum Computing"}'), tool_id='call_qhpp'), ToolCall(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "institute", "value": "Market Insights Inc."}'), tool_id='call_jx99')], timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, tzinfo=datetime.timezone.utc), role='model-structured-response')
-ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_s389', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 869134, tzinfo=datetime.timezone.utc), role='tool-return')
-ToolReturn(tool_name='search_reports_by_field', content='No reports found.', tool_id='call_n0ze', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 869189, tzinfo=datetime.timezone.utc), role='tool-return')
-ToolReturn(tool_name='search_reports_by_title_similarity', content='|    | date                | institute            | country   | topic       | title                                |\n|---:|:--------------------|:---------------------|:----------|:------------|:-------------------------------------|\n|  0 | 2024-04-06 00:00:00 | Education Analytics  | Canada    | Electronics | Semiconductor Industry Analysis      |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment    |\n|  2 | 2023-07-25 00:00:00 | Market Dynamics      | Italy     | Insurance   | Cyber Insurance Market Assessment    |\n|  3 | 2020-07-30 00:00:00 | Education Analytics  | Canada    | Healthcare  | Healthcare IT Market Growth Analysis |\n|  4 | 2021-07-18 00:00:00 | Telecom Research Hub | Spain     | Automotive  | Connected Car Market Opportunities   |', tool_id='call_qhpp', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 35, 282999, tzinfo=datetime.timezone.utc), role='tool-return')
-ToolReturn(tool_name='search_reports_by_field', content='|    | date                | institute            | country   | topic       | title                                          |\n|---:|:--------------------|:---------------------|:----------|:------------|:-----------------------------------------------|\n|  0 | 2018-08-15 00:00:00 | Market Insights Inc. | USA       | Healthcare  | Digital Health Market Size and Growth Analysis |\n|  1 | 2022-03-10 00:00:00 | Market Insights Inc. | USA       | Electronics | Gaming Hardware Market Assessment              |', tool_id='call_jx99', timestamp=datetime.datetime(2024, 12, 15, 10, 55, 34, 870446, tzinfo=datetime.timezone.utc), role='tool-return')
-ModelTextResponse(content="Unfortunately, there are no reports in the database that mention quantum computing. The search results show reports from various institutes and countries, but none of them are related to quantum computing. If you're looking for information on this topic, I suggest trying a different search term or checking other databases.", timestamp=datetime.datetime(2024, 12, 15, 10, 55, 35, tzinfo=datetime.timezone.utc), role='model-text-response')</code></pre>
-</div>
-</div>
-<p>The model ended up making three tool calls:</p>
-<ol type="1">
-<li><code>search_reports_by_title_similarity</code> to find titles similar to “quantum computing”. It got a result but was smart enough to understand that they were not relevant.</li>
-<li><code>search_reports_by_field</code> to find reports with the topic “Electronics”. It got results and again understood that they were not relevant.</li>
-<li><code>search_reports_by_field</code> to find reports with the topic “Quantum Computing” with no results.</li>
-</ol>
-<p>TODO: Talk about what other tools could be added. TODO: Read other examples from PydanticAI documentation.</p>
+<p>That worked as expected.</p>
 </section>
+</section>
+<section id="evals" class="level2">
+<h2 class="anchored" data-anchor-id="evals">Evals</h2>
+<p>Automated evaluations are necessary to ensure that an agent is working as expected, and to switch out models, prompts and tools without breaking the app. PydanticAI offers <a href="https://ai.pydantic.dev/testing-evals/">tools</a> for testing the code (without running a model) and for evaluations. Let’s set up a simple evaluation that checks whether the agent correctly answers questions about the database. We measure the precision (how many of the results found are relevant) and recall (how many of the relevant results are found).</p>
+<div id="f7754e5c" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"How many reports do we have from Germany?"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">21</span>, <span class="dv">32</span>},</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"For which countries to we have reports mentioning electric vehicles?"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">1</span>, <span class="dv">25</span>},</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"What reports do we have about the gaming industry?"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">22</span>, <span class="dv">30</span>},</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"What reports do we have about the pet care industry?"</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">27</span>},</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"Which reports discuss cyber security insurance?"</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">29</span>},</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"What healthcare reports were published in 2024?"</span>,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">32</span>, <span class="dv">38</span>},</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"Which reports are about the smartphone or mobile phone market?"</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">4</span>, <span class="dv">40</span>},</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"What reports do we have from Market Insights Inc.?"</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">2</span>, <span class="dv">22</span>},</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e5bd1b48" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eval_example(</span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a>    example: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span> <span class="op">|</span> <span class="bu">set</span>[<span class="bu">int</span>]], print_errors: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">int</span>]:</span>
+<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> typed_agent.run_sync(example[<span class="st">"question"</span>], deps<span class="op">=</span>deps)</span>
+<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-hidden="true" tabindex="-1"></a>    act, exp <span class="op">=</span> result.data.relevant_report_ids, example[<span class="st">"relevant_report_ids"</span>]</span>
+<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-hidden="true" tabindex="-1"></a>    metrics <span class="op">=</span> Counter(</span>
+<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-hidden="true" tabindex="-1"></a>        {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1">1</button><span id="annotated-cell-15-11" class="code-annotation-target"><a href="#annotated-cell-15-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"tp"</span>: <span class="bu">len</span>(act <span class="op">&amp;</span> exp),</span>
+<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fp"</span>: <span class="bu">len</span>(act <span class="op">-</span> exp),</span>
+<span id="annotated-cell-15-13"><a href="#annotated-cell-15-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fn"</span>: <span class="bu">len</span>(exp <span class="op">-</span> act),</span>
+<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="annotated-cell-15-15"><a href="#annotated-cell-15-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-15-16"><a href="#annotated-cell-15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-17"><a href="#annotated-cell-15-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> print_errors <span class="kw">and</span> (metrics[<span class="st">"fp"</span>] <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">or</span> metrics[<span class="st">"fn"</span>] <span class="op">&gt;</span> <span class="dv">0</span>):</span>
+<span id="annotated-cell-15-18"><a href="#annotated-cell-15-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Error in evaluation:"</span>)</span>
+<span id="annotated-cell-15-19"><a href="#annotated-cell-15-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Question: </span><span class="sc">{</span>example[<span class="st">'question'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-15-20"><a href="#annotated-cell-15-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Found: </span><span class="sc">{</span>act<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-15-21"><a href="#annotated-cell-15-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Expected: </span><span class="sc">{</span>exp<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-15-22"><a href="#annotated-cell-15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-23"><a href="#annotated-cell-15-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> metrics</span>
+<span id="annotated-cell-15-24"><a href="#annotated-cell-15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-25"><a href="#annotated-cell-15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-26"><a href="#annotated-cell-15-26" aria-hidden="true" tabindex="-1"></a>metric_totals <span class="op">=</span> Counter()</span>
+<span id="annotated-cell-15-27"><a href="#annotated-cell-15-27" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2">2</button><span id="annotated-cell-15-28" class="code-annotation-target"><a href="#annotated-cell-15-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> example <span class="kw">in</span> tqdm(examples):</span>
+<span id="annotated-cell-15-29"><a href="#annotated-cell-15-29" aria-hidden="true" tabindex="-1"></a>    metrics <span class="op">=</span> eval_example(example)</span>
+<span id="annotated-cell-15-30"><a href="#annotated-cell-15-30" aria-hidden="true" tabindex="-1"></a>    metric_totals <span class="op">+=</span> metrics</span>
+<span id="annotated-cell-15-31"><a href="#annotated-cell-15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-32"><a href="#annotated-cell-15-32" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> metric_totals[<span class="st">"tp"</span>] <span class="op">/</span> (metric_totals[<span class="st">"tp"</span>] <span class="op">+</span> metric_totals[<span class="st">"fp"</span>])</span>
+<span id="annotated-cell-15-33"><a href="#annotated-cell-15-33" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> metric_totals[<span class="st">"tp"</span>] <span class="op">/</span> (metric_totals[<span class="st">"tp"</span>] <span class="op">+</span> metric_totals[<span class="st">"fn"</span>])</span>
+<span id="annotated-cell-15-34"><a href="#annotated-cell-15-34" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="3">3</button><span id="annotated-cell-15-35" class="code-annotation-target"><a href="#annotated-cell-15-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="sc">:.2f}</span><span class="ss">, Recall: </span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="1">Use set operations to compare the expected and found ids.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="28" data-code-annotation="2">This should be parallelized if the number of examples is large.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="35" data-code-annotation="3">Precision and recall could also be combined into the F1 score, which is their harmonic mean.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  0%|          | 0/8 [00:00&lt;?, ?it/s] 12%|█▎        | 1/8 [00:01&lt;00:07,  1.14s/it] 25%|██▌       | 2/8 [00:01&lt;00:05,  1.03it/s] 38%|███▊      | 3/8 [00:03&lt;00:05,  1.19s/it] 50%|█████     | 4/8 [00:08&lt;00:10,  2.75s/it] 62%|██████▎   | 5/8 [00:19&lt;00:16,  5.65s/it] 75%|███████▌  | 6/8 [00:33&lt;00:16,  8.47s/it] 88%|████████▊ | 7/8 [00:40&lt;00:07,  7.99s/it]100%|██████████| 8/8 [00:51&lt;00:00,  9.16s/it]100%|██████████| 8/8 [00:51&lt;00:00,  6.50s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precision: 1.00, Recall: 0.50</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+</div>
+<p>This is a joint evaluation of the agent, the tools and the database. What’s missing is an evaluation of the generated text. In a real RAG system, you’d also want separate evaluations of retrieval and result ranking.</p>
+<p>The low recall is due to the agent with structured output only trying the <code>search_reports_by_field</code> tool. I couldn’t find a way to fix this with the current release of the library, but it may be resolved with a recent <a href="https://github.com/pydantic/pydantic-ai/pull/184">PR</a>.</p>
 </section>
 <section id="discussion" class="level2">
 <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
@@ -667,7 +889,7 @@ ModelTextResponse(content="Unfortunately, there are no reports in the database t
 </tr>
 <tr class="even">
 <td><a href="https://github.com/phidatahq/phidata">phidata</a></td>
-<td>Multi-agent backend and chat frontent</td>
+<td>Multi-agent backend and chat frontend</td>
 <td style="text-align: right;">16k</td>
 </tr>
 </tbody>
@@ -676,8 +898,7 @@ ModelTextResponse(content="Unfortunately, there are no reports in the database t
 </section>
 <section id="development-team" class="level3">
 <h3 class="anchored" data-anchor-id="development-team">Development team</h3>
-<p>Pydantic Services, the company behind Pydantic, has raised a $12.5m <a href="https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb">Series A</a> in October 2024. This is great news for the project: funding pays for full time developers. Of course, it raises the question of how Pydantic will make money, and the answer to that is Logfire. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, <a href="https://www.langchain.com/langsmith">LangSmith</a>.</p>
-<p>I just hope that the integration remains optional. While Logfire looks great, my team already uses <a href="https://wandb.ai/site/weave/">Weave</a> by Weights &amp; Biases, and having to switch would be a barrier to adopting PydanticAI.</p>
+<p>Pydantic Services, the company behind Pydantic, has raised a $12.5m <a href="https://www.crunchbase.com/funding_round/pydantic-services-series-a--ddd115fb">Series A</a> in October 2024. This is great news for the project: funding pays for full time developers. It also raises the question of how Pydantic will make money, and the answer to that is Logfire subscriptions. This is a good model that gives long-term stability to the project and follows the lead of LangChain with its commercial product, <a href="https://www.langchain.com/langsmith">LangSmith</a>. I just hope that the integration remains optional. While Logfire looks great, my team already uses <a href="https://wandb.ai/site/weave/">Weave</a> by Weights &amp; Biases, and having to switch would be a barrier to adopting PydanticAI.</p>
 </section>
 <section id="review" class="level3">
 <h3 class="anchored" data-anchor-id="review">Review</h3>
@@ -685,24 +906,40 @@ ModelTextResponse(content="Unfortunately, there are no reports in the database t
 <div class="column" style="width:50%;">
 <p><strong>Pros ✅</strong></p>
 <ul>
-<li>Sensible abstractions that don’t get in the way.</li>
+<li>Sensible abstractions that don’t get in the way and enable coding in a Pythonic style.</li>
 <li>Type safety and integration with Pydantic.</li>
-<li>Strong reputation of the Pydantic team.</li>
+<li>Support for streaming responses and async tool calling. This is critical for live chat applications.</li>
 <li>Pydantic is familiar to many Python developers who will have an easier time learning PydanticAI.</li>
-<li>Great support for streaming responses and async tool calling. This is critical for live chat applications.</li>
-<li>High quality documentation and examples.</li>
+<li>High quality documentation and examples that also cover tests and evals.</li>
+<li>Strong reputation of the Pydantic team and high responsiveness in Github issues.</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>Cons ❌</strong></p>
 <ul>
 <li>Launches into a competitive market with many established libraries.</li>
 <li>Early stage of development, so expect breaking changes.</li>
+<li>Many concepts to learn, but mild compared to langchain which invented its own domain-specific language LCEL.</li>
+<li>No support for multimodal (image, audio, video) inputs and out yet, but it’s <a href="https://github.com/pydantic/pydantic-ai/issues/126">planned</a>.</li>
 <li>Economic incentives to lock users into Logfire. This hasn’t happened but is a risk.</li>
 </ul>
 </div>
 </div>
-<p>I’m looking forward to an opportunity to build a full-scale application with PydanticAI.</p>
-<p>Photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+<p>I’m looking forward to an opportunity to build a full-scale application with PydanticAI. The best place to get started is the <a href="https://ai.pydantic.dev/">PydanticAI documentation</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Not every app needs an agent framework
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A lot can be accomplished by single API calls or by specifying a fixed sequence of calls. That would also work for the example app shown in this article. Unless you truly need the flexibility of an agent framework, you may be better off with plain Python. If all you need is Pydantic + LLM calls, you can use <a href="https://github.com/jxnl/instructor">instructor</a>. <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">OpenAI</a> even supports structured outputs based on Pydantic models without an additional library.</p>
+</div>
+</div>
+<hr>
+<p>Preview photo by <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/purple-and-black-polka-dot-textile-eHH_5rn3xnU?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
 
 
 </section>
