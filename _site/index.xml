@@ -11,7 +11,294 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.6.33</generator>
-<lastBuildDate>Sun, 15 Dec 2024 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 21 Dec 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>When to use Direct Preference Optimization (DPO)</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/llm-customization/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>OpenAI recently added the ability to fine-tune their models using direct preference optimization (DPO). They call it <a href="https://platform.openai.com/docs/guides/fine-tuning#preference">preference tuning</a>. Previously, their API only supported supervised fine-tuning (SFT). They join <a href="https://openpipe.ai/blog/announcing-dpo-support">OpenPipe</a> as one of the first pay-per-token APIs to offer DPO. This makes DPO more accessible to developers who don’t want the complexity of managing the training infrastructure themselves. In this article I will briefly introduce DPO and then discuss its use cases in contrast to SFT.</p>
+<section id="what-is-dpo" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-dpo">What is DPO?</h3>
+<p>Skip to the next section if you’re already familiar with DPO.</p>
+<p>DPO means training an LLM to conform to the preferences of human raters. Each example contains:</p>
+<ul>
+<li>A user input, e.g.&nbsp;a question</li>
+<li>An ideal assistant reply</li>
+<li>A worse assistant reply</li>
+</ul>
+<p>In a training input file, it looks like this:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"input"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"messages"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-4">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-5">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"role"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"user"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-6">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"content"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Write a professional email asking for a raise."</span></span>
+<span id="cb1-7">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-8">    <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-10">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"preferred_output"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-12">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"role"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assistant"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-13">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"content"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I would like to request a salary review. In the past 6 months I have led multiple projects and also assisted colleagues with their tasks."</span></span>
+<span id="cb1-14">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-15">  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-16">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"non_preferred_output"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-18">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"role"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assistant"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-19">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"content"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"You should increase my salary because I'm doing all the work here."</span></span>
+<span id="cb1-20">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-21">  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-22"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>DPO adjusts the model weights such that it is more likely to choose the preferred answers. It’s graded on how much more likely it is to choose the preferred answer. This teaches it not just to answer more like the preferred answer, but also to avoid answering like the rejected answer. It stands in contrast to SFT, which only teaches it to mimic a single answer.</p>
+</section>
+<section id="loss-function" class="level3">
+<h3 class="anchored" data-anchor-id="loss-function">Loss function</h3>
+<p>Mathematically, DPO fine-tunes the LLM by maximizing the margin between the probability of the preferred and rejected response. The loss function is:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/llm-customization/dpo_loss.webp" class="img-fluid figure-img"></p>
+<figcaption>DPO loss function</figcaption>
+</figure>
+</div>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Ctheta(y%7Cx)">: The probability that our model (with parameters θ) assigns to generating response y given input x</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctext%7Bref%7D%7D(y%7Cx)">: The probability that a reference model (usually the initial pre-trained model) assigns to the same response</li>
+<li><img src="https://latex.codecogs.com/png.latex?y_w">: The preferred, “winning” response</li>
+<li><img src="https://latex.codecogs.com/png.latex?y_l">: The rejected, “losing” response</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cbeta">: Hyperparameter to regulate the strength of weight updates.</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Csigma">: Sigmoid function that maps the difference to a probability between 0 and 1</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D">: Expected value over the dataset D of preferences</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BD%7D">: Dataset containing triples of (input, preferred response, rejected response)</li>
+</ul>
+<p>See the <a href="https://arxiv.org/abs/2305.18290">paper</a> by Rafailov et al.&nbsp;(2023) for details and how this loss is turned into a weight update.</p>
+<p>The use of a reference model has two advantages over purely optimizing for a high <img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Ctheta(y_w%7Cx)">:</p>
+<ol type="1">
+<li>It prevents overfitting to the examples. The derivative of the loss function (see after equation 7 in paper) illustrates that the model gets low weight updates from examples where it already gives more probability to the preferred response.</li>
+<li>It takes into account how likely the preferred and rejected responses are to begin with. So teaching the model to prefer a rare response over another rare response won’t cause an update that breaks common responses.</li>
+</ol>
+<p>The choice of <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> is key. Higher values result in more conservative updates, preserving previous behavior. Lower values cause more aggressive updates in favor of the preferred answer. This stems from the interaction of the sigmoid function: a higher beta causes the function to saturate (approach 1) from smaller differences in the probability ratios, leading to a smaller weight update.</p>
+<p>DPO and its predecessor reinforcement learning from human feedback (RLHF) have been a staple in the training of LLMs that serve as assistants, including open models like the Llama 3 family. They are one of the key separators between different models, which share a lot of common SFT in the form of web scraped texts, papers and code. It’s what forms the character and mannerisms of an assistant.</p>
+</section>
+<section id="data-for-dpo" class="level3">
+<h3 class="anchored" data-anchor-id="data-for-dpo">Data for DPO</h3>
+<p>Collecting DPO data is straightforward. You take the current best model and let it generate multiple answers to a user input at nonzero temperature. Then either a human or a model (a copy of the answering model or a larger, smarter model) judges which answer is superior. This enables a powerful training loop, particularly if an LLM is used as a judge.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[User Input] --&gt;|Prompt| B[Base model]
+    B --&gt;|Generates| C[Multiple responses]
+    C --&gt;|Evaluates| D[Human or LLM judge]
+    D --&gt;|Selects| G[Preferred response]
+    D --&gt;|Rejects| H[Non-preferred response]
+    G --&gt; I[DPO training data]
+    H --&gt; I
+    I --&gt;|Updates| B
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="when-to-use-dpo" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-use-dpo">When to use DPO?</h2>
+<p>DPO is best utilized to refine a model that already underwent SFT. By default, OpenAI’s fine-tuning API bundles SFT with DPO by first using SFT to let models learn from the exact wording of the preferred answers before also learning to prefer them using DPO.</p>
+<section id="when-prompting-isnt-sufficient" class="level4">
+<h4 class="anchored" data-anchor-id="when-prompting-isnt-sufficient">1. When prompting isn’t sufficient</h4>
+<p>If the desired behavior can be achieved by a prompt, you don’t need to implement DPO. Prompts are easier to change and different instances of a model can run with different system prompts. However, prompts add tokens on every call, which makes them slower, more expensive and fills up the context window. They’re also more limited in what behaviors they can achieve and may be ignored by the model. In those cases, DPO is a more robust solution and can of course be be combined with prompts.</p>
+</section>
+<section id="when-you-cant-generate-optimal-answers-at-scale" class="level4">
+<h4 class="anchored" data-anchor-id="when-you-cant-generate-optimal-answers-at-scale">2. When you can’t generate optimal answers at scale</h4>
+<p>Humans typically have an easier time determining which of two answers is better than developing the best answer on their own. This is especially true for complex outputs, multi-turn conversations, and all matters of style where there are multiple acceptable answers. As an example, it’s faster to judge which of two email texts sounds better than writing the perfect email.</p>
+</section>
+<section id="when-you-want-to-preserve-previous-behavior" class="level4">
+<h4 class="anchored" data-anchor-id="when-you-want-to-preserve-previous-behavior">3. When you want to preserve previous behavior</h4>
+<p>DPO is a more measured treatment than SFT and can be regulated with the <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> hyperparameter. This makes it a good choice if the model is already trained and you only want to make small changes. In contrast, SFT is a more aggressive treatment that overrides previous behavior, for example, a model trained on a named entity recognition task would start speaking JSON rather than English.</p>
+</section>
+<section id="use-cases" class="level3">
+<h3 class="anchored" data-anchor-id="use-cases">Use cases</h3>
+<p>Let’s consider common LLM use cases and the criteria listed above to decide between SFT+DPO and SFT only.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 11%">
+<col style="width: 70%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Use Case</th>
+<th>Method</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Summarization</td>
+<td>SFT+DPO</td>
+<td>Humans can easily compare summaries for quality, but writing the perfect summary is harder. Multiple valid summaries exist.</td>
+</tr>
+<tr class="even">
+<td>Code generation</td>
+<td>SFT+DPO</td>
+<td>Different coding styles and approaches can be valid. Humans can better judge which implementation is more readable/maintainable. SFT can suffice for SQL generation.</td>
+</tr>
+<tr class="odd">
+<td>Question answering</td>
+<td>SFT+DPO</td>
+<td>Multiple valid answers may exist with varying levels of helpfulness and clarity. Comparing answers is easier than writing the perfect one.</td>
+</tr>
+<tr class="even">
+<td>Writing assistance</td>
+<td>SFT+DPO</td>
+<td>Writing quality is subjective and context-dependent. Humans can better evaluate style and tone by comparison.</td>
+</tr>
+<tr class="odd">
+<td>Chatbot responses</td>
+<td>SFT+DPO</td>
+<td>Natural conversation has many valid responses. Comparing helps optimize for engagement and helpfulness.</td>
+</tr>
+<tr class="even">
+<td>Information extraction</td>
+<td>SFT only</td>
+<td>Tasks like text classification, named entity recognition, relationship extraction, web scraping, and others have one correct answer. DPO is unnecessary.</td>
+</tr>
+<tr class="odd">
+<td>Tool calling</td>
+<td>SFT only</td>
+<td>Unlike code generation, calls to APIs, data fetching functions and similar are limited in variation and a given user request is usually translated into one optimal set of tool calls.</td>
+</tr>
+<tr class="even">
+<td>Mathematical computation</td>
+<td>SFT only</td>
+<td>Mathematical problems typically have one correct answer. DPO would be a poor way to teach right and wrong solutions, but may make sense to teach a style of presentation.</td>
+</tr>
+</tbody>
+</table>
+<p>Tasks that fully leverage LLM’s free-form input and output tend to benefit most from DPO.</p>
+</section>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li>To see DPO in action, I suggest reading Anyscale’s article <a href="https://www.anyscale.com/blog/direct-preference-optimization-with-synthetic-data">Direct Preference Optimization with Synthetic Data</a> which walks through DPO for summarization using synthetic data and LLM as a judge.</li>
+<li>If you want to get started with your own project, I suggest <a href="https://pytorch.org/torchtune/stable/recipes/dpo.html">torchtune</a> for training on your own infrastructure and the <a href="https://platform.openai.com/docs/guides/fine-tuning#preference">OpenAI API</a> for a managed service.</li>
+<li>If you want to learn more details about DPO, I suggest reading the <a href="https://arxiv.org/abs/2305.18290">paper</a> by Rafailov et al.&nbsp;(2023). There is also a <a href="https://www.youtube.com/live/vuWbJlBePPA?si=18sGG8Vn7D6yykeD">YouTube video</a> of a lecture by one of the authors, Christopher Manning.</li>
+<li>Read about variants of DPO in a <a href="https://huggingface.co/blog/pref-tuning">blog post</a> on HuggingFace.</li>
+</ul>
+<p>Photo by <a href="https://unsplash.com/@max_williams?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Max Williams</a> on <a href="https://unsplash.com/photos/multicolored-wallpaper-_OoK2W7OPRM?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <guid>https://simmering.dev/blog/llm-customization/</guid>
+  <pubDate>Sat, 21 Dec 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/llm-customization/image.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>Type-safe LLM agents with PydanticAI</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -9313,1235 +9600,6 @@ Aspect-based sentiment analysis
   <guid>https://simmering.dev/blog/llms-for-absa/</guid>
   <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/llms-for-absa/image.png" medium="image" type="image/png" height="144" width="144"/>
-</item>
-<item>
-  <title>One-stop NLP: Multi-task prompts for LLMs</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/one-stop-nlp/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>In NLP, we often want to extract multiple pieces of information from a text. Each extraction task is typically done by one model. For example, we might want to classify the topic of a text, do named entity recognition and extract the sentiment. To build such a pipeline, we need to train three different models.</p>
-<p>What if we asked a large language model (LLM) to do it all in one step and return a god-view JSON object with all the structured information we need? That’s the idea I’d like to explore in this article.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/one-stop-nlp/knife.webp" class="img-fluid figure-img"></p>
-<figcaption>Illustration generated with DALL·E 3</figcaption>
-</figure>
-</div>
-<p>I’ll use the <a href="https://github.com/jxnl/instructor">instructor</a> package to describe the desired JSON object using a Pydantic model. Then I’ll send the requests to the OpenAI API with the <a href="https://github.com/qagentur/texttunnel">texttunnel</a> package. I’m the main developer of texttunnel.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This article is an exploration, not a recommendation. Please refer to the last section for a discussion of the pros and cons of this approach.</p>
-</div>
-</div>
-<section id="data-news-articles" class="level2">
-<h2 class="anchored" data-anchor-id="data-news-articles">Data: News articles</h2>
-<p>Let’s say we are building a news analysis tool.</p>
-<p>We’ll use the <a href="https://huggingface.co/datasets/cc_news">cc_news</a> dataset from Hugging Face. It contains 708,241 English language news articles published between January 2017 and December 2019.</p>
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> load_dataset</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">dataset <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> load_dataset(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"cc_news"</span>, split<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"train"</span>)</span></code></pre></div>
-</div>
-<p>We won’t be training a model in this article, so we’ll just use the first 500 unique articles from the training set and run them through a pre-trained LLM. Let’s load the data into a <a href="https://www.pola.rs">Polars</a> dataframe and take a look at the first five rows.</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb2-2"></span>
-<span id="cb2-3">news <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.from_arrow(dataset.data.table).unique(subset<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>).head(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">500</span>)</span>
-<span id="cb2-4"></span>
-<span id="cb2-5">news.head(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>)</span>
-<span id="cb2-6"></span>
-<span id="cb2-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Save to disk for later use</span></span>
-<span id="cb2-8">news.write_parquet(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"news.parquet"</span>)</span></code></pre></div>
-</div>
-</section>
-<section id="defining-the-god-view-json" class="level2">
-<h2 class="anchored" data-anchor-id="defining-the-god-view-json">Defining the God-View JSON</h2>
-<p><a href="https://docs.pydantic.dev/latest/">Pydantic</a> allows us to define a detailed schema for the JSON object we want to get from the LLM.</p>
-<p>This is what it looks like:</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> enum <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Enum</span>
-<span id="cb3-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> List</span>
-<span id="cb3-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> BaseModel</span>
-<span id="cb3-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> instructor <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> OpenAISchema</span>
-<span id="cb3-5"></span>
-<span id="cb3-6"></span>
-<span id="cb3-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Define the labels for the different tasks</span></span>
-<span id="cb3-8"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> TopicLabel(Enum):</span>
-<span id="cb3-9">    ARTS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ARTS"</span></span>
-<span id="cb3-10">    BUSINESS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"BUSINESS"</span></span>
-<span id="cb3-11">    ENTERTAINMENT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ENTERTAINMENT"</span></span>
-<span id="cb3-12">    HEALTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"HEALTH"</span></span>
-<span id="cb3-13">    POLITICS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"POLITICS"</span></span>
-<span id="cb3-14">    SCIENCE <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"SCIENCE"</span></span>
-<span id="cb3-15">    SPORTS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"SPORTS"</span></span>
-<span id="cb3-16">    TECHNOLOGY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"TECHNOLOGY"</span></span>
-<span id="cb3-17"></span>
-<span id="cb3-18"></span>
-<span id="cb3-19"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> SentimentLabel(Enum):</span>
-<span id="cb3-20">    POSITIVE <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"POSITIVE"</span></span>
-<span id="cb3-21">    NEGATIVE <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEGATIVE"</span></span>
-<span id="cb3-22">    NEUTRAL <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEUTRAL"</span></span>
-<span id="cb3-23"></span>
-<span id="cb3-24"></span>
-<span id="cb3-25"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> NamedEntityLabel(Enum):</span>
-<span id="cb3-26">    PERSON <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PERSON"</span></span>
-<span id="cb3-27">    ORG <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ORG"</span></span>
-<span id="cb3-28">    PRODUCT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PRODUCT"</span></span>
-<span id="cb3-29">    LOCATION <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"LOCATION"</span></span>
-<span id="cb3-30">    EVENT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"EVENT"</span></span>
-<span id="cb3-31"></span>
-<span id="cb3-32"></span>
-<span id="cb3-33"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Define how named entities are represented</span></span>
-<span id="cb3-34"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> NamedEntity(BaseModel):</span>
-<span id="cb3-35">    text: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span></span>
-<span id="cb3-36">    label: NamedEntityLabel</span>
-<span id="cb3-37"></span>
-<span id="cb3-38"></span>
-<span id="cb3-39"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Define the schema for the JSON object that</span></span>
-<span id="cb3-40"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># we want the LLM to return</span></span>
-<span id="cb3-41"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> News(OpenAISchema):</span>
-<span id="cb3-42">    topics: List[TopicLabel]</span>
-<span id="cb3-43">    sentiment: SentimentLabel</span>
-<span id="cb3-44">    named_entities: List[NamedEntity]</span></code></pre></div>
-</div>
-<p>Now, how do we get the LLM to return this JSON object?</p>
-<p>The OpenAI API has the <a href="https://openai.com/blog/function-calling-and-other-api-updates">function calling</a> feature, which allows us to send a <a href="https://json-schema.org">JSON schema</a> describing a Python function to the API. The model will respond with a JSON object that matches the schema.</p>
-<p>The instructor package lets us take a Pydantic model and convert it to a JSON schema that we can send to the OpenAI API.</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> pprint</span>
-<span id="cb4-2"></span>
-<span id="cb4-3">function_schema <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> News.openai_schema</span>
-<span id="cb4-4"></span>
-<span id="cb4-5">pprint.pprint(function_schema)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>{'description': 'Correctly extracted `News` with all the required parameters '
-                'with correct types',
- 'name': 'News',
- 'parameters': {'$defs': {'NamedEntity': {'properties': {'label': {'$ref': '#/$defs/NamedEntityLabel'},
-                                                         'text': {'title': 'Text',
-                                                                  'type': 'string'}},
-                                          'required': ['text', 'label'],
-                                          'title': 'NamedEntity',
-                                          'type': 'object'},
-                          'NamedEntityLabel': {'enum': ['PERSON',
-                                                        'ORG',
-                                                        'PRODUCT',
-                                                        'LOCATION',
-                                                        'EVENT'],
-                                               'title': 'NamedEntityLabel',
-                                               'type': 'string'},
-                          'SentimentLabel': {'enum': ['POSITIVE',
-                                                      'NEGATIVE',
-                                                      'NEUTRAL'],
-                                             'title': 'SentimentLabel',
-                                             'type': 'string'},
-                          'TopicLabel': {'enum': ['ARTS',
-                                                  'BUSINESS',
-                                                  'ENTERTAINMENT',
-                                                  'HEALTH',
-                                                  'POLITICS',
-                                                  'SCIENCE',
-                                                  'SPORTS',
-                                                  'TECHNOLOGY'],
-                                         'title': 'TopicLabel',
-                                         'type': 'string'}},
-                'properties': {'named_entities': {'items': {'$ref': '#/$defs/NamedEntity'},
-                                                  'title': 'Named Entities',
-                                                  'type': 'array'},
-                               'sentiment': {'$ref': '#/$defs/SentimentLabel'},
-                               'topics': {'items': {'$ref': '#/$defs/TopicLabel'},
-                                          'title': 'Topics',
-                                          'type': 'array'}},
-                'required': ['named_entities', 'sentiment', 'topics'],
-                'type': 'object'}}</code></pre>
-</div>
-</div>
-<p>This clearly defines what we want the LLM to return. It uses the <code>enum</code>, <code>required</code> and <code>properties</code> keywords from the JSON schema specification.</p>
-</section>
-<section id="sending-requests" class="level2">
-<h2 class="anchored" data-anchor-id="sending-requests">Sending requests</h2>
-<p>Next, we need to send the requests to the OpenAI API. The texttunnel package makes this easy and efficient. We start by defining the requests. Each article is sent as a separate request.</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> texttunnel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> chat, models</span>
-<span id="cb6-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb6-3"></span>
-<span id="cb6-4">news <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_parquet(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"news.parquet"</span>)</span>
-<span id="cb6-5"></span>
-<span id="cb6-6">requests <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> chat.build_requests(</span>
-<span id="cb6-7">    model<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>models.GPT_3_5_TURBO,</span>
-<span id="cb6-8">    function<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>function_schema,</span>
-<span id="cb6-9">    system_message<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Analyze news articles. Strictly stick to the allowed labels."</span>,</span>
-<span id="cb6-10">    params<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>models.Parameters(max_tokens<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1024</span>),</span>
-<span id="cb6-11">    texts<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>news[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>].to_list(),</span>
-<span id="cb6-12">    long_text_handling<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"truncate"</span>,</span>
-<span id="cb6-13">)</span>
-<span id="cb6-14"></span>
-<span id="cb6-15"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Built </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(requests)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> requests"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Built 500 requests</code></pre>
-</div>
-</div>
-<p>And how much will it cost to send these requests?</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">cost_usd <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span>([x.estimate_cost_usd() <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> requests])</span>
-<span id="cb8-2"></span>
-<span id="cb8-3"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Estimated cost: $</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>cost_usd<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estimated cost: $1.68</code></pre>
-</div>
-</div>
-<p>Next, let’s set up a cache to store the responses. This way, we can experiment and never have to pay for the same request twice.</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> aiohttp_client_cache <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> SQLiteBackend</span>
-<span id="cb10-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Path</span>
-<span id="cb10-3"></span>
-<span id="cb10-4">cache <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> SQLiteBackend(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"cache.sqlite"</span>, allowed_methods<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"POST"</span>)</span></code></pre></div>
-</div>
-<p>This will create a file called <code>cache.sqlite</code> in the current directory, which will hold a copy of the responses.</p>
-<p>Now we’re ready to actually send the requests.</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> texttunnel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> processor</span>
-<span id="cb11-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> logging</span>
-<span id="cb11-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> pickle</span>
-<span id="cb11-4"></span>
-<span id="cb11-5">logging.basicConfig(level<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>logging.INFO)</span>
-<span id="cb11-6"></span>
-<span id="cb11-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Setup logging for the texttunnel package</span></span>
-<span id="cb11-8">logging.getLogger(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"texttunnel"</span>).setLevel(logging.INFO)</span>
-<span id="cb11-9"></span>
-<span id="cb11-10">logging.info(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Sending </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(requests)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> requests to the OpenAI API"</span>)</span>
-<span id="cb11-11"></span>
-<span id="cb11-12">responses <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> processor.process_api_requests(</span>
-<span id="cb11-13">    requests<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>requests,</span>
-<span id="cb11-14">    cache<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>cache,</span>
-<span id="cb11-15">)</span>
-<span id="cb11-16"></span>
-<span id="cb11-17"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Save to disk for later use</span></span>
-<span id="cb11-18"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"responses.pickle"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"wb"</span>) <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> f:</span>
-<span id="cb11-19">    pickle.dump(responses, f)</span></code></pre></div>
-</div>
-<p>The texttunnel package sends the requests in parallel and caches the responses.</p>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<section id="parsing-and-validation" class="level3">
-<h3 class="anchored" data-anchor-id="parsing-and-validation">Parsing and validation</h3>
-<p>For each request, <code>process_api_requests</code> returned a list containing two dicts: one containing the request, the other the API’s response. Inside the response is the <code>arguments</code> key, which contains a string that should be parseable into a Python dict that matches the schema we defined.</p>
-<p>We parse the responses and count the parsing errors.</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> pickle</span>
-<span id="cb12-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> texttunnel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> processor</span>
-<span id="cb12-3"></span>
-<span id="cb12-4"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"responses.pickle"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rb"</span>) <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> f:</span>
-<span id="cb12-5">    responses <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pickle.load(f)</span>
-<span id="cb12-6"></span>
-<span id="cb12-7">parsing_errors <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb12-8"></span>
-<span id="cb12-9"></span>
-<span id="cb12-10"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> parse(response):</span>
-<span id="cb12-11">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">global</span> parsing_errors</span>
-<span id="cb12-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">try</span>:</span>
-<span id="cb12-13">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> processor.parse_arguments(response)</span>
-<span id="cb12-14">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Exception</span>:</span>
-<span id="cb12-15">        parsing_errors <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb12-16">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span></span>
-<span id="cb12-17"></span>
-<span id="cb12-18"></span>
-<span id="cb12-19">arguments <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [parse(response) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> response <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> responses]</span>
-<span id="cb12-20"></span>
-<span id="cb12-21"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Parsing errors: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>parsing_errors<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> out of </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(arguments)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> responses"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Parsing errors: 3 out of 500 responses</code></pre>
-</div>
-</div>
-<p>Next, we verify that they conform to the schema we defined.</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> ValidationError</span>
-<span id="cb14-2"></span>
-<span id="cb14-3"></span>
-<span id="cb14-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> validate(argument):</span>
-<span id="cb14-5">    News.model_validate(argument)</span>
-<span id="cb14-6">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> argument</span>
-<span id="cb14-7"></span>
-<span id="cb14-8"></span>
-<span id="cb14-9"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> run_validation(arguments, validation_fun):</span>
-<span id="cb14-10">    validation_errors <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb14-11">    out <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> []</span>
-<span id="cb14-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> argument <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> arguments:</span>
-<span id="cb14-13">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> argument <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb14-14">            <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># JSON parsing error</span></span>
-<span id="cb14-15">            out.append(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>)</span>
-<span id="cb14-16">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">continue</span></span>
-<span id="cb14-17">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">try</span>:</span>
-<span id="cb14-18">            argument <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> validation_fun(argument)</span>
-<span id="cb14-19">            out.append(argument)</span>
-<span id="cb14-20">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">except</span> ValidationError:</span>
-<span id="cb14-21">            validation_errors <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb14-22">            out.append(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>)</span>
-<span id="cb14-23"></span>
-<span id="cb14-24">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Validation error in </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>validation_errors<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> out of </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(arguments)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> responses"</span>)</span>
-<span id="cb14-25"></span>
-<span id="cb14-26">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> out</span>
-<span id="cb14-27"></span>
-<span id="cb14-28"></span>
-<span id="cb14-29">valid_arguments <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> run_validation(arguments, validate)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Validation error in 130 out of 500 responses</code></pre>
-</div>
-</div>
-<p>The LLM doesn’t always follow the expected format. It adds extra labels to topics and entities that are not in the schema.</p>
-<p>These can be fixed automatically. Let’s try again.</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> fix_and_validate(argument):</span>
-<span id="cb16-2">    fixed_argument <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> argument.copy()</span>
-<span id="cb16-3"></span>
-<span id="cb16-4">    topics <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>(TopicLabel.__members__)</span>
-<span id="cb16-5"></span>
-<span id="cb16-6">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Remove topics that are not in the schema</span></span>
-<span id="cb16-7">    fixed_argument[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"topics"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [x <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> argument[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"topics"</span>] <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> topics]</span>
-<span id="cb16-8"></span>
-<span id="cb16-9">    entities <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">list</span>(NamedEntityLabel.__members__)</span>
-<span id="cb16-10"></span>
-<span id="cb16-11">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> argument[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"named_entities"</span>] <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb16-12">        fixed_argument[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"named_entities"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [</span>
-<span id="cb16-13">            x <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> argument[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"named_entities"</span>] <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> x[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>] <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> entities</span>
-<span id="cb16-14">        ]</span>
-<span id="cb16-15"></span>
-<span id="cb16-16">    validate(fixed_argument)</span>
-<span id="cb16-17">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> fixed_argument</span>
-<span id="cb16-18"></span>
-<span id="cb16-19"></span>
-<span id="cb16-20">valid_arguments <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> run_validation(arguments, fix_and_validate)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Validation error in 0 out of 500 responses</code></pre>
-</div>
-</div>
-<p>Removing the invalid labels fixed all validation errors.</p>
-<p>Next, let’s bring the answers into a Polars dataframe.</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">valid_arguments <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [x <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> valid_arguments <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>]</span>
-<span id="cb18-2">answers <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.DataFrame(valid_arguments, orient<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"records"</span>)</span>
-<span id="cb18-3"></span>
-<span id="cb18-4"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(answers.head(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>))</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>shape: (5, 3)
-┌────────────────────────────┬───────────┬───────────────────────────────────┐
-│ topics                     ┆ sentiment ┆ named_entities                    │
-│ ---                        ┆ ---       ┆ ---                               │
-│ list[str]                  ┆ str       ┆ list[struct[2]]                   │
-╞════════════════════════════╪═══════════╪═══════════════════════════════════╡
-│ ["POLITICS", "TECHNOLOGY"] ┆ NEGATIVE  ┆ [{"James Clapper","PERSON"}, {"R… │
-│ ["POLITICS", "TECHNOLOGY"] ┆ NEGATIVE  ┆ [{"Canadian troops","ORG"}, {"Ma… │
-│ ["BUSINESS"]               ┆ POSITIVE  ┆ [{"Moshe Kahlon","PERSON"}, {"Is… │
-│ ["BUSINESS"]               ┆ NEUTRAL   ┆ [{"Bailoy Irrigation Control Sys… │
-│ ["SPORTS"]                 ┆ NEUTRAL   ┆ [{"Pep Guardiola","PERSON"}, {"B… │
-└────────────────────────────┴───────────┴───────────────────────────────────┘</code></pre>
-</div>
-</div>
-<p>Note that the topics and named entities are now represented as nested elements.</p>
-</section>
-<section id="visualization" class="level3">
-<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
-<p>The LLM’s answers could be used to power a dashboard that shows the most common topics, positive and negative sentiment and the most frequently mentioned named entities. Let’s get a preview of what that could look like.</p>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> px</span>
-<span id="cb20-2"></span>
-<span id="cb20-3">topic_sentiment <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (</span>
-<span id="cb20-4">    answers.drop_nulls().explode(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"topics"</span>)</span>
-<span id="cb20-5">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Sort for legend</span></span>
-<span id="cb20-6">    .sort(</span>
-<span id="cb20-7">        pl.when(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sentiment"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"POSITIVE"</span>)</span>
-<span id="cb20-8">        .then(pl.lit(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb20-9">        .when(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sentiment"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEUTRAL"</span>)</span>
-<span id="cb20-10">        .then(pl.lit(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))</span>
-<span id="cb20-11">        .otherwise(pl.lit(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>))</span>
-<span id="cb20-12">    )</span>
-<span id="cb20-13">)</span>
-<span id="cb20-14"></span>
-<span id="cb20-15">sentiment_colors <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> {</span>
-<span id="cb20-16">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"POSITIVE"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#98FB98"</span>,</span>
-<span id="cb20-17">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEUTRAL"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#B0C4DE"</span>,</span>
-<span id="cb20-18">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEGATIVE"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#F08080"</span>,</span>
-<span id="cb20-19">}</span>
-<span id="cb20-20"></span>
-<span id="cb20-21">fig <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> px.histogram(</span>
-<span id="cb20-22">    data_frame<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>topic_sentiment,</span>
-<span id="cb20-23">    x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"topics"</span>,</span>
-<span id="cb20-24">    color<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sentiment"</span>,</span>
-<span id="cb20-25">    barmode<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"group"</span>,</span>
-<span id="cb20-26">    labels<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"topics"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Topic"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sentiment"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sentiment"</span>},</span>
-<span id="cb20-27">    color_discrete_map<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sentiment_colors,</span>
-<span id="cb20-28">)</span>
-<span id="cb20-29"></span>
-<span id="cb20-30">fig.update_yaxes(title_text<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Mentions"</span>)</span>
-<span id="cb20-31">fig.update_layout(title<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Topic and sentiment distribution"</span>)</span>
-<span id="cb20-32">fig.show()</span></code></pre></div>
-<div class="cell-output cell-output-display">
-<div>                            <div id="13087234-cdd9-4df1-a880-1e66c715ef47" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("13087234-cdd9-4df1-a880-1e66c715ef47")) {                    Plotly.newPlot(                        "13087234-cdd9-4df1-a880-1e66c715ef47",                        [{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=POSITIVE\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"POSITIVE","marker":{"color":"#98FB98","pattern":{"shape":""}},"name":"POSITIVE","offsetgroup":"POSITIVE","orientation":"v","showlegend":true,"x":["BUSINESS","TECHNOLOGY","POLITICS","ENTERTAINMENT","ARTS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","TECHNOLOGY","BUSINESS","ENTERTAINMENT","BUSINESS","HEALTH","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","HEALTH","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","TECHNOLOGY","SPORTS","ENTERTAINMENT","BUSINESS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","SPORTS","SPORTS","ENTERTAINMENT","SPORTS","SPORTS","TECHNOLOGY","BUSINESS","BUSINESS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT",null,"SCIENCE","ARTS","ENTERTAINMENT","ARTS","BUSINESS","BUSINESS","ENTERTAINMENT","HEALTH","POLITICS","SCIENCE","SPORTS","TECHNOLOGY","SPORTS","TECHNOLOGY","ENTERTAINMENT","HEALTH","SPORTS","SPORTS","SPORTS","BUSINESS","TECHNOLOGY","SPORTS","SPORTS","SPORTS","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","POLITICS",null,"SPORTS","POLITICS",null,"POLITICS","SCIENCE","SPORTS","SPORTS","BUSINESS","ARTS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","ARTS","SPORTS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","SPORTS","SPORTS","BUSINESS",null,"BUSINESS","TECHNOLOGY","ARTS","SPORTS","HEALTH",null,"TECHNOLOGY","SPORTS",null,"ENTERTAINMENT","ENTERTAINMENT","ENTERTAINMENT","SPORTS","POLITICS","ARTS","SPORTS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","SPORTS","HEALTH","SCIENCE","ARTS","ENTERTAINMENT","BUSINESS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","ENTERTAINMENT"],"xaxis":"x","yaxis":"y","type":"histogram"},{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=NEUTRAL\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NEUTRAL","marker":{"color":"#B0C4DE","pattern":{"shape":""}},"name":"NEUTRAL","offsetgroup":"NEUTRAL","orientation":"v","showlegend":true,"x":["BUSINESS","SPORTS","BUSINESS","POLITICS","POLITICS","ENTERTAINMENT","SPORTS","BUSINESS","HEALTH","SCIENCE","POLITICS","POLITICS","ENTERTAINMENT","POLITICS","HEALTH","POLITICS","ENTERTAINMENT","BUSINESS","POLITICS","SPORTS","ARTS","TECHNOLOGY","POLITICS","SPORTS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","BUSINESS","TECHNOLOGY",null,"POLITICS","BUSINESS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","POLITICS","TECHNOLOGY","BUSINESS","TECHNOLOGY","SPORTS","TECHNOLOGY","ENTERTAINMENT","TECHNOLOGY","TECHNOLOGY","SPORTS","POLITICS","BUSINESS","TECHNOLOGY","POLITICS","SPORTS",null,null,"BUSINESS","SPORTS","HEALTH",null,"BUSINESS","TECHNOLOGY","ENTERTAINMENT","TECHNOLOGY","BUSINESS","POLITICS","ENTERTAINMENT","SPORTS","POLITICS","SPORTS","BUSINESS","SPORTS","POLITICS","HEALTH","POLITICS",null,"POLITICS","ARTS","BUSINESS","BUSINESS","TECHNOLOGY","SCIENCE","TECHNOLOGY","HEALTH","POLITICS","SPORTS","BUSINESS","TECHNOLOGY","POLITICS","BUSINESS","ENTERTAINMENT","ENTERTAINMENT","POLITICS","ENTERTAINMENT","SPORTS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","ENTERTAINMENT","BUSINESS","POLITICS","SCIENCE","ENTERTAINMENT","SPORTS","HEALTH","POLITICS","BUSINESS","TECHNOLOGY","ENTERTAINMENT","POLITICS","SPORTS","BUSINESS","BUSINESS","HEALTH","SPORTS","BUSINESS","SPORTS","POLITICS","HEALTH","BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","POLITICS","SPORTS","POLITICS","TECHNOLOGY","SPORTS","ENTERTAINMENT","BUSINESS","TECHNOLOGY","HEALTH","SCIENCE","BUSINESS","HEALTH",null,"TECHNOLOGY","SPORTS","POLITICS","TECHNOLOGY",null,"BUSINESS","HEALTH","SPORTS","BUSINESS","ARTS","POLITICS","POLITICS","ARTS","ENTERTAINMENT","BUSINESS","SPORTS","HEALTH","TECHNOLOGY","POLITICS","BUSINESS","HEALTH","BUSINESS","BUSINESS","TECHNOLOGY","SPORTS","BUSINESS","POLITICS","BUSINESS","SPORTS","HEALTH","HEALTH","ARTS","ENTERTAINMENT","TECHNOLOGY","TECHNOLOGY","ENTERTAINMENT","SPORTS","BUSINESS","BUSINESS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS","TECHNOLOGY","BUSINESS","BUSINESS","ENTERTAINMENT","SPORTS","BUSINESS",null,"ENTERTAINMENT","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","POLITICS","ARTS",null,"POLITICS","BUSINESS","POLITICS","BUSINESS","BUSINESS","POLITICS",null,"ARTS","BUSINESS","TECHNOLOGY","BUSINESS",null,"BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","SPORTS","SPORTS","TECHNOLOGY","SPORTS","BUSINESS","HEALTH","BUSINESS","TECHNOLOGY",null,null,"SPORTS","BUSINESS","TECHNOLOGY","BUSINESS","TECHNOLOGY","ENTERTAINMENT","BUSINESS","POLITICS","BUSINESS","POLITICS","POLITICS","BUSINESS","BUSINESS","SPORTS","TECHNOLOGY","BUSINESS","POLITICS","SPORTS","BUSINESS","POLITICS","ENTERTAINMENT","POLITICS","POLITICS","HEALTH","BUSINESS","ENTERTAINMENT","TECHNOLOGY","ENTERTAINMENT","HEALTH","TECHNOLOGY","SPORTS","SPORTS","ARTS","BUSINESS","BUSINESS","POLITICS","BUSINESS","SPORTS","SPORTS",null,"SPORTS","BUSINESS","SPORTS","SPORTS",null,"BUSINESS","TECHNOLOGY","SCIENCE","BUSINESS","POLITICS","TECHNOLOGY","BUSINESS","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","TECHNOLOGY","BUSINESS","BUSINESS","ARTS","BUSINESS","POLITICS","SPORTS","BUSINESS","BUSINESS","POLITICS","HEALTH","TECHNOLOGY","ENTERTAINMENT","BUSINESS","SPORTS","BUSINESS","POLITICS","SPORTS","SPORTS","HEALTH","POLITICS","ENTERTAINMENT","SPORTS","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","BUSINESS","SPORTS","ARTS","SPORTS"],"xaxis":"x","yaxis":"y","type":"histogram"},{"alignmentgroup":"True","bingroup":"x","hovertemplate":"Sentiment=NEGATIVE\u003cbr\u003eTopic=%{x}\u003cbr\u003ecount=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NEGATIVE","marker":{"color":"#F08080","pattern":{"shape":""}},"name":"NEGATIVE","offsetgroup":"NEGATIVE","orientation":"v","showlegend":true,"x":["POLITICS","TECHNOLOGY","POLITICS","TECHNOLOGY","POLITICS","ENTERTAINMENT","BUSINESS","POLITICS","ENTERTAINMENT","SPORTS","POLITICS","TECHNOLOGY","SPORTS","BUSINESS","SPORTS",null,"BUSINESS",null,null,"BUSINESS","POLITICS","SPORTS","ARTS","POLITICS","ARTS","BUSINESS","ENTERTAINMENT","BUSINESS","BUSINESS","POLITICS","TECHNOLOGY","BUSINESS","POLITICS","BUSINESS",null,null,"POLITICS",null,"BUSINESS","SPORTS","TECHNOLOGY","SPORTS","POLITICS","HEALTH",null,"POLITICS","BUSINESS",null,"BUSINESS","ENTERTAINMENT","BUSINESS","ENTERTAINMENT","POLITICS","BUSINESS","BUSINESS","POLITICS",null,"POLITICS",null,null,"POLITICS","POLITICS",null,"BUSINESS","POLITICS","SPORTS","POLITICS","BUSINESS","BUSINESS","POLITICS","POLITICS","BUSINESS","POLITICS","HEALTH","SCIENCE","POLITICS",null,"POLITICS",null,"BUSINESS","POLITICS",null,"SPORTS","ARTS","POLITICS","BUSINESS","POLITICS","POLITICS","ENTERTAINMENT","POLITICS","POLITICS","SPORTS","BUSINESS","ENTERTAINMENT","SPORTS",null,null,"ENTERTAINMENT","POLITICS","POLITICS","BUSINESS","BUSINESS","SPORTS",null,"BUSINESS","BUSINESS","POLITICS","POLITICS",null,"BUSINESS","POLITICS","BUSINESS","POLITICS","SPORTS","POLITICS","HEALTH","SPORTS","ENTERTAINMENT","POLITICS","SPORTS","BUSINESS","BUSINESS","ENTERTAINMENT",null,"BUSINESS","BUSINESS","POLITICS","SPORTS","POLITICS","BUSINESS",null,null,"BUSINESS","POLITICS",null,null,null,"BUSINESS","BUSINESS","BUSINESS","BUSINESS",null,"TECHNOLOGY","TECHNOLOGY","BUSINESS","POLITICS","POLITICS","HEALTH","POLITICS","POLITICS","POLITICS","POLITICS","POLITICS","BUSINESS","POLITICS","BUSINESS","ENTERTAINMENT","POLITICS",null,null,"POLITICS","BUSINESS","POLITICS",null],"xaxis":"x","yaxis":"y","type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Topic"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Mentions"}},"legend":{"title":{"text":"Sentiment"},"tracegroupgap":0},"margin":{"t":60},"barmode":"group","title":{"text":"Topic and sentiment distribution"}},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('13087234-cdd9-4df1-a880-1e66c715ef47');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };                });            </script>        </div>
-</div>
-</div>
-<p>We see that business, technology and politics are the most common topics. Politics topics are most commonly negative, while entertainment topics are most commonly positive.</p>
-<div class="cell" data-fig-height="500px" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">named_entities <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (</span>
-<span id="cb21-2">    answers.explode(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"named_entities"</span>)</span>
-<span id="cb21-3">    .unnest(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"named_entities"</span>)</span>
-<span id="cb21-4">    .group_by(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>)</span>
-<span id="cb21-5">    .agg(pl.count(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>))</span>
-<span id="cb21-6">    .sort(by<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>)</span>
-<span id="cb21-7">    .drop_nulls()</span>
-<span id="cb21-8">)</span>
-<span id="cb21-9"></span>
-<span id="cb21-10"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Top 5 named entities by label</span></span>
-<span id="cb21-11">top_named_entities <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.concat(</span>
-<span id="cb21-12">    [x.top_k(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>, by<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> named_entities.partition_by(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>)]</span>
-<span id="cb21-13">)</span>
-<span id="cb21-14"></span>
-<span id="cb21-15">fig <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> px.bar(</span>
-<span id="cb21-16">    data_frame<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>top_named_entities,</span>
-<span id="cb21-17">    facet_row<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>,</span>
-<span id="cb21-18">    color<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"label"</span>,</span>
-<span id="cb21-19">    x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>,</span>
-<span id="cb21-20">    y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>,</span>
-<span id="cb21-21">    orientation<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"h"</span>,</span>
-<span id="cb21-22">    labels<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"count"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Mentions"</span>},</span>
-<span id="cb21-23">)</span>
-<span id="cb21-24"></span>
-<span id="cb21-25">fig.update_yaxes(matches<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>, title_text<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">""</span>, autorange<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"reversed"</span>)</span>
-<span id="cb21-26">fig.for_each_annotation(<span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">lambda</span> a: a.update(text<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>a.text.split(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"="</span>)[<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>]))</span>
-<span id="cb21-27">fig.update_layout(showlegend<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>, title<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Most frequent named entities by label"</span>)</span>
-<span id="cb21-28"></span>
-<span id="cb21-29">fig.show()</span></code></pre></div>
-<div class="cell-output cell-output-display">
-<div>                            <div id="13d9ae16-4c69-4697-b579-21950d0b2bd1" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("13d9ae16-4c69-4697-b579-21950d0b2bd1")) {                    Plotly.newPlot(                        "13d9ae16-4c69-4697-b579-21950d0b2bd1",                        [{"alignmentgroup":"True","hovertemplate":"label=PERSON\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"PERSON","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"PERSON","offsetgroup":"PERSON","orientation":"h","showlegend":true,"textposition":"auto","x":[25,5,5,4,3],"xaxis":"x5","y":["Donald Trump","Barack Obama","Trump","Xi Jinping","Prince Harry"],"yaxis":"y5","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=LOCATION\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"LOCATION","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"LOCATION","offsetgroup":"LOCATION","orientation":"h","showlegend":true,"textposition":"auto","x":[20,11,11,10,9],"xaxis":"x4","y":["China","New York","United States","Las Vegas","Australia"],"yaxis":"y4","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=ORG\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"ORG","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"ORG","offsetgroup":"ORG","orientation":"h","showlegend":true,"textposition":"auto","x":[9,6,5,5,5],"xaxis":"x3","y":["Dodgers","Supreme Court","DRDO","FBI","BJP"],"yaxis":"y3","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=PRODUCT\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"PRODUCT","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"PRODUCT","offsetgroup":"PRODUCT","orientation":"h","showlegend":true,"textposition":"auto","x":[4,4,4,3,3],"xaxis":"x2","y":["The Flash","Instagram","Twitter","Riverdale","Android"],"yaxis":"y2","type":"bar"},{"alignmentgroup":"True","hovertemplate":"label=EVENT\u003cbr\u003eMentions=%{x}\u003cbr\u003etext=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"EVENT","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"EVENT","offsetgroup":"EVENT","orientation":"h","showlegend":true,"textposition":"auto","x":[4,3,3,3,2],"xaxis":"x","y":["Friday","World Cup","Premiership","Championship","constituency projects"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,0.98],"title":{"text":"Mentions"}},"yaxis":{"anchor":"x","domain":[0.0,0.17600000000000002],"title":{"text":""},"autorange":"reversed"},"xaxis2":{"anchor":"y2","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis2":{"anchor":"x2","domain":[0.20600000000000002,0.382],"title":{"text":""},"autorange":"reversed"},"xaxis3":{"anchor":"y3","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis3":{"anchor":"x3","domain":[0.41200000000000003,0.5880000000000001],"title":{"text":""},"autorange":"reversed"},"xaxis4":{"anchor":"y4","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis4":{"anchor":"x4","domain":[0.618,0.794],"title":{"text":""},"autorange":"reversed"},"xaxis5":{"anchor":"y5","domain":[0.0,0.98],"matches":"x","showticklabels":false},"yaxis5":{"anchor":"x5","domain":[0.8240000000000001,1.0],"title":{"text":""},"autorange":"reversed"},"annotations":[{"font":{},"showarrow":false,"text":"EVENT","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.08800000000000001,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"PRODUCT","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.29400000000000004,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"ORG","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.5,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"LOCATION","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.706,"yanchor":"middle","yref":"paper"},{"font":{},"showarrow":false,"text":"PERSON","textangle":90,"x":0.98,"xanchor":"left","xref":"paper","y":0.912,"yanchor":"middle","yref":"paper"}],"legend":{"title":{"text":"label"},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative","showlegend":false,"title":{"text":"Most frequent named entities by label"}},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('13d9ae16-4c69-4697-b579-21950d0b2bd1');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };                });            </script>        </div>
-</div>
-</div>
-<p>The most common people are American politicians. Products are dominated by tech products. Events are dominated by Sports events. China stands out as the most commonly mentioned location.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Unvalidated model">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Unvalidated model
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>All of this is based on zero shot classification and zero shot named entity recognition. We don’t have a validation set, so we don’t know how accurate the model is. For production use, this would need to be tested.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="discussion" class="level2">
-<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-<p>The one-stop approach is diametrically opposed to Matthew Honnibal’s article <a href="https://explosion.ai/blog/against-llm-maximalism">“Against LLM Maximalism”</a>.</p>
-<blockquote class="blockquote">
-<p>They [LLMs] are extremely useful, but if you want to deliver reliable software you can improve over time, you can’t just write a prompt and call it a day</p>
-</blockquote>
-<p>The alternate pipeline with a modular approach of specialized models could look like this:</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph LR
-    A([Text]) --&gt; B[Tokenization]
-    B --&gt; C[Sentence splitting]
-    C --&gt; D[Topic classification]
-    D --&gt; E[Sentiment classification]
-    E --&gt; F[NER]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>The tokenization and sentence splitting don’t require trainable models.</p>
-<p>Explosion AI’s <a href="https://spacy.io">spaCy</a> package is excellent for constructing such pipelines. With the extension <a href="https://github.com/explosion/spacy-llm">spacy-llm</a>, it can also feature LLMs in the pipeline and <a href="https://prodi.gy">Prodigy</a> integrates them into the annotation workflow.</p>
-<section id="advantages-of-multi-task-prompts-compared-to-pipelines" class="level3">
-<h3 class="anchored" data-anchor-id="advantages-of-multi-task-prompts-compared-to-pipelines">Advantages of multi-task prompts compared to pipelines</h3>
-<ul>
-<li><strong>Simplicity</strong>: No training required and only one model to deploy or call by API. That means less code, infrastructure, and documentation to maintain. It also requires less knowledge about various model architectures. The is article showed that it’s possible to build a multi-task prompt pipeline with just a few lines of code. Note that spaCy also allows training a regular model to perform multiple tasks.</li>
-<li><strong>Easy upgrading</strong>: If the LLM gets better, all tasks benefit from it. No need to retrain specialized models. When OpenAI releases GPT-5, one could switch to it with a single line of code.</li>
-<li><strong>Easy extension</strong>: If we want to add a new label, we just add it to the schema and we’re done. Same with adding a new task, e.g.&nbsp;summarization.</li>
-<li><strong>Cheaper than chained LLM calls</strong>: If we were to call an LLM separately for each step, we’d have to send over the text multiple times. That’s more expensive than sending it once and getting all the analysis in one go. But it may still be more expensive than a chain of specialized models.</li>
-</ul>
-</section>
-<section id="disadvantages-of-multi-task-prompts-compared-to-pipelines" class="level3">
-<h3 class="anchored" data-anchor-id="disadvantages-of-multi-task-prompts-compared-to-pipelines">Disadvantages of multi-task prompts compared to pipelines</h3>
-<ul>
-<li><strong>Tempts to skip validation</strong>: Wouldn’t it be nice to just trust that the LLM gets it right? Unfortunately, we can’t. LLMs still suffer from hallucinations, biases, and other problems.</li>
-<li><strong>Lack of modularity</strong>: Can’t reuse one task in another pipeline and can’t use specialized models that others have trained.</li>
-<li><strong>New error types</strong>: JSON parsing errors, use of labels that are not in the schema.</li>
-<li><strong>Monolithic model</strong>: If you wish to fine-tune the LLM, it must be trained on all tasks at once. Training data must be available for all tasks. If you want to add a new task, you have to retrain the whole model.</li>
-<li><strong>High inference cost</strong>: Compared to efficient models like DistilBERT that comfortably run on a single GPU from a few years ago, LLMs are very expensive to run, requiring a cluster of the latest GPUs.</li>
-<li><strong>High latency</strong>: LLMs have to do a lot more matrix multiplication than smaller models. That means they take longer to respond, which is a problem for interactive applications.</li>
-</ul>
-<p>To conclude, I see unvalidated multi-task prompts as a tool for low-stakes exploratory work. If proper validation is added they can be viable in batch processing scenarios where simplicity is valued over modularity and computational efficiency.</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>Machine Learning</category>
-  <category>Python</category>
-  <guid>https://simmering.dev/blog/one-stop-nlp/</guid>
-  <pubDate>Sat, 28 Oct 2023 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/one-stop-nlp/knife.webp" medium="image" type="image/webp"/>
 </item>
 </channel>
 </rss>
