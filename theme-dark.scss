@@ -68,15 +68,20 @@ blockquote {
 
 // Style for code output blocks
 .cell-output {
-    background-color: darken($body-bg, 5%); // Slightly darker than body background
-    color: #d1d1d1; // Light grey text color
-    padding: 0.5em;
-    margin-top: 0.5em;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  // If you want to specifically target pre elements within output
-  .cell-output pre {
-    background-color: darken($body-bg, 5%);
-    color: #d1d1d1;
-  }
+  background-color: darken($body-bg, 5%); // Slightly darker than body background
+  color: #d1d1d1; // Light grey text color
+  padding: 0.5em;
+  margin-top: 0.5em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// If you want to specifically target pre elements within output
+.cell-output pre {
+  background-color: darken($body-bg, 5%);
+  color: #d1d1d1;
+}
+
+code {
+  background-color: darken($body-bg, 5%) !important;
+  color: #d1d1d1 !important;
+}
