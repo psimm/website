@@ -1,0 +1,131 @@
+---
+title: "Diagrams as Code: Supercharged by AI Assistants"
+author: "Paul Simmering"
+date: "2024-12-28"
+categories: ["Productivity"]
+image: "diagrams.webp"
+filters:
+  - d2
+---
+
+![D2 code and rendered diagram of a Kafka cluster for a web shop](diagrams_wide.webp)
+
+Diagrams as code are an efficient way to communicate complex ideas and document software architecture. In this post I'll explain how an AI assistant makes them even better.
+
+## What is diagrams as code?
+
+It's a diagram that is generated from markdown-like text. Rather than clicking and dragging, you write the text and the diagram is generated. Elements are automatically positioned and connected using a layout engine. This lets you focus on the content, rather than the look, at the expense of some flexibility. Since the diagrams are text-based, they can be version controlled with Git.
+
+Here's a quick example of a diagram as code in [D2](https://d2lang.com/):
+
+```
+shape: sequence_diagram
+User -> LLM: How many R's are in the word "strawberry"?
+LLM -> User: The word "strawberry" contains 2 instances of the letter "r".
+```
+
+This generates the following diagram:
+
+```{.d2 pad=10 width="75%" theme="NeutralDefault" dark-theme="DarkMauve"}
+shape: sequence_diagram
+style.fill: transparent
+User -> LLM: How many R's are in the word "strawberry"?
+LLM -> User: The word "strawberry" contains 2 instances of the letter "r".
+```
+
+Diagrams as code are not new, with the [DOT language](https://en.wikipedia.org/wiki/DOT_language) being used for [GraphViz](https://graphviz.org/) since 1991. They were great all along, but they've become even better with the rise of AI assistants.
+
+## Assistants make diagrams effortless
+
+Commonly used LLMs like GPT-4o, Claude and Gemini are familiar with text-based diagram syntax. They can turn a quick prompt into diagram code. They can also take the diagram as input and write code to implement it. Diagrams as code are an intermediate step between natural language and code. As assistants take on more coding tasks, this level of abstraction becomes more important for developers.
+
+An AI can assist throughout the diagram lifecycle - from generating initial diagrams from natural language prompts to updating them based on code changes. It can validate diagrams against existing code, convert between different diagram formats, and even suggest structural improvements. For developers new to diagrams as code, the assistant serves as a helpful guide, explaining syntax and best practices. The time savings also make it more convenient to keep diagrams in sync with code, which is a common problem.
+
+The stakes for diagrams are relatively low, so it's not necessary to review every generated line. When an assistant makes a mistake, syntax errors will be caught during rendering and content errors are easily spotted during visual review.
+
+## Diagrams as code systems
+
+Let's take a look at some of the most popular implementations:
+
+| Name | Description | Best for | Release |
+|---|---|---|---|
+| [GraphViz](https://graphviz.org/) | Foundational graph visualization technology powering many modern tools. Its DOT language and layout algorithms are widely used as a backend for other visualization software. Provides programmatic generation of structured layouts. | Network topology, dependency trees, and hierarchical data visualization where automated layout is crucial. Often used as an engine rather than directly. | 1991 |
+| [PlantUML](https://plantuml.com/) | Supports UML diagrams (class, sequence, use case, activity, etc.), network diagrams, wireframes, Gantt charts, and more.  Widely integrated into IDEs, wikis, and documentation tools. | Technical documentation requiring standardized diagrams, especially UML. | 2009 |
+| [Draw.io](https://www.drawio.com/) | Browser-based diagramming tool (also known as diagrams.net) with desktop versions available. Features extensive shape libraries, custom templates, and automatic layouts. Supports offline use, multiple storage backends (Google Drive, OneDrive, GitHub), and collaborative editing. | General-purpose diagramming suitable for both technical and business users. | 2012 |
+| [Mermaid](https://mermaid.js.org/) | JavaScript-based diagramming library that renders text definitions into SVG diagrams. Supports flowcharts, sequence diagrams, class diagrams, state diagrams, user journeys, Gantt charts, and pie charts. Widely adopted in documentation platforms and Markdown tools. | Diagrams in documentation, especially in Markdown environments like GitHub and documentation sites. | 2014 |
+| [D2](https://d2lang.com/) | Modern diagram scripting language focusing on developer experience. Features concise syntax, multiple layout engines, and scripting capabilities. Emphasizes version control friendly text-based diagram definitions. | Software architecture and system documentation. Sophisticated custom diagrams. | 2022 |
+
+All of them are free to use and have an extension for VSCode. The website [text-to-diagram.com](https://text-to-diagram.com/) has a fantastic comparison of D2, Mermaid, PlantUML and GraphViz.
+
+My favorite is **D2**, as it creates the most aesthetic and readable diagrams. It also supports many export formats, including SVG, PNG, PDF, and even PowerPoint.
+
+Mermaid is another strong choice, as it offers a wider range of diagram types and can be used as a code blocks in markdown environments like GitHub.
+
+If you're using Quarto, like I do for this blog, Mermaid and GraphViz support is [built-in](https://quarto.org/docs/authoring/diagrams.html) and D2 support can be added with a [plugin](https://github.com/data-intuitive/quarto-d2).
+
+## Level up your diagrams
+
+With an assistant, it's faster than ever to generate a giant hairball of boxes and arrows. But that's not the goal - it's about communicating ideas. Let's go over some principles that help increase the clarity and usefulness of diagrams. If you agree with them, you may want to copy them into a prompt.
+
+### Content and layout
+
+1. Use the appropriate diagram type. Flowcharts are the most common, but there are many others such as [sequence diagrams](https://d2lang.com/tour/sequence-diagrams/), [class diagrams](https://d2lang.com/tour/uml-classes), and [user journey diagrams](https://mermaid.js.org/syntax/userJourney.html).
+
+2. Model the key components, rather than every possible detail. Keep the diagram at a single level of abstraction. Use multiple diagrams if needed.
+
+> My rule of thumb is that you need to be able to print the diagram on a single A4 sheet while keeping things readable. -- [Geert Bellekens, enterprise architect](https://bellekens.com/2012/02/21/uml-best-practice-5-rules-for-better-uml-diagrams/)
+
+3. Avoid crossing lines. Layout engines do a good job of this. If they fail to find a layout that avoids overlaps, it's a sign that the diagram is too complex. Also prefer vertical and horizontal lines over diagonal ones, as they give the diagram a more professional look.
+
+### Styling
+
+1. Label all components and arrows. A relationship may be obvious to you, but not to others. Use one or two word labels in a sans-serif font at a size readable for aging eyes.
+2. Use consistent shapes, arrows and colors. This helps readers scan the diagram quicker. Use stylistic elements like thicker lines for primary flows and thinner for secondary flows, dotted or dashed lines for optional or future relationships, and different shapes for different types of components.
+3. Use color sparingly and meaningfully, e.g., to highlight critical paths. Don't rely on color as the only way information is conveyed. Use labels and shapes to ensure the diagram works in black and white too. 1 in 12 men are [colorblind](https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/color-blindness).
+4. Consider using a [hand-drawn style](https://d2lang.com/blog/hand-drawn-diagrams) in early stages of a design. It conveys that the diagram is a draft and not a final product.
+
+```{.d2 pad=10 width="100%" theme="NeutralDefault" dark-theme="DarkMauve" sketch=true}
+direction: right
+
+dataset: Dataset {
+  shape: cylinder
+}
+
+split: Train/Test Split {
+  shape: diamond
+}
+
+train: Training Data
+test: Test Data
+
+model: ML Model {
+  shape: rectangle
+}
+
+eval: Evaluation {
+  shape: rectangle
+}
+
+dataset -> split
+split -> train
+split -> test
+train -> model
+model -> eval
+test -> eval
+
+style {
+  fill: transparent
+}
+
+```
+
+## Try it yourself
+
+I suggest starting with the [D2 playground](https://play.d2lang.com) and any assistant, such as ChatGPT. No installation or magic prompt required. Just ask it to generate the D2 code for a simple diagram.
+
+A more powerful setup is to install D2 locally, index the documentation in Cursor and then use Claude-3.5 Sonnet in a Composer window to generate diagrams.
+
+---
+
+Image background by <a href="https://unsplash.com/@pawel_czerwinski?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pawel Czerwinski</a> on <a href="https://unsplash.com/photos/background-pattern-C-pmBkHZWQ0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
