@@ -33,6 +33,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/diagrams/index.html",
       "/blog/llm-customization/index.html",
       "/blog/pydantic-ai/index.html",
       "/blog/context-constrained/index.html",
