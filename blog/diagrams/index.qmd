@@ -57,11 +57,11 @@ Let's take a look at some of the most popular implementations:
 
 All of them are free to use and have an extension for VSCode. The website [text-to-diagram.com](https://text-to-diagram.com/) has a fantastic comparison of D2, Mermaid, PlantUML and GraphViz.
 
-My favorite is **D2**, as it creates the most aesthetic and readable diagrams. It also supports many export formats, including SVG, PNG, PDF, and even PowerPoint.
+My favorite is **D2**, as it creates the most aesthetic and readable diagrams using the [ELK layout engine](https://d2lang.com/tour/elk). It also supports many export formats, including SVG, PNG, PDF, and even PowerPoint.
 
 Mermaid is another strong choice, as it offers a wider range of diagram types and can be used as a code blocks in markdown environments like GitHub.
 
-If you're using Quarto, like I do for this blog, Mermaid and GraphViz support is [built-in](https://quarto.org/docs/authoring/diagrams.html) and D2 support can be added with a [plugin](https://github.com/data-intuitive/quarto-d2).
+If you're using Quarto, like I do for this blog, Mermaid and GraphViz support is [built-in](https://quarto.org/docs/authoring/diagrams.html) and D2 support can be added with a [plugin](https://github.com/data-intuitive/quarto-d2). Alternatively, create a separate `.d2` file and render it to SVG.
 
 ## Level up your diagrams
 
@@ -84,7 +84,7 @@ With an assistant, it's faster than ever to generate a giant hairball of boxes a
 3. Use color sparingly and meaningfully, e.g., to highlight critical paths. Don't rely on color as the only way information is conveyed. Use labels and shapes to ensure the diagram works in black and white too. 1 in 12 men are [colorblind](https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/color-blindness).
 4. Consider using a [hand-drawn style](https://d2lang.com/blog/hand-drawn-diagrams) in early stages of a design. It conveys that the diagram is a draft and not a final product.
 
-```{.d2 pad=10 width="100%" theme="NeutralDefault" dark-theme="DarkMauve" sketch=true}
+```{.d2 pad=10 width="100%" theme="NeutralDefault" dark-theme="DarkMauve" sketch=true layout="elk"}
 direction: right
 
 dataset: Dataset {
