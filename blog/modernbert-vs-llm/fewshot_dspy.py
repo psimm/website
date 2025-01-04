@@ -4,6 +4,7 @@
 # https://modal.com/docs/examples/vllm_inference
 
 import os
+import time
 from typing import Literal
 
 import dspy
@@ -110,9 +111,13 @@ evaluator = dspy.Evaluate(
     num_threads=NUM_THREADS,
 )
 
+start_time = time.time()
 score = evaluator(optimized_predictor) / 100
+end_time = time.time()
+duration = end_time - start_time
 
 print(f"Accuracy: {score}")
+print(f"Time: {duration}")
 
 # Log to W&B
 wandb.init(
@@ -124,6 +129,12 @@ wandb.init(
     },
 )
 
-wandb.log({"accuracy": score})
+wandb.log(
+    {
+        "test/accuracy": score,
+        "test/duration": duration,
+        "test/examples_per_sec": len(examples_test) / duration,
+    }
+)
 
 wandb.finish()
