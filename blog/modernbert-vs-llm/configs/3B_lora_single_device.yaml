@@ -49,6 +49,7 @@ dataset:
   conversation_style: openai
   data_files: /data/train.jsonl
   packed: False # True increases speed
+  train_on_input: False
 seed: null
 shuffle: True
 batch_size: 4
