@@ -33,6 +33,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/modernbert-vs-llm/index.html",
       "/blog/diagrams/index.html",
       "/blog/llm-customization/index.html",
       "/blog/pydantic-ai/index.html",

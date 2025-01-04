@@ -1,0 +1,107 @@
+direction: right
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # https://d2lang.com/tour/themes
+    theme-id: 200
+    theme-overrides: {
+      # blue edges
+      B1: "#3AAAFF"
+      B2: "#3AAAFF"
+    }
+  }
+}
+
+style.fill: transparent
+
+classes: {
+  setup: {
+    shape: rectangle
+    style.stroke: "#E25065"
+  }
+  model: {
+    shape: hexagon
+  }
+  node: {
+    style.stroke: "#3AAAFF"
+    style.font-size: 22
+  }
+  edge: {
+    style.stroke: "#3AAAFF"
+    style.font-size: 24
+  }
+}
+
+# Dataset nodes
+dataset: ADE Corpus {
+  shape: cylinder
+  class: node
+}
+
+# Model nodes
+modernbert: ModernBERT-base {
+  class: [node; model]
+}
+
+llama: Llama 3.2-3B {
+  class: [node; model]
+}
+
+# Setup nodes
+modernbert_ft: Fine-tuned\nModernBERT {
+  class: [node; setup]
+}
+
+fewshot: Few-shot prompt {
+  class: [node; setup]
+}
+
+llama_ft: Fine-tuned Llama {
+  class: [node; setup]
+}
+
+# Training flows
+dataset -> modernbert_ft: Provide training set {
+  class: edge
+}
+dataset -> llama_ft: Provide training set {
+  class: edge
+}
+dataset -> fewshot: Pick examples with DSPy {
+  class: edge
+}
+
+modernbert -> modernbert_ft: Train {
+  class: edge
+}
+llama -> fewshot: Prompt {
+  class: edge
+}
+llama -> llama_ft: Train LoRA adapter {
+  class: edge
+}
+
+# Evaluation
+eval: Evaluation\non test set {
+  class: node
+  style.stroke: "#AAFFB3"
+}
+
+wandb: Weights & Biases {
+  shape: cloud
+  class: node
+  style.stroke: "#AAFFB3"
+}
+
+dataset -> eval: Provide test set {
+  class: edge
+}
+modernbert_ft -> eval
+llama_ft -> eval
+fewshot -> eval
+
+eval -> wandb: "Log metrics" {
+  class: edge
+  style.stroke-dash: 4
+}

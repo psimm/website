@@ -2,6 +2,7 @@ _environment*
 /.quarto/
 /_*.local
 .venv
+.env
 .DS_Store
 *.pyc
 .env
