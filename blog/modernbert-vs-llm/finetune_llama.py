@@ -128,6 +128,7 @@ def evaluate(
     lora_path: str | None = None,
     split: Literal["train", "test", "valid"] = "test",
     wandb_run_id: str | None = None,
+    print_first_n_parsing_errors: int = 5,
 ):
     import wandb
 
@@ -157,6 +158,8 @@ def evaluate(
         try:
             predictions.append(int(result))
         except ValueError:
+            if parsing_errors < print_first_n_parsing_errors:
+                print(f"Error parsing result: '{result}' as int")
             parsing_errors += 1
             predictions.append(0)
 
@@ -175,11 +178,26 @@ def evaluate(
 
 
 @app.local_entrypoint()
-def main():
-    # download.remote("meta-llama/Llama-3.2-3B-Instruct")
-    # train.remote("3B_lora_single_device.yaml")
-    evaluate.remote(
-        model="/checkpoints/meta-llama/Llama-3.2-3B-Instruct",
-        lora_path="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device",
-        wandb_run_id="fblv2wis",
-    )
+def main(
+    download_model: bool = False,
+    run_training: bool = False,
+    run_evaluation: bool = False,
+):
+    """
+    Run the specified steps of the Llama fine-tuning pipeline.
+
+    Args:
+        download_model: Whether to download the base model
+        run_training: Whether to run the LoRA fine-tuning
+        run_evaluation: Whether to evaluate the fine-tuned model
+    """
+    if download_model:
+        download.remote("meta-llama/Llama-3.2-3B-Instruct")
+    if run_training:
+        train.remote("3B_lora_single_device.yaml")
+    if run_evaluation:
+        evaluate.remote(
+            model="/checkpoints/meta-llama/Llama-3.2-3B-Instruct",
+            lora_path="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device",
+            wandb_run_id="fblv2wis",
+        )
