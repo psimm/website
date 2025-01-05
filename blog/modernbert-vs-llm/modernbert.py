@@ -58,7 +58,6 @@ def tokenize(dataset):
     # Load Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     tokenizer.model_max_length = 512  # longer examples are truncated
-    # TODO: Check how long longest input is
 
     def tokenize(batch):
         return tokenizer(
@@ -88,14 +87,11 @@ def compute_metrics(eval_pred):
 
 
 @app.function(image=image, timeout=60 * 60, gpu="A10G")
-def train(tokenized_dataset):
+def train(tokenized_dataset, model_id: str = "answerdotai/ModernBERT-base"):
     from huggingface_hub import HfFolder
     from transformers import Trainer, TrainingArguments
     import wandb
     from transformers import AutoModelForSequenceClassification
-
-    # Model id to load the tokenizer
-    model_id = "answerdotai/ModernBERT-base"
 
     # Download the model from huggingface.co/models
     model = AutoModelForSequenceClassification.from_pretrained(model_id, num_labels=2)
@@ -193,7 +189,7 @@ def test(dataset, wandb_run_id: str = None):
 def train_modernbert():
     dataset = prep_dataset()
     tokenized_dataset = tokenize.remote(dataset)
-    train.remote(tokenized_dataset)
+    train.remote(tokenized_dataset)  # model is saved to hub
 
 
 @app.function(image=image, timeout=60 * 60)

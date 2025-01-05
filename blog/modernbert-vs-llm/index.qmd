@@ -1,7 +1,7 @@
 ---
 title: "ModernBERT vs LLMs for text classification"
 author: "Paul Simmering"
-date: "2025-01-04"
+date: "2025-01-05"
 categories: ["Machine Learning"]
 image: "image.webp"
 toc: true
@@ -77,13 +77,12 @@ The optimized predictor is available as a JSON file in the [Weights & Biases pro
 
 ### Setup 3: Fine-tuning Llama 3.2-3B
 
-I'm using the torchtune library and a fine-tuning configuration to train a LoRA adapter on the training set. It targets the attention and feed-forward layers of the model. The adapter is a smaller set of weights that are added to the model at inference time. LoRA training incurs less training cost than full fine-tuning of all weights, but may result in worse accuracy.
+I'm using the torchtune library and a fine-tuning configuration to train a LoRA adapter on the training set. It targets the attention and feed-forward layers of the model. The adapter is a smaller set of weights that are added to the model at inference time. LoRA training incurs less training cost than full fine-tuning of all weights, but may result in worse accuracy. The LoRA settings used for training are available in the W&B project and the training config file for torchtune. Training took about 8 minutes on the A10G.
 
-TODO: Add fine-tuning config
-TODO: Make files available for fine-tuning
-TODO: Format as chats for fine-tuning
-TODO: Add test set evaluation
-TODO: Add logging to W&B
+# TODO: Fix output format (model not predicting 0 or 1)
+# TODO: Consider other LoRA configurations
+# TODO: Use Llama 3 instruct chat template https://pytorch.org/torchtune/stable/tutorials/chat.html
+# https://pytorch.org/torchtune/stable/tutorials/chat.html#fine-tuning-on-a-custom-chat-dataset
 
 ## Results
 
@@ -91,20 +90,28 @@ TODO: Add logging to W&B
 |-------|----------|-----------|---------|---------------------------|
 | 1: ModernBERT fine-tuned| 0.98 | 0.97 | 0.99 | 100 |
 | 2: Llama 3.2-3B 10-shot| 0.98 | 0.98 | 0.98 | 10 |
-| 3: Llama 3.2-3B fine-tuned| 0.98 | 0.99 | 0.97 | 1 |
+| 3: Llama 3.2-3B LoRA fine-tuned| 0.98 | 0.99 | 0.97 | 1 |
 
 TODO: Update with actual results
+TODO: Read about fine-tuning Llama for classification specifically
+TODO: Find out if it's possible to get probabilities for classes
 
 I'm measuring the number of examples per second on an Nvidia A10G with 24GB memory. It's available on Modal for $1.10/h.
 
 Training cost is negligible for all setups, but can become substantial for fine-tuning larger LLMs. Training ModernBERT-large is still cheap.
 
 TODO: Analyze accuracy, precision, recall
-TODO: Analyze examples per second
+TODO: Analyze examples per second. vLLM is highly optimized for inference, bringing the speed for the larger Llama model above that of ModernBERT.
 TODO: Analyze ease of training
 TODO: Analyze ease of deployment for inference
 
-Here, I set up training and inference using Modal and open source libraries. This process can be shortened by using a managed service like [Fireworks](https://fireworks.ai), which provides an inference and training API. With LoRA and the increasing abundance of GPU servers, fine-tuning LLMs isn't significantly more expensive or difficult than training ModernBERT. Both require training data. If you do not have training data, the few-shot learning approach is a good alternative. It can also be used to bootstrap a training dataset, especially when combined with a full size LLM like Llama-3.1-405B or gpt-4o.
+Here, I set up training and inference using Modal and open source libraries. This process can be shortened by using a managed service like [Fireworks](https://fireworks.ai), which provides an inference and training API. With torchtune, LoRA and the increasing abundance of GPU servers, fine-tuning LLMs isn't significantly more expensive or difficult than training ModernBERT. Both require training data. If you do not have training data, the few-shot learning approach is a good alternative. It can also be used to bootstrap a training dataset, especially when combined with a full size LLM like Llama-3.1-405B or gpt-4o.
+
+Effort comparison, assuming complete greenfield project:
+
+- Using LLMs via API is easy. If prompting is enough for your use case and the amount of requests isn't enormous, it's a good solution.
+- Running ModernBERT is medium. Runs on any GPU and also on CPU (slowly). Can start on a laptop. Scales to extremely high request volumes.
+- Running LLMs with LoRA is relatively hard compared to the other two. Requires more configuration of training (data format, conversation template, libraries like flash attention) and inference (loading LoRA adapter, generation arguments). Use this if the NLP task is complex and you have training data.
 
 ## Discussion
 

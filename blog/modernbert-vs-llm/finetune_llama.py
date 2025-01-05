@@ -29,6 +29,7 @@ image = (
         "mv /usr/local/bin/tune /usr/local/bin/tune-ray",
     )
     .pip_install("torchtune==0.5.0")
+    .pip_install("ipython")  # TODO: remove
 )
 app = modal.App(image=image)
 
@@ -82,13 +83,26 @@ def train(config: str):
 )
 def inference(
     model: str,
-    prompts: list[str],
+    messages: list[list[dict[str, str]]],
     lora_path: str | None = None,
-) -> list[tuple[str, str]]:
+) -> tuple[list[str], dict[str, float]]:
+    """
+    Run inference on a list of prompts.
+
+    Args:
+        model: Path to the model checkpoint
+        prompts: List of strings to use as inputs
+        lora_path: Path to the LoRA adapter to use for inference
+
+    Returns:
+        results: The generated text for each prompt
+        stats: Inference statistics as a dictionary
+    """
     from vllm import LLM, SamplingParams
 
     # https://docs.vllm.ai/en/latest/getting_started/quickstart.html
     # https://docs.vllm.ai/en/latest/dev/sampling_params.html#vllm.SamplingParams
+    # https://docs.vllm.ai/en/stable/models/generative_models.html#llm-generate
     llm = LLM(
         model=model,
         enable_lora=lora_path is not None,
@@ -97,24 +111,23 @@ def inference(
     sampling_params = SamplingParams(temperature=0.0)
 
     generate_kwargs = {
-        "prompts": prompts,
+        "messages": messages,
         "sampling_params": sampling_params,
     }
 
-    if lora_path is not None:
-        # https://docs.vllm.ai/en/latest/models/lora.html
-        from vllm.lora.request import LoRARequest
-
-        print(f"Using LoRA adapter {lora_path}")
-        generate_kwargs["lora_request"] = LoRARequest(
-            lora_name="adapter", lora_path=lora_path, lora_int_id=0
-        )
-
-    outputs = llm.generate(**generate_kwargs)
+    start_time = time.time()
+    outputs = llm.chat(**generate_kwargs)
+    end_time = time.time()
+    duration = end_time - start_time
 
     results = [output.outputs[0].text for output in outputs]
 
-    return results
+    stats = {
+        "duration": duration,
+        "examples_per_sec": len(messages) / duration,
+    }
+
+    return results, stats
 
 
 @app.function(
@@ -132,25 +145,25 @@ def evaluate(
 ):
     import wandb
 
-    chats = []
-    with open(f"/data/{split}.jsonl", "r") as f:
-        for line in f:
-            chats.append(json.loads(line))
+    assert split in ["train", "test", "valid"], "Invalid split"
 
-    prompts = [chat["messages"][0]["content"] for chat in chats]
-    expected_labels = [int(chat["messages"][1]["content"]) for chat in chats]
+    with open(f"/data/{split}.json", "r") as f:
+        chats = json.load(f)
 
-    print(f"Running inference on {len(prompts)} prompts")
+    # vLLM expects messages in OpenAI format
+    messages = [
+        [{"role": "user", "content": chat["dialogue"][0]["value"]}] for chat in chats
+    ]
 
-    # TODO: Consider timing without model setup time to only get inference time
-    start_time = time.time()
-    results = inference.remote(model=model, lora_path=lora_path, prompts=prompts)
-    end_time = time.time()
-    duration = end_time - start_time
-    examples_per_sec = len(prompts) / duration
+    print(f"Running inference on {len(messages)} messages")
+
+    results, stats = inference.remote(
+        model=model, lora_path=lora_path, messages=messages
+    )
+
     metrics = {
-        f"{split}/examples_per_sec": examples_per_sec,
-        f"{split}/duration": duration,
+        f"{split}/examples_per_sec": stats["examples_per_sec"],
+        f"{split}/duration": stats["duration"],
     }
 
     parsing_errors = 0
@@ -163,6 +176,8 @@ def evaluate(
                 print(f"Error parsing result: '{result}' as int")
             parsing_errors += 1
             predictions.append(0)
+
+    expected_labels = [int(chat["dialogue"][1]["value"]) for chat in chats]
 
     metrics[f"{split}/accuracy"] = sum(
         pred == expected for pred, expected in zip(predictions, expected_labels)
@@ -183,7 +198,7 @@ def main(
     download_model: bool = False,
     run_training: bool = False,
     run_evaluation: bool = False,
-    evaluation_split: Literal["train", "test", "valid"] = "valid",
+    evaluation_split: str = "valid",
 ):
     """
     Run the specified steps of the Llama fine-tuning pipeline.
@@ -192,16 +207,17 @@ def main(
         download_model: Whether to download the base model
         run_training: Whether to run the LoRA fine-tuning
         run_evaluation: Whether to evaluate the fine-tuned model
-        wandb_run_id: The W&B run ID to use for logging
+        evaluation_split: The split to use for evaluation. One of "train", "test", "valid"
     """
+
     if download_model:
         download.remote("meta-llama/Llama-3.2-3B-Instruct")
     if run_training:
         train.remote("3B_lora_single_device.yaml")
+    # TODO: Consider only loading the LoRA adapter rather than the entire model
     if run_evaluation:
         evaluate.remote(
-            model="/checkpoints/meta-llama/Llama-3.2-3B-Instruct",
-            lora_path="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device",
-            wandb_run_id="fblv2wis",
+            model="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device/epoch_3",
+            wandb_run_id="jl3h6aep",
             split=evaluation_split,
         )

@@ -45,9 +45,9 @@ dataset:
   _component_: torchtune.datasets.chat_dataset
   source: json
   split: train
-  conversation_column: messages
-  conversation_style: openai
-  data_files: /data/train.jsonl
+  conversation_column: dialogue
+  conversation_style: sharegpt
+  data_files: /data/train.json
   packed: False # True increases speed
   train_on_input: False
 seed: null
@@ -68,7 +68,7 @@ loss:
   _component_: torchtune.modules.loss.CEWithChunkedOutputLoss
 
 # Training
-epochs: 1
+epochs: 4
 max_steps_per_epoch: null
 gradient_accumulation_steps: 8 # Use to increase effective batch size
 compile: False # torch.compile the model + loss, True increases speed + decreases memory

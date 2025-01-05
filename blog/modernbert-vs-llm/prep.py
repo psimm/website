@@ -81,32 +81,31 @@ def prep_dataset(
     return ds
 
 
-def dataset_to_openai_jsonl(
+def dataset_to_sharegpt_json(
     dataset: datasets.arrow_dataset.Dataset,
     output_path: str,
 ) -> None:
-    # See documentation for openai conversation style
-    # https://pytorch.org/torchtune/main/basics/chat_datasets.html#openai
+    # See documentation for sharegpt conversation style
+    # https://pytorch.org/torchtune/stable/tutorials/chat.html#fine-tuning-on-a-custom-chat-dataset
 
-    # Format in openai conversation style
+    # Format in sharegpt conversation style
     chats = [
         {
-            "messages": [
-                {"role": "user", "content": row["text"]},
-                {"role": "assistant", "content": str(row["label"])},
+            "dialogue": [
+                {"from": "human", "value": row["text"]},
+                {"from": "gpt", "value": str(row["label"])},
             ]
         }
         for row in dataset
     ]
 
     with open(output_path, "w") as f:
-        for chat in chats:
-            f.write(json.dumps(chat) + "\n")
+        json.dump(chats, f)
 
 
 if __name__ == "__main__":
     ds = prep_dataset()
     os.makedirs("data", exist_ok=True)
-    dataset_to_openai_jsonl(ds["train"], "data/train.jsonl")
-    dataset_to_openai_jsonl(ds["test"], "data/test.jsonl")
-    dataset_to_openai_jsonl(ds["valid"], "data/valid.jsonl")
+    dataset_to_sharegpt_json(ds["train"], "data/train.json")
+    dataset_to_sharegpt_json(ds["test"], "data/test.json")
+    dataset_to_sharegpt_json(ds["valid"], "data/valid.json")
