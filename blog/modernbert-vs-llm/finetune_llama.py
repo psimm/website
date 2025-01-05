@@ -126,7 +126,7 @@ def inference(
 def evaluate(
     model: str,
     lora_path: str | None = None,
-    split: Literal["train", "test", "valid"] = "test",
+    split: Literal["train", "test", "valid"] = "valid",
     wandb_run_id: str | None = None,
     print_first_n_parsing_errors: int = 5,
 ):
@@ -142,14 +142,15 @@ def evaluate(
 
     print(f"Running inference on {len(prompts)} prompts")
 
+    # TODO: Consider timing without model setup time to only get inference time
     start_time = time.time()
     results = inference.remote(model=model, lora_path=lora_path, prompts=prompts)
     end_time = time.time()
     duration = end_time - start_time
     examples_per_sec = len(prompts) / duration
     metrics = {
-        "test/examples_per_sec": examples_per_sec,
-        "test/duration": duration,
+        f"{split}/examples_per_sec": examples_per_sec,
+        f"{split}/duration": duration,
     }
 
     parsing_errors = 0
@@ -163,11 +164,11 @@ def evaluate(
             parsing_errors += 1
             predictions.append(0)
 
-    metrics["test/accuracy"] = sum(
+    metrics[f"{split}/accuracy"] = sum(
         pred == expected for pred, expected in zip(predictions, expected_labels)
     ) / len(results)
 
-    metrics["test/parsing_errors"] = parsing_errors
+    metrics[f"{split}/parsing_errors"] = parsing_errors
 
     print(metrics)
 
@@ -182,6 +183,7 @@ def main(
     download_model: bool = False,
     run_training: bool = False,
     run_evaluation: bool = False,
+    evaluation_split: Literal["train", "test", "valid"] = "valid",
 ):
     """
     Run the specified steps of the Llama fine-tuning pipeline.
@@ -190,6 +192,7 @@ def main(
         download_model: Whether to download the base model
         run_training: Whether to run the LoRA fine-tuning
         run_evaluation: Whether to evaluate the fine-tuned model
+        wandb_run_id: The W&B run ID to use for logging
     """
     if download_model:
         download.remote("meta-llama/Llama-3.2-3B-Instruct")
@@ -200,4 +203,5 @@ def main(
             model="/checkpoints/meta-llama/Llama-3.2-3B-Instruct",
             lora_path="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device",
             wandb_run_id="fblv2wis",
+            split=evaluation_split,
         )
