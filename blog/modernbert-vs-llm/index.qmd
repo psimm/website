@@ -22,7 +22,7 @@ During my work in market research for pharmaceutical companies, I frequently hav
 
 | Resource | Link |
 |----------|------|
-| 💻 Python code | [GitHub](https://github.com/psimm/website/blob/master/blog/modernbert-vs-llm/) |
+| 💻 Python code & readme | [GitHub](https://github.com/psimm/website/blob/master/blog/modernbert-vs-llm/) |
 | 📊 Experiment results | [Weights & Biases project](https://wandb.ai/psimm/modernbert-vs-llm?nw=0uja1rkfaqe) |
 | 📝 Dataset: ADE-Benchmark Corpus | [Hugging Face Hub](https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2) |
 
