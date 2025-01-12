@@ -210,4 +210,4 @@ None of these require new breakthroughs in AI - they are doable with current tec
 
 ---
 
-Preview image based on <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/blue-and-white-checkered-pattern-am-yg8wLLIo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+Preview image generated with FLUX.1-schnell and DiffusionBee.
