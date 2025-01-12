@@ -6,3 +6,4 @@ _environment*
 .DS_Store
 *.pyc
 .env
+.specstory/*

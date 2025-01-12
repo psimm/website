@@ -3,8 +3,11 @@
 # and https://github.com/DrChrisLevy/DrChrisLevy.github.io/blob/main/posts/modern_bert/trainer.py
 
 # Usage:
-# modal run modernbert.py::train_modernbert
-# modal run modernbert.py::test_modernbert
+# modal run modernbert.py::train_modernbert --model-id answerdotai/ModernBERT-base
+# modal run modernbert.py::test_modernbert --model-id psimm/ModernBERT-base-ade-corpus-v2-classification --wandb-run-id <wandb-run-id>
+
+# modal run modernbert.py::train_modernbert --model-id answerdotai/ModernBERT-large
+# modal run modernbert.py::test_modernbert --model-id psimm/ModernBERT-large-ade-corpus-v2-classification --wandb-run-id <wandb-run-id>
 
 import modal
 
@@ -33,9 +36,7 @@ image = (
         "polars==1.13.1",
         "wandb",
     )
-    .pip_install(
-        "flash-attn",
-    )
+    .pip_install("flash-attn")
     # Install transformers from github
     .pip_install(
         "git+https://github.com/huggingface/transformers.git@6e0515e99c39444caae39472ee1b2fd76ece32f1",
@@ -73,21 +74,28 @@ def tokenize(dataset):
 
 def compute_metrics(eval_pred):
     import numpy as np
-    from sklearn.metrics import accuracy_score, log_loss
+    from sklearn.metrics import accuracy_score, log_loss, recall_score, precision_score
 
     predictions, labels = eval_pred
 
     # Convert predictions to class labels
     predicted_class = np.argmax(predictions, axis=1)
     accuracy = accuracy_score(labels, predicted_class)
+    recall = recall_score(labels, predicted_class)
+    precision = precision_score(labels, predicted_class)
 
     # Add binary cross entropy
     bce = log_loss(labels, predictions)
-    return {"accuracy": float(accuracy), "bce": float(bce)}
+    return {
+        "accuracy": float(accuracy),
+        "bce": float(bce),
+        "recall": float(recall),
+        "precision": float(precision),
+    }
 
 
 @app.function(image=image, timeout=60 * 60, gpu="A10G")
-def train(tokenized_dataset, model_id: str = "answerdotai/ModernBERT-base"):
+def train(tokenized_dataset, model_id: str):
     from huggingface_hub import HfFolder
     from transformers import Trainer, TrainingArguments
     import wandb
@@ -98,9 +106,12 @@ def train(tokenized_dataset, model_id: str = "answerdotai/ModernBERT-base"):
 
     wandb.init(project="modernbert-vs-llm")
 
+    model_name = model_id.split("/")[-1]
+    output_dir = f"{model_name}-ade-corpus-v2-classification"
+
     # Define training args
     training_args = TrainingArguments(
-        output_dir="modernbert-ade-corpus-v2-classification",
+        output_dir=output_dir,
         per_device_train_batch_size=32,
         per_device_eval_batch_size=16,
         learning_rate=5e-5,
@@ -136,7 +147,7 @@ def train(tokenized_dataset, model_id: str = "answerdotai/ModernBERT-base"):
 
 
 @app.function(image=image, timeout=60 * 60, gpu="A10G")
-def test(dataset, wandb_run_id: str = None):
+def test(dataset, model_id: str, wandb_run_id: str = None):
     import time
     from transformers import pipeline
     from transformers import AutoTokenizer
@@ -146,7 +157,7 @@ def test(dataset, wandb_run_id: str = None):
     tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
 
     classifier = pipeline(
-        model="psimm/modernbert-ade-corpus-v2-classification",
+        model=model_id,
         task="text-classification",
         device=0,
         tokenizer=tokenizer,
@@ -157,7 +168,7 @@ def test(dataset, wandb_run_id: str = None):
 
     # Predict and time
     start_time = time.time()
-    predictions = classifier(test_set["text"])
+    predictions = classifier(test_set["text"], batch_size=128)
     end_time = time.time()
     duration = end_time - start_time
     examples_per_sec = len(test_set) / duration
@@ -176,6 +187,8 @@ def test(dataset, wandb_run_id: str = None):
     eval_metrics = compute_metrics(eval_pred)
     metrics["test/accuracy"] = eval_metrics["accuracy"]
     metrics["test/bce"] = eval_metrics["bce"]
+    metrics["test/recall"] = eval_metrics["recall"]
+    metrics["test/precision"] = eval_metrics["precision"]
 
     if wandb_run_id:
         wandb.init(project="modernbert-vs-llm", id=wandb_run_id, resume="allow")
@@ -186,14 +199,14 @@ def test(dataset, wandb_run_id: str = None):
 
 
 @app.function(image=image, timeout=60 * 60)
-def train_modernbert():
+def train_modernbert(model_id: str = "answerdotai/ModernBERT-base"):
     dataset = prep_dataset()
     tokenized_dataset = tokenize.remote(dataset)
-    train.remote(tokenized_dataset)  # model is saved to hub
+    train.remote(tokenized_dataset, model_id)  # model is saved to hub
 
 
 @app.function(image=image, timeout=60 * 60)
-def test_modernbert():
+def test_modernbert(wandb_run_id: str, model_id: str = "answerdotai/ModernBERT-base"):
     dataset = prep_dataset()
-    metrics = test.remote(dataset, wandb_run_id="nwyymu91")
+    metrics = test.remote(dataset, wandb_run_id=wandb_run_id, model_id=model_id)
     print(metrics)

@@ -11,9 +11,9 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.6.33</generator>
-<lastBuildDate>Wed, 01 Jan 2025 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 11 Jan 2025 23:00:00 GMT</lastBuildDate>
 <item>
-  <title>ModernBERT vs LLMs for text classification</title>
+  <title>ModernBERT vs LLMs for Detecting Adverse Drug Reactions</title>
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/modernbert-vs-llm/</link>
   <description><![CDATA[ 
@@ -22,12 +22,12 @@
 
 
 
-<p>HuggingFace recently released ModernBERT (<a href="https://huggingface.co/answerdotai/ModernBERT-base">model</a>, <a href="https://arxiv.org/abs/2412.13663">paper</a>), an updated version of the BERT language model which backports many improvements from LLM research back to the classic 2018 model. In contrast to LLMs, ModernBERT is an encoder-only model that is fitted with a task-specific head outputting probabilities for structured NLP tasks, rather than tokens.</p>
+<p>HuggingFace recently released ModernBERT <span class="citation" data-cites="warner2024smarterbetterfasterlonger">(Warner et al. 2024)</span>, an updated version of the BERT language model <span class="citation" data-cites="devlin2018bert">(Devlin 2018)</span> which backports many improvements from LLM research back to the classic 2018 model. In contrast to LLMs, ModernBERT is an encoder-only model that is fitted with a task-specific head outputting probabilities for structured NLP tasks, rather than tokens.</p>
 <p>While LLMs with their decoder-only architecture were originally designed for text generation, they have also been used for structured NLP tasks like text classification. They are imbued with a large amount of general knowledge and excel at zero-shot and few-shot learning. Through the proliferation of the LLM ecosystem they are also widely available via APIs and familiar to many developers.</p>
-<p>Here, I will compare ModernBERT to an LLM on a text classification task using the dimensions accuracy, speed, cost and ease of use. Text classification is a simple task, yet very common and important in NLP pipelines. It may also be coupled with text generation in a chat bot, such as for intent classification or as a guardrail to prevent undesirable responses.</p>
+<p>Here, I will compare ModernBERT to Meta’s Llama 3.2-3B by <span class="citation" data-cites="grattafiori2024llama3herdmodels">Grattafiori et al. (2024)</span> on a text classification task using the dimensions accuracy, speed, cost and ease of use. Text classification is a simple task, yet very common and important in NLP pipelines. It may also be coupled with text generation in a chat bot, such as for intent classification or as a guardrail to prevent undesirable responses.</p>
 <section id="task-adverse-event-classification" class="level2">
 <h2 class="anchored" data-anchor-id="task-adverse-event-classification">Task: Adverse event classification</h2>
-<p>During my work in market research for pharmaceutical companies, I frequently have to monitor data for <strong>adverse events</strong>. An adverse event is any undesirable medical event that occurs during or after treatment with a drug. Examples include side effects, lack of efficacy, and overdoses. It is of utmost importance to identify adverse events and report them to the producing pharmaceutical company. This task is labor intensive, so naturally I’m interested in automating it. I’ll use the ADE-Benchmark Corpus as an example dataset. It contains 23,500 English medical text sentences describing effects of drugs. Each sentence is classified as 1: adverse drug reaction or 0: no adverse drug reaction. This represents a subtask of the broader task of adverse event monitoring.</p>
+<p>During my work in market research for pharmaceutical companies, I frequently have to monitor data for <strong>adverse events</strong>. An adverse event is any undesirable medical event that occurs during or after treatment with a drug. Examples include side effects, lack of efficacy, and overdoses. It is of utmost importance to identify adverse events and report them to the producing pharmaceutical company. This task is labor intensive, so naturally I’m interested in automating it. I’ll use the ADE-Benchmark Corpus <span class="citation" data-cites="gurulingappa_development_2012">Gurulingappa et al. (2012)</span> as an example dataset. It contains 23,500 English medical text sentences describing effects of drugs. Each sentence is classified as 1: adverse drug reaction or 0: no adverse drug reaction. This represents a subtask of the broader task of adverse event monitoring.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -38,11 +38,11 @@
 <tbody>
 <tr class="odd">
 <td>💻 Python code</td>
-<td><a href="https://github.com/psimm/website/blob/master/blog/modernbert-vs-llm/experiment.py">GitHub</a></td>
+<td><a href="https://github.com/psimm/website/blob/master/blog/modernbert-vs-llm/">GitHub</a></td>
 </tr>
 <tr class="even">
 <td>📊 Experiment results</td>
-<td><a href="https://wandb.ai/psimm/modernbert-vs-llm">Weights &amp; Biases project</a></td>
+<td><a href="https://wandb.ai/psimm/modernbert-vs-llm?nw=0uja1rkfaqe">Weights &amp; Biases project</a></td>
 </tr>
 <tr class="odd">
 <td>📝 Dataset: ADE-Benchmark Corpus</td>
@@ -50,7 +50,7 @@
 </tr>
 </tbody>
 </table>
-<p>All training and inference is done on a single A10G GPU hosted on <a href="https://modal.com">Modal</a>. A Modal account is required to run the code. The free tier is sufficient for this experiment.</p>
+<p>All training and inference is done on a single A10G GPU hosted on <a href="https://modal.com">Modal</a>. It costs $1.10/h. A Modal account is required to run the code. The free tier ($30 of free credits per month) is sufficient for this experiment.</p>
 </section>
 <section id="experiment-setup" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-setup">Experiment setup</h2>
@@ -58,53 +58,53 @@
 <p><img src="https://simmering.dev/blog/modernbert-vs-llm/experiment.svg" class="img-fluid"></p>
 <section id="dataset-preparation" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-preparation">Dataset preparation</h3>
-<p>The dataset on HuggingFace consists of 23,516 sentences. After removing duplicate sentences, 20,896 unique examles are left. The distribution of classes is uneven, with more examples of texts without an adverse events. To balance the classes, I’m subsampling the negative examples down to 4,271 cases. Balanced classes prevent the models from overfitting to the majority class and let us compare the models using a simple accuracy metric.</p>
+<p>The dataset on HuggingFace consists of 23,516 sentences. After removing duplicate sentences, 20,896 unique examples are left. The distribution of classes is uneven, with more examples of texts without an adverse events. To balance the classes, I’m subsampling the negative examples down to 4,271 cases. Balanced classes prevent the models from overfitting to the majority class and let us compare the models using a simple accuracy metric.</p>
 <p>Then, the dataset is split into 60% training, 20% validation and 20% test sets. The validation set is used to tune hyperparameters and implement early stopping. Splits are stratified by class to ensure a 50:50 split between positive and negative examples in each split. The final example count is:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Split</th>
 <th>Class</th>
-<th>Examples</th>
+<th style="text-align: right;">Examples</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Training</td>
 <td>Adverse Event</td>
-<td>2,562</td>
+<td style="text-align: right;">2,562</td>
 </tr>
 <tr class="even">
 <td>Training</td>
 <td>No Adverse Event</td>
-<td>2,562</td>
+<td style="text-align: right;">2,562</td>
 </tr>
 <tr class="odd">
 <td>Validation</td>
 <td>Adverse Event</td>
-<td>855</td>
+<td style="text-align: right;">855</td>
 </tr>
 <tr class="even">
 <td>Validation</td>
 <td>No Adverse Event</td>
-<td>855</td>
+<td style="text-align: right;">855</td>
 </tr>
 <tr class="odd">
 <td>Test</td>
 <td>Adverse Event</td>
-<td>854</td>
+<td style="text-align: right;">854</td>
 </tr>
 <tr class="even">
 <td>Test</td>
 <td>No Adverse Event</td>
-<td>854</td>
+<td style="text-align: right;">854</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="model-selection" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection">Model selection</h3>
-<p>I’m comparing ModernBERT-base as the structured language model and Llama 3.2-3B-instruct as the LLM. There are bigger versions of both, ModernBERT-large and Llama 3.3-70B-instruct, which I expect to perform better. The benefit of smaller models is that they run faster and cheaper.</p>
+<p>I’m comparing ModernBERT-base and ModernBERT-large as the structured language models with Llama 3.2-3B-instruct as the LLM.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -122,6 +122,12 @@
 <td>~0.6GB</td>
 </tr>
 <tr class="even">
+<td><a href="https://huggingface.co/answerdotai/ModernBERT-large">ModernBERT-large</a></td>
+<td>Encoder-only: outputs a probability distribution over classes</td>
+<td>395M</td>
+<td>~1.6GB</td>
+</tr>
+<tr class="odd">
 <td><a href="https://huggingface.co/meta-llama/Llama-3.2-3B">Llama 3.2-3B</a></td>
 <td>Decoder-only: outputs text</td>
 <td>3B</td>
@@ -133,81 +139,221 @@
 </section>
 <section id="setup-1-fine-tuning-modernbert" class="level3">
 <h3 class="anchored" data-anchor-id="setup-1-fine-tuning-modernbert">Setup 1: Fine-tuning ModernBERT</h3>
-<p>I’m using the transformers library to fine-tune ModernBERT on the training set. Philip Schmid from Hugging Face wrote a helpful <a href="https://www.philschmid.de/fine-tune-modern-bert-in-2025">guide</a> which I adapted for use on Modal. Optimized the model on binary cross-entropy loss for 5 epochs.</p>
+<p>I’m using the transformers library to fine-tune ModernBERT base and large on the training set. <span class="citation" data-cites="schmid_fine_tune_2024">Schmid (2024)</span> from Hugging Face wrote a helpful guide which I adapted for use on Modal. The models are optimized on binary cross-entropy loss for 5 epochs. Training took about 2 minutes for ModernBERT-base and 3.5 minutes for ModernBERT-large.</p>
 </section>
 <section id="setup-2-few-shot-learning-with-llama-3.2-3b-and-dspy" class="level3">
 <h3 class="anchored" data-anchor-id="setup-2-few-shot-learning-with-llama-3.2-3b-and-dspy">Setup 2: Few-shot learning with Llama 3.2-3B and DSPy</h3>
-<p>I’m using <a href="https://dspy.ai">DSPy</a> to automatically select an optimal set of examples for few-shot learning. That’s a more objective approach than manual prompting and usually results in equally good or better accuracy. In my first trials, DSPy didn’t manage to write a suitable system prompt as it didn’t understand the adverse drug reaction task from examples alone. Therefore, I added the prompt: “Determine if the following sentence is about adverse drug reactions:” to the examples. This increased the accuracy by about 15 percentage points.</p>
+<p>I’m using DSPy <span class="citation" data-cites="khattab2023dspycompilingdeclarativelanguage">(Khattab et al. 2023)</span> to automatically select an optimal set of examples for few-shot learning. That’s a more objective approach than manual prompting and usually results in equally good or better accuracy. In my first trials, DSPy didn’t manage to write a suitable system prompt as it didn’t understand the adverse drug reaction task from examples alone. So I added the prompt: “Determine if the following sentence is about adverse drug reactions:” to the examples. This increased the accuracy by about 15 percentage points.</p>
 <p>DSPy settings:</p>
 <ul>
 <li>20 few-shot examples plus 5 bootstrapped (AI generated) examples</li>
 <li>Optimized for accuracy using MIPROv2 (minibatch size 50, minibatch full eval steps 10, num trials 3)</li>
 <li>25 threads for calls to the LLM, which is hosted using FastAPI and vLLM on Modal</li>
 </ul>
-<p>The optimized predictor is available as a JSON file in the <a href="https://wandb.ai/psimm/modernbert-vs-llm">Weights &amp; Biases project</a>.</p>
+<p>The optimized predictor is available as a JSON file in the <a href="https://wandb.ai/psimm/modernbert-vs-llm?nw=0uja1rkfaqe">Weights &amp; Biases project</a>.</p>
 </section>
 <section id="setup-3-fine-tuning-llama-3.2-3b" class="level3">
 <h3 class="anchored" data-anchor-id="setup-3-fine-tuning-llama-3.2-3b">Setup 3: Fine-tuning Llama 3.2-3B</h3>
-<p>I’m using the torchtune library and a fine-tuning configuration to train a LoRA adapter on the training set. It targets the attention and feed-forward layers of the model. The adapter is a smaller set of weights that are added to the model at inference time. LoRA training incurs less training cost than full fine-tuning of all weights, but may result in worse accuracy.</p>
-<p>TODO: Add fine-tuning config TODO: Make files available for fine-tuning TODO: Format as chats for fine-tuning TODO: Add test set evaluation TODO: Add logging to W&amp;B</p>
+<p>I’m using the torchtune library and a fine-tuning configuration to train a LoRA adapter on the training set. It targets the attention and feed-forward layers of the model. The adapter is a smaller set of weights that are added to the model at inference time. LoRA training incurs less training cost than full fine-tuning of all weights, but may result in worse accuracy. The LoRA settings used for training are available in the W&amp;B project and the training config file for torchtune. Training took about 8 minutes on the A10G.</p>
 </section>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<table class="caption-top table">
+<section id="accuracy-and-speed" class="level3">
+<h3 class="anchored" data-anchor-id="accuracy-and-speed">Accuracy and speed</h3>
+<div id="b37cb871" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div id="fiymboznsk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#fiymboznsk table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#fiymboznsk thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#fiymboznsk p { margin: 0; padding: 0; }
+ #fiymboznsk .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #004D80; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #004D80; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #fiymboznsk .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #fiymboznsk .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #fiymboznsk .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #fiymboznsk .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #fiymboznsk .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; }
+ #fiymboznsk .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #0076BA; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #fiymboznsk .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #fiymboznsk .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #fiymboznsk .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #fiymboznsk .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #fiymboznsk .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #fiymboznsk .gt_spanner_row { border-bottom-style: hidden; }
+ #fiymboznsk .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #0076BA; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #fiymboznsk .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #0076BA; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; vertical-align: middle; }
+ #fiymboznsk .gt_from_md> :first-child { margin-top: 0; }
+ #fiymboznsk .gt_from_md> :last-child { margin-bottom: 0; }
+ #fiymboznsk .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #89D3FE; border-left-style: none; border-left-width: 1px; border-left-color: #89D3FE; border-right-style: none; border-right-width: 1px; border-right-color: #89D3FE; vertical-align: middle; overflow-x: hidden; }
+ #fiymboznsk .gt_stub { color: #FFFFFF; background-color: #0076BA; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #0076BA; padding-left: 5px; padding-right: 5px; }
+ #fiymboznsk .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #fiymboznsk .gt_row_group_first td { border-top-width: 2px; }
+ #fiymboznsk .gt_row_group_first th { border-top-width: 2px; }
+ #fiymboznsk .gt_striped { background-color: #F4F4F4; }
+ #fiymboznsk .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #0076BA; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #0076BA; }
+ #fiymboznsk .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #fiymboznsk .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #fiymboznsk .gt_left { text-align: left; }
+ #fiymboznsk .gt_center { text-align: center; }
+ #fiymboznsk .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #fiymboznsk .gt_font_normal { font-weight: normal; }
+ #fiymboznsk .gt_font_bold { font-weight: bold; }
+ #fiymboznsk .gt_font_italic { font-style: italic; }
+ #fiymboznsk .gt_super { font-size: 65%; }
+ #fiymboznsk .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #fiymboznsk .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header">
-<th>Setup</th>
-<th>Accuracy</th>
-<th>Precision</th>
-<th>Recall</th>
-<th>Examples per second</th>
+<tr class="gt_heading header">
+<th colspan="6" class="gt_heading gt_title gt_font_normal">Model Performance Comparison</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Setup" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Setup</th>
+<th id="F1 Score (%)" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">F1 Score (%)</th>
+<th id="Recall (%)" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Recall (%)</th>
+<th id="Precision (%)" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Precision (%)</th>
+<th id="Examples/sec" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Examples/sec</th>
+<th id="Configuration" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Configuration</th>
 </tr>
 </thead>
-<tbody>
+<tbody class="gt_table_body">
 <tr class="odd">
-<td>1: ModernBERT fine-tuned</td>
-<td>0.98</td>
-<td>0.97</td>
-<td>0.99</td>
-<td>100</td>
+<td class="gt_row gt_left">1a-modernbert-base</td>
+<td class="gt_row gt_right">86.0</td>
+<td class="gt_row gt_right">90.3</td>
+<td class="gt_row gt_right">82.2</td>
+<td class="gt_row gt_right">118</td>
+<td class="gt_row gt_left">transformers pipeline, batch size 128</td>
 </tr>
 <tr class="even">
-<td>2: Llama 3.2-3B 10-shot</td>
-<td>0.98</td>
-<td>0.98</td>
-<td>0.98</td>
-<td>10</td>
+<td class="gt_row gt_left gt_striped">1b-modernbert-large</td>
+<td class="gt_row gt_right gt_striped">89.2</td>
+<td class="gt_row gt_right gt_striped">91.8</td>
+<td class="gt_row gt_right gt_striped">86.8</td>
+<td class="gt_row gt_right gt_striped">87</td>
+<td class="gt_row gt_left gt_striped">transformers pipeline, batch size 128</td>
 </tr>
 <tr class="odd">
-<td>3: Llama 3.2-3B fine-tuned</td>
-<td>0.98</td>
-<td>0.99</td>
-<td>0.97</td>
-<td>1</td>
+<td class="gt_row gt_left">2-DSPy-25-threads-Llama-3.2-3B-Instruct</td>
+<td class="gt_row gt_right">80.7</td>
+<td class="gt_row gt_right">87.9</td>
+<td class="gt_row gt_right">74.6</td>
+<td class="gt_row gt_right">4</td>
+<td class="gt_row gt_left">DSPy, 25 threads, vLLM OpenAI server with default settings</td>
 </tr>
-</tbody>
+<tr class="even">
+<td class="gt_row gt_left gt_striped">3-Llama-3.2-3B-Instruct-LoRA</td>
+<td class="gt_row gt_right gt_striped">93.1</td>
+<td class="gt_row gt_right gt_striped">92.0</td>
+<td class="gt_row gt_right gt_striped">94.2</td>
+<td class="gt_row gt_right gt_striped">152</td>
+<td class="gt_row gt_left gt_striped">vLLM, default settings</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="6" class="gt_sourcenote">*Speed of setup 2 is limited by DSPy. Speeds similar to setup 3 can be achieved with efficient batching.</td>
+</tr>
+</tfoot>
+
 </table>
-<p>TODO: Update with actual results</p>
-<p>I’m measuring the number of examples per second on an Nvidia A10G with 24GB memory. It’s available on Modal for $1.10/h.</p>
-<p>Training cost is negligible for all setups, but can become substantial for fine-tuning larger LLMs. Training ModernBERT-large is still cheap.</p>
-<p>TODO: Analyze accuracy, precision, recall TODO: Analyze examples per second TODO: Analyze ease of training TODO: Analyze ease of deployment for inference</p>
-<p>Here, I set up training and inference using Modal and open source libraries. This process can be shortened by using a managed service like <a href="https://fireworks.ai">Fireworks</a>, which provides an inference and training API. With LoRA and the increasing abundance of GPU servers, fine-tuning LLMs isn’t significantly more expensive or difficult than training ModernBERT. Both require training data. If you do not have training data, the few-shot learning approach is a good alternative. It can also be used to bootstrap a training dataset, especially when combined with a full size LLM like Llama-3.1-405B or gpt-4o.</p>
+
+
+</div>
+        
+</div>
+</div>
+<p>ModernBERT-base and ModernBERT-large performed similarly. Large has a 3.2 percentage point advantage in F1 score but at the cost of 27% slower inference. The few-shot approach doesn’t need nearly as much training data, but also results in a less accurate model. It also ran slowly, and this didn’t change when I increased the number of threads used by DSPy to communicate with the vLLM server. I suspect it’s due to inefficient batch inference code in DSPy. Higher speeds could be achieved with a more efficient batching approach.</p>
+<p>The clear winner of the experiment is the LoRA fine-tuned Llama 3.2-3B. It’s the most accurate and the fastest. This is down to vLLM being extremely well optimized and using CUDA graph capturing ahead of inference time. If that preparation time of 30 seconds is added, it’s examples per second go down to 42.</p>
+</section>
+<section id="cost-and-effort" class="level3">
+<h3 class="anchored" data-anchor-id="cost-and-effort">Cost and effort</h3>
+<p>All setups can be trained for under one dollar and in less than 15 minutes. The differences are negligible. What matters more is the time spent setting up training and inference. The transformers library and the tutorial made it very easy to fine-tune ModernBERT and run inference. A major plus is that due to its low size, it can run on CPU at good speed too. DSPy was more involved because it required setting up a vLLM server too. This step is easier when using a managed service like Fireworks AI. Fine-tuning Llama 3.2-3B was the most involved step, as it required formatting the data in a chat format and going through the detailed configuration of the torchtune library and vLLM. Still, it only took a few hours. This step is also easier with a managed service.</p>
+</section>
 </section>
 <section id="discussion" class="level2">
 <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-<p>TODO: Add discussion</p>
-<p>Findings of this study may not generalize to general adverse event monitoring and languages other than English.</p>
+<section id="implications-for-nlp" class="level3">
+<h3 class="anchored" data-anchor-id="implications-for-nlp">Implications for NLP</h3>
+<section id="fine-tuning-vs-prompt-based-approaches" class="level4">
+<h4 class="anchored" data-anchor-id="fine-tuning-vs-prompt-based-approaches">Fine-tuning vs prompt-based approaches</h4>
+<p>Fine-tuning continues to outperform purely prompt-based approaches, even when those are optimized using automated prompt engineering. If you have enough examples to fine-tune on, it’s a good idea to do so. Still the recall achieved by the few-shot approach is impressive and can serve as a strong baseline and starting point in the development of text classification systems.</p>
+</section>
+<section id="model-size-and-architecture" class="level4">
+<h4 class="anchored" data-anchor-id="model-size-and-architecture">Model size and architecture</h4>
+<p>In fine-tuning, the size of the model is a key factor. Here, ModernBERT did well and is a strong choice for text classification and other structured NLP tasks. ModernBERT-large offers a modest accuracy improvement in exchange for slower inference. However, Llama 3.2-3B with a fine-tuned LoRA adapter outperformed it in accuracy in this experiment. Its architecture as a decoder-only model is, in theory, less suited for structured tasks. Did it win by sheer size? It would be interesting to see what a ModernBERT-3B or -8B model would achieve. In a related task of sentiment analysis <span class="citation" data-cites="zhou_comprehensive_2024">(Zhou et al. 2024)</span>, the scaling limit was found to be at 8 billion parameters with a decoder-only model.</p>
+</section>
+<section id="processing-speed" class="level4">
+<h4 class="anchored" data-anchor-id="processing-speed">Processing speed</h4>
+<p>Processing speed is highly sensitive to the hardware and inference setup. Thanks to vLLM’s CUDA graph capturing and other optimizations, the Llama 3.2-3B LoRA adapter ran faster than the ModernBERT models in this experiment, despite its size. Perhaps the efficiency optimizations made in LLM research could be backported to encoder-only models too, just like ModernBERT backported training techniques from LLMs back to the classic 2018 model. Note that this speed comparison was not comprehensive and is dependent on the GPU, the inference library and the exact settings used, such as batch size.</p>
+</section>
+</section>
+<section id="implications-for-adverse-event-monitoring" class="level3">
+<h3 class="anchored" data-anchor-id="implications-for-adverse-event-monitoring">Implications for adverse event monitoring</h3>
+<section id="greater-sensitivity-with-larger-models" class="level4">
+<h4 class="anchored" data-anchor-id="greater-sensitivity-with-larger-models">Greater sensitivity with larger models</h4>
+<p>The primary metric for adverse event monitoring is sensitivity, as missing a true adverse event is much more costly than flagging a false positive. The results show a sensitivity of 92% in detection of adverse drug reactions in medical texts using a Llama 3.2-3B. It outperforms previous approaches that used a convolutional neural network <span class="citation" data-cites="huynh_adverse_2016">(Huynh et al. 2016, 89%)</span> and a BERT sentence embeddings model <span class="citation" data-cites="haq_mining_2022">(Haq, Kocaman, and Talby 2022, 85%)</span>. This advance is a step towards an automated adverse event monitoring system. With larger models and more training data, the sensitivity can be improved further.</p>
+</section>
+<section id="towards-a-production-system" class="level4">
+<h4 class="anchored" data-anchor-id="towards-a-production-system">Towards a production system</h4>
+<p>A production system for automated adverse event monitoring would need a more comprehensive approach:</p>
+<ul>
+<li>Adjustable threshold for flagging adverse events</li>
+<li>Flagging of complex cases for human review</li>
+<li>Tests and training data for other languages, other text types such as case reports, social media and interview transcripts</li>
+<li>Tests and training data for other adverse types, such as overdose, lack of efficacy, and use during pregnancy or breastfeeding</li>
+</ul>
+<p>None of these require new breakthroughs in AI - they are doable with current technology.</p>
 <hr>
 <p>Preview image based on <a href="https://unsplash.com/@magicpattern?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">MagicPattern</a> on <a href="https://unsplash.com/photos/blue-and-white-checkered-pattern-am-yg8wLLIo?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
 
 
+
+</section>
+</section>
 </section>
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-devlin2018bert" class="csl-entry">
+Devlin, Jacob. 2018. <span>“Bert: Pre-Training of Deep Bidirectional Transformers for Language Understanding.”</span> <em>arXiv Preprint arXiv:1810.04805</em>.
+</div>
+<div id="ref-grattafiori2024llama3herdmodels" class="csl-entry">
+Grattafiori, Aaron, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Zef Rosnbrick, et al. 2024. <span>“The Llama 3 Herd of Models.”</span> <a href="https://arxiv.org/abs/2407.21783">https://arxiv.org/abs/2407.21783</a>.
+</div>
+<div id="ref-gurulingappa_development_2012" class="csl-entry">
+Gurulingappa, Harsha, Abdul Mateen Rajput, Angus Roberts, Juliane Fluck, Martin Hofmann-Apitius, and Luca Toldo. 2012. <span>“Development of a Benchmark Corpus to Support the Automatic Extraction of Drug-Related Adverse Effects from Medical Case Reports.”</span> <em>Journal of Biomedical Informatics</em>, Text <span>Mining</span> and <span>Natural</span> <span>Language</span> <span>Processing</span> in <span>Pharmacogenomics</span>, 45 (5): 885–92. <a href="https://doi.org/10.1016/j.jbi.2012.04.008">https://doi.org/10.1016/j.jbi.2012.04.008</a>.
+</div>
+<div id="ref-haq_mining_2022" class="csl-entry">
+Haq, Hasham Ul, Veysel Kocaman, and David Talby. 2022. <span>“Mining <span>Adverse</span> <span>Drug</span> <span>Reactions</span> from <span>Unstructured</span> <span>Mediums</span> at <span>Scale</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2201.01405">https://doi.org/10.48550/arXiv.2201.01405</a>.
+</div>
+<div id="ref-huynh_adverse_2016" class="csl-entry">
+Huynh, Trung, Yulan He, Alistair Willis, and Stefan Rüger. 2016. <span>“Adverse <span>Drug</span> <span>Reaction</span> <span>Classification</span> <span>With</span> <span>Deep</span> <span>Neural</span> <span>Networks</span>.”</span> In, 877–87. Osaka: COLING. <a href="http://coling2016.anlp.jp/doc/main.pdf">http://coling2016.anlp.jp/doc/main.pdf</a>.
+</div>
+<div id="ref-khattab2023dspycompilingdeclarativelanguage" class="csl-entry">
+Khattab, Omar, Arnav Singhvi, Paridhi Maheshwari, Zhiyuan Zhang, Keshav Santhanam, Sri Vardhamanan, Saiful Haq, et al. 2023. <span>“DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines.”</span> <a href="https://arxiv.org/abs/2310.03714">https://arxiv.org/abs/2310.03714</a>.
+</div>
+<div id="ref-schmid_fine_tune_2024" class="csl-entry">
+Schmid, Philipp. 2024. <span>“Fine-Tune Classifier with <span>ModernBERT</span> in 2025.”</span> <a href="https://www.philschmid.de/fine-tune-modern-bert-in-2025">https://www.philschmid.de/fine-tune-modern-bert-in-2025</a>.
+</div>
+<div id="ref-warner2024smarterbetterfasterlonger" class="csl-entry">
+Warner, Benjamin, Antoine Chaffin, Benjamin Clavié, Orion Weller, Oskar Hallström, Said Taghadouini, Alexis Gallagher, et al. 2024. <span>“Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference.”</span> <a href="https://arxiv.org/abs/2412.13663">https://arxiv.org/abs/2412.13663</a>.
+</div>
+<div id="ref-zhou_comprehensive_2024" class="csl-entry">
+Zhou, Changzhi, Dandan Song, Yuhang Tian, Zhijing Wu, Hao Wang, Xinyu Zhang, Jun Yang, Ziyi Yang, and Shuhao Zhang. 2024. <span>“A <span>Comprehensive</span> <span>Evaluation</span> of <span>Large</span> <span>Language</span> <span>Models</span> on <span>Aspect</span>-<span>Based</span> <span>Sentiment</span> <span>Analysis</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2412.02279">https://doi.org/10.48550/arXiv.2412.02279</a>.
+</div>
+</div></section></div> ]]></description>
   <category>Machine Learning</category>
   <guid>https://simmering.dev/blog/modernbert-vs-llm/</guid>
-  <pubDate>Wed, 01 Jan 2025 23:00:00 GMT</pubDate>
+  <pubDate>Sat, 11 Jan 2025 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/modernbert-vs-llm/image.webp" medium="image" type="image/webp"/>
 </item>
 <item>

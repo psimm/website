@@ -1,0 +1,120 @@
+
+@misc{haq_mining_2022,
+  title     = {Mining {Adverse} {Drug} {Reactions} from {Unstructured} {Mediums} at {Scale}},
+  url       = {http://arxiv.org/abs/2201.01405},
+  doi       = {10.48550/arXiv.2201.01405},
+  abstract  = {Adverse drug reactions / events (ADR/ADE) have a major impact on patient health and health care costs. Detecting ADR's as early as possible and sharing them with regulators, pharma companies, and healthcare providers can prevent morbidity and save many lives. While most ADR's are not reported via formal channels, they are often documented in a variety of unstructured conversations such as social media posts by patients, customer support call transcripts, or CRM notes of meetings between healthcare providers and pharma sales reps. In this paper, we propose a natural language processing (NLP) solution that detects ADR's in such unstructured free-text conversations, which improves on previous work in three ways. First, a new Named Entity Recognition (NER) model obtains new state-of-the-art accuracy for ADR and Drug entity extraction on the ADE, CADEC, and SMM4H benchmark datasets (91.75\%, 78.76\%, and 83.41\% F1 scores respectively). Second, two new Relation Extraction (RE) models are introduced - one based on BioBERT while the other utilizing crafted features over a Fully Connected Neural Network (FCNN) - are shown to perform on par with existing state-of-the-art models, and outperform them when trained with a supplementary clinician-annotated RE dataset. Third, a new text classification model, for deciding if a conversation includes an ADR, obtains new state-of-the-art accuracy on the CADEC dataset (86.69\% F1 score). The complete solution is implemented as a unified NLP pipeline in a production-grade library built on top of Apache Spark, making it natively scalable and able to process millions of batch or streaming records on commodity clusters.},
+  urldate   = {2025-01-12},
+  publisher = {arXiv},
+  author    = {Haq, Hasham Ul and Kocaman, Veysel and Talby, David},
+  month     = jan,
+  year      = {2022},
+  note      = {arXiv:2201.01405 [cs]
+               version: 2},
+  keywords  = {Computer Science - Artificial Intelligence, Computer Science - Computation and Language, Computer Science - Machine Learning},
+  file      = {Full Text PDF:/Users/paulsimmering/Zotero/storage/BQUB3GIT/Haq et al. - 2022 - Mining Adverse Drug Reactions from Unstructured Me.pdf:application/pdf;Snapshot:/Users/paulsimmering/Zotero/storage/7GEIUWNJ/2201.html:text/html}
+}
+
+
+@inproceedings{huynh_adverse_2016,
+  address   = {Osaka},
+  title     = {Adverse {Drug} {Reaction} {Classification} {With} {Deep} {Neural} {Networks}},
+  copyright = {cc\_by\_nc\_nd\_4},
+  isbn      = {978-4-87974-702-0},
+  url       = {http://coling2016.anlp.jp/doc/main.pdf},
+  abstract  = {We study the problem of detecting sentences describing adverse drug reactions (ADRs) and frame the problem as binary classification. We investigate different neural network (NN) architectures for ADR classification. In particular, we propose two new neural network models, Convolutional Recurrent Neural Network (CRNN) by concatenating convolutional neural networks with recurrent neural networks, and Convolutional Neural Network with Attention (CNNA) by adding attention weights into convolutional neural networks. We evaluate various NN architectures on a Twitter dataset containing informal language and an Adverse Drug Effects (ADE) dataset constructed by sampling from MEDLINE case reports. Experimental results show that all the NN architectures outperform the traditional maximum entropy classifiers trained from n-grams with different weighting strategies considerably on both datasets. On the Twitter dataset, all the NN architectures perform similarly. But on the ADE dataset, CNN performs better than other more complex CNN variants. Nevertheless, CNNA allows the visualisation of attention weights of words when making classification decisions and hence is more appropriate for the extraction of word subsequences describing ADRs.},
+  language  = {en},
+  urldate   = {2025-01-12},
+  publisher = {COLING},
+  author    = {Huynh, Trung and He, Yulan and Willis, Alistair and Rüger, Stefan},
+  month     = dec,
+  year      = {2016},
+  note      = {Num Pages: 11},
+  pages     = {877--887},
+  file      = {Full Text PDF:/Users/paulsimmering/Zotero/storage/IHMD6UC6/Huynh et al. - 2016 - Adverse Drug Reaction Classification With Deep Neu.pdf:application/pdf;Snapshot:/Users/paulsimmering/Zotero/storage/CG536ACD/48109.html:text/html}
+}
+
+@article{gurulingappa_development_2012,
+  series   = {Text {Mining} and {Natural} {Language} {Processing} in {Pharmacogenomics}},
+  title    = {Development of a benchmark corpus to support the automatic extraction of drug-related adverse effects from medical case reports},
+  volume   = {45},
+  issn     = {1532-0464},
+  url      = {https://www.sciencedirect.com/science/article/pii/S1532046412000615},
+  doi      = {10.1016/j.jbi.2012.04.008},
+  abstract = {A significant amount of information about drug-related safety issues such as adverse effects are published in medical case reports that can only be explored by human readers due to their unstructured nature. The work presented here aims at generating a systematically annotated corpus that can support the development and validation of methods for the automatic extraction of drug-related adverse effects from medical case reports. The documents are systematically double annotated in various rounds to ensure consistent annotations. The annotated documents are finally harmonized to generate representative consensus annotations. In order to demonstrate an example use case scenario, the corpus was employed to train and validate models for the classification of informative against the non-informative sentences. A Maximum Entropy classifier trained with simple features and evaluated by 10-fold cross-validation resulted in the F1 score of 0.70 indicating a potential useful application of the corpus.},
+  number   = {5},
+  urldate  = {2025-01-12},
+  journal  = {Journal of Biomedical Informatics},
+  author   = {Gurulingappa, Harsha and Rajput, Abdul Mateen and Roberts, Angus and Fluck, Juliane and Hofmann-Apitius, Martin and Toldo, Luca},
+  month    = oct,
+  year     = {2012},
+  keywords = {Adverse drug effect, Annotation, Benchmark corpus, Harmonization, Sentence classification},
+  pages    = {885--892},
+  file     = {ScienceDirect Snapshot:/Users/paulsimmering/Zotero/storage/YZEHQR7W/S1532046412000615.html:text/html}
+}
+
+@misc{warner2024smarterbetterfasterlonger,
+  title         = {Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference},
+  author        = {Benjamin Warner and Antoine Chaffin and Benjamin Clavié and Orion Weller and Oskar Hallström and Said Taghadouini and Alexis Gallagher and Raja Biswas and Faisal Ladhak and Tom Aarsen and Nathan Cooper and Griffin Adams and Jeremy Howard and Iacopo Poli},
+  year          = {2024},
+  eprint        = {2412.13663},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2412.13663}
+}
+
+@article{devlin2018bert,
+  title   = {Bert: Pre-training of deep bidirectional transformers for language understanding},
+  author  = {Devlin, Jacob},
+  journal = {arXiv preprint arXiv:1810.04805},
+  year    = {2018}
+}
+
+@misc{grattafiori2024llama3herdmodels,
+  title         = {The Llama 3 Herd of Models},
+  author        = {Aaron Grattafiori and Abhimanyu Dubey and Abhinav Jauhri and Abhinav Pandey and Abhishek Kadian and Ahmad Al-Dahle and Zef Rosnbrick and Zhaoduo Wen and Zhenyu Yang and Zhiwei Zhao and Zhiyu Ma},
+  year          = {2024},
+  eprint        = {2407.21783},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.AI},
+  url           = {https://arxiv.org/abs/2407.21783}
+}
+
+
+@misc{zhou_comprehensive_2024,
+  title     = {A {Comprehensive} {Evaluation} of {Large} {Language} {Models} on {Aspect}-{Based} {Sentiment} {Analysis}},
+  url       = {http://arxiv.org/abs/2412.02279},
+  doi       = {10.48550/arXiv.2412.02279},
+  abstract  = {Recently, Large Language Models (LLMs) have garnered increasing attention in the field of natural language processing, revolutionizing numerous downstream tasks with powerful reasoning and generation abilities. For example, In-Context Learning (ICL) introduces a fine-tuning-free paradigm, allowing out-of-the-box LLMs to execute downstream tasks by analogy learning without any fine-tuning. Besides, in a fine-tuning-dependent paradigm where substantial training data exists, Parameter-Efficient Fine-Tuning (PEFT), as the cost-effective methods, enable LLMs to achieve excellent performance comparable to full fine-tuning. However, these fascinating techniques employed by LLMs have not been fully exploited in the ABSA field. Previous works probe LLMs in ABSA by merely using randomly selected input-output pairs as demonstrations in ICL, resulting in an incomplete and superficial evaluation. In this paper, we shed light on a comprehensive evaluation of LLMs in the ABSA field, involving 13 datasets, 8 ABSA subtasks, and 6 LLMs. Specifically, we design a unified task formulation to unify ``multiple LLMs for multiple ABSA subtasks in multiple paradigms.'' For the fine-tuning-dependent paradigm, we efficiently fine-tune LLMs using instruction-based multi-task learning. For the fine-tuning-free paradigm, we propose 3 demonstration selection strategies to stimulate the few-shot abilities of LLMs. Our extensive experiments demonstrate that LLMs achieve a new state-of-the-art performance compared to fine-tuned Small Language Models (SLMs) in the fine-tuning-dependent paradigm. More importantly, in the fine-tuning-free paradigm where SLMs are ineffective, LLMs with ICL still showcase impressive potential and even compete with fine-tuned SLMs on some ABSA subtasks.},
+  urldate   = {2025-01-03},
+  publisher = {arXiv},
+  author    = {Zhou, Changzhi and Song, Dandan and Tian, Yuhang and Wu, Zhijing and Wang, Hao and Zhang, Xinyu and Yang, Jun and Yang, Ziyi and Zhang, Shuhao},
+  month     = dec,
+  year      = {2024},
+  note      = {arXiv:2412.02279 [cs]},
+  keywords  = {Computer Science - Computation and Language, Computer Science - Artificial Intelligence},
+  file      = {Preprint PDF:/Users/paulsimmering/Zotero/storage/SKSADTSP/Zhou et al. - 2024 - A Comprehensive Evaluation of Large Language Model.pdf:application/pdf;Snapshot:/Users/paulsimmering/Zotero/storage/4CWSLU5E/2412.html:text/html}
+}
+
+
+@misc{schmid_fine_tune_2024,
+  title    = {Fine-tune classifier with {ModernBERT} in 2025},
+  url      = {https://www.philschmid.de/fine-tune-modern-bert-in-2025},
+  abstract = {Modern updated guide on how to fine-tune BERT models for classification tasks in 2025.},
+  language = {en},
+  urldate  = {2025-01-12},
+  author   = {Schmid, Philipp},
+  month    = dec,
+  year     = {2024},
+  file     = {Snapshot:/Users/paulsimmering/Zotero/storage/RAPU9WTM/fine-tune-modern-bert-in-2025.html:text/html}
+}
+
+@misc{khattab2023dspycompilingdeclarativelanguage,
+  title         = {DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines},
+  author        = {Omar Khattab and Arnav Singhvi and Paridhi Maheshwari and Zhiyuan Zhang and Keshav Santhanam and Sri Vardhamanan and Saiful Haq and Ashutosh Sharma and Thomas T. Joshi and Hanna Moazam and Heather Miller and Matei Zaharia and Christopher Potts},
+  year          = {2023},
+  eprint        = {2310.03714},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2310.03714}
+}

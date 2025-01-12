@@ -1,9 +1,8 @@
 import json
 import os
+import subprocess
 import time
 from typing import Literal
-
-import subprocess
 
 import modal
 
@@ -22,6 +21,7 @@ image = (
         "wandb==0.18.5",
         "lm_eval==0.4.5",
         "vllm==0.6.6.post1",
+        "scikit-learn==1.6.1",
     )
     .run_commands(
         # Ray and torchtune both use the name "tune" for their CLI
@@ -115,6 +115,18 @@ def inference(
         "sampling_params": sampling_params,
     }
 
+    if lora_path is not None:
+        from vllm.lora.request import LoRARequest
+
+        print(f"Using LoRA adapter {lora_path}")
+        print(f"Adapter files present: {os.listdir(lora_path)}")
+        # LoRARequest takes (name, id, path) as arguments
+        generate_kwargs["lora_request"] = LoRARequest(
+            "adapter",  # Human readable name
+            0,  # Unique integer ID
+            lora_path,  # Path to adapter
+        )
+
     start_time = time.time()
     outputs = llm.chat(**generate_kwargs)
     end_time = time.time()
@@ -144,6 +156,7 @@ def evaluate(
     print_first_n_parsing_errors: int = 5,
 ):
     import wandb
+    from sklearn.metrics import accuracy_score, recall_score, precision_score
 
     assert split in ["train", "test", "valid"], "Invalid split"
 
@@ -179,16 +192,20 @@ def evaluate(
 
     expected_labels = [int(chat["dialogue"][1]["value"]) for chat in chats]
 
-    metrics[f"{split}/accuracy"] = sum(
-        pred == expected for pred, expected in zip(predictions, expected_labels)
-    ) / len(results)
+    metrics[f"{split}/accuracy"] = accuracy_score(expected_labels, predictions)
+    metrics[f"{split}/recall"] = recall_score(expected_labels, predictions)
+    metrics[f"{split}/precision"] = precision_score(expected_labels, predictions)
 
     metrics[f"{split}/parsing_errors"] = parsing_errors
 
     print(metrics)
 
     if wandb_run_id:
-        wandb.init(project="modernbert-vs-llm", id=wandb_run_id, resume="allow")
+        wandb.init(
+            project="modernbert-vs-llm",
+            id=wandb_run_id,
+            resume="allow",
+        )
         wandb.log(metrics)
         wandb.finish()
 
@@ -214,10 +231,12 @@ def main(
         download.remote("meta-llama/Llama-3.2-3B-Instruct")
     if run_training:
         train.remote("3B_lora_single_device.yaml")
-    # TODO: Consider only loading the LoRA adapter rather than the entire model
     if run_evaluation:
+        # vLLM doesn't use the LoRA adapter at inference time unless
+        # it's merged into the base model
+        # https://github.com/vllm-project/vllm/issues/6250
         evaluate.remote(
             model="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device/epoch_3",
-            wandb_run_id="jl3h6aep",
+            wandb_run_id="ve2pe9xi",
             split=evaluation_split,
         )
