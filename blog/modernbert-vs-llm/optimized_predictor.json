@@ -1,0 +1,104 @@
+{
+  "lm": null,
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "text": "Determine if the following sentence is about adverse drug reactions: Patients with lymphoblastic lymphoma who had treatment with L-asparaginase and steroid are predisposed to the development of cortical venous thrombosis and may have this syndrome in addition to a dural puncture headache.",
+      "label": 1
+    },
+    {
+      "augmented": true,
+      "text": "Determine if the following sentence is about adverse drug reactions: Other potential mechanisms for the drug interaction may also exist.",
+      "label": 0
+    },
+    {
+      "augmented": true,
+      "text": "Determine if the following sentence is about adverse drug reactions: This selective closure of the ductus arteriosus suggests that the affected twin was predisposed to hypoxia and thus was more susceptible to ductal closure in response to indomethacin exposure.",
+      "label": 1
+    },
+    {
+      "augmented": true,
+      "text": "Determine if the following sentence is about adverse drug reactions: Four cases of adverse experiences with clonidine are described.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: With these measures PaO2 could be maintained of safe levels but PEEP and high inspired oxygen concentrations were needed postoperatively until the trachea could be extubated on the third postoperative day.",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: A case of colchicine-induced rhabdomyolysis is reported.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: A 73 year-old patient with Wolff-Parkinson-White syndrome and paroxysmic supraventricular tachycardia developed an acute reversible encephalopathy within 15 days of initiation of flecainide.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: A 50-year-old diabetic and hypertensive male patient is reported who had ticlopidine-induced marrow aplasia partially responsive to colony-stimulating factors and corticosteroids, but experienced complete recovery with cyclosporine.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Serotonin syndrome caused by interaction between citalopram and fentanyl.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: The median latent period was 9.5 hours (range 4 to 24 hours) with a delay to medical consultation of 36 hours (range 6 to 48 hours), and a median serum methanol concentration of 1.4 g\/L (range 0.19 to 3.62 g\/L).",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Pheripheral edema was observed in five female patients after taking proton pump inhibitors omeprazole, lansoprazole, or pantoprazole for 7-15 days for peptic acid diseases in recommended standard doses.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Diffusion-weighted MRI correlates of subacute methotrexate-related neurotoxicity.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: When enzyme levels in the proband and relatives were compared with that in controls, an autosomal recessive pattern of inheritance was demonstrated.",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Diagnosis of DPD deficiency must be confirmed by specialized laboratory tests.",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Urinalysis revealed eosinophils, and a subsequent renal biopsy confirmed a diagnosis of AIN.",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Seven patients only smoked at night-time (median dose eight puffs, range two to eight puffs), and eight patients used cannabis mainly during the day (median dose three puffs, range two to eight puffs); the median frequency of use was four times per day (range one to 16 times per day).",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: The implications are stressed in relation to the differential diagnosis of patients with gastroenterological disorders who develop peripheral neuropathy.",
+      "label": 0
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Methotrexate may rarely provoke serositis, even with low doses and after just a few weeks of therapy.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Clinicians should be aware that an erythematous and exfoliative rash may be induced by temozolomide, and be familiar with the pharmacologic and supportive measures necessary for its treatment.",
+      "label": 1
+    },
+    {
+      "text": "Determine if the following sentence is about adverse drug reactions: Cardiac decompensation following verapamil therapy in infants with supraventricular tachycardia.",
+      "label": 1
+    }
+  ],
+  "signature": {
+    "instructions": "To predict the label for a given sentence, use the language model to classify the sentence as either \"adverse drug reactions\" (label 1) or \"not adverse drug reactions\" (label 0).",
+    "fields": [
+      {
+        "prefix": "Text:",
+        "description": "${text}"
+      },
+      {
+        "prefix": "Label:",
+        "description": "${label}"
+      }
+    ]
+  }
+}

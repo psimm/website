@@ -1,38 +1,8 @@
 [
   {
-    "listing": "/projects.html",
-    "items": [
-      "/projects/aspectwise/index.html",
-      "/projects/texttunnel/index.html",
-      "/projects/cosmention/index.html",
-      "/projects/stakex/index.html",
-      "/projects/gpexp/index.html",
-      "/projects/masterthesis/index.html",
-      "/projects/bachelorthesis/index.html"
-    ]
-  },
-  {
-    "listing": "/talks.html",
-    "items": [
-      "/talks/dgofkiforumpitch2024/index.html",
-      "/talks/day-of-business-psychology-2024/index.html",
-      "/talks/ephmra2024/index.html",
-      "/talks/wdm2024/index.html",
-      "/talks/finding-answers-2024/index.html",
-      "/talks/gor2024/index.html",
-      "/talks/succeet2023/index.html",
-      "/talks/gor2023/index.html",
-      "/talks/bvmki2021/index.html",
-      "/talks/comes2020/index.html",
-      "/talks/gor2019/index.html",
-      "/talks/researchplus2018/index.html",
-      "/talks/concordi2017/index.html",
-      "/talks/emaee2017/index.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
+      "/blog/modernbert-vs-llm/index.html",
       "/blog/diagrams/index.html",
       "/blog/llm-customization/index.html",
       "/blog/pydantic-ai/index.html",
@@ -64,6 +34,37 @@
       "/blog/fangmant/index.html",
       "/blog/dataframes/index.html",
       "/blog/echarts4r/index.html"
+    ]
+  },
+  {
+    "listing": "/talks.html",
+    "items": [
+      "/talks/dgofkiforumpitch2024/index.html",
+      "/talks/day-of-business-psychology-2024/index.html",
+      "/talks/ephmra2024/index.html",
+      "/talks/wdm2024/index.html",
+      "/talks/finding-answers-2024/index.html",
+      "/talks/gor2024/index.html",
+      "/talks/succeet2023/index.html",
+      "/talks/gor2023/index.html",
+      "/talks/bvmki2021/index.html",
+      "/talks/comes2020/index.html",
+      "/talks/gor2019/index.html",
+      "/talks/researchplus2018/index.html",
+      "/talks/concordi2017/index.html",
+      "/talks/emaee2017/index.html"
+    ]
+  },
+  {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/aspectwise/index.html",
+      "/projects/texttunnel/index.html",
+      "/projects/cosmention/index.html",
+      "/projects/stakex/index.html",
+      "/projects/gpexp/index.html",
+      "/projects/masterthesis/index.html",
+      "/projects/bachelorthesis/index.html"
     ]
   }
 ]
