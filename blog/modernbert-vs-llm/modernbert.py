@@ -192,21 +192,41 @@ def test(dataset, model_id: str, wandb_run_id: str = None):
 
     if wandb_run_id:
         wandb.init(project="modernbert-vs-llm", id=wandb_run_id, resume="allow")
-        wandb.log(metrics)
-        wandb.finish()
+    else:
+        wandb.init(project="modernbert-vs-llm")
+
+    wandb.log(metrics)
+    wandb.finish()
 
     return metrics
 
 
 @app.function(image=image, timeout=60 * 60)
 def train_modernbert(model_id: str = "answerdotai/ModernBERT-base"):
+    """
+    Fine-tune ModernBERT on Modal.
+
+    Args:
+        model_id: ID of the model to use for training. Can be either
+            "answerdotai/ModernBERT-base" or "answerdotai/ModernBERT-large".
+    """
     dataset = prep_dataset()
     tokenized_dataset = tokenize.remote(dataset)
     train.remote(tokenized_dataset, model_id)  # model is saved to hub
 
 
 @app.function(image=image, timeout=60 * 60)
-def test_modernbert(wandb_run_id: str, model_id: str = "answerdotai/ModernBERT-base"):
+def test_modernbert(
+    model_id: str = "answerdotai/ModernBERT-base", wandb_run_id: str | None = None
+):
+    """
+    Run inference on the test set and log the results to W&B.
+
+    Args:
+        model_id: ID of the model to test.
+        wandb_run_id: The W&B run ID to use for logging. If not provided,
+            results are logged to a new W&B run.
+    """
     dataset = prep_dataset()
     metrics = test.remote(dataset, wandb_run_id=wandb_run_id, model_id=model_id)
     print(metrics)

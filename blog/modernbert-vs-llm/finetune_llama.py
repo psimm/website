@@ -201,13 +201,12 @@ def evaluate(
     print(metrics)
 
     if wandb_run_id:
-        wandb.init(
-            project="modernbert-vs-llm",
-            id=wandb_run_id,
-            resume="allow",
-        )
-        wandb.log(metrics)
-        wandb.finish()
+        wandb.init(project="modernbert-vs-llm", id=wandb_run_id, resume="allow")
+    else:
+        wandb.init(project="modernbert-vs-llm")
+
+    wandb.log(metrics)
+    wandb.finish()
 
 
 @app.local_entrypoint()
@@ -216,6 +215,7 @@ def main(
     run_training: bool = False,
     run_evaluation: bool = False,
     evaluation_split: str = "valid",
+    wandb_run_id: str | None = None,
 ):
     """
     Run the specified steps of the Llama fine-tuning pipeline.
@@ -225,6 +225,10 @@ def main(
         run_training: Whether to run the LoRA fine-tuning
         run_evaluation: Whether to evaluate the fine-tuned model
         evaluation_split: The split to use for evaluation. One of "train", "test", "valid"
+        wandb_run_id: The W&B run ID to use for logging evaluation results. If not provided,
+            results are logged to a new W&B run. To combine training and evaluation,
+            in one W&B run, run the training step by itself and fetch the run ID from
+            the logs. Then pass it as an argument here.
     """
 
     if download_model:
@@ -237,6 +241,6 @@ def main(
         # https://github.com/vllm-project/vllm/issues/6250
         evaluate.remote(
             model="/checkpoints/trained/meta-llama/Llama-3.2-3B-Instruct/lora_single_device/epoch_3",
-            wandb_run_id="ve2pe9xi",
+            wandb_run_id=wandb_run_id,
             split=evaluation_split,
         )
