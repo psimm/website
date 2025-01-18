@@ -17,7 +17,7 @@ Run `python prep.py` to load the dataset and split it into training, validation 
 
 ### Setup 1: Fine-tuning ModernBERT
 
-Use the `modernbert.py` script to fine-tune ModernBERT on Modal. First, run `modal run train_modernbert.py::train_modernbert` to train the model. It will be uploaded to HuggingFace. Then run `modal run train_modernbert.py::test_modernbert` to run inference on the test set. Both commands accept additional arguments to specify the model size.
+Use the `modernbert.py` script to fine-tune ModernBERT on Modal. First, run `modal run modernbert.py::train_modernbert` to train the model. It will be uploaded to HuggingFace. Then run `modal run modernbert.py::test_modernbert` to run inference on the test set. Both commands accept additional arguments to specify the model size.
 
 ### Setup 2: Few-shot learning with DSPy
 
