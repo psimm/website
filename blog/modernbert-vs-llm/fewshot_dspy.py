@@ -156,11 +156,11 @@ wandb.init(
 
 wandb.log(
     {
-        # "test/accuracy": accuracy,
+        "test/accuracy": accuracy,
         "test/precision": precision,
         "test/recall": recall,
-        # "test/duration": duration,
-        # "test/examples_per_sec": len(examples_test) / duration,
+        "test/duration": duration,
+        "test/examples_per_sec": len(examples_test) / duration,
     }
 )
 
