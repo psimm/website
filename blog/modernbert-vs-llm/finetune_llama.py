@@ -33,7 +33,7 @@ image = (
 )
 app = modal.App(image=image)
 
-vol = modal.Volume.from_name("torchtune-checkpoints", create_if_missing=True)
+vol = modal.Volume.from_name("checkpoints", create_if_missing=True)
 
 
 @app.function(
@@ -232,7 +232,7 @@ def main(
     """
 
     if download_model:
-        download.remote("meta-llama/Llama-3.2-3B-Instruct")
+        download.remote("microsoft/phi-4")
     if run_training:
         train.remote("3B_lora_single_device.yaml")
     if run_evaluation:
