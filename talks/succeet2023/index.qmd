@@ -10,7 +10,7 @@ image: "image.jpg"
 
 | | |
 | --- | --- |
-| 🗓️ Event | [Succeet 2023](https://www.succeet.de/aussteller/succeet23/)|
+| 🗓️ Event | [Succeet 2023](https://www.succeet.de)|
 | 📅 Date | 26 October 2023 |
 | 📍 Location | Wiesbaden, Germany |
 | 🌐 Language | German |
