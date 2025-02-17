@@ -11,11 +11,12 @@ image: "succeet2025.jpg"
 | | |
 | --- | --- |
 | 🗓️ Event | [Succeet 2025](https://www.succeet.de)|
-| 📅 Date | 14 February 2025 |
+| 📅 Date | 13 February 2025 |
 | 📍 Location | Wiesbaden, Germany |
 | 🌐 Language | German |
+| 📥 Materials | [Slides (PDF)](succeet2025_practical_guide_ai.pdf) |
 
-![Succeet 2025](succeet2025.jpg)
+![Succeet 2025](succeet2025_cropped.jpg)
 
 My colleague Oliver Tabino and I gave this presentation at the Succeet 2025 conference in Wiesbaden, which is the leading trade fair for market research in Germany.
 
@@ -25,17 +26,19 @@ We presented five case studies of using AI in market research. Four successes, o
 
 The case studies presented are, in order of project size:
 
-1. GenAI-based storytelling: Using AI as a sparring partner for marketing
-2. Topic clustering and labeling tool to analyze answers to open-ended questions in surveys
-3. LLM-powered social media data pipeline for a client in the pharmaceutical industry
-4. AI Panel: Virtual respondents for online surveys. This was a research project that ended with the result that current language models are not suitable for this application.
-5. AspectWise: a data pipeline that uses LLMs to analyze customer reviews and create in-depth reports
+1. **GenAI-based storytelling**: Using AI as a sparring partner for marketing
+2. **Labeling tool for open-ended questions in surveys**: A tool that forms topics from open-ended questions in surveys and categorizes the responses into those topics
+3. **LLM-powered social media data pipeline**: Project for a client in the pharmaceutical industry
+4. **AI Panel**: Virtual respondents for online surveys. This was a research project that ended with the result that current language models are not suitable for this application.
+5. **AspectWise**: a data pipeline that uses LLMs to analyze customer reviews and create in-depth reports
+
+If any of these topics are of interest to you, please reach out to [Q Agentur für Forschung](https://www.teamq.de/en/contact).
 
 ## Lessons Learned
 
 Our main lessons learned can be summarized as follows:
 
-- Automate your evaluations
+- Automate your evaluations, so that you can change your prompt and model without having to manually evaluate everything again
 - Use prompting for as long as possible before you start with fine-tuning
 - View models as exchangeable parts of your pipeline
 - Most companies' market advantage comes from their data, evals and app/presentation layer, rather than a model
