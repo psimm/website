@@ -1,0 +1,463 @@
+---
+title: "When (Not) to Use Agentic AI"
+author: "Paul Simmering"
+date: "2025-03-01"
+categories: ["Machine Learning", "Agents"]
+image: "image.webp"
+toc: true
+---
+
+```{python}
+# |echo: false
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import plotly.express as px
+
+plotly_config = {"displaylogo": False}
+
+plotly_template = "plotly_white"
+
+modebar_remove = [
+    "zoom",
+    "pan",
+    "select",
+    "lasso",
+    "zoomIn",
+    "zoomOut",
+    "autoScale",
+    "resetScale",
+    "toImage",
+    "sendDataToCloud",
+    "toggleSpikelines",
+    "hoverClosestCartesian",
+    "hoverCompareCartesian",
+    "plotly",
+]
+
+```
+
+
+2025 could be the year of agentic AI. The first agentic AI demos came out in early 2023 and the technology has gained momentum through better tools, smarter models, and the first successful commercial products. The interest in agentic AI is also reflected in the number of GitHub stars for frameworks:
+
+```{python}
+# |echo: false
+# |fig-cap: Star history of agentic AI frameworks, data retrieved on 2025-02-28 from star-history.com.
+
+import polars as pl
+
+df = (
+    pl.read_csv("star-history-2025228.csv")
+    .with_columns(
+        pl.col("Date")
+        .str.extract(r"^[A-Za-z]+ ([A-Za-z]+ \d+ \d{4})")  # Extract "Month Day Year"
+        .str.strptime(pl.Date, "%b %d %Y")  # Convert to Date type
+    )
+    # Sort by the repository with the most stars for legend order
+    .sort(pl.col("Stars").max().over("Repository"), descending=True)
+)
+
+fig = px.line(
+    df.to_pandas(),
+    x="Date",
+    y="Stars",
+    color="Repository",
+    markers=True,
+)
+
+fig.update_layout(
+    modebar_remove=modebar_remove,
+    template=plotly_template,
+    xaxis_title="Date",
+    yaxis_title="GitHub Stars",
+)
+
+fig.update_layout(legend_title_text="")
+
+fig.layout.xaxis.fixedrange = True
+fig.layout.yaxis.fixedrange = True
+fig.show(config=plotly_config)
+
+```
+
+Interest is also high among business leaders. Deloitte's Jul/Sep 2024 [State of Generative AI in the Enterprise Survey](https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consulting/us-state-of-gen-ai-q4.pdf) showed that agentic AI garners the highest attention of all GenA-related developments, with 52% of C-suite-level respondents indicating interest in it (page 27).
+
+But not every app needs agentic AI and not everyone believes in the hype. As ML influencer Maria Vechtomova puts it in a [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7298117212064657408):
+
+> I'm so tired of the #AI hype... How many more millions will companies waste trying to adopt AI agents for any possible use case before the bubble bursts?
+
+and consultant Hamel Husain [posted](https://www.linkedin.com/posts/hamelhusain_dont-repeat-this-mistake-you-have-been-activity-7273119135293710336-SnEj?utm_source=share) this meme:
+
+![IQ meme: Are agents the overthinker's choice? Cropped from Hamel's LinkedIn post](agents_iq_meme.png){width=70%}
+
+Is agentic AI a hype or the key to the next generation of AI apps? This article provides a balanced look at it, written to help you decide whether agentic AI is right for your use case. It won't go into the details of any specific agentic AI frameworks, but rather focus on the principles and tradeoffs.
+
+### Four levels of agency
+
+To start, let's establish a definition of what an agent is. The simplest definition I found is from Eugene Yan on [LinkedIn](https://www.linkedin.com/posts/eugeneyan_agent-model-tools-within-a-for-loop-ugcPost-7300335307558658048-ST_a?utm_source=share&utm_medium=member_desktop&rcm=ACoAABYvtdwBLdBW43CUqePc_yFkM0OKTe6yH00):
+
+> agent ≈ model + tools, within a for-loop + environment
+
+Let's break this down:
+
+- **Model**: an LLM receiving inputs tokens and outputting response tokens
+- **Tools**: function definitions provided to the model, e.g. `search_web(query: str) -> str` that it can provide arguments to in its response
+- **For-loop**: the model is called multiple times, with the output of one call being the input to a tool or another call
+- **Environment**: the runtime calling the model, providing it with access to tools, data, and tracking the state of the workflow
+
+This definition is a great starting point and cuts through the overthinking and hype. It needs one more element to be complete:
+
+**Degree of agency**: The agent is in charge of the workflow. It decides on what to do next to pursue a given goal. This can be categorized into 4 levels:
+
+![4 Levels of agency](levels.svg)
+
+1. **Single call, single tool**: the model is called once with a single tool provided
+2. **Single call, multiple tools**: the model is called once with multiple tools provided and the model decides which ones to use
+3. **Fixed workflow**: the model is called multiple times with a predetermined sequence of prompts, feeding the output of one call into the next
+4. **Open-ended workflow / true agentic AI**: the model is called multiple times with a flexible sequence of prompts, feeding the output of one call into the next, and choosing the end of the loop independently
+
+The order of levels 2 and 3 is debatable. Level 2 adds the tool decision, level 3 adds having multiple steps. Level 4 has both, is open ended and is the only true agentic one.
+
+The main question of this article is to provide a framework to decide whether the jump from level 3 to level 4 is worth it for a given use case. We will look at the new use cases unlocked and the tradeoffs involved.
+
+::: {.callout-note}
+The LLM in a for-loop definition used here is the simplest possible. If you're looking for a more sophisticated definition, check out [Weaviate's article (Feb 2025)](https://weaviate.io/blog/ai-agents) that offers a history of the methodology, [Anthropic's article (Dec 2024)](https://www.anthropic.com/research/building-effective-agents) describing common workflow patterns including parallel operations, and [Chip Huyen's article (Jan 2025)](https://huyenchip.com/2025/01/07/agents) that goes into detail on the planning phase of agentic workflows. Acharya and Kuppan provide an [formal ontology (Jan 2025)](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10849561) of agents.
+:::
+
+### Real world use
+
+[The AI Agent Index](https://aiagentindex.mit.edu) by Casper et al. from MIT tracks the number of agentic AI systems deployed by large organizations. The number of agents deployed is growing every month. Their requirements for inclusion are strict and likely undercount the actual number of agents deployed.
+
+```{python}
+# |echo: false
+
+releases = [
+    {"date": "2023-03", "count": 2},
+    {"date": "2023-05", "count": 2},
+    {"date": "2023-07", "count": 1},
+    {"date": "2023-09", "count": 4},
+    {"date": "2023-11", "count": 3},
+    {"date": "2024-01", "count": 3},
+    {"date": "2024-03", "count": 7},
+    {"date": "2024-05", "count": 5},
+    {"date": "2024-07", "count": 6},
+    {"date": "2024-09", "count": 10},
+    {"date": "2024-11", "count": 16},
+]
+
+import pandas as pd
+
+df = pd.DataFrame(releases)
+df["date"] = pd.to_datetime(df["date"])
+
+fig = px.bar(
+    df,
+    x="date",
+    y="count",
+    title="Agentic AI Deployments at Large Organizations",
+)
+
+fig.update_layout(
+    xaxis=dict(
+        tickmode="array",
+        tickvals=df["date"],
+        ticktext=df["date"].dt.strftime("%Y-%m"),
+    ),
+    yaxis_title="Number of Agents",
+    xaxis_title="Release Date",
+    height=300,
+    template=plotly_template,
+)
+
+fig.update_layout(showlegend=False, modebar_remove=modebar_remove)
+fig.layout.xaxis.fixedrange = True
+fig.layout.yaxis.fixedrange = True
+fig.show(config=plotly_config)
+
+```
+
+Let's take a look at the most promising use cases. Click on the use cases to expand them.
+
+::: {.callout-note appearance="simple" icon="false" collapse="true"}
+
+## Deep research
+
+An agent that accepts a search query, asks clarifying questions, searches the web systematically for 5 to 30 minutesand writes a detailed report, akin to a literature review.
+
+Examples, all released in February 2025:
+
+- [OpenAI's Deep Research](https://openai.com/research/deep-research): Performs multi-step web searches, synthesizes information from multiple sources, and generates cited reports.
+- [Perplexity's Deep Research](https://www.perplexity.ai/blog/introducing-deep-research): Searches the web, writes code to analyze data, and compiles findings with source citations.
+- [Google's AI Co-scientist](https://research.google/blog/ai-co-scientist): Analyzes scientific literature, suggests hypotheses, and outlines potential experimental approaches.
+- [X's Grok DeepSearch](https://x.ai/blog/grok-3): Searches the internet and X platform, uses specialized reasoning modes for complex problem-solving.
+
+There is no default benchmark for this use case yet. The difficulty is that the agent needs to search the web live, and the content of the web changes constantly.
+
+I read reviews of OpenAI's Deep Research by [Ethan Mollick](https://www.oneusefulthing.org/i/156359450/deep-research), [Tyler Cowen](https://marginalrevolution.com/marginalrevolution/2025/02/deep-research.html), [Leon Furze](https://leonfurze.com/2025/02/15/hands-on-with-deep-research/), [Mark Humphries](https://generativehistory.substack.com/p/is-this-the-last-generation-of-historians), and [Derek Lowe](https://www.science.org/content/blog-post/evaluation-deep-research-performance). Each reviewer asked it to perform a literature review or similar in their field of expertise, ranging from economics to toxicology. The common themes were:
+
+- Impressed by the volume and polish of the output
+- Massive time saver, Tyler Cowen reports that it's like having a PhD-level research assistant that does a week's work in five minutes.
+- The agent can't access paywalled content, e.g. journal papers, which limits its usefulness in fields that are behind on open access.
+- Can be too surface-level, lacking in synthesis.
+- Can get details wrong, misleading non-experts. Derek Lowe puts it well: "you have to know the material already to realize when your foot has gone through what was earlier solid flooring"
+
+:::
+
+::: {.callout-note appearance="simple" icon="false" collapse="true"}
+
+## Computer use
+
+An agent that can help with a wide variety of computer tasks going from simple (setting a reminder, creating a note, sending an email) to more complex (finding leads on LinkedIn, scheduling a meeting with many people and across timezones, finding the best flight for a trip).
+
+Examples:
+
+- [Anthropic's Claude with Computer Use](https://www.anthropic.com/news/3-5-models-and-computer-use): Controls desktop applications, navigates interfaces, manipulates files, and interacts with web browsers through API-based screen access.
+- [OpenAI's Operator](https://openai.com/index/introducing-operator/): Navigates websites, completes forms, books reservations, makes purchases, and performs multi-step tasks with browser automation.
+- [Amazon's Alexa Plus](https://www.aboutamazon.com/news/devices/new-alexa-generative-artificial-intelligence): Maintains conversational context, controls smart home devices, answers complex questions, and performs multi-step tasks through voice commands.
+- [Raycast's AI extensions](https://www.raycast.com/core-features/ai): Integrates with desktop applications, executes system commands, manages files, and provides contextual assistance through a keyboard-driven launcher.
+
+The [webarena benchmark](https://github.com/web-arena-x/webarena?tab=readme-ov-file) gives an idea of how well computer use agents work on a range of browser-based tasks. As of February 2025, the best performing agent was IBM CUGA with a success rate of 61.7%, followed by OpenAI's Operator at 58.1%. Clearly, there's room for improvement.
+
+:::
+
+::: {.callout-note appearance="simple" icon="false" collapse="true"}
+
+## Coding
+
+An agent that can write code, review changes, and debug.
+
+Examples:
+
+- [Cursor Agent](https://docs.cursor.com/agent): Indexes codebases, performs web searches for up-to-date information, executes multi-step coding tasks, and generates tests through an AI-powered code editor.
+- [Windsurf Cascade](https://codeium.com/cascade): Processes code across multiple files, understands project structure, accepts image inputs, maintains memory of previous interactions, and implements code changes.
+- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview): Operates in the terminal, understands entire codebases, executes shell commands, and implements code changes through natural language instructions.
+- [Devin](https://devin.ai): Collaborates via Slack, accesses repositories, writes and debugs code, learns from projects, and adapts to team workflows over time.
+- [Sakana AI's CUDA kernel optimization agent](https://pub.sakana.ai/static/paper.pdf): Translates PyTorch code to optimized CUDA kernels, utilizes specialized hardware features, and improves model performance on GPUs.
+
+Benchmarks and reviews:
+
+- [SWE-Bench Verified](https://www.swebench.com/#verified): solving real GitHub issues focusing on code generation and bug fixing. Current best agent reaches 64.6%.
+- The folks at Answer.ai [evaluated Devin](https://www.answer.ai/posts/2025-01-08-devin.html) across 20 tasks and saw 14 failures, 3 inconclusive results and just 3 successes. Further, they weren't able to predict which tasks Devin would succeed at. Ultimately, they concluded that the closer feedback loop of an AI acting inside an IDE is more effective.
+- Sakana's CUDA kernel optimization agent [proved](https://x.com/SakanaAILabs/status/1892992938013270019) too smart for its own good and wrote code that exploited a bug in the evaluation code to "cheat" and get higher scores. Still, the concept of specialized coding agents is promising.
+
+:::
+
+::: {.callout-note appearance="simple" icon="false" collapse="true"}
+
+## Customer support
+
+A customer support chatbot or ticket handling agent that handles a wide variety of requests. It can either enhance or replace a human agent.
+
+Examples:
+
+- [Intercom's Fin AI](https://www.intercom.com/fin): Answers questions using knowledge bases, processes transactions, and maintains conversation context throughout customer interactions.
+- [Klarna's AI assistant](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/): Processes refunds, manages returns, handles payment issues, and provides shopping recommendations in multiple languages.
+- [Salesforce AgentForce](https://www.salesforce.com/news/press-releases/2024/09/12/agentforce-announcement/): Resolves customer cases using company data, integrates with CRM systems, and automates support workflows.
+
+Benchmarks and reviews:
+
+- Intercom claims to have handled more than 15 million customer queries using Fin with a 54% resolution rate, steadily increasing over time as the agent is improved.
+- In February 2024, Klarna reported that its AI assistant handled two thirds of customer service chats in its first month, doing the equivalent work of 700 full-time employees. Klarna maintains a 4.1 rating on [Trustpilot](https://www.trustpilot.com/review/klarna.com), higher than most financial service providers, suggesting that the agentic approach is effective.
+- Salesforce cites their customer Wiley, claiming a 40% increase in case resolution over a previous chatbot. However, they don't give an actual resolution rate.
+
+:::
+
+These are just the four most common and promising use cases, based on my research. [Google Cloud](https://cloud.google.com/transform/101-real-world-generative-ai-use-cases-from-industry-leaders?hl=en) lists a whopping 321 gen AI use cases, and [Microsoft](https://blogs.microsoft.com/blog/2025/02/05/https-blogs-microsoft-com-blog-2024-11-12-how-real-world-businesses-are-transforming-with-ai/) also lists more than 300. Only a minority of them are truely agentic though, the majority are on levels 1 to 3. In addition to these publicly available examples, companies are developing internal tools to solve all kinds of problems, ranging from report generation to automated pricing updates.
+
+Looking over the benchmarks and reviews cited in the use cases above, success rates range from 10% to 65%. Clearly, agentic AI is not ready for unsupervised high stakes jobs. It needs oversight by a human expert.
+
+### Compounding error problem
+
+Each step in an agentic workflow has a chance of introducing an error. Let's model this in a simplified way where each step has the same error rate and there is no error recovery. The graph below shows the chance of the workflow being correct as a function of the number of steps, for different error rates.
+
+```{python}
+# |echo: false
+
+import numpy as np
+
+
+def calculate_error_probability(error_rate, steps):
+    return (1 - error_rate) ** steps
+
+
+error_rates = [0.01, 0.02, 0.05, 0.1]
+steps = np.arange(1, 11)
+
+data = []
+for error_rate in error_rates:
+    probabilities = calculate_error_probability(error_rate, steps)
+    for step, prob in zip(steps, probabilities):
+        data.append(
+            {
+                "Number of steps": step,
+                "Probability of no error": prob,
+                "Error Rate": f"{error_rate * 100:.0f}% error rate",
+            }
+        )
+
+fig = px.line(
+    pd.DataFrame(data),
+    x="Number of steps",
+    y="Probability of no error",
+    color="Error Rate",
+    markers=True,
+    labels={
+        "Number of steps": "Number of steps",
+        "Probability of no error": "Probability of no error",
+    },
+)
+
+fig.update_layout(
+    xaxis=dict(dtick=1),
+    yaxis=dict(
+        tickmode="array",
+        tickvals=np.arange(0, 1.1, 0.1),
+        ticktext=[f"{int(val * 100)}%" for val in np.arange(0, 1.1, 0.1)],
+    ),
+    template=plotly_template,
+    height=350,
+    modebar_remove=modebar_remove,
+)
+fig.layout.xaxis.fixedrange = True
+fig.layout.yaxis.fixedrange = True
+fig.show(config=plotly_config)
+
+```
+
+Clearly, higher error rates and more steps make the workflow less likely to succeed. A developer that values correctness has to obsess over error rates and keep the number of steps low.
+
+Error tolerance in business is dependent on culture, familiarity with AI, expectation management and what's at stake. Let's consider examples of different errors:
+
+| Error | Example | Mitigation |
+|---|---------|------|
+| **Planning failure** | Agent misunderstands the goal, the constraints or the tools that it has available and plans a path that spins in circles, crashes or returns an incorrect answer. | Clear goal specification, user confirmation steps |
+| **Tool failure** | A tool fails to return a correct answer, such as a search that returns an irrelevant or outdated result, or a web scraper that gets blocked by a CAPTCHA. Some errors are loud (e.g. the CAPTCHA), whereas others are silent and poison the output. | Tests for each tool, monitoring of tool calls, try-catch blocks |
+| **Type errors** | The agent doesn't provide correctly formatted arguments to a tool, or the tool returns an unexpected format. | Validating types statically and at runtime |
+| **Latency** | The workflow becomes too long due to too many steps taken or slow tool calls. Users get bored and abandon the agent. | Parallelization, caching, limiting the number of steps |
+
+### Agents causing harm
+
+In the previous section, we considered failure modes that cause inconvenience. However, agents can also cause harm in the form of data loss, financial damage, legal liability or cyber security incidents.
+
+1. **User error**. For example, giving unclear instructions that lead to a wrong file being overwritten or a message sent to the wrong person. Ask the user for confirmation and give them a way to undo the action, where possible.
+2. **Model error**. A tool could misunderstand the user's intent or the way a tool works.
+3. **Prompt injection**. LLMs are susceptible to prompt injection, meaning someone hijacking the workflow by overriding the original instructions with a clever prompt. Malicious prompts can be found on websites, received via emails or be hidden in the user's files.
+
+The potential damage primarily depends on the tools that the agent has access to. Consider what the worst thing is that the agent could do with a tool. If that is unacceptable, limit the agent's access. For example, an agent that can access a database could only be allowed to read, not write, or to only write to a specific append-only table. Payments, deleting data, and other dangerous actions should require user confirmation.
+
+## Not every workflow needs agentic AI
+
+Based on the previous case studies and analysis of error rates, here's a list of reasons to use agentic AI and reasons to avoid it:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**Reasons to use agentic AI ✅**
+
+- The problem space is too large to enumerate every path
+- Every interaction is truly different
+- The problems are hard enough that only a flexible multi-hop system can solve them
+- High payoff for successful resolution (e.g. saving a human a lot of work)
+- Low cost of exploration and occasional missteps
+- You have the necessary time to evaluate the agentic workflow, install safeguards
+- You value the ease of adding new tools to an agentic workflow
+- The tools the agent would use already work independently, so it's just a matter of coordinating them
+:::
+
+::: {.column width="50%"}
+
+**Reasons to avoid agentic AI ❌**
+
+- The task can be described as a fixed workflow of steps
+- Low latency is required
+- Low error tolerance, e.g. for legal, organizational or social reasons
+- Need to keep token usage low
+- Need predictable workflows
+- Need high explainability
+- Need to prove that every step of the workflow is correct
+- Agentic AI frameworks are not mature yet
+- Cybersecurity concerns from prompt injection and other attacks
+:::
+
+::::
+
+Agents aren't all or nothing - there are many shades of agentic AI. Each level of agent autonomy increases the surface area for errors. Therefore, it can be wiser to use a hybrid approach that is level 2 or 3 on the agency scale above, with fixedsteps and tool selection, and limited decision making by the agent. Ask: Is the task really so complex and open-ended that it can't be described as a fixed series of steps and decision points?
+
+### Converting agentic workflows to fixed workflows
+
+In city planning, there's the concept of a "desire path". Rather than walking the long, intended path, people take a shortcut. There's an urban legend that when Dwight D. Eisenhower was in charge of an extension of Columbia University, he let students walk on grass until natural paths had formed, and then had them paved.
+
+![Desire path being paved. Image created with FLUX.1-pro](desire_path.png)
+
+This concept could be applied to agentic workflows. Start by giving an agent the freedom to choose tools and order of execution. Observe which paths are taken and which result in success. Then pave those paths by making them fixed workflows, enabling greater reliability.
+
+## So you want to build an agentic workflow?
+
+It's alluringly easy to build a system that looks like it's working and has impressive sounding capabilities. Just copy-paste from the documentation of a popular agent tool. Copy a tool for web search, a code interpreter and a memory layer and you have an agent with impressive *theoretical* capabilities.
+
+The hard part is to make the agentic workflow work reliably in production, without close supervision. And that's where the business value is – a demo doesn't repay an investment.
+
+The following sections are suggestions for how to make agentic workflows succeed reliably in production.
+
+### Start with solid software engineering
+
+The building blocks of agentic workflows are not new: loops, strings being passed between tools, arrays of floats for embeddings, HTTP requests, JSON. So the established concepts of writing clean code, enforcing type safety, having a test environment and running automated tests apply. A good agentic app starts with a good app.
+
+### Agent frameworks are optional
+
+Going back to Eugene Yan's definition of agents as "model + tools, within a for-loop + environment", it's clear that agents can be implemented in any programming language that can make HTTP requests. In [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents), Anthropic notes:
+
+> Consistently, the most successful implementations weren't using complex frameworks or specialized libraries. Instead, they were building with simple, composable patterns.
+
+So should you use an agent framework or not? Let's examine the tradeoffs:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**Reasons to use frameworks ✅**
+
+- Boost early development speed with pre-packaged patterns and integrations
+- Provide mental models for workflow structure (e.g. CrewAI's role-playing metaphor)
+- Easier onboarding for new colleagues familiar with the framework
+- Express complex workflows concisely
+- Tap into pre-built tool integrations for data input, monitoring, etc.
+
+:::
+
+::: {.column width="50%"}
+
+**Reasons to avoid frameworks ❌**
+
+- Often immature with frequent bugs and unclear documentation
+- Breaking API changes
+- Many dependencies
+- Force programming in "framework way"
+- Many have a monolithic design, instead of composable unix philosophy
+- Tendency to reinvent the wheel in a less production grade way
+- Steep learning curve, depending on the framework
+
+:::
+
+::::
+
+As a case study, the AI test automation company Octomind wrote an [article](https://www.octomind.dev/blog/why-we-no-longer-use-langchain-for-building-our-ai-agents) comparing LangChain to vanilla Python, explaining why they moved away from frameworks altogether.
+
+### Trace every step
+
+Regardless of whether you use an agent framework or not, effective monitoring is a must. The first thing to put into place is a system that logs every step of the workflow: user inputs, transformed inputs, tool choices, tool calls, tool call results, reasoning tokens, output, latency, token usage, etc. The best and easiest time to set this up is right at the start of the project. As the project grows, set up a dashboard and alerts for critical metrics.
+
+### There's no substitute for manual inspection
+
+> Manual inspection of data has probably the highest value-to-prestige ratio of any activity in machine learning.
+
+[Greg Brockman](https://x.com/gdb/status/1622683988736479232), President and co-founder of OpenAI
+
+Before going to automatic tests, LLM as judge etc., inspect some workflows manually using the monitoring system. Check the input, the tool calls, the intermittent reasoning tokens, and the output. Many problems can be diagnosed this way. In addition, it peels away some of the "magic" that agentic frameworks by showing the prompts and tool calls. Hamel Husain put it well in an [article](https://hamel.dev/blog/posts/prompt/), asking "Show me the prompt" of every LLM library. Manual inspection keeps yielding insights, even after automatic evals are in place.
+
+## Conclusion: Build as agentic as needed, not as agentic as possible
+
+As shown by benchmark scores and user reviews, agentic AI is currently a "65% solution". There are impressive demos, but the real world is messy. The gap needs to be bridged by careful safeguards, domain-specific heuristics, smart task framing, and human oversight. Much like operating a self-driving car, users need to stay alert and be ready to take control at any moment. However, consider that human workers also make mistakes - perfection is not a realistic benchmark.
+
+From a business perspective, there is still an enormous amount of value to be realized by simpler uses of generative AI. Going all-in on agentic AI may not be necessary. Consider the pros and cons listed above and locate the task at hand on the four-level agency scale.

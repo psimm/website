@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/pydantic-ai/index.html</loc>
-    <lastmod>2024-12-18T17:38:34.806Z</lastmod>
+    <lastmod>2025-02-27T22:00:17.826Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/llm-customization/index.html</loc>
@@ -255,5 +255,9 @@
   <url>
     <loc>https://simmering.dev/talks/succeet2025/index.html</loc>
     <lastmod>2025-02-17T07:32:34.299Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/agentic-ai/index.html</loc>
+    <lastmod>2025-03-01T16:14:09.304Z</lastmod>
   </url>
 </urlset>
