@@ -82,11 +82,11 @@ fig.show(config=plotly_config)
 
 Interest is also high among business leaders. Deloitte's Jul/Sep 2024 [State of Generative AI in the Enterprise Survey](https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consulting/us-state-of-gen-ai-q4.pdf) showed that agentic AI garners the highest attention of all GenA-related developments, with 52% of C-suite-level respondents indicating interest in it (page 27).
 
-But not every app needs agentic AI and not everyone believes in the hype. As ML influencer Maria Vechtomova puts it in a [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7298117212064657408):
+But not every app needs agentic AI and not everyone believes in the hype. As MLOps Tech Lead Maria Vechtomova puts it in a [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7298117212064657408):
 
 > I'm so tired of the #AI hype... How many more millions will companies waste trying to adopt AI agents for any possible use case before the bubble bursts?
 
-and consultant Hamel Husain [posted](https://www.linkedin.com/posts/hamelhusain_dont-repeat-this-mistake-you-have-been-activity-7273119135293710336-SnEj?utm_source=share) this meme:
+and LLM consultant Hamel Husain [posted](https://www.linkedin.com/posts/hamelhusain_dont-repeat-this-mistake-you-have-been-activity-7273119135293710336-SnEj?utm_source=share) this meme:
 
 ![IQ meme: Are agents the overthinker's choice? Cropped from Hamel's LinkedIn post](agents_iq_meme.png){width=70%}
 
@@ -121,7 +121,7 @@ The order of levels 2 and 3 is debatable. Level 2 adds the tool decision, level 
 The main question of this article is to provide a framework to decide whether the jump from level 3 to level 4 is worth it for a given use case. We will look at the new use cases unlocked and the tradeoffs involved.
 
 ::: {.callout-note}
-The LLM in a for-loop definition used here is the simplest possible. If you're looking for a more sophisticated definition, check out [Weaviate's article (Feb 2025)](https://weaviate.io/blog/ai-agents) that offers a history of the methodology, [Anthropic's article (Dec 2024)](https://www.anthropic.com/research/building-effective-agents) describing common workflow patterns including parallel operations, and [Chip Huyen's article (Jan 2025)](https://huyenchip.com/2025/01/07/agents) that goes into detail on the planning phase of agentic workflows. Acharya and Kuppan provide an [formal ontology (Jan 2025)](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10849561) of agents.
+The LLM in a for-loop definition used here is the simplest possible. If you're looking for a more sophisticated definition, check out [Weaviate's article (Feb 2025)](https://weaviate.io/blog/ai-agents) that offers a history of the methodology, [Anthropic's article (Dec 2024)](https://www.anthropic.com/research/building-effective-agents) describing common workflow patterns including parallel operations, and [Chip Huyen's article (Jan 2025)](https://huyenchip.com/2025/01/07/agents) that goes into detail on the planning phase of agentic workflows. Acharya and Kuppan provide a [formal ontology (Jan 2025)](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10849561) of agents.
 :::
 
 ### Real world use
