@@ -251,7 +251,7 @@ A customer support chatbot or ticket handling agent that handles a wide variety 
 Examples:
 
 - [Intercom's Fin AI](https://www.intercom.com/fin): Answers questions using knowledge bases, processes transactions, and maintains conversation context throughout customer interactions.
-- [Klarna's AI assistant](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/): Processes refunds, manages returns, handles payment issues, and provides shopping recommendations in multiple languages.
+- [Klarna's AI assistant](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/): Processes refunds, manages returns, handles payment issues, and provides shopping recommendations in multiple languages. A case study on LangChain's [website](https://blog.langchain.dev/customers-klarna/) gives more recent technical insight.
 - [Salesforce AgentForce](https://www.salesforce.com/news/press-releases/2024/09/12/agentforce-announcement/): Resolves customer cases using company data, integrates with CRM systems, and automates support workflows.
 
 Benchmarks and reviews:
