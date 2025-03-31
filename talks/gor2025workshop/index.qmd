@@ -1,0 +1,29 @@
+---
+title: "Workshop: Structured Information Extraction with LLMs"
+date: 2025-03-31
+author: "Paul Simmering"
+categories:
+  - workshop
+draft: false
+image: "image.jpeg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [General Online Research 2025](https://www.gor.de/wp-content/uploads/2025/03/ConferenceProceedings_2025_FINAL-2.pdf)|
+| 📅 Date | 31 March 2025 |
+| 📍 Location | Freie Universität Berlin |
+| 🌐 Language | English |
+| 📥 Materials | [Slides](https://github.com/qagentur/structured-information-extraction-with-llms/blob/main/gor25_workshop.pdf), [Jupyter Notebook](https://colab.research.google.com/drive/1lpQDRxTx3tnbChFqGUOW6vEF7CwZ3aw3) |
+
+This 2.5-hour hands-on workshop introduced participants to structured information extraction using Large Language Models (LLMs). Through practical exercises and discussions, participants learned:
+
+1. How to extract structured information (categories, entities, relations) from text and images using LLMs
+2. The tradeoffs between traditional NLP approaches and LLM-based extraction
+3. Techniques to improve extraction accuracy through prompt engineering and few shot learning
+4. The landscape of models and libraries for structured LLM responses
+5. Best practices for monitoring and deploying LLM-based systems in production
+
+The workshop included a micro-hackathon where participants competed to achieve the highest accuracy on the AGNews classification task.
+
+The workshop built on the GOR24 presentation [Where do LLMs fit in NLP pipelines?](/talks/gor2024) by my colleague Paavo Huvoiala and me.
