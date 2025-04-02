@@ -17,6 +17,6 @@ image: "image.png"
 | 📥 Materials | [Slides (PDF)](gor_2019_simmering.pdf) |
 | 💻 App | [Patent Explorer](https://psim.shinyapps.io/patent) |
 
-An overview of R Shiny by example of an app I developed for display patent statistics
+An overview of R Shiny by example of an app I developed for visualizing patents on a world map and as a network graph of related patents. The presentation introduces R Shiny, hosting Shiny apps and the pros and cons of Shiny compared to other approaches.
 
 ![Patent Explorer](image.png)

@@ -1,6 +1,7 @@
 ---
 title: "Innovation and Imitation Strategies in the Age of the Upgrade – An Agent-Based Simulation Model"
 date: 2017-05-31
+author: "Paul Simmering and Daniel S. Hain"
 categories:
 - conference
 image: "image.jpg"
