@@ -5,7 +5,7 @@ author: "Paul Simmering"
 categories:
   - workshop
 draft: false
-image: "image.jpeg"
+image: "image.webp"
 ---
 
 | | |

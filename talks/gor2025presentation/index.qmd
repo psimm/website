@@ -1,0 +1,38 @@
+---
+title: "Meet Your New Client: Writing Reports for AI"
+date: 2025-04-01
+author: "Georg Wittenburg, Paul Simmering, Benedikt Schulz and Oliver Tabino"
+categories:
+  - workshop
+draft: false
+image: "image.jpg"
+---
+
+| | |
+| --- | --- |
+| 🗓️ Event | [General Online Research 2025](https://www.gor.de/wp-content/uploads/2025/03/ConferenceProceedings_2025_FINAL-2.pdf)|
+| 📅 Date | 01 April 2025 |
+| 📍 Location | Freie Universität Berlin |
+| 🌐 Language | English |
+
+## Relevance & Research Question
+
+As organizations adopt Retrieval-Augmented Generation (RAG) for their Knowledge Management Systems (KMS), traditional market research deliverables face new functional demands. While PDFs of reports and presentation slides have effectively served human readers, they now are also “read” by AI systems to answer questions of human users—a trend that will only increase going forward. In order to future-proof the reports that are delivered today, this study evaluates information loss when transferring market research insights through different delivery formats into RAG systems. This open question emerged from a discussion at the DGOF KI Forum between market research buyers and suppliers.
+
+## Methods & Data
+
+We frame the transfer of information, incl. research insights, into clients’ KMS as a signal processing problem. The fidelity of the information transfer depends on the data format: Some formats, e.g., pictures of charts, incur an information loss while other formats, e.g., tables, do not. We model this loss using benchmarks for information extraction from different file formats and from graphs. Further, we assess the needs handled by current reporting formats and contrast them with new needs from RAG. This is done through expert interviews and an analysis of research reports from different institutes.
+
+## Results
+
+Findings indicate that classic formats, while valuable for human interpretation, are not optimal for AI systems. Key limitations include difficulties in extracting information from graphs and styled slides, which lead to altered, de-contextualized, or lost information. Text-heavy reports offer greater compatibility, yet are not optimal either, e.g., when methodology is presented separately from results. Our study suggests that transitioning to complimentary special-purpose deliverables, designed explicitly for AI, enhances the retrieval accuracy of research insights within KMS, and thus for the client.
+
+## Added Value
+
+The choice of reporting format is critical for delivering insights to market research clients, especially now that these reports will also be consumed by AI. This study yields insights on new demands and improved formats for reports from suppliers. It also supports buyers of reports in their assessment of proposals and effective ingestion of results into their KMS for optimal information retrieval going forward.
+
+## Acknowledgements
+
+This talk and research was inspired by meetings of the DGOF KI Forum. My thanks to all participants who shared their experiences and insights on the use of AI for knowledge management.
+
+Please [contact me](/about.qmd) if you wish to receive the slides for this talk.

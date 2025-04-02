@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Paul Simmering and Oliver Tabino">
-<meta name="dcterms.date" content="2025-02-14">
+<meta name="author" content="Georg Wittenburg, Paul Simmering, Benedikt Schulz and Oliver Tabino">
+<meta name="dcterms.date" content="2025-04-01">
 
-<title>Practical Guide: Successful Use of AI in Market Research – Paul Simmering</title>
+<title>Meet Your New Client: Writing Reports for AI – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -145,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Practical Guide: Successful Use of AI in Market Research</h1>
+<h1 class="title">Meet Your New Client: Writing Reports for AI</h1>
   <div class="quarto-categories">
     <div class="quarto-category">workshop</div>
   </div>
@@ -158,14 +158,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Paul Simmering and Oliver Tabino </p>
+             <p>Georg Wittenburg, Paul Simmering, Benedikt Schulz and Oliver Tabino </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 14, 2025</p>
+      <p class="date">April 1, 2025</p>
     </div>
   </div>
   
@@ -181,58 +181,42 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>🗓️ Event</td>
-<td><a href="https://www.succeet.de">Succeet 2025</a></td>
+<td><a href="https://www.gor.de/wp-content/uploads/2025/03/ConferenceProceedings_2025_FINAL-2.pdf">General Online Research 2025</a></td>
 </tr>
 <tr class="even">
 <td>📅 Date</td>
-<td>13 February 2025</td>
+<td>01 April 2025</td>
 </tr>
 <tr class="odd">
 <td>📍 Location</td>
-<td>Wiesbaden, Germany</td>
+<td>Freie Universität Berlin</td>
 </tr>
 <tr class="even">
 <td>🌐 Language</td>
-<td>German</td>
-</tr>
-<tr class="odd">
-<td>📥 Materials</td>
-<td><a href="succeet2025_practical_guide_ai.pdf">Slides (PDF)</a></td>
+<td>English</td>
 </tr>
 </tbody>
 </table>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="succeet2025_cropped.jpg" class="img-fluid figure-img"></p>
-<figcaption>Succeet 2025</figcaption>
-</figure>
-</div>
-<p>My colleague Oliver Tabino and I gave this presentation at the Succeet 2025 conference in Wiesbaden, which is the leading trade fair for market research in Germany.</p>
-<p>We presented five case studies of using AI in market research. Four successes, one failure. Then we shared our lessons learned and gave some practical advice on management of AI projects.</p>
-<section id="case-studies" class="level2">
-<h2 class="anchored" data-anchor-id="case-studies">Case Studies</h2>
-<p>The case studies presented are, in order of project size:</p>
-<ol type="1">
-<li><strong>GenAI-based storytelling</strong>: Using AI as a sparring partner for marketing</li>
-<li><strong>Labeling tool for open-ended questions in surveys</strong>: A tool that forms topics from open-ended questions in surveys and categorizes the responses into those topics</li>
-<li><strong>LLM-powered social media data pipeline</strong>: Project for a client in the pharmaceutical industry</li>
-<li><strong>AI Panel</strong>: Virtual respondents for online surveys. This was a research project that ended with the result that current language models are not suitable for this application.</li>
-<li><strong>AspectWise</strong>: a data pipeline that uses LLMs to analyze customer reviews and create in-depth reports</li>
-</ol>
-<p>If any of these topics are of interest to you, please reach out to <a href="https://www.teamq.de/en/contact">Q Agentur für Forschung</a>.</p>
+<section id="relevance-research-question" class="level2">
+<h2 class="anchored" data-anchor-id="relevance-research-question">Relevance &amp; Research Question</h2>
+<p>As organizations adopt Retrieval-Augmented Generation (RAG) for their Knowledge Management Systems (KMS), traditional market research deliverables face new functional demands. While PDFs of reports and presentation slides have effectively served human readers, they now are also “read” by AI systems to answer questions of human users—a trend that will only increase going forward. In order to future-proof the reports that are delivered today, this study evaluates information loss when transferring market research insights through different delivery formats into RAG systems. This open question emerged from a discussion at the DGOF KI Forum between market research buyers and suppliers.</p>
 </section>
-<section id="lessons-learned" class="level2">
-<h2 class="anchored" data-anchor-id="lessons-learned">Lessons Learned</h2>
-<p>Our main lessons learned can be summarized as follows:</p>
-<ul>
-<li>Automate your evaluations, so that you can change your prompt and model without having to manually evaluate everything again</li>
-<li>Use prompting for as long as possible before you start with fine-tuning</li>
-<li>View models as exchangeable parts of your pipeline</li>
-<li>Most companies’ market advantage comes from their data, evals and app/presentation layer, rather than a model</li>
-<li>Look at the data and try doing the tasks yourself before automating them</li>
-<li>Projects have a limited innovation budget: innovate on one or two aspects of your project, not all</li>
-<li>“Real artists ship” (Steve Jobs): Focus on one key use case and launch your project, rather than building a complete solution on day one</li>
-</ul>
+<section id="methods-data" class="level2">
+<h2 class="anchored" data-anchor-id="methods-data">Methods &amp; Data</h2>
+<p>We frame the transfer of information, incl.&nbsp;research insights, into clients’ KMS as a signal processing problem. The fidelity of the information transfer depends on the data format: Some formats, e.g., pictures of charts, incur an information loss while other formats, e.g., tables, do not. We model this loss using benchmarks for information extraction from different file formats and from graphs. Further, we assess the needs handled by current reporting formats and contrast them with new needs from RAG. This is done through expert interviews and an analysis of research reports from different institutes.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Findings indicate that classic formats, while valuable for human interpretation, are not optimal for AI systems. Key limitations include difficulties in extracting information from graphs and styled slides, which lead to altered, de-contextualized, or lost information. Text-heavy reports offer greater compatibility, yet are not optimal either, e.g., when methodology is presented separately from results. Our study suggests that transitioning to complimentary special-purpose deliverables, designed explicitly for AI, enhances the retrieval accuracy of research insights within KMS, and thus for the client.</p>
+</section>
+<section id="added-value" class="level2">
+<h2 class="anchored" data-anchor-id="added-value">Added Value</h2>
+<p>The choice of reporting format is critical for delivering insights to market research clients, especially now that these reports will also be consumed by AI. This study yields insights on new demands and improved formats for reports from suppliers. It also supports buyers of reports in their assessment of proposals and effective ingestion of results into their KMS for optimal information retrieval going forward.</p>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>This talk and research was inspired by meetings of the DGOF KI Forum. My thanks to all participants who shared their experiences and insights on the use of AI for knowledge management.</p>
+<p>Please <a href="../../about.html">contact me</a> if you wish to receive the slides for this talk.</p>
 
 
 </section>
