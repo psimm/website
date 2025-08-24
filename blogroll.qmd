@@ -23,7 +23,6 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
 | [Francois Chollet](https://fchollet.substack.com) | AI philosophy and technical insights from the creator of Keras |
 | [Zvi Mowshowitz](https://thezvi.wordpress.com) | Analysis of AI progress and risk from a rationalist perspective |
-| [Near](https://near.blog) | Independent AI research and commentary, as well as nutrition and productivity advice |
 | [Lilian Weng](https://lilianweng.github.io/) | In-depth LLM research by OpenAI's head of safety and alignment |
 
 ## Data Visualization
@@ -42,7 +41,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Gergely Orosz](https://blog.pragmaticengineer.com) | In-depth articles about software engineering, tech leadership and the business of technology |
 | [Mitchell Hashimoto](https://mitchellh.com/writing) | Founder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture |
 | [David Heinemeier Hansson](https://world.hey.com/dhh) | Creator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique |
-| [Ines Montani](https://staysaasy.com) | Co-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business |
+| [Ines Montani](https://ines.io) | Co-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business |
 | [Stephen Wolfram](https://writings.stephenwolfram.com) | Creator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence |
 | [Ben Kuhn](https://www.benkuhn.net) | CTO of Wave writing thoughtful analyses of technology, productivity and effective altruism |
 
@@ -61,7 +60,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | Blog | Description |
 |------|-------------|
 | [Paul Graham's Essays](https://paulgraham.com/articles.html) | Essays on startup strategy, technology, and philosophy by a co-founder of Y Combinator |
-| [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models with a focus on aggregation theory |
+| [Ben Thompson](https://stratechery.com) | Analysis of tech industry strategy and business models |
 
 ## Design, Communication, Marketing
 
@@ -85,9 +84,11 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Scott Young](https://www.scotthyoung.com/blog/) | Learning techniques, self-education experiments and cognitive psychology insights |
 | [Tim Ferriss](https://tim.blog) | Interviews and articles about performance optimization, business and personal development |
 | [Derek Sivers](https://sive.rs/blog) | Entrepreneur sharing unconventional wisdom about life, business and decision making |
-| [Tynan](https://tynan.com) | Nomadic author and entrepreneur shares how he optimizes his life in unusual ways, from a private island with friends to building custom arcade machines |
+| [Tynan](https://tynan.com) | Nomadic author and entrepreneur shares how he optimizes his life in unusual ways |
 | [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
 | [Zen Habits](https://zenhabits.net) | Minimalist and zen lifestyle advice from a father of 6 |
+| [Cal Newport](https://calnewport.com/what-if-ai-doesnt-get-much-better-than-this/) | Author of "Deep Work" with advice on how to stay in control of technology
+
 
 ## Deep Dive Essays
 
@@ -95,6 +96,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 |------|-------------|
 | [Gwern Branwen](https://gwern.net) | In-depth analysis of AI, statistics, psychology and self-experimentation with rigorous research methodology |
 | [Dynomight](https://dynomight.net) | Deeply researched essays on health, math, life advice and AI |
+| [Uncharted Territories](https://unchartedterritories.tomaspueyo.com) | History and geography with great maps and visualizations.
 
 ## Fun
 
@@ -106,3 +108,5 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Aella](https://aella.substack.com) | Sex worker and researcher doing sociological surveys |
 
 Are you writing a blog that I might enjoy? [Send me an email](mailto:paul@simmering.dev) and let me know! I'll add it to the list.
+
+If you're an iOS and macOS user and looking for an RSS reader, I can't recommend [NetNewsWire](https://netnewswire.com) enough.
