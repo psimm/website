@@ -1,0 +1,140 @@
+---
+title: "A Philosophy of AI Coding"
+author: "Paul Simmering"
+date: "2025-08-26"
+categories: ["Programming"]
+---
+
+
+::: {.grid}
+
+::: {.g-col-8}
+
+This is an analysis of the acclaimed book [A Philosophy of Software Design (2nd Edition)](https://www.goodreads.com/book/show/39996759-philosophy-of-software-design) by John Ousterhout in the context of AI coding. Building on it, I propose a development flywheel theory: design software using the book's principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.
+
+As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI-coding, which works impressively on demos and greenfield project but is often unusable in larger, grown projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can scale without as much of a slowdown.
+
+:::
+
+::: {.g-col-4}
+
+![Book cover](bookcover.jpg)
+
+:::
+
+:::
+
+Distilled to a maximum, the principles of the book are:
+
+1. Unmanaged complexity burdens a project with slow development, high cognitive load and leads to bugs and performance problems.
+2. Modules should be deep, by handling a sizeable task, solving it fully and presenting a simple interface that hides information irrelevant to the caller.
+3. Approach software development with an investment mindset because extra time spent on design, documentation, consistency and clear naming quickly turns into productivity gains.
+4. Design systems twice before implementing them.
+
+The book was enlightening, as it taught me new concepts and also put concepts I discovered through practice into words. The book's examples are on object-oriented application programming, but the lessons also apply to my areas of machine learning, data engineering and cloud infrastructure.
+
+## AI coding makes design even more important
+
+John Ousterhout was a recent guest of Gergely Orosz on the [Pragmatic Engineer podcast](https://www.youtube.com/watch?v=lz451zUlF-k) where he commented that software design becomes even more important with AI coding. Let's dive deeper into this. It happens in two ways: (1) Implementation work can (partially) be completed by AI, which means a larger fraction of the remaining work is design. (2) Neatly designed software is easier to extend by AI. 
+
+In the following, I will describe how this enables a flywheel.
+
+## The principled AI development flywheel
+
+![Flywheel illustration]()
+
+### Flywheel, part I: Taming the tornado
+
+John coined the term *tactical tornado*, which describes a programmer that adds features quickly at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. Complexity is hardest on a developer who just entered a new team - the exact position an AI assistant is in when it receives a new request. The analogy of AI as a smart new intern works well.
+
+#### Good design enables automation
+
+In chapter 22, the conclusion, John writes:
+
+> The reward for being a good designer is that you get to spend a larger fraction of your time in the design phase, which is fun. Poor designers spend most of their time chasing bugs in complicated and brittle code.
+
+With AI coding, this could be extended to be: The reward for being a good designer is that you can automate more of your programming.
+
+#### Context engineering
+
+The principles laid out in the book reduce the required context to execute a task. 
+
+> The real skill isn't crafting perfect prompts but providing the right context. Think of it as building up a  relevant knowledge window for the AI rather than perfecting magical instructions. Most models are good enough now that even imperfect prompts work if the context is right.
+
+https://x.com/jxnlco/status/1960043508917539244
+
+#### Appropriate task scoping
+
+> [...] the primary skill needed to get the productivity gains is right-sizing your requests. This requires a deep understanding of not just programming but of the up-to-the-moment capability threshold of the models.
+
+gfodor.id on [X](https://x.com/gfodor/status/1959631280162922706)
+
+#### Learning what to expect
+
+An intern can't be expected to solve the hardest problems. An intern should also not be the only team member to hold important information.
+
+> AI demonstrates the sunk-cost fallacy perfectly: Just one more "this doesn't work!" prompt, you think, and it'll fix it!! But often it won't, and now you've wasted 30 minutes begging that you could have spent learning how to actually fucking do it yourself.
+
+DHH on [X](https://x.com/dhh/status/1958505914341654675)
+
+### Flywheel, part II: Code is cheaper now
+
+On the question of how much to plan in advance (the waterfall approach) vs. how much to start and then adjust as you go (agile), John opined that a middleway is best. With AI available, I suggest moving a little more towards agile than before, because writing code has become cheaper.
+
+Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started and then it can seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
+
+Leaning into the book's proposed investment mindset
+
+Laziness and busyness are common reasons to skip for not doing this. With AI, they can both be resolved.
+
+Business reason to invest more: the investment has become cheaper AND became more valuable (it benefits AI in addition to human developers)
+
+Personal reason: tasks that seem like drudgery, like updating comments or adding unit tests, can be delegated. Everyone has infinite interns to pawn off tasks to.
+
+#### Going beyond "Design it twice" with draft implementations
+
+- Design it twice → AI can come up with additional designs, AI can critique designs. Rather than just theorizing, I could let AI create multiple draft implementations, fully exploring the implications of a design rather than only in theory
+- If we view the development of a large system as a mine field of potential road blocks, we can now go and test for little money instead of playing Minesweeper in our heads to detect them in advance
+
+#### Make diagrams
+
+Diagrams are a great way to communicate about software design and to compare different solutions visually. With diagrams as code programs like Mermaid and D2, AI assistants can easily create them. See my article on the topic: ![Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd)
+
+#### Clear names
+
+- Name objects properly → AI can come up with suggestions, it's easier to pick than to come up with names
+- If you notice that an AI is misusing a class, function or variable, it may be named unintuitively
+
+#### Consistent documentation
+
+- Check that documentation follows conventions and is up to date with the code → AI can point out and fix inconsistencies
+
+#### High test coverage
+
+- Write unit tests (after design, not before) → AI can often generate reasonable tests, plus tests makes part I of the flywheel (implementation) safer
+
+#### Bold refactoring
+
+- Take on bigger refactoring and live up to the goal of: "[...] when you have finished with each change, the system will have the structure it would have had if you had designed it from the start with that change in mind.
+
+### Senior engineer in the loop
+
+Who benefits most from AI coding? It could be non-programmers or beginner programmers. But arguably it's senior engineers.
+
+> These tools are most valuable for your most senior engineers, not juniors. Your staff engineers understand the system best but have limited time - AI tools let them implement exploratory features, load testing, and complex integrations they'd otherwise deprioritize.
+
+Jason Liu on [X](https://x.com/jxnlco/status/1960043508917539244)
+
+Rather than devolve into slop factories, let's use AI to build better software and empower smaller teams to achieve more. That's why I'm skeptical of one-shot, hands-off tools like Jules and Devin ([January 2025 review](https://www.answer.ai/posts/2025-01-08-devin.html) by Answer.AI).
+
+A developer in the loop can be the bulwark against slop creeping in. Rather than writing the perfect incantation, the developer can stay in the lead but aggressively delegate all rote work. Optimize for short feedback cycles, use keyboard shortcuts, bring AI into your IDE or terminal rather than running it externally.
+  
+> [...] I find that instead of narrowing in on a perfect one thing my usage is increasingly diversifying across a few workflows[...]
+
+Andrej Karpathy on [X](https://x.com/karpathy/status/1959703967694545296)
+
+Don't let AI coding sap the joy out of programming! It's fun to solve a series of  puzzles. Keep your skills sharp, keep the brain active. Turn off tab completion from time to time, especially when you're trying to learn something new. A Philosophy of Software Design does a great job of making principles explicit, but a lot of tacit knowledge remains that needs to be honed by actively coding.
+
+## Book to prompt
+
+The book provides handy summaries on the last pages: a list of principles (how to design well) and a list of red flags (to detect bad design and trigger rethinking). I suggest reviewing them, perhaps adding items related to your specific project, and then adding the list into a `.cursorrules` if you're using Cursor or the equivalent for other assistants. Also check out the [Awesome Cursor Rules](https://github.com/PatrickJS/awesome-cursorrules) GitHub repo which has a huge library, including rules geared towards specific programming languages and frameworks.
