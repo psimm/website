@@ -45,11 +45,11 @@ In the following, I will describe how this enables a flywheel.
 
 ### Flywheel, part I: Taming the tornado
 
-John coined the term *tactical tornado*, which describes a programmer that adds features quickly at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. Complexity is hardest on a developer who just entered a new team - the exact position an AI assistant is in when it receives a new request. The analogy of AI as a smart new intern works well.
+Ousterhout coined the term *tactical tornado*, which describes a programmer that adds features quickly at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. Complexity is hardest on a developer who just entered a new team - the exact position an AI assistant is in when it receives a new request. The analogy of AI as a smart new intern works well.
 
 #### Good design enables automation
 
-In chapter 22, the conclusion, John writes:
+In chapter 22, the conclusion, Ousterhout writes:
 
 > The reward for being a good designer is that you get to spend a larger fraction of your time in the design phase, which is fun. Poor designers spend most of their time chasing bugs in complicated and brittle code.
 
@@ -62,6 +62,20 @@ The principles laid out in the book reduce the required context to execute a tas
 > The real skill isn't crafting perfect prompts but providing the right context. Think of it as building up a  relevant knowledge window for the AI rather than perfecting magical instructions. Most models are good enough now that even imperfect prompts work if the context is right.
 
 https://x.com/jxnlco/status/1960043508917539244
+
+A codebase with deep modules that have simple interfaces makes this easier. You shouldn't need to read the code to understand what a class or function does, so unless the AI is specifically tasked with changing that code, it's enough to load the function's name and docstring into the context window.
+
+If things are named clearly, if functions do what they promise, if they don't have side effects to worry about or implementation details leaking, then an AI will have an easier time grasping everything it needs to be effective in a given context.
+
+#### Comments first
+
+According to Ousterhout, unit tests should follow design, not precede it. Test driven development leads down the tactical programming route, rather than the recommended strategic route.
+
+1. Human: Comments (including docstrings). Most fluid stage of the code. Class and function names and their signatures become the documentation for other developers calling them.
+2. AI + human review: Unit tests. Enables a coding agent to hill climb by iterating on the implementation until the tests pass.
+3. AI + human review: Code 
+
+AI can generate comprehensive test suites based on existing code, helping achieve higher coverage with less manual effort. Good test coverage makes the implementation phase of the flywheel safer by catching regressions early and providing confidence for future changes.
 
 #### Appropriate task scoping
 
@@ -83,39 +97,25 @@ On the question of how much to plan in advance (the waterfall approach) vs. how 
 
 Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started and then it can seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
 
-Leaning into the book's proposed investment mindset
-
-Laziness and busyness are common reasons to skip for not doing this. With AI, they can both be resolved.
-
-Business reason to invest more: the investment has become cheaper AND became more valuable (it benefits AI in addition to human developers)
-
-Personal reason: tasks that seem like drudgery, like updating comments or adding unit tests, can be delegated. Everyone has infinite interns to pawn off tasks to.
+Leaning into the book's proposed investment mindset. Laziness and busyness are common reasons to skip for not doing this. With AI, they can both be resolved. Business reason to invest more: the investment has become cheaper AND became more valuable (it benefits AI in addition to human developers). Personal reason: tasks that seem like drudgery, like updating comments or adding unit tests, can be delegated. Everyone has infinite interns to pawn off tasks to.
 
 #### Going beyond "Design it twice" with draft implementations
 
-- Design it twice → AI can come up with additional designs, AI can critique designs. Rather than just theorizing, I could let AI create multiple draft implementations, fully exploring the implications of a design rather than only in theory
-- If we view the development of a large system as a mine field of potential road blocks, we can now go and test for little money instead of playing Minesweeper in our heads to detect them in advance
-
-#### Make diagrams
+What teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it's possible to draft a hole implementation. If we view the development of a large system as a mine field of potential road blocks, we can now go and test for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course also come up with plans of its own and write pro/con lists of different approaches. Still, I see the design as the foremost responsibility of the human developer.
 
 Diagrams are a great way to communicate about software design and to compare different solutions visually. With diagrams as code programs like Mermaid and D2, AI assistants can easily create them. See my article on the topic: ![Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd)
 
 #### Clear names
 
-- Name objects properly → AI can come up with suggestions, it's easier to pick than to come up with names
-- If you notice that an AI is misusing a class, function or variable, it may be named unintuitively
-
-#### Consistent documentation
-
-- Check that documentation follows conventions and is up to date with the code → AI can point out and fix inconsistencies
-
-#### High test coverage
-
-- Write unit tests (after design, not before) → AI can often generate reasonable tests, plus tests makes part I of the flywheel (implementation) safer
+The book emphasizes the importance of giving classes, functions, objects and files clear names. Naming has been recognized as difficult. AI can help by coming up with name suggestions. It's often easier to pick from alternatives than to come up with something. AI can also help with identifying unclear names, such as when it's misusing a class, function, variable or file.
 
 #### Bold refactoring
 
-- Take on bigger refactoring and live up to the goal of: "[...] when you have finished with each change, the system will have the structure it would have had if you had designed it from the start with that change in mind.
+The book emphasizes that after each change, "the system will have the structure it would have had if you had designed it from the start with that change in mind." With AI, larger refactoring becomes more feasible. AI can help identify code smells, suggest structural improvements, and assist with the mechanical work of moving code around while preserving functionality.
+
+#### Consistent documentation
+
+Documentation often falls behind code changes or fails to follow established conventions. AI can review documentation for consistency, identify outdated sections, and suggest improvements to align with current code. This helps maintain the documentation as a reliable source of truth, and a quicker way to understand the system than to write all code, linking to the context engineering point above.
 
 ### Senior engineer in the loop
 
