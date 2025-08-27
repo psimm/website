@@ -10,8 +10,165 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.6.33</generator>
-<lastBuildDate>Fri, 28 Feb 2025 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.7.28</generator>
+<lastBuildDate>Tue, 26 Aug 2025 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>A Philosophy of AI Coding</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/a-philosophy-of-ai-coding/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<div class="grid">
+<div class="g-col-8">
+<p>This is an analysis of the acclaimed book <a href="https://www.goodreads.com/book/show/39996759-philosophy-of-software-design">A Philosophy of Software Design (2nd Edition)</a> by John Ousterhout in the context of AI coding. Building on it, I propose a theory of a reinforcing loop for development: design of software using the book’s principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.</p>
+<p>As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI coding, which works impressively on demos and greenfield projects, but is often unusable in mature projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can grow without the slowdown.</p>
+</div>
+<div class="g-col-4">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/a-philosophy-of-ai-coding/bookcover.jpg" class="img-fluid figure-img"></p>
+<figcaption>Book cover</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Distilled to a maximum, the principles of the book are:</p>
+<ol type="1">
+<li>Unmanaged complexity burdens a project with high cognitive load for developers, slow development, and leads to bugs and performance problems.</li>
+<li>Complexity can be handled by deep modules. A deep module handles a sizeable task, solves it fully and presents a simple interface that hides information irrelevant to the caller.</li>
+<li>Approach software development with an investment mindset, because extra time spent on design, documentation, consistency and clear naming quickly turns into productivity gains.</li>
+<li>Design systems twice before implementing them.</li>
+</ol>
+<p>The book was enlightening, as it taught me new concepts and also put concepts I discovered myself through practice into words. The book’s examples are on object-oriented application programming, but the lessons also apply to my areas of machine learning, data engineering and cloud infrastructure.</p>
+<section id="reinforcing-loop-of-principled-development-with-ai" class="level2">
+<h2 class="anchored" data-anchor-id="reinforcing-loop-of-principled-development-with-ai">Reinforcing loop of principled development with AI</h2>
+<p>John Ousterhout was a recent guest of Gergely Orosz on the <a href="https://www.youtube.com/watch?v=lz451zUlF-k">Pragmatic Engineer podcast</a> where he commented that software design becomes even more important with AI coding. Let’s dive deeper into this.</p>
+<p>It happens in two ways: (1) implementation work can, at least in part, be completed by AI, which means a larger fraction of the remaining work is design; (2) neatly designed software is easier for AI to extend.</p>
+<p>In the following, I describe how this becomes a reinforcing loop that strengthens both design and implementation.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Good design] --&gt;|enables| B[Reliable AI coding]
+    B --&gt;|reinforces| A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<section id="reinforcing-loop-part-i-taming-the-tornado" class="level3">
+<h3 class="anchored" data-anchor-id="reinforcing-loop-part-i-taming-the-tornado">Reinforcing loop, part I: Taming the tornado</h3>
+<p>Ousterhout coined the term <em>tactical tornado</em>, which describes a programmer that adds features quickly, but at the expense of code quality. Most AI coding assistants are tactical tornados. Given too long a lead, they turn a codebase into spaghetti. This is understandable. The AI is thrust into an unfamiliar project, and it has been trained to please its user, which often means achieving whatever is asked. That leads to tacking on the requested feature wherever it fits, rather than stepping back to suggest a redesign that would accommodate the feature more elegantly.</p>
+<p>I find it useful to relate to coding agents as a smart, eager new intern. It works best when the project’s architecture is already set up by a senior engineer, and it’s given a well scoped task and all relevant context. Let’s break these requirements down further. Part I focuses on setting conditions where AI can operate safely and effectively.</p>
+<section id="ai-amplifies-the-design" class="level4">
+<h4 class="anchored" data-anchor-id="ai-amplifies-the-design">AI amplifies the design</h4>
+<p>In chapter 22, the conclusion, Ousterhout writes:</p>
+<blockquote class="blockquote">
+<p>The reward for being a good designer is that you get to spend a larger fraction of your time in the design phase, which is fun. Poor designers spend most of their time chasing bugs in complicated and brittle code.</p>
+</blockquote>
+<p>With AI coding, this could be extended to: The reward for being a good designer is that you can automate more of the coding. Everything that makes working on a project easy or hard for a human developer affects an AI assistant too.</p>
+<p>When a coding agent edits a chaotic project it’s likely to add to the chaos. When it edits a neat project that has an obvious place for the new feature, it will maintain that neatness.</p>
+</section>
+<section id="design-improves-context-engineering" class="level4">
+<h4 class="anchored" data-anchor-id="design-improves-context-engineering">Design improves context engineering</h4>
+<p>Context engineering is an evolution of prompt engineering around the insight:</p>
+<blockquote class="blockquote">
+<p>The real skill isn’t crafting perfect prompts but providing the right context. Think of it as building up a relevant knowledge window for the AI rather than perfecting magical instructions. Most models are good enough now that even imperfect prompts work if the context is right.</p>
+</blockquote>
+<p>Jason Liu on <a href="https://x.com/jxnlco/status/1960043508917539244">X</a></p>
+<p>For a coding agent, the context needs to show the files to edit, and also communicate the overall design. The design is naturally communicated through the code, with names of files and the comments immediately surrounding them, such as docstrings. In addition, a design document, such as a markdown file, could be included in every request.</p>
+<p>The principles laid out in the book reduce the required context to execute a task. A deep, well documented module offers a packaged solution to a problem. It’s not necessary to read the code to use it. So unless the AI is specifically tasked with changing that code, it’s enough to load the function’s name and docstring into the context window.</p>
+</section>
+<section id="comments-first-workflow" class="level4">
+<h4 class="anchored" data-anchor-id="comments-first-workflow">Comments first workflow</h4>
+<p>According to Ousterhout, comments should be the first thing to be written, followed by code and then tests. For an AI-centric workflow, I would modify the order:</p>
+<ol type="1">
+<li>Human: Write comments (including docstrings). This is the most fluid stage of the code, where changing one’s mind is almost free. Class and function names and their signatures become the documentation for other developers calling them, and a scaffold for implementation.</li>
+<li>AI + human review: Write unit tests.</li>
+<li>AI + human review: Let a coding agent hill-climb by iterating until the tests pass.</li>
+</ol>
+<p>Ousterhout is not a proponent of test-driven development (tests before code), because writing tests first leads to tactical programming. However, if code generation is cheaper, it’s emotionally easier to redo the implementation if it turns out to have a design problem. The synergy of the tireless effort of a coding agent and a unit test to hill-climb against is great. As with any workflow, it has to be adapted to reality and remixed on the fly.</p>
+</section>
+<section id="senior-engineer-in-the-loop" class="level4">
+<h4 class="anchored" data-anchor-id="senior-engineer-in-the-loop">Senior engineer in the loop</h4>
+<p>Who benefits most from AI coding? It could be nonprogrammers or beginner programmers, who can perilously skip learning to code. But arguably it is senior engineers who get to scale their design skills and taste.</p>
+<blockquote class="blockquote">
+<p>These tools are most valuable for your most senior engineers, not juniors. Your staff engineers understand the system best but have limited time - AI tools let them implement exploratory features, load testing, and complex integrations they’d otherwise deprioritize.</p>
+</blockquote>
+<p>Jason Liu on <a href="https://x.com/jxnlco/status/1960043508917539244">X</a></p>
+<p>Despite the marketing, even supposed PhD-level intelligence models make frustrating mistakes all the time. This is where vibe coding hits the wall.</p>
+<blockquote class="blockquote">
+<p>AI demonstrates the sunk-cost fallacy perfectly: Just one more “this doesn’t work!” prompt, you think, and it’ll fix it!! But often it won’t, and now you’ve wasted 30 minutes begging that you could have spent learning how to actually fucking do it yourself.</p>
+</blockquote>
+<p>DHH on <a href="https://x.com/dhh/status/1958505914341654675">X</a></p>
+<p>That’s also why I’m skeptical of one-shot, hands-off tools like Jules and Devin (<a href="https://www.answer.ai/posts/2025-01-08-devin.html">January 2025 review</a> by Answer.AI). I prefer IDEs and extensions that enable a fast feedback loop between developer and AI.</p>
+<p>A developer in the loop can be the bulwark against slop creeping in. Rather than writing the perfect incantation, the developer can stay in the lead and aggressively delegate all rote work.</p>
+<blockquote class="blockquote">
+<p>[…] I find that instead of narrowing in on a perfect one thing my usage is increasingly diversifying across a few workflows […] Personally the bread &amp; butter (~75%?) of my LLM assistance continues to be just (Cursor) tab complete. This is because I find that writing concrete chunks of code/comments myself and in the right part of the code is a high bandwidth way of communicating “task specification” to the LLM, i.e.&nbsp;it’s primarily about task specification bits - it takes too many bits and too much latency to communicate what I want in text, and it’s faster to just demonstrate it in the code and in the right place.</p>
+</blockquote>
+<p>Andrej Karpathy on <a href="https://x.com/karpathy/status/1959703967694545296">X</a></p>
+</section>
+</section>
+<section id="reinforcing-loop-part-ii-reinforcing-design-through-consistent-practice" class="level3">
+<h3 class="anchored" data-anchor-id="reinforcing-loop-part-ii-reinforcing-design-through-consistent-practice">Reinforcing loop, part II: Reinforcing design through consistent practice</h3>
+<p>So far we’ve seen how good design enables better AI output. But the loop works in reverse too - AI makes it cheaper to maintain good design practices.</p>
+<p>On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), Ousterhout opined that a middle way is best. With AI available, I suggest moving more towards agile than before, because writing code has become cheaper.</p>
+<p>Ousterhout also advocates an investment mindset, meaning to spend a little more time upfront on design and comments which repays soon in added productivity. AI improves the economics of this:</p>
+<ul>
+<li>The investment has become cheaper and also more valuable, since it benefits AI in addition to human developers. - - Tasks that feel like drudgery, such as updating comments or adding unit tests, can be delegated. Everyone now has infinite interns to pawn off tasks to.</li>
+</ul>
+<section id="better-adherence-to-best-practices" class="level4">
+<h4 class="anchored" data-anchor-id="better-adherence-to-best-practices">Better adherence to best practices</h4>
+<p>AI can help with:</p>
+<ul>
+<li><strong>Diagrams</strong>. It can generate and evolve diagrams as code with tools like Mermaid and D2, which improves understanding of architecture and can increase creativity. See my article: <a href="../../blog/diagrams/index.html">Diagrams as Code: Supercharged by AI Assistants</a>.</li>
+<li><strong>Naming</strong>. It can flag unclear names and suggesting improvements, which makes interfaces easier to use.</li>
+<li><strong>Documentation</strong>. It can keep documentation consistent by drafting updates and spotting drift. Together these capabilities tighten the loop between design and implementation.</li>
+<li><strong>Refactoring</strong>. It can enable bolder refactoring by freeing developer time, surfacing code smells, suggesting structural improvements, and doing the mechanical edits while tests protect behavior.</li>
+</ul>
+</section>
+<section id="from-design-it-twice-to-build-it-twice" class="level4">
+<h4 class="anchored" data-anchor-id="from-design-it-twice-to-build-it-twice">From “Design it twice” to “Build it twice”</h4>
+<p>So far, I’ve treated design as the holy task that only humans can do. That’s not quite true.</p>
+<p>Ousterhout advises to “design it twice” before building software, meaning to come up with two separate plans and reason through their pros and cons. But what teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it’s possible to draft a whole implementation quickly. If we view the development of a large system as a minefield of potential roadblocks, we can now probe for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course come up with plans of its own and write pro/con lists of different approaches.</p>
+<p>However, I still see the design as the foremost responsibility of the human developer.</p>
+</section>
+</section>
+</section>
+<section id="wrap-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrap-up">Wrap up</h2>
+<section id="takeaways" class="level3">
+<h3 class="anchored" data-anchor-id="takeaways">Takeaways</h3>
+<ul>
+<li>Better design improves AI output; AI then accelerates development and enables bolder changes.</li>
+<li>Design first: Deep modules, simple interfaces, and clear names make AI effective.</li>
+<li>Comments-first workflow: Write comments, let AI draft tests, then implement.</li>
+<li>Senior engineer in the loop: Boost human developers rather than attempting to replace them.</li>
+</ul>
+<p>Finally, don’t let AI sap the joy out of programming! Keep your coding skills sharp. Turn off tab completion from time to time, especially when you’re working with something new. “A Philosophy of Software Design” does a great job of making principles explicit, but a lot of tacit knowledge and taste remains that needs to be honed by actively coding.</p>
+</section>
+<section id="book-to-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="book-to-prompt">Book to prompt</h3>
+<p>The book provides handy summaries on the last pages: a list of principles (how to design well) and a list of red flags (to detect bad design and trigger rethinking). I suggest reviewing them, perhaps adding items related to your specific project, and then adding the list into a <code>.cursorrules</code> if you’re using Cursor or the equivalent for other assistants.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Productivity</category>
+  <guid>https://simmering.dev/blog/a-philosophy-of-ai-coding/</guid>
+  <pubDate>Tue, 26 Aug 2025 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/a-philosophy-of-ai-coding/image.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>When (Not) to Use Agentic AI</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -10091,185 +10248,6 @@ Ziems, Caleb, Omar Shaikh, Zhehao Zhang, William Held, Jiaao Chen, and Diyi Yang
   <guid>https://simmering.dev/blog/gold-data/</guid>
   <pubDate>Sat, 09 Mar 2024 23:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/gold-data/vault.png" medium="image" type="image/png" height="144" width="144"/>
-</item>
-<item>
-  <title>LLM Price Comparison</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/llm-price-performance/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This article is about prices as of January 11, 2024. For current prices and more comprehensive analysis, check <a href="https://artificialanalysis.ai">artificialanalysis.ai</a> (not affiliated with me).</p>
-</div>
-</div>
-<p>This is an overview of pricing for large language models from different developers and API providers. The dataset is available on <a href="https://github.com/psimm/website/blob/master/blog/llm-price-performance/data.csv">GitHub</a>. Prices are expressed in USD per 1 million tokens. To learn more about tokens, see the <a href="https://platform.openai.com/tokenizer">Tokenizer</a> by OpenAI.</p>
-<section id="price-comparison" class="level2">
-<h2 class="anchored" data-anchor-id="price-comparison">Price comparison</h2>
-<div id="a490e678" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div>                            <div id="778847f3-16db-44a6-b236-1ec64c8da3e1" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("778847f3-16db-44a6-b236-1ec64c8da3e1")) {                    Plotly.newPlot(                        "778847f3-16db-44a6-b236-1ec64c8da3e1",                        [{"alignmentgroup":"True","customdata":[["mistral-7b-openorca","Anyscale","32k",0.15,0.15],["mistral-7b-instruct","Anyscale","32k",0.15,0.15],["llama-guard-7b","Anyscale","4k",0.15,0.15],["llama-2-7b-chat-hf","Anyscale","4k",0.15,0.15],["llama-2-13b-chat-hf","Anyscale","4k",0.25,0.25],["mixtral-8x7b-instruct","Anyscale","32k",0.5,0.5],["llama2-70b-chat-hf","Anyscale","4k",1.0,1.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Anyscale","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Anyscale","offsetgroup":"Anyscale","orientation":"h","showlegend":true,"textposition":"auto","x":[0.15,0.15,0.15,0.15,0.25,0.5,1.0],"xaxis":"x","y":["Anyscale-mistral-7b-openorca","Anyscale-mistral-7b-instruct","Anyscale-llama-guard-7b","Anyscale-llama-2-7b-chat-hf","Anyscale-llama-2-13b-chat-hf","Anyscale-mixtral-8x7b-instruct","Anyscale-llama2-70b-chat-hf"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["mistral-7b-instruct","Mistral","32k",0.14,0.42],["mixtral-8x7b-instruct","Mistral","32k",0.6,1.8],["mistral-medium","Mistral","32k",2.5,7.5]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Mistral","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Mistral","offsetgroup":"Mistral","orientation":"h","showlegend":true,"textposition":"auto","x":[0.28,1.2,5.0],"xaxis":"x","y":["Mistral-mistral-7b-instruct","Mistral-mixtral-8x7b-instruct","Mistral-mistral-medium"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["cohere-light","AWS","4k",0.3,0.6],["llama-2-chat-13b","AWS","4k",0.75,1.0],["claude-instant","AWS","100k",0.8,2.4],["claude","AWS","100k",0.8,2.4],["titan-text-express","AWS","8k",1.2,2.3],["cohere-command","AWS","4k",1.5,2.0],["llama-2-chat-70b","AWS","4k",1.95,2.56],["jurassic-2-mid","AWS","8k",12.5,12.5],["jurassic-2-ultra","AWS","8k",18.8,18.8]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"AWS","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"AWS","offsetgroup":"AWS","orientation":"h","showlegend":true,"textposition":"auto","x":[0.45,0.88,1.6,1.6,1.75,1.75,2.26,12.5,18.8],"xaxis":"x","y":["AWS-cohere-light","AWS-llama-2-chat-13b","AWS-claude-instant","AWS-claude","AWS-titan-text-express","AWS-cohere-command","AWS-llama-2-chat-70b","AWS-jurassic-2-mid","AWS-jurassic-2-ultra"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-1106","OpenAI","16k",1.0,2.0],["gpt-3.5-turbo-turbo-instruct","OpenAI","16k",1.5,2.0],["gpt-4-1106-preview","OpenAI","128k",10.0,30.0],["gpt-4-1106-vision-preview","OpenAI","128k",10.0,30.0],["gpt-4","OpenAI","8k",30.0,60.0],["gpt-4-32k","OpenAI","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"OpenAI","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"OpenAI","offsetgroup":"OpenAI","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,1.75,20.0,20.0,45.0,90.0],"xaxis":"x","y":["OpenAI-gpt-3.5-turbo-1106","OpenAI-gpt-3.5-turbo-turbo-instruct","OpenAI-gpt-4-1106-preview","OpenAI-gpt-4-1106-vision-preview","OpenAI-gpt-4","OpenAI-gpt-4-32k"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gemini-pro","GCP","32k",1.0,2.0],["palm2","GCP","8k",2.0,2.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"GCP","marker":{"color":"#FFA15A","pattern":{"shape":""}},"name":"GCP","offsetgroup":"GCP","orientation":"h","showlegend":true,"textposition":"auto","x":[1.5,2.0],"xaxis":"x","y":["GCP-gemini-pro","GCP-palm2"],"yaxis":"y","type":"bar"},{"alignmentgroup":"True","customdata":[["gpt-3.5-turbo-4k","Azure","4k",1.5,2.0],["gpt-3.5-turbo-16k","Azure","16k",3.0,4.0],["gpt-4-8k","Azure","8k",30.0,60.0],["gpt-4-32k","Azure","32k",60.0,120.0]],"hovertemplate":"Model: %{customdata[0]}\u003cbr\u003eProvider: %{customdata[1]}\u003cbr\u003eContext Size: %{customdata[2]}\u003cbr\u003eInput Token $\u002f1M: %{customdata[3]}\u003cbr\u003eOutput Token $\u002f1M: %{customdata[4]}\u003cbr\u003eAvg Price $\u002f1M: %{x}","legendgroup":"Azure","marker":{"color":"#19d3f3","pattern":{"shape":""}},"name":"Azure","offsetgroup":"Azure","orientation":"h","showlegend":true,"textposition":"auto","x":[1.75,3.5,45.0,90.0],"xaxis":"x","y":["Azure-gpt-3.5-turbo-4k","Azure-gpt-3.5-turbo-16k","Azure-gpt-4-8k","Azure-gpt-4-32k"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"$\u002f1M tokens"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"title":{"text":"Provider"},"tracegroupgap":0,"traceorder":"reversed"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('778847f3-16db-44a6-b236-1ec64c8da3e1');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };                });            </script>        </div>
-</div>
-</div>
-<p>Hover over bars to see extra information (also available in table below). The prices for input and output tokens were averaged. For AWS, the region us-east-1 was used.</p>
-<ul>
-<li>Price differences are huge, with a 600x difference between the cheapest and most expensive models ($0.15 vs $90)</li>
-<li>GPT-4 is the most expensive model, followed by GPT-3.5 and PaLM2</li>
-<li>Prices on Azure and OpenAI are identical</li>
-<li>Anyscale is the cheapest provider for large models, serving Mistral’s models at lower prices than Mistral itself</li>
-<li>Prices roughly reflect the number of parameters in the models, which again roughly map to their capability</li>
-</ul>
-<p><a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu">Papers with Code</a> has a leaderboard for the MMLU (Massive Multitask Language Understanding) benchmark. The <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">HuggingFace OpenLLM Leaderboard</a> offers a more detailed ranking of open source models across different benchmarks. These leaderboards don’t have benchmarks for every model listed here.</p>
-</section>
-<section id="model-table" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="model-table">Model table</h2>
-<p>Click on column headers to sort. On mobile, scroll right to see all columns.</p>
-<div id="ea6ee759" class="cell page-columns page-full" data-execution_count="3">
-<div class="cell-output cell-output-display column-screen">
-<style>.itables table td {
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.itables table th {
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.itables thead input {
-    width: 100%;
-    padding: 3px;
-    box-sizing: border-box;
-}
-
-.itables tfoot input {
-    width: 100%;
-    padding: 3px;
-    box-sizing: border-box;
-}
-</style>
-<div class="itables">
-
-<table id="4434095c-1c67-4c0b-89c5-b77fe8a9c71c" class="display nowrap compact caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th">Model</th>
-<th data-quarto-table-cell-role="th">Provider</th>
-<th data-quarto-table-cell-role="th">Developer</th>
-<th data-quarto-table-cell-role="th">Context size</th>
-<th data-quarto-table-cell-role="th">Input $/1M</th>
-<th data-quarto-table-cell-role="th">Output $/1M</th>
-<th data-quarto-table-cell-role="th">Avg. $/1M</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Loading... (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-<script type="module">
-    // Import jquery and DataTable
-    import 'https://code.jquery.com/jquery-3.6.0.min.js';
-    import dt from 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.mjs';
-    dt($);
-
-    // Define the table data
-    const data = [["mistral-7b-openorca", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["mistral-7b-instruct", "Anyscale", "Mistral", "32k", 0.15, 0.15, 0.15], ["llama-guard-7b", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-7b-chat-hf", "Anyscale", "Meta", "4k", 0.15, 0.15, 0.15], ["llama-2-13b-chat-hf", "Anyscale", "Meta", "4k", 0.25, 0.25, 0.25], ["mistral-7b-instruct", "Mistral", "Mistral", "32k", 0.14, 0.42, 0.28], ["cohere-light", "AWS", "Cohere", "4k", 0.3, 0.6, 0.45], ["mixtral-8x7b-instruct", "Anyscale", "Mistral", "32k", 0.5, 0.5, 0.5], ["llama-2-chat-13b", "AWS", "Meta", "4k", 0.75, 1.0, 0.88], ["llama2-70b-chat-hf", "Anyscale", "Meta", "4k", 1.0, 1.0, 1.0], ["mixtral-8x7b-instruct", "Mistral", "Mistral", "32k", 0.6, 1.8, 1.2], ["gpt-3.5-turbo-1106", "OpenAI", "OpenAI", "16k", 1.0, 2.0, 1.5], ["gemini-pro", "GCP", "Google", "32k", 1.0, 2.0, 1.5], ["claude-instant", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["claude", "AWS", "Anthropic", "100k", 0.8, 2.4, 1.6], ["gpt-3.5-turbo-turbo-instruct", "OpenAI", "OpenAI", "16k", 1.5, 2.0, 1.75], ["titan-text-express", "AWS", "AWS", "8k", 1.2, 2.3, 1.75], ["cohere-command", "AWS", "Cohere", "4k", 1.5, 2.0, 1.75], ["gpt-3.5-turbo-4k", "Azure", "OpenAI", "4k", 1.5, 2.0, 1.75], ["palm2", "GCP", "Google", "8k", 2.0, 2.0, 2.0], ["llama-2-chat-70b", "AWS", "Meta", "4k", 1.95, 2.56, 2.26], ["gpt-3.5-turbo-16k", "Azure", "OpenAI", "16k", 3.0, 4.0, 3.5], ["mistral-medium", "Mistral", "Mistral", "32k", 2.5, 7.5, 5.0], ["jurassic-2-mid", "AWS", "AI21 Labs", "8k", 12.5, 12.5, 12.5], ["jurassic-2-ultra", "AWS", "AI21 Labs", "8k", 18.8, 18.8, 18.8], ["gpt-4-1106-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4-1106-vision-preview", "OpenAI", "OpenAI", "128k", 10.0, 30.0, 20.0], ["gpt-4", "OpenAI", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-8k", "Azure", "OpenAI", "8k", 30.0, 60.0, 45.0], ["gpt-4-32k", "OpenAI", "OpenAI", "32k", 60.0, 120.0, 90.0], ["gpt-4-32k", "Azure", "OpenAI", "32k", 60.0, 120.0, 90.0]];
-
-    // Define the dt_args
-    let dt_args = {"columnDefs": [{"targets": [3, 4, 5, 6], "className": "dt-right"}, {"targets": [4, 5, 6], "render": $.fn.dataTable.render.number(',', '.', 2)}], "order": [[6, "desc"]], "paging": false, "dom": "tpr"};
-    dt_args["data"] = data;
-
-    $(document).ready(function () {
-        
-        $('#4434095c-1c67-4c0b-89c5-b77fe8a9c71c').DataTable(dt_args);
-    });
-</script>
-</div>
-</div>
-</div>
-</section>
-<section id="sources" class="level2">
-<h2 class="anchored" data-anchor-id="sources">Sources</h2>
-<section id="pricing-pages" class="level3">
-<h3 class="anchored" data-anchor-id="pricing-pages">Pricing pages</h3>
-<ul>
-<li><a href="https://openai.com/pricing">OpenAI Pricing</a></li>
-<li><a href="https://docs.mistral.ai/platform/pricing/">Mistral AI Pricing</a></li>
-<li><a href="https://docs.endpoints.anyscale.com/pricing/">AnyScale Pricing</a></li>
-<li><a href="https://aws.amazon.com/bedrock/pricing/">AWS Bedrock Pricing</a></li>
-<li><a href="https://azure.microsoft.com/de-de/pricing/details/cognitive-services/openai-service/">Azure Cognitive Services - OpenAI Service Pricing</a></li>
-</ul>
-</section>
-<section id="context-size-information" class="level3">
-<h3 class="anchored" data-anchor-id="context-size-information">Context size information</h3>
-<ul>
-<li><a href="https://docs.mistral.ai/platform/endpoints/">Mistral AI Endpoints</a></li>
-<li><a href="https://www.anthropic.com/index/100k-context-windows">Anthropic 100k Context Windows</a></li>
-<li><a href="https://huggingface.co/HuggingFaceH4/zephyr-7b-beta/discussions/13">Zephyr-7B Beta Discussion on HuggingFace</a></li>
-<li><a href="https://www.maginative.com/article/mistral-ai-launches-platform-services#:~:text=Mistral%2Dtiny%3A%20The%20most%20cost,where%20cost%20efficiency%20is%20paramount">Mistral AI Launches Platform Services</a></li>
-<li><a href="https://aws.amazon.com/bedrock/cohere-command-embed/">AWS Bedrock Cohere Command Embed</a></li>
-<li><a href="https://aws.amazon.com/marketplace/pp/prodview-ivk4wjg6gbr26#:~:text=Pre%2Dtrained%20language%20model%20trained,be%20at%20most%208192%20tokens">AWS Marketplace – Pretrained Language Model</a></li>
-<li><a href="https://aws.amazon.com/marketplace/ppprodview-irdbpdk5v5p5g#:~:text=This%20model%20has%20a%208192,among%20the%20top%20LLM%20models">AWS Marketplace – Top LLM models</a></li>
-<li><a href="https://aws.amazon.com/machine-learning/responsible-machine-learning/titan-text/">AWS Responsible Machine Learning -Titan Text</a></li>
-</ul>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>Machine Learning</category>
-  <category>Cloud</category>
-  <category>Economics</category>
-  <guid>https://simmering.dev/blog/llm-price-performance/</guid>
-  <pubDate>Wed, 10 Jan 2024 23:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/llm-price-performance/image.png" medium="image" type="image/png" height="106" width="144"/>
 </item>
 </channel>
 </rss>
