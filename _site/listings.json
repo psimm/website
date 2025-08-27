@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/a-philosophy-of-ai-coding/index.html",
       "/blog/agentic-ai/index.html",
       "/blog/modernbert-vs-llm/index.html",
       "/blog/diagrams/index.html",

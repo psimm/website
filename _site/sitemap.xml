@@ -106,7 +106,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/japanese_gardens.html</loc>
-    <lastmod>2025-08-24T10:07:09.030Z</lastmod>
+    <lastmod>2025-08-26T15:17:37.613Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/projects/cosmention/index.html</loc>
@@ -267,5 +267,9 @@
   <url>
     <loc>https://simmering.dev/talks/gor2025presentation/index.html</loc>
     <lastmod>2025-04-02T16:20:36.644Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/a-philosophy-of-ai-coding/index.html</loc>
+    <lastmod>2025-08-27T17:56:09.376Z</lastmod>
   </url>
 </urlset>

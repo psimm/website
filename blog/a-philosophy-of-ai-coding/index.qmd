@@ -1,8 +1,9 @@
 ---
 title: "A Philosophy of AI Coding"
 author: "Paul Simmering"
-date: "2025-08-26"
-categories: ["Programming"]
+date: "2025-08-27"
+image: "image.webp"
+categories: ["Productivity"]
 format:
     html:
         mermaid: 
@@ -37,21 +38,18 @@ Distilled to a maximum, the principles of the book are:
 
 The book was enlightening, as it taught me new concepts and also put concepts I discovered myself through practice into words. The book's examples are on object-oriented application programming, but the lessons also apply to my areas of machine learning, data engineering and cloud infrastructure.
 
-## AI coding makes design even more important
+## Reinforcing loop of principled development with AI
 
-John Ousterhout was a recent guest of Gergely Orosz on the [Pragmatic Engineer podcast](https://www.youtube.com/watch?v=lz451zUlF-k) where he commented that software design becomes even more important with AI coding. Let's dive deeper into this. It happens in two ways: (1) implementation work can, at least in part, be completed by AI, which means a larger fraction of the remaining work is design; (2) neatly designed software is easier for AI to extend. 
+John Ousterhout was a recent guest of Gergely Orosz on the [Pragmatic Engineer podcast](https://www.youtube.com/watch?v=lz451zUlF-k) where he commented that software design becomes even more important with AI coding. Let's dive deeper into this.
+
+It happens in two ways: (1) implementation work can, at least in part, be completed by AI, which means a larger fraction of the remaining work is design; (2) neatly designed software is easier for AI to extend. 
 
 In the following, I describe how this becomes a reinforcing loop that strengthens both design and implementation.
 
-## Reinforcing loop of principled development with AI
-
 ```{mermaid}
-graph TB
-    A[Good design] --> B[Reliable AI code]
-    B --> C[Bold refactoring]
-    B --> D[Adherence to best practices]
-    C --> A
-    D --> A
+graph LR
+    A[Good design] -->|enables| B[Reliable AI coding]
+    B -->|reinforces| A
 ```
 
 ### Reinforcing loop, part I: Taming the tornado
@@ -82,8 +80,6 @@ For a coding agent, the context needs to show the files to edit, and also commun
 
 The principles laid out in the book reduce the required context to execute a task. A deep, well documented module offers a packaged solution to a problem. It's not necessary to read the code to use it. So unless the AI is specifically tasked with changing that code, it's enough to load the function's name and docstring into the context window.
 
-With the right abstractions in place, the workflow matters next.
-
 #### Comments first workflow
 
 According to Ousterhout, comments should be the first thing to be written, followed by code and then tests. For an AI-centric workflow, I would modify the order:
@@ -92,30 +88,9 @@ According to Ousterhout, comments should be the first thing to be written, follo
 2. AI + human review: Write unit tests.
 3. AI + human review: Let a coding agent hill-climb by iterating until the tests pass.
 
-Ousterhout is not a proponent of test-driven development (TDD) in this way, because writing tests first leads to tactical programming. However, if code generation is cheaper, it's emotionally easier to redo the implementation if it turns out to have a design problem. The synergy of unit tests and the tireless effort of an AI assistant is too strong to pass on. This approach also leads to high test coverage, which makes refactoring safer.
+Ousterhout is not a proponent of test-driven development (tests before code), because writing tests first leads to tactical programming. However, if code generation is cheaper, it's emotionally easier to redo the implementation if it turns out to have a design problem. The synergy of the tireless effort of a coding agent and a unit test to hill-climb against is great. As with any workflow, it has to be adapted to reality and remixed on the fly.
 
-### Reinforcing loop, part II: Code is cheaper now
-
-On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), John opined that a middle way is best. With AI available, I suggest moving more towards agile than before, because writing code has become cheaper.
-
-Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started, and it can then seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
-
-Lean into the book's proposed investment mindset. Laziness and busyness are common reasons to skip this. With AI, both reasons weaken. Business reason to invest more: the investment has become cheaper and more valuable, since it benefits AI in addition to human developers. Personal reason: tasks that feel like drudgery, such as updating comments or adding unit tests, can be delegated. Everyone now has infinite interns to pawn off tasks to.
-
-#### From "Design it twice" to "Build it twice"
-
-What teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it's possible to draft a whole implementation. If we view the development of a large system as a minefield of potential roadblocks, we can now probe for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course come up with plans of its own and write pro/con lists of different approaches. Still, I see the design as the foremost responsibility of the human developer.
-
-#### Better adherence to best practices
-
-Previously, lack of time and perhaps laziness could keep teams from following through on boring best practices. AI lowers the cost of these practices and helps them reinforce each other. It can help with:
-
-- **Diagrams**. It can generate and evolve diagrams as code with tools like Mermaid and D2, which improves understanding of architecture and can increase creativity. See my article: [Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd).
-- **Naming**. It can flag unclear names and suggesting improvements, which makes interfaces easier to use.
-- **Documentation**. It can keep documentation consistent by drafting updates and spotting drift. Together these capabilities tighten the loop between design and implementation.
-- **Refactoring**. It can enable bolder refactoring by freeing developer time, surfacing code smells, suggesting structural improvements, and doing the mechanical edits while tests protect behavior.
-
-### Senior engineer in the loop
+#### Senior engineer in the loop
 
 Who benefits most from AI coding? It could be nonprogrammers or beginner programmers, who can perilously skip learning to code. But arguably it is senior engineers who get to scale their design skills and taste.
 
@@ -137,7 +112,32 @@ A developer in the loop can be the bulwark against slop creeping in. Rather than
 
 Andrej Karpathy on [X](https://x.com/karpathy/status/1959703967694545296)
 
-Finally, don't let AI coding sap the joy out of programming! Keep your coding skills sharp. Turn off tab completion from time to time, especially when you're working with something new. A Philosophy of Software Design does a great job of making principles explicit, but a lot of tacit knowledge and taste remains that needs to be honed by actively coding.
+### Reinforcing loop, part II: Reinforcing design through consistent practice
+
+So far we've seen how good design enables better AI output. But the loop works in reverse too - AI makes it cheaper to maintain good design practices.
+
+On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), Ousterhout opined that a middle way is best. With AI available, I suggest moving more towards agile than before, because writing code has become cheaper.
+
+Ousterhout also advocates an investment mindset, meaning to spend a little more time upfront on design and comments which repays soon in added productivity. AI improves the economics of this:
+
+- The investment has become cheaper and also more valuable, since it benefits AI in addition to human developers. - - Tasks that feel like drudgery, such as updating comments or adding unit tests, can be delegated. Everyone now has infinite interns to pawn off tasks to.
+
+#### Better adherence to best practices
+
+AI can help with:
+
+- **Diagrams**. It can generate and evolve diagrams as code with tools like Mermaid and D2, which improves understanding of architecture and can increase creativity. See my article: [Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd).
+- **Naming**. It can flag unclear names and suggesting improvements, which makes interfaces easier to use.
+- **Documentation**. It can keep documentation consistent by drafting updates and spotting drift. Together these capabilities tighten the loop between design and implementation.
+- **Refactoring**. It can enable bolder refactoring by freeing developer time, surfacing code smells, suggesting structural improvements, and doing the mechanical edits while tests protect behavior.
+
+#### From "Design it twice" to "Build it twice"
+
+So far, I've treated design as the holy task that only humans can do. That's not quite true.
+
+Ousterhout advises to "design it twice" before building software, meaning to come up with two separate plans and reason through their pros and cons. But what teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it's possible to draft a whole implementation quickly. If we view the development of a large system as a minefield of potential roadblocks, we can now probe for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course come up with plans of its own and write pro/con lists of different approaches.
+
+However, I still see the design as the foremost responsibility of the human developer.
 
 ## Wrap up
 
@@ -148,6 +148,8 @@ Finally, don't let AI coding sap the joy out of programming! Keep your coding sk
 - Comments-first workflow: Write comments, let AI draft tests, then implement.
 - Senior engineer in the loop: Boost human developers rather than attempting to replace them.
 
+Finally, don't let AI sap the joy out of programming! Keep your coding skills sharp. Turn off tab completion from time to time, especially when you're working with something new. "A Philosophy of Software Design" does a great job of making principles explicit, but a lot of tacit knowledge and taste remains that needs to be honed by actively coding.
+
 ### Book to prompt
 
-The book provides handy summaries on the last pages: a list of principles (how to design well) and a list of red flags (to detect bad design and trigger rethinking). I suggest reviewing them, perhaps adding items related to your specific project, and then adding the list into a `.cursorrules` if you're using Cursor or the equivalent for other assistants. Also check out the [Awesome Cursor Rules](https://github.com/PatrickJS/awesome-cursorrules) GitHub repo which has a huge library, including rules geared towards specific programming languages and frameworks.
+The book provides handy summaries on the last pages: a list of principles (how to design well) and a list of red flags (to detect bad design and trigger rethinking). I suggest reviewing them, perhaps adding items related to your specific project, and then adding the list into a `.cursorrules` if you're using Cursor or the equivalent for other assistants.
