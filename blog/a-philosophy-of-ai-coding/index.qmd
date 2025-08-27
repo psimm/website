@@ -10,9 +10,9 @@ categories: ["Programming"]
 
 ::: {.g-col-8}
 
-This is an analysis of the acclaimed book [A Philosophy of Software Design (2nd Edition)](https://www.goodreads.com/book/show/39996759-philosophy-of-software-design) by John Ousterhout in the context of AI coding. Building on it, I propose a development flywheel theory: design software using the book's principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.
+This is an analysis of the acclaimed book [A Philosophy of Software Design (2nd Edition)](https://www.goodreads.com/book/show/39996759-philosophy-of-software-design) by John Ousterhout in the context of AI coding. Building on it, I propose a development flywheel theory: design of software using the book's principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.
 
-As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI-coding, which works impressively on demos and greenfield project but is often unusable in larger, grown projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can scale without as much of a slowdown.
+As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI-coding, which works impressively on demos and greenfield projects, but is often unusable in mature projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can grow without the slowdown.
 
 :::
 
@@ -26,12 +26,12 @@ As the cover illustrates, the book is about replacing complex spaghetti code wit
 
 Distilled to a maximum, the principles of the book are:
 
-1. Unmanaged complexity burdens a project with slow development, high cognitive load and leads to bugs and performance problems.
-2. Modules should be deep, by handling a sizeable task, solving it fully and presenting a simple interface that hides information irrelevant to the caller.
-3. Approach software development with an investment mindset because extra time spent on design, documentation, consistency and clear naming quickly turns into productivity gains.
+1. Unmanaged complexity burdens a project with high cognitive load for developers, slow development, and leads to bugs and performance problems.
+2. Complexity can be handled by deep modules. A deep module handles a sizeable task, solves it fully and presents a simple interface that hides information irrelevant to the caller.
+3. Approach software development with an investment mindset, because extra time spent on design, documentation, consistency and clear naming quickly turns into productivity gains.
 4. Design systems twice before implementing them.
 
-The book was enlightening, as it taught me new concepts and also put concepts I discovered through practice into words. The book's examples are on object-oriented application programming, but the lessons also apply to my areas of machine learning, data engineering and cloud infrastructure.
+The book was enlightening, as it taught me new concepts and also put concepts I discovered myself through practice into words. The book's examples are on object-oriented application programming, but the lessons also apply to my areas of machine learning, data engineering and cloud infrastructure.
 
 ## AI coding makes design even more important
 
@@ -45,15 +45,19 @@ In the following, I will describe how this enables a flywheel.
 
 ### Flywheel, part I: Taming the tornado
 
-Ousterhout coined the term *tactical tornado*, which describes a programmer that adds features quickly at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. Complexity is hardest on a developer who just entered a new team - the exact position an AI assistant is in when it receives a new request. The analogy of AI as a smart new intern works well.
+Ousterhout coined the term *tactical tornado*, which describes a programmer that adds features quickly, but at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. This behavior is understandable: the AI is thrust into an unfamiliar project, and it has been trained to please its user - which means to achieve whatever is asked. This means tacking on the requested feature wherever it fits, rather than perhaps taking a step back and suggesting a re-design that would accomodate the feature in a more elegant way.
 
-#### Good design enables automation
+I find it useful to relate to an AI coding assistant as a smart, eager new intern. It works best when project's architecture is already set up by a senior engineer, and it's given a well-scoped task and all relevant context. Let's break these requirements down further.
+
+#### Good design enables successful AI coding
 
 In chapter 22, the conclusion, Ousterhout writes:
 
 > The reward for being a good designer is that you get to spend a larger fraction of your time in the design phase, which is fun. Poor designers spend most of their time chasing bugs in complicated and brittle code.
 
-With AI coding, this could be extended to be: The reward for being a good designer is that you can automate more of your programming.
+With AI coding, this could be extended to: The reward for being a good designer is that you can automate more of the coding. Everything that makes working on a project easy or hard for a human developer affects an AI assistant too.
+
+There are many ways to communicate the design to an AI assistant: it's in the names of modules, their relations to each other, or also formally in a specifications document that can be passed as context. What's usually missing is tacit knowledge and information that is only communicated orally.
 
 #### Context engineering
 
@@ -93,7 +97,7 @@ DHH on [X](https://x.com/dhh/status/1958505914341654675)
 
 ### Flywheel, part II: Code is cheaper now
 
-On the question of how much to plan in advance (the waterfall approach) vs. how much to start and then adjust as you go (agile), John opined that a middleway is best. With AI available, I suggest moving a little more towards agile than before, because writing code has become cheaper.
+On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), John opined that a middleway is best. With AI available, I suggest moving a little more towards agile than before, because writing code has become cheaper.
 
 Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started and then it can seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
 
@@ -133,7 +137,7 @@ A developer in the loop can be the bulwark against slop creeping in. Rather than
 
 Andrej Karpathy on [X](https://x.com/karpathy/status/1959703967694545296)
 
-Don't let AI coding sap the joy out of programming! It's fun to solve a series of  puzzles. Keep your skills sharp, keep the brain active. Turn off tab completion from time to time, especially when you're trying to learn something new. A Philosophy of Software Design does a great job of making principles explicit, but a lot of tacit knowledge remains that needs to be honed by actively coding.
+Finally, don't let AI coding sap the joy out of programming! Keep your coding skills sharp. Turn off tab completion from time to time, especially when you're working with something new. A Philosophy of Software Design does a great job of making principles explicit, but a lot of tacit knowledge and taste remains that needs to be honed by actively coding.
 
 ## Book to prompt
 
