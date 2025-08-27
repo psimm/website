@@ -3,6 +3,10 @@ title: "A Philosophy of AI Coding"
 author: "Paul Simmering"
 date: "2025-08-26"
 categories: ["Programming"]
+format:
+    html:
+        mermaid: 
+          theme: neutral
 ---
 
 
@@ -10,9 +14,9 @@ categories: ["Programming"]
 
 ::: {.g-col-8}
 
-This is an analysis of the acclaimed book [A Philosophy of Software Design (2nd Edition)](https://www.goodreads.com/book/show/39996759-philosophy-of-software-design) by John Ousterhout in the context of AI coding. Building on it, I propose a development flywheel theory: design of software using the book's principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.
+This is an analysis of the acclaimed book [A Philosophy of Software Design (2nd Edition)](https://www.goodreads.com/book/show/39996759-philosophy-of-software-design) by John Ousterhout in the context of AI coding. Building on it, I propose a theory of a reinforcing loop for development: design of software using the book's principles enhances AI coding, and AI coding enhances the design process. Finally, I will share prompts to put it into practice.
 
-As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI-coding, which works impressively on demos and greenfield projects, but is often unusable in mature projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can grow without the slowdown.
+As the cover illustrates, the book is about replacing complex spaghetti code with neat, modular code. Work on software projects typically slows down as the project grows and ages. This is doubly true for AI coding, which works impressively on demos and greenfield projects, but is often unusable in mature projects. The book teaches principles of task decomposition that enable packaging complexity in such a way that a project can grow without the slowdown.
 
 :::
 
@@ -35,21 +39,28 @@ The book was enlightening, as it taught me new concepts and also put concepts I 
 
 ## AI coding makes design even more important
 
-John Ousterhout was a recent guest of Gergely Orosz on the [Pragmatic Engineer podcast](https://www.youtube.com/watch?v=lz451zUlF-k) where he commented that software design becomes even more important with AI coding. Let's dive deeper into this. It happens in two ways: (1) Implementation work can (partially) be completed by AI, which means a larger fraction of the remaining work is design. (2) Neatly designed software is easier to extend by AI. 
+John Ousterhout was a recent guest of Gergely Orosz on the [Pragmatic Engineer podcast](https://www.youtube.com/watch?v=lz451zUlF-k) where he commented that software design becomes even more important with AI coding. Let's dive deeper into this. It happens in two ways: (1) implementation work can, at least in part, be completed by AI, which means a larger fraction of the remaining work is design; (2) neatly designed software is easier for AI to extend. 
 
-In the following, I will describe how this enables a flywheel.
+In the following, I describe how this becomes a reinforcing loop that strengthens both design and implementation.
 
-## The principled AI development flywheel
+## Reinforcing loop of principled development with AI
 
-![Flywheel illustration]()
+```{mermaid}
+graph TB
+    A[Good design] --> B[Reliable AI code]
+    B --> C[Bold refactoring]
+    B --> D[Adherence to best practices]
+    C --> A
+    D --> A
+```
 
-### Flywheel, part I: Taming the tornado
+### Reinforcing loop, part I: Taming the tornado
 
-Ousterhout coined the term *tactical tornado*, which describes a programmer that adds features quickly, but at the expense of code quality. Most AI coding assistants are tactical tornados. Give them too long of a lead and they turn a codebase into spaghetti. This behavior is understandable: the AI is thrust into an unfamiliar project, and it has been trained to please its user - which means to achieve whatever is asked. This means tacking on the requested feature wherever it fits, rather than perhaps taking a step back and suggesting a re-design that would accomodate the feature in a more elegant way.
+Ousterhout coined the term *tactical tornado*, which describes a programmer that adds features quickly, but at the expense of code quality. Most AI coding assistants are tactical tornados. Given too long a lead, they turn a codebase into spaghetti. This is understandable. The AI is thrust into an unfamiliar project, and it has been trained to please its user, which often means achieving whatever is asked. That leads to tacking on the requested feature wherever it fits, rather than stepping back to suggest a redesign that would accommodate the feature more elegantly.
 
-I find it useful to relate to an AI coding assistant as a smart, eager new intern. It works best when project's architecture is already set up by a senior engineer, and it's given a well-scoped task and all relevant context. Let's break these requirements down further.
+I find it useful to relate to coding agents as a smart, eager new intern. It works best when the project's architecture is already set up by a senior engineer, and it's given a well scoped task and all relevant context. Let's break these requirements down further. Part I focuses on setting conditions where AI can operate safely and effectively.
 
-#### Good design enables successful AI coding
+#### AI amplifies the design
 
 In chapter 22, the conclusion, Ousterhout writes:
 
@@ -57,88 +68,86 @@ In chapter 22, the conclusion, Ousterhout writes:
 
 With AI coding, this could be extended to: The reward for being a good designer is that you can automate more of the coding. Everything that makes working on a project easy or hard for a human developer affects an AI assistant too.
 
-There are many ways to communicate the design to an AI assistant: it's in the names of modules, their relations to each other, or also formally in a specifications document that can be passed as context. What's usually missing is tacit knowledge and information that is only communicated orally.
+When a coding agent edits a chaotic project it's likely to add to the chaos. When it edits a neat project that has an obvious place for the new feature, it will maintain that neatness.
 
-#### Context engineering
+#### Design improves context engineering
 
-The principles laid out in the book reduce the required context to execute a task. 
+Context engineering is an evolution of prompt engineering around the insight:
 
 > The real skill isn't crafting perfect prompts but providing the right context. Think of it as building up a  relevant knowledge window for the AI rather than perfecting magical instructions. Most models are good enough now that even imperfect prompts work if the context is right.
 
-https://x.com/jxnlco/status/1960043508917539244
+Jason Liu on [X](https://x.com/jxnlco/status/1960043508917539244)
 
-A codebase with deep modules that have simple interfaces makes this easier. You shouldn't need to read the code to understand what a class or function does, so unless the AI is specifically tasked with changing that code, it's enough to load the function's name and docstring into the context window.
+For a coding agent, the context needs to show the files to edit, and also communicate the overall design. The design is naturally communicated through the code, with names of files and the comments immediately surrounding them, such as docstrings. In addition, a design document, such as a markdown file, could be included in every request.
 
-If things are named clearly, if functions do what they promise, if they don't have side effects to worry about or implementation details leaking, then an AI will have an easier time grasping everything it needs to be effective in a given context.
+The principles laid out in the book reduce the required context to execute a task. A deep, well documented module offers a packaged solution to a problem. It's not necessary to read the code to use it. So unless the AI is specifically tasked with changing that code, it's enough to load the function's name and docstring into the context window.
 
-#### Comments first
+With the right abstractions in place, the workflow matters next.
 
-According to Ousterhout, unit tests should follow design, not precede it. Test driven development leads down the tactical programming route, rather than the recommended strategic route.
+#### Comments first workflow
 
-1. Human: Comments (including docstrings). Most fluid stage of the code. Class and function names and their signatures become the documentation for other developers calling them.
-2. AI + human review: Unit tests. Enables a coding agent to hill climb by iterating on the implementation until the tests pass.
-3. AI + human review: Code 
+According to Ousterhout, comments should be the first thing to be written, followed by code and then tests. For an AI-centric workflow, I would modify the order:
 
-AI can generate comprehensive test suites based on existing code, helping achieve higher coverage with less manual effort. Good test coverage makes the implementation phase of the flywheel safer by catching regressions early and providing confidence for future changes.
+1. Human: Write comments (including docstrings). This is the most fluid stage of the code, where changing one's mind is almost free. Class and function names and their signatures become the documentation for other developers calling them, and a scaffold for implementation.
+2. AI + human review: Write unit tests.
+3. AI + human review: Let a coding agent hill-climb by iterating until the tests pass.
 
-#### Appropriate task scoping
+Ousterhout is not a proponent of test-driven development (TDD) in this way, because writing tests first leads to tactical programming. However, if code generation is cheaper, it's emotionally easier to redo the implementation if it turns out to have a design problem. The synergy of unit tests and the tireless effort of an AI assistant is too strong to pass on. This approach also leads to high test coverage, which makes refactoring safer.
 
-> [...] the primary skill needed to get the productivity gains is right-sizing your requests. This requires a deep understanding of not just programming but of the up-to-the-moment capability threshold of the models.
+### Reinforcing loop, part II: Code is cheaper now
 
-gfodor.id on [X](https://x.com/gfodor/status/1959631280162922706)
+On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), John opined that a middle way is best. With AI available, I suggest moving more towards agile than before, because writing code has become cheaper.
 
-#### Learning what to expect
+Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started, and it can then seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
 
-An intern can't be expected to solve the hardest problems. An intern should also not be the only team member to hold important information.
+Lean into the book's proposed investment mindset. Laziness and busyness are common reasons to skip this. With AI, both reasons weaken. Business reason to invest more: the investment has become cheaper and more valuable, since it benefits AI in addition to human developers. Personal reason: tasks that feel like drudgery, such as updating comments or adding unit tests, can be delegated. Everyone now has infinite interns to pawn off tasks to.
 
-> AI demonstrates the sunk-cost fallacy perfectly: Just one more "this doesn't work!" prompt, you think, and it'll fix it!! But often it won't, and now you've wasted 30 minutes begging that you could have spent learning how to actually fucking do it yourself.
+#### From "Design it twice" to "Build it twice"
 
-DHH on [X](https://x.com/dhh/status/1958505914341654675)
+What teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it's possible to draft a whole implementation. If we view the development of a large system as a minefield of potential roadblocks, we can now probe for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course come up with plans of its own and write pro/con lists of different approaches. Still, I see the design as the foremost responsibility of the human developer.
 
-### Flywheel, part II: Code is cheaper now
+#### Better adherence to best practices
 
-On the question of how much to plan in advance (the waterfall approach) versus how much to start and then adjust as you go (agile), John opined that a middleway is best. With AI available, I suggest moving a little more towards agile than before, because writing code has become cheaper.
+Previously, lack of time and perhaps laziness could keep teams from following through on boring best practices. AI lowers the cost of these practices and helps them reinforce each other. It can help with:
 
-Good design takes time. Laziness is the enemy of good design, because often you discover a better way to do something only after you've already started and then it can seem like too much work to change again. AI can cut that time enough to make it worth making these changes even late in the process.
-
-Leaning into the book's proposed investment mindset. Laziness and busyness are common reasons to skip for not doing this. With AI, they can both be resolved. Business reason to invest more: the investment has become cheaper AND became more valuable (it benefits AI in addition to human developers). Personal reason: tasks that seem like drudgery, like updating comments or adding unit tests, can be delegated. Everyone has infinite interns to pawn off tasks to.
-
-#### Going beyond "Design it twice" with draft implementations
-
-What teaches a developer more than designing something twice? Comparing two actual implementations. With AI, it's possible to draft a hole implementation. If we view the development of a large system as a mine field of potential road blocks, we can now go and test for little money instead of playing Minesweeper in our heads to detect them in advance. In addition, AI can of course also come up with plans of its own and write pro/con lists of different approaches. Still, I see the design as the foremost responsibility of the human developer.
-
-Diagrams are a great way to communicate about software design and to compare different solutions visually. With diagrams as code programs like Mermaid and D2, AI assistants can easily create them. See my article on the topic: ![Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd)
-
-#### Clear names
-
-The book emphasizes the importance of giving classes, functions, objects and files clear names. Naming has been recognized as difficult. AI can help by coming up with name suggestions. It's often easier to pick from alternatives than to come up with something. AI can also help with identifying unclear names, such as when it's misusing a class, function, variable or file.
-
-#### Bold refactoring
-
-The book emphasizes that after each change, "the system will have the structure it would have had if you had designed it from the start with that change in mind." With AI, larger refactoring becomes more feasible. AI can help identify code smells, suggest structural improvements, and assist with the mechanical work of moving code around while preserving functionality.
-
-#### Consistent documentation
-
-Documentation often falls behind code changes or fails to follow established conventions. AI can review documentation for consistency, identify outdated sections, and suggest improvements to align with current code. This helps maintain the documentation as a reliable source of truth, and a quicker way to understand the system than to write all code, linking to the context engineering point above.
+- **Diagrams**. It can generate and evolve diagrams as code with tools like Mermaid and D2, which improves understanding of architecture and can increase creativity. See my article: [Diagrams as Code: Supercharged by AI Assistants](/blog/diagrams/index.qmd).
+- **Naming**. It can flag unclear names and suggesting improvements, which makes interfaces easier to use.
+- **Documentation**. It can keep documentation consistent by drafting updates and spotting drift. Together these capabilities tighten the loop between design and implementation.
+- **Refactoring**. It can enable bolder refactoring by freeing developer time, surfacing code smells, suggesting structural improvements, and doing the mechanical edits while tests protect behavior.
 
 ### Senior engineer in the loop
 
-Who benefits most from AI coding? It could be non-programmers or beginner programmers. But arguably it's senior engineers.
+Who benefits most from AI coding? It could be nonprogrammers or beginner programmers, who can perilously skip learning to code. But arguably it is senior engineers who get to scale their design skills and taste.
 
 > These tools are most valuable for your most senior engineers, not juniors. Your staff engineers understand the system best but have limited time - AI tools let them implement exploratory features, load testing, and complex integrations they'd otherwise deprioritize.
 
 Jason Liu on [X](https://x.com/jxnlco/status/1960043508917539244)
 
-Rather than devolve into slop factories, let's use AI to build better software and empower smaller teams to achieve more. That's why I'm skeptical of one-shot, hands-off tools like Jules and Devin ([January 2025 review](https://www.answer.ai/posts/2025-01-08-devin.html) by Answer.AI).
+Despite the marketing, even supposed PhD-level intelligence models make frustrating mistakes all the time. This is where vibe coding hits the wall.
 
-A developer in the loop can be the bulwark against slop creeping in. Rather than writing the perfect incantation, the developer can stay in the lead but aggressively delegate all rote work. Optimize for short feedback cycles, use keyboard shortcuts, bring AI into your IDE or terminal rather than running it externally.
+> AI demonstrates the sunk-cost fallacy perfectly: Just one more "this doesn't work!" prompt, you think, and it'll fix it!! But often it won't, and now you've wasted 30 minutes begging that you could have spent learning how to actually fucking do it yourself.
+
+DHH on [X](https://x.com/dhh/status/1958505914341654675)
+
+That's also why I'm skeptical of one-shot, hands-off tools like Jules and Devin ([January 2025 review](https://www.answer.ai/posts/2025-01-08-devin.html) by Answer.AI). I prefer IDEs and extensions that enable a fast feedback loop between developer and AI.
+
+A developer in the loop can be the bulwark against slop creeping in. Rather than writing the perfect incantation, the developer can stay in the lead and aggressively delegate all rote work.
   
-> [...] I find that instead of narrowing in on a perfect one thing my usage is increasingly diversifying across a few workflows[...]
+> [...] I find that instead of narrowing in on a perfect one thing my usage is increasingly diversifying across a few workflows [...] Personally the bread & butter (~75%?) of my LLM assistance continues to be just (Cursor) tab complete. This is because I find that writing concrete chunks of code/comments myself and in the right part of the code is a high bandwidth way of communicating "task specification" to the LLM, i.e. it's primarily about task specification bits - it takes too many bits and too much latency to communicate what I want in text, and it's faster to just demonstrate it in the code and in the right place.
 
 Andrej Karpathy on [X](https://x.com/karpathy/status/1959703967694545296)
 
 Finally, don't let AI coding sap the joy out of programming! Keep your coding skills sharp. Turn off tab completion from time to time, especially when you're working with something new. A Philosophy of Software Design does a great job of making principles explicit, but a lot of tacit knowledge and taste remains that needs to be honed by actively coding.
 
-## Book to prompt
+## Wrap up
+
+### Takeaways
+
+- Better design improves AI output; AI then accelerates development and enables bolder changes.
+- Design first: Deep modules, simple interfaces, and clear names make AI effective.
+- Comments-first workflow: Write comments, let AI draft tests, then implement.
+- Senior engineer in the loop: Boost human developers rather than attempting to replace them.
+
+### Book to prompt
 
 The book provides handy summaries on the last pages: a list of principles (how to design well) and a list of red flags (to detect bad design and trigger rethinking). I suggest reviewing them, perhaps adding items related to your specific project, and then adding the list into a `.cursorrules` if you're using Cursor or the equivalent for other assistants. Also check out the [Awesome Cursor Rules](https://github.com/PatrickJS/awesome-cursorrules) GitHub repo which has a huge library, including rules geared towards specific programming languages and frameworks.
