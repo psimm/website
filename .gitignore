@@ -7,3 +7,5 @@ _environment*
 *.pyc
 .env
 .specstory/*
+
+/.luarc.json

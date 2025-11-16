@@ -7,7 +7,6 @@ toc: true
 
 I'm a fan of classic blogs. The quality of content is usually higher than on social media and the longer form allows for more depth. In contrast to social media, I never feel like that I'm wasting time when reading good blogs. The open RSS format can be used with many different readers and it's easy to download things to read offline. If you're looking for recommendations, here are the blogs that I read regularly, organized by topic.
 
-
 ## Machine Learning
 
 | Blog | Description |
@@ -23,15 +22,18 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Sebastian Raschka](https://magazine.sebastianraschka.com) | Deep learning education and research insights from an experienced ML educator |
 | [Francois Chollet](https://fchollet.substack.com) | AI philosophy and technical insights from the creator of Keras |
 | [Zvi Mowshowitz](https://thezvi.wordpress.com) | Analysis of AI progress and risk from a rationalist perspective |
-| [Lilian Weng](https://lilianweng.github.io/) | In-depth LLM research by OpenAI's head of safety and alignment |
+| [Epoch AI](https://epoch.ai) | Quantitative analysis of AI progress and economic impact |
+| [Ines Montani](https://ines.io) | Co-founder of Explosion AI on sovereign AI development, plus design advice |
+| [swyx](https://www.swyx.io) |  |
 
-## Data Visualization
+## Data Visualization and Journalism
 
 | Blog | Description |
 |------|-------------|
 | [Storytelling with Data](https://www.storytellingwithdata.com/blog/) | Practical tips and examples for creating effective data visualizations and presentations |
 | [Datawrapper](https://blog.datawrapper.de) | Tutorials and best practices for creating charts and maps, with a focus on journalism |
 | [The Pudding](https://pudding.cool) | Visual essays using data and creative storytelling to explore culture, entertainment, and society |
+| [Timo Grossenbacher (German)](https://timogrossenbacher.ch) | Swiss data journalist writing about how AI changes journalism |
 
 ## Technology & Programming
 
@@ -40,8 +42,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Erik Bernhardsson](https://erikbern.com) | CEO of Modal writing about tech, management and startups |
 | [Gergely Orosz](https://blog.pragmaticengineer.com) | In-depth articles about software engineering, tech leadership and the business of technology |
 | [Mitchell Hashimoto](https://mitchellh.com/writing) | Founder of HashiCorp sharing thoughts on software development, entrepreneurship and technical architecture |
-| [David Heinemeier Hansson](https://world.hey.com/dhh) | Creator of Ruby on Rails and founder of Basecamp writing about programming, business and tech industry critique |
-| [Ines Montani](https://ines.io) | Co-founder of Explosion AI sharing insights about building developer tools and running a B2B SaaS business |
+| [David Heinemeier Hansson](https://world.hey.com/dhh) | Creator of Ruby on Rails and founder of Basecamp with honest opinions about programming and business |
 | [Stephen Wolfram](https://writings.stephenwolfram.com) | Creator of Mathematica and Wolfram Alpha exploring computation, physics and artificial intelligence |
 | [Ben Kuhn](https://www.benkuhn.net) | CTO of Wave writing thoughtful analyses of technology, productivity and effective altruism |
 
@@ -50,10 +51,10 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | Blog | Description |
 |------|-------------|
 | [Patio11](https://www.bitsaboutmoney.com/archive/) | Deep dives into fintech, payments infrastructure, and software business strategy |
-| [Lyn Alden](https://www.lynalden.com) | Investment research and macroeconomic analysis with focus on long-term value investing |
+| [Lyn Alden](https://www.lynalden.com) | Research on cryptocurrency and long-term investing |
 | [Mr. Money Mustache](https://www.mrmoneymustache.com/blog/) | Personal finance and early retirement through frugality and sustainable living |
-| [Gerd Kommer](https://gerd-kommer.de/blog/) | German language blog about evidence-based investing and personal finance |
-| [Frugalisten](https://frugalisten.de) | German language blog about personal finance, frugal living and parenting |
+| [Gerd Kommer (German) ](https://gerd-kommer.de/blog/) | Evidence-based investing and with detailed historic data analysis |
+| [Frugalisten (German)](https://frugalisten.de) | Frugal living, early retirement and parenting advice |
 
 ## Business and Entrepreneurship
 
@@ -67,7 +68,8 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | Blog | Description |
 |------|-------------|
 | [iA](https://ia.net/news) | Design agency turned software company writing about design, typography and digital tools |
-| [Seth Godin](https://seths.blog) | Daily insights about marketing, leadership and creating meaningful work in the digital age |
+| [Linear](https://linear.app/blog) | Obsessed with elegant design for project management software |
+| [Seth Godin](https://seths.blog) | Marketing, leadership and creating meaningful work in the digital age |
 
 ## Data Driven World Improvement
 
@@ -75,6 +77,7 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 |------|-------------|
 | [80,000 Hours](https://80000hours.org/all-articles/) | Research and career advice focused on solving the world's most pressing problems |
 | [Our World in Data](https://ourworldindata.org) | Comprehensive data visualizations and research on global issues like poverty, health, and climate change |
+| [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
 
 ## Personal Development & Productivity
 
@@ -85,10 +88,8 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [Tim Ferriss](https://tim.blog) | Interviews and articles about performance optimization, business and personal development |
 | [Derek Sivers](https://sive.rs/blog) | Entrepreneur sharing unconventional wisdom about life, business and decision making |
 | [Tynan](https://tynan.com) | Nomadic author and entrepreneur shares how he optimizes his life in unusual ways |
-| [Jeff Kaufman](https://www.jefftk.com/p/) | Software engineer writing about effective altruism, personal finance and parenting |
 | [Zen Habits](https://zenhabits.net) | Minimalist and zen lifestyle advice from a father of 6 |
-| [Cal Newport](https://calnewport.com/what-if-ai-doesnt-get-much-better-than-this/) | Author of "Deep Work" with advice on how to stay in control of technology
-
+| [Cal Newport](https://calnewport.com/what-if-ai-doesnt-get-much-better-than-this/) | Author of "Deep Work" with advice on how to stay in control of technology |
 
 ## Deep Dive Essays
 
@@ -107,6 +108,6 @@ I'm a fan of classic blogs. The quality of content is usually higher than on soc
 | [KIOSK](https://kiosk.substack.com) | Comics and news from British illustrator and writer Owen Pomery |
 | [Aella](https://aella.substack.com) | Sex worker and researcher doing sociological surveys |
 
-Are you writing a blog that I might enjoy? [Send me an email](mailto:paul@simmering.dev) and let me know! I'll add it to the list.
+Are you writing a blog that I might enjoy? [Send me an email](mailto:paul@simmering.dev) and let me know.
 
 If you're an iOS and macOS user and looking for an RSS reader, I can't recommend [NetNewsWire](https://netnewswire.com) enough.

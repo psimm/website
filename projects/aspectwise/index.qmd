@@ -27,7 +27,7 @@ image: "reviews.jpg"
 </div>
 </body>
 
-Q Agentur für Forschung offers a service for automated analysis of customer reviews in any product category in any European language. I'm the inventor and lead developer. We build on our research in aspect-based sentiment analysis (ABSA). Since our [paper](https://arxiv.org/abs/2310.18025) on the SemEval benchmark, we have re-thought ABSA from the ground up and developed a labeling scheme and model that allows for fine-grained analysis of customer reviews. See this example:
+Q Agentur für Forschung offers a service for automated analysis of customer reviews in any product category in any European language. I was the inventor and lead developer. We built on our research in aspect-based sentiment analysis (ABSA). Since our [paper](https://arxiv.org/abs/2310.18025) on the SemEval benchmark, we have re-thought ABSA from the ground up and developed a labeling scheme and model that allows for fine-grained analysis of customer reviews. See this example:
 
 ![Aspect-based sentiment analysis](absa.png){width=75%}
 

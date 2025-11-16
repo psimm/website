@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.33">
+<meta name="generator" content="quarto-1.7.28">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -32,17 +32,20 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-00f11fae924eab01547c059a6c76dfef.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8295ed3e13c7202bf8ad4e3cb691b864.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-f3434c391d22f12f689939282bc4fc88.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0d07acb8866785c849f00645e483b62e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-f3434c391d22f12f689939282bc4fc88.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e03fbea212d1bd96ad2ad16bde6d6ece.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-4167c8b26984c0751557c0ff96996a0f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c280bcf17c473fcf4af0b2a832083db5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-452617c97d0c8852d0ce4208ddf9f376.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c280bcf17c473fcf4af0b2a832083db5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,7 +78,167 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    window.setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      window.setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    window.hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(darkModeDefault) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const darkModeDefault = false;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !window.hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (window.hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -139,9 +302,38 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#put-the-fundamentals-of-a-good-life-first" id="toc-put-the-fundamentals-of-a-good-life-first" class="nav-link active" data-scroll-target="#put-the-fundamentals-of-a-good-life-first">1. Put the fundamentals of a good life first</a></li>
+  <li><a href="#actively-find-clarity" id="toc-actively-find-clarity" class="nav-link" data-scroll-target="#actively-find-clarity">2. Actively find clarity</a></li>
+  <li><a href="#form-good-habits-and-break-bad-ones" id="toc-form-good-habits-and-break-bad-ones" class="nav-link" data-scroll-target="#form-good-habits-and-break-bad-ones">3. Form good habits and break bad ones</a></li>
+  <li><a href="#take-comfort-in-knowing-youre-doing-the-right-thing" id="toc-take-comfort-in-knowing-youre-doing-the-right-thing" class="nav-link" data-scroll-target="#take-comfort-in-knowing-youre-doing-the-right-thing">4. Take comfort in knowing you’re doing the right thing</a></li>
+  <li><a href="#use-principles-to-simplify-decisions" id="toc-use-principles-to-simplify-decisions" class="nav-link" data-scroll-target="#use-principles-to-simplify-decisions">5. Use principles to simplify decisions</a></li>
+  <li><a href="#avoid-anticipatory-suffering" id="toc-avoid-anticipatory-suffering" class="nav-link" data-scroll-target="#avoid-anticipatory-suffering">6. Avoid anticipatory suffering</a></li>
+  <li><a href="#master-your-craft" id="toc-master-your-craft" class="nav-link" data-scroll-target="#master-your-craft">7. Master your craft</a></li>
+  <li><a href="#invest-in-compounding-assets" id="toc-invest-in-compounding-assets" class="nav-link" data-scroll-target="#invest-in-compounding-assets">8. Invest in compounding assets</a></li>
+  <li><a href="#be-patient-and-decisive" id="toc-be-patient-and-decisive" class="nav-link" data-scroll-target="#be-patient-and-decisive">9. Be patient and decisive</a></li>
+  <li><a href="#create-a-high-surface-area-for-luck" id="toc-create-a-high-surface-area-for-luck" class="nav-link" data-scroll-target="#create-a-high-surface-area-for-luck">10. Create a high surface area for luck</a></li>
+  <li><a href="#resist-screen-addiction" id="toc-resist-screen-addiction" class="nav-link" data-scroll-target="#resist-screen-addiction">11. Resist screen addiction</a></li>
+  <li><a href="#manage-your-information-diet" id="toc-manage-your-information-diet" class="nav-link" data-scroll-target="#manage-your-information-diet">12. Manage your information diet</a></li>
+  <li><a href="#expect-people-to-act-according-to-their-incentives" id="toc-expect-people-to-act-according-to-their-incentives" class="nav-link" data-scroll-target="#expect-people-to-act-according-to-their-incentives">13. Expect people to act according to their incentives</a></li>
+  <li><a href="#play-long-term-games-with-long-term-people" id="toc-play-long-term-games-with-long-term-people" class="nav-link" data-scroll-target="#play-long-term-games-with-long-term-people">14. Play long-term games with long-term people</a></li>
+  <li><a href="#externalize-memory" id="toc-externalize-memory" class="nav-link" data-scroll-target="#externalize-memory">15. Externalize memory</a></li>
+  <li><a href="#use-writing-as-a-tool-for-thinking" id="toc-use-writing-as-a-tool-for-thinking" class="nav-link" data-scroll-target="#use-writing-as-a-tool-for-thinking">16. Use writing as a tool for thinking</a></li>
+  <li><a href="#judge-yourself-by-how-well-you-played-your-hand" id="toc-judge-yourself-by-how-well-you-played-your-hand" class="nav-link" data-scroll-target="#judge-yourself-by-how-well-you-played-your-hand">17. Judge yourself by how well you played your hand</a></li>
+  <li><a href="#protect-your-slack" id="toc-protect-your-slack" class="nav-link" data-scroll-target="#protect-your-slack">18. Protect your slack</a></li>
+  <li><a href="#apply-the-pareto-principle" id="toc-apply-the-pareto-principle" class="nav-link" data-scroll-target="#apply-the-pareto-principle">19. Apply the Pareto Principle</a></li>
+  <li><a href="#celebrate-what-you-have" id="toc-celebrate-what-you-have" class="nav-link" data-scroll-target="#celebrate-what-you-have">20. Celebrate what you have</a></li>
+  <li><a href="#dont-wait-for-the-stars-to-align" id="toc-dont-wait-for-the-stars-to-align" class="nav-link" data-scroll-target="#dont-wait-for-the-stars-to-align">21. Don’t wait for the stars to align</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -174,7 +366,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is a collection of 20 wisdoms and mental models that I find useful for decision making and contentedness. They’re the best insights learned from years of reading blogs, biographies and personal development books, filtered through my life experience at age 30. They are not universal truths.</p>
+<p>This is a collection of wisdoms and mental models that I find useful for decision making and contentedness. They’re the best insights learned from years of reading blogs, biographies and personal development books.</p>
+<p>Some context: I’m a 31-year-old married male AI engineer in Germany who studied economics. My thinking is shaped by American rationalist and Silicon Valley frameworks. These principles are optimized for individual achievement in knowledge work within Western market economies. If your values, culture, or life circumstances differ significantly, many may not apply.</p>
 <blockquote class="blockquote">
 <p>Adapt what is useful, reject what is useless, and add what is specifically your own – <a href="https://www.goodreads.com/quotes/30620-adapt-what-is-useful-reject-what-is-useless-and-add#:~:text=“Adapt%20what%20is%20useful%2C%20reject%20what%20is%20useless%2C,what%20is%20specifically%20your%20own.”%20―%20Bruce%20Lee">Bruce Lee</a></p>
 </blockquote>
@@ -186,13 +379,13 @@ ul.task-list li input[type="checkbox"] {
 <li>Drink water</li>
 <li>Eat vegetables</li>
 <li>Don’t overeat on the regular</li>
-<li>Avoid addictive substances</li>
+<li>Avoid substance addiction</li>
 <li>Be physically active a few times a week</li>
 <li>Keep good relations with family and friends</li>
 <li>Keep your living environment clean and tidy</li>
-<li>Develop a marketable skill</li>
+<li>Develop a skill that lets you provide value to others</li>
 </ul>
-<p>While individual circumstances may vary, these fundamentals form a strong foundation for a good life. Get the fundamentals right before bothering with figuring out who is right about the debatable issues. Be wary of plans that require you to compromise a fundamental good to pursue a less proven good. When you feel bad, check which of your fundamentals is missing. When deciding whether to invest in something, consider whether it’s working towards one of the fundamentals.</p>
+<p>While individual circumstances vary, these fundamentals form a strong foundation for a balanced life. Get the fundamentals right before bothering with figuring out who is right about the debatable issues. Be wary of plans that require you to compromise a fundamental good to pursue a less proven good. When you feel bad, check which of your fundamentals is missing.</p>
 </section>
 <section id="actively-find-clarity" class="level2">
 <h2 class="anchored" data-anchor-id="actively-find-clarity">2. Actively find clarity</h2>
@@ -203,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
 <p>A vague wish like “get a job that pays well” is not as actionable as “reach a senior role with specialization in X at one of the top companies in my field”. The action items that spring from the latter will be more specific. It will be clear when the goal is achieved. In addition, a specific goal enables taking bolder actions and making bigger bets, because the reward is clear. It’s also a relief for the mind: instead of ruminating, you can focus on the work at hand.</p>
 <p>Finding clarity is a process and can’t be done overnight. However, the process can be sped up by actively seeking clarity - by trying out different options, talking to or reading from people who have experience, and reflecting on your values.</p>
 <p>Oftentimes, goals don’t come from within but are learned or imposed by superiors or peers. That’s normal, but doesn’t mean that you are obligated to dedicate your life to them. Before making a big investment, check in with yourself and consider whether it’s a true desire of yours.</p>
-<p>Finally, beware of sunk cost fallacy. Just because you’ve invested time and resources into something doesn’t mean you have to continue indefinitely. Staying in a job, relationship or location that makes you unhappy is a terrible price to pay. Better to cut your losses and move on. That, too, requires the clarity that the choice is not working out.</p>
+<p>Finally, beware of sunk cost fallacy. Just because you’ve invested time and resources into something doesn’t mean you have to continue indefinitely. Staying in a job, relationship or location that makes you unhappy is not acceptable for the long run. Better to cut your losses and move on. That, too, requires the clarity that the choice is not working out.</p>
 </section>
 <section id="form-good-habits-and-break-bad-ones" class="level2">
 <h2 class="anchored" data-anchor-id="form-good-habits-and-break-bad-ones">3. Form good habits and break bad ones</h2>
@@ -211,12 +404,16 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>Think of yourself as a machine operating within a machine and know that you have the ability to alter your machines to produce better outcomes. – Ray Dalio, in <a href="https://goodreads.com/book/show/34536488-principles">Principles: Life and Work</a></p>
 </blockquote>
+<p>Or Cate Hall:</p>
+<blockquote class="blockquote">
+<p>If your life is well-designed, it should feel easy to live up to your ideals, rather than hard. – Cate Hall, <a href="https://usefulfictions.substack.com/p/fuck-willpower">Fuck Willpower</a></p>
+</blockquote>
 <p>The best resource on habits I’ve found is James Clear’s book <a href="https://jamesclear.com/atomic-habits">Atomic Habits</a>. It is a straightforward, actionable and scientifically backed guide to acquiring good habits and breaking bad ones. Matt Might’s article on <a href="https://matt.might.net/articles/how-to-avoid-temptation/">Avoiding Temptation</a> is a good companion. The key insight for me was that willpower is only good for temporarily overriding behavior. Habits are the long-term solution and are achieved by making the desired behavior easy.</p>
-<p>Habit formation takes time and involves setbacks. Don’t try to remodel all of your behaviors at once - take it one at a time. Even dedicating a whole year to adding a new habit (e.g.&nbsp;regular exercising) or breaking a bad habit (e.g.&nbsp;staying up too late) is reasonable. Start easy and value consistency over intensity.</p>
+<p>Habit formation takes time and involves setbacks. Don’t try to remodel all of your behaviors at once - take it one at a time. Start easy and focus on consistency over intensity.</p>
 </section>
 <section id="take-comfort-in-knowing-youre-doing-the-right-thing" class="level2">
 <h2 class="anchored" data-anchor-id="take-comfort-in-knowing-youre-doing-the-right-thing">4. Take comfort in knowing you’re doing the right thing</h2>
-<p>Procrastination is a terrible habit that wrecks productivity and happiness. Time spent on the “dark playground” (a term coined by Tim Urban in his excellent <a href="https://waitbutwhy.com/2013/10/why-procrastinators-procrastinate.html">article</a> on procrastination) is wasted. There are many techniques to beat procrastination and it’s worth finding ones that work for you.</p>
+<p>Procrastination is a terrible habit that wrecks productivity and self-respect. Time spent on the “dark playground” (a term coined by Tim Urban in his excellent <a href="https://waitbutwhy.com/2013/10/why-procrastinators-procrastinate.html">article</a> on procrastination) is wasted. There are many techniques to beat procrastination and it’s worth finding ones that work for you.</p>
 <p>A frame that I find useful for beating procrastination is to remind myself that the thing I’m about to do is the best use of my time. While I’m doing the dreaded task, I can take solace in knowing that I at least I don’t have to spend this time worrying that I’m wasting time. Instead, I can relish the fact that I’m doing the best thing for my future self.</p>
 </section>
 <section id="use-principles-to-simplify-decisions" class="level2">
@@ -228,17 +425,16 @@ ul.task-list li input[type="checkbox"] {
 <li>Evaluate which ones have delivered value and which ones have been wrong or impractical.</li>
 <li>Observe your own behavior and find ways in which you are inconsistent with your principles.</li>
 <li>Learn from others by deducing the principles they use.</li>
-<li>Increase your consistency to help children learn discipline from you.</li>
 <li>Search for new principles that simplify repeated situations that currently cost effort.</li>
 </ul>
 <p>There are different ways to engage with your principles. You may write them down, discuss them with others, or mentally match situations to the principles that you apply.</p>
 </section>
-<section id="avoid-unnecessary-suffering" class="level2">
-<h2 class="anchored" data-anchor-id="avoid-unnecessary-suffering">6. Avoid unnecessary suffering</h2>
+<section id="avoid-anticipatory-suffering" class="level2">
+<h2 class="anchored" data-anchor-id="avoid-anticipatory-suffering">6. Avoid anticipatory suffering</h2>
 <blockquote class="blockquote">
 <p>Pain is mandatory. Suffering is optional – <a href="https://www.goodreads.com/quotes/613585-pain-is-inevitable-suffering-is-optional-say-you-re-running-and">Haruki Murakami</a></p>
 </blockquote>
-<p>I repeat this quote frequently, to the point that my girlfriend mocks me when I complain about something anyway. I repeat it because I think it’s true for most people in most situations. The above quote is from a Japanese author in 2009, but the principle goes back a lot further. An earlier take on the same principle was written around the year 62:</p>
+<p>I repeat this quote frequently, to the point that my wife mocks me when I complain about something anyway. I repeat it because I think it’s true for most people in most situations. The above quote is from a Japanese author in 2009, but the principle goes back a lot further. An earlier take on the same principle was written around the year 62:</p>
 <blockquote class="blockquote">
 <p>We suffer more often in imagination than in reality – <a href="https://www.goodreads.com/work/quotes/93900-ad-lucilium-epistulae-morales">Lucius Annaeus Seneca</a></p>
 </blockquote>
@@ -259,9 +455,11 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <p>The ideal fuel for the pursuit of mastery is a combination of passion and market demand. If either is missing, it’ll be much harder to stay the course. Doing a job you hate is a recipe for misery. Working on something nobody is willing to pay for is a recipe for poverty. For most people, there isn’t just one best profession to get into, but rather a range of professions that match their personality and offer challenges that feel empowering. That is what “loving what you do” is about, not literally loving every minute of every day.</p>
 <p>When you have choice, I suggest going with the option that maximizes your career capital. Along with higher earnings potential, it also gives you leverage to negotiate how, when and where you work. <a href="https://80000hours.org/career-guide/career-capital/">80000 hours</a> has a guide on career capital. Also prioritize options that allow you to grow transferable skills that remain useful throughout your career. Math in particular is the key to science, engineering, business administration, finance and many other lucrative fields.</p>
-<p>So how do you master your craft?</p>
+<p>So, how do you master your craft?</p>
 <p><strong>Engage in deliberate practice.</strong> It means to work on tasks at a difficulty that is just beyond your current skill level. Too low, and you won’t improve. Too high, and you’ll get discouraged. It emphasizes the importance of consistent practice over innate talent. Anders Ericsson’s book <a href="https://www.goodreads.com/book/show/26312997-peak">Peak: Secrets from the New Science of Expertise</a> gives a comprehensive overview of deliberate practice. Along with those principles, an important mindset is to develop a sense of agency: take responsibility for your own progress. Past childhood, it’s on the learner to take the initiative, rather than on parents or teachers to enforce practice.</p>
-<p><strong>Seek high quality learning materials.</strong> The quality of the material you use to learn is critical to your progress. I’ve found that textbooks are the highest quality material available on most subjects. Much better than blog posts and videos. They are written by experts with a decade or more of experience in their fields, edited and illustrated, comprehensive and updated as new research emerges and teachers give feedback on the didactic approach. For learning, I suggest finding the highest quality textbook on the subject as the main material. Only consider lower quality materials like internet sources and lecture slides as supplements or on emerging topics not covered in the book.</p>
+<p><strong>Seek high quality learning materials.</strong> The quality of the material you use to learn is critical to your progress. I’ve found that textbooks are the highest quality material available on most subjects. Much better than blog posts and videos. They are written by experts with a decade or more of experience in their fields, edited and illustrated, comprehensive and updated as new research emerges and teachers give feedback on the didactic approach. For learning, I suggest finding the highest quality textbook on the subject as the main material.</p>
+<p><strong>Learn in public.</strong> One of the best ways to mastery is to explain your knowledge to others. This forces you to clarify your thinking and to find the best way to explain it. Creating blog articles, videos, open source code, speaking at conferences and creating other forms of content also provide concrete milestones (finishing the next piece), lets you build a reputation and connect with others. Read more about <a href="https://www.swyx.io/learn-in-public">learning in public</a> in swyx’s article.</p>
+<p><strong>Don’t outsource your brain to AI.</strong> Using on AI to write, code, summarize, design and reason for you is amazing for productivity, but skips the learning opportunity. Use it for repetitive work and tasks outside of your role.</p>
 <p><strong>Stick with it.</strong> It takes grit to stick with something during the years it takes to go from beginner to master. Ira Glass put it well for creative work, but I think the same applies to other fields too:</p>
 <blockquote class="blockquote">
 <p>All of us who do creative work, we get into it because we have good taste. But there is this gap. For the first couple years you make stuff, it’s just not that good. It’s trying to be good, it has potential, but it’s not. But your taste, the thing that got you into the game, is still killer. And your taste is why your work disappoints you. A lot of people never get past this phase, they quit. […] It is only by going through a volume of work that you will close that gap, and your work will be as good as your ambitions. – <a href="https://www.goodreads.com/quotes/309485-nobody-tells-this-to-people-who-are-beginners-i-wish">Ira Glass</a></p>
@@ -287,40 +485,40 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>1%</td>
-<td>1.051x</td>
-<td>1.104x</td>
-<td>1.219x</td>
-<td>1.348x</td>
-<td>1.491x</td>
+<td>1.05x</td>
+<td>1.10x</td>
+<td>1.22x</td>
+<td>1.35x</td>
+<td>1.49x</td>
 </tr>
 <tr class="even">
 <td>2%</td>
-<td>1.104x</td>
-<td>1.219x</td>
-<td>1.486x</td>
-<td>1.999x</td>
-<td>2.807x</td>
+<td>1.10x</td>
+<td>1.22x</td>
+<td>1.49x</td>
+<td>2.00x</td>
+<td>2.81x</td>
 </tr>
 <tr class="odd">
 <td>5%</td>
-<td>1.276x</td>
-<td>1.629x</td>
-<td>2.653x</td>
-<td>4.322x</td>
-<td>8.142x</td>
+<td>1.28x</td>
+<td>1.63x</td>
+<td>2.65x</td>
+<td>4.32x</td>
+<td>8.14x</td>
 </tr>
 <tr class="even">
 <td>10%</td>
-<td>1.610x</td>
-<td>2.594x</td>
-<td>6.727x</td>
-<td>17.449x</td>
-<td>57.275x</td>
+<td>1.61x</td>
+<td>2.59x</td>
+<td>6.73x</td>
+<td>17.45x</td>
+<td>57.28x</td>
 </tr>
 </tbody>
 </table>
 <p>Compounding, meaning interest earned on interest, is the central force in building long term wealth. Get on the train early. A $1,000 investment at age 25 that grows at 5% real interest rate will be worth $2,653 at age 45 and $8,142 at age 65.</p>
-<p>Stock and real estate ownership is the most attainable form of compounding for most people. For those with an entrepreneurial spirit, high willingness to work long hours and take on risk, direct ownership of a business can be even more powerful as it can compound at a faster rate and use more leverage.</p>
+<p>Financial asset (stocks) and real estate ownership is the most attainable form of compounding for most people. For those with an entrepreneurial spirit, high willingness to work long hours and take on risk, direct ownership of a business can be even more powerful as it can compound at a faster rate and use more leverage.</p>
 <p>Social media following can also compound. The more people follow and share your work, the more others will hear about it.</p>
 <p>There are other pursuits that accumulate, but don’t necessarily compound:</p>
 <ul>
@@ -348,20 +546,35 @@ ul.task-list li input[type="checkbox"] {
 <li>Move to a city that is a hub for your field.</li>
 <li>Join professional associations.</li>
 <li>Attend conferences and networking events.</li>
+<li>Learn trending skills and technologies.</li>
 </ul>
 <p>More generally, default to saying “yes” to opportunities, especially at the beginning of your career. Tell people what you’re looking for instead of hoping that they read your mind.</p>
 </section>
+<section id="resist-screen-addiction" class="level2">
+<h2 class="anchored" data-anchor-id="resist-screen-addiction">11. Resist screen addiction</h2>
+<p>Short form video, social media and outrage media are designed to keep you scrolling and clicking. They use machine learning algorithms to keep you addicted to their content. They can easily consume all your free time and attention and eat into your sleep. They reduce your attention span and ability to do deep work.</p>
+<p>Some tools to resist screen addiction are:</p>
+<ul>
+<li>Remove the worst ragebait from your recommendations feed by unsubscribing, muting words or using options such as “not interested” on posts.</li>
+<li>Turn off notifications.</li>
+<li>Uninstall apps.</li>
+<li>Delete accounts.</li>
+<li>Use a screen time app that limits your usage of apps and websites. There are many options, I use <a href="https://jomo.app/">Jomo</a>.</li>
+<li>Sleep with your phone outside the room. Get a physical alarm clock.</li>
+</ul>
+<p>Matt Might has a great article on this: <a href="https://matt.might.net/articles/cripple-your-technology/">Boost your productivity: Cripple your technology</a>. Cal Newport’s <a href="https://www.goodreads.com/book/show/40672036-digital-minimalism">Digital Minimalism</a> is a book-length treatment.</p>
+</section>
 <section id="manage-your-information-diet" class="level2">
-<h2 class="anchored" data-anchor-id="manage-your-information-diet">11. Manage your information diet</h2>
-<p>News websites and social media platforms are incentivized to serve you content that draws attention. Outrageous stories and clickbait are effective at this, but are not useful for you. A constant feed of all the worst things happening anywhere in the world is not good emotionally. The vast majority of this information is not actionable. Rolf Dobelli wrote about this topic <a href="https://gwern.net/doc/culture/2010-dobelli.pdf">in depth</a> in 2010, also going into how constant consumption of short-form content can erode attention for longer, higher quality content.</p>
-<p>Therefore, I suggest limiting how often you consume news and where you get it from. For most people, a weekly check-in is enough. That leaves you six days without distractions and lets events play out and facts get clarified. If something is more urgent, you’ll hear people talking about it or you’ll be informed by an emergency notification on your phone. Regarding sources, I suggest finding ones that are as fact-based and unbiased as possible. For social media, I suggest liberal muting of words, selecting “not interested” on posts and unfollowing accounts. By doing this regularly and following more people relevant to my interests, I now find that X and LinkedIn serve me a dense stream of high quality content.</p>
+<h2 class="anchored" data-anchor-id="manage-your-information-diet">12. Manage your information diet</h2>
+<p>News websites and social media platforms are incentivized to serve you content that draws attention. Outrageous stories and clickbait are effective at this, but aren’t useful for you. A constant feed of all the worst things happening anywhere in the world is terrible for your mental health. The vast majority of this information is not actionable. Rolf Dobelli wrote about this topic <a href="https://gwern.net/doc/culture/2010-dobelli.pdf">in depth</a> in 2010, also going into how constant consumption of short-form content can erode attention for longer, higher quality content.</p>
+<p>Therefore, I suggest limiting how often you consume news and where you get it from. For most people, a weekly check-in is enough. That leaves you six days without distractions and lets events play out and facts get clarified. If something is more urgent, you’ll hear people talking about it or you’ll be informed by an emergency notification on your phone. Regarding sources, I suggest finding ones that are as fact-based and unbiased as possible. For social media, I suggest liberal muting of words, selecting “not interested” on posts and unfollowing accounts. By doing this regularly and following more people relevant to my interests, I now find that X and LinkedIn serve me a dense stream of high quality content. Another alternative is to use an RSS reader to subscribe to long-form content from blogs and news sites. See my <a href="./blogroll">blogroll</a> for recommendations.</p>
 <p>If a particular policy, conflict or other issue is important to you, invest time into a proper deep dive. Read information from multiple sources. Be wary that each side will only present information that is favorable to them. Find analogies from history to understand potential developments and second order effects. For other issues, make use of your right to be agnostic. You don’t have to carry the burden of holding an opinion on everything.</p>
 <blockquote class="blockquote">
 <p>You always own the option of having no opinion. There is never any need to get worked up or to trouble your soul about things you can’t control. These things are not asking to be judged by you. Leave them alone. –<a href="https://www.goodreads.com/quotes/685645-you-always-own-the-option-of-having-no-opinion-there">Marcus Aurelius</a></p>
 </blockquote>
 </section>
 <section id="expect-people-to-act-according-to-their-incentives" class="level2">
-<h2 class="anchored" data-anchor-id="expect-people-to-act-according-to-their-incentives">12. Expect people to act according to their incentives</h2>
+<h2 class="anchored" data-anchor-id="expect-people-to-act-according-to-their-incentives">13. Expect people to act according to their incentives</h2>
 <p>Some examples: companies optimize for shareholder value, politicians optimize for approval within election cycles, students optimize for highest grades with the least effort, employees prioritize projects that lead to a promotion.</p>
 <p>Expecting individuals in a system to act against their own incentives is unrealistic. If you are in a position to set up incentives for others, consider what behavior will maximize their reward with the least effort.</p>
 <blockquote class="blockquote">
@@ -373,452 +586,331 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 </section>
 <section id="play-long-term-games-with-long-term-people" class="level2">
-<h2 class="anchored" data-anchor-id="play-long-term-games-with-long-term-people">13. Play long-term games with long-term people</h2>
-<p>A key result in game theory is that the dominant strategy in the <a href="https://en.wikipedia.org/wiki/Prisoner's_dilemma">Prisoner’s Dilemma</a> is to defect, and that this ends up with both players in worse positions than if they had cooperated. But in the absence of trust, they can’t cooperate. The solution is to play a repeated game and punish defections. Then, the incentives favor cooperation. I first encountered this during my studies in economics, and was delighted to find it again in <a href="https://goodreads.com/book/show/54898389-the-almanack-of-naval-ravikant">The Almanack of Naval Ravikant</a>.</p>
-<p>This extends to business. When working together for the long term, the incentives favor cooperation and better outcomes can be achieved for both parties. In practical terms, this means that it’s wise to keep investing in your long-term relationships and to guard your reputation. Being known as a reliable partner is invaluable. You’ll receive access to sensitive information, be given more autonomy and considered for promotions. You can simplify deals and omit formalisms that are only necessary in one-time interactions without trust. Over time, a network of people that know you as a reliable partner will yield a stream of opportunities to make mutually beneficial deals.</p>
+<h2 class="anchored" data-anchor-id="play-long-term-games-with-long-term-people">14. Play long-term games with long-term people</h2>
+<p>A key result in game theory is that the dominant strategy in the <a href="https://en.wikipedia.org/wiki/Prisoner's_dilemma">Prisoner’s Dilemma</a> is to defect, and that this ends up with both players in worse positions than if they had cooperated. But in the absence of trust, they can’t cooperate. The solution is to play a repeated game and punish defections. Then, the incentives favor cooperation.</p>
+<p>This extends to business. When working together for the long term, the incentives favor cooperation and better outcomes can be achieved for both parties. In practical terms, this means that it’s wise to keep investing in your long-term relationships and to guard your reputation. Being known as a reliable partner is invaluable. You can simplify deals and omit formalisms. Over time, a network of people that know you as a reliable partner will yield a stream of opportunities to make mutually beneficial deals.</p>
 </section>
 <section id="externalize-memory" class="level2">
-<h2 class="anchored" data-anchor-id="externalize-memory">14. Externalize memory</h2>
+<h2 class="anchored" data-anchor-id="externalize-memory">15. Externalize memory</h2>
 <p>The brain is an imperfect storage of information, meanwhile we all carry around computers that are exceptionally good at it. Besides the actual risk of forgetting, constantly recounting all of your to-dos and appointments is a source of stress. I consider having a calendar, a to do list and a (digital) notebook essential.</p>
-<p>One of the main concepts in David Allen’s <a href="https://www.goodreads.com/book/show/1633.Getting_Things_Done">Getting Things Done</a> is “ubiquitous capture”, meaning that tasks are captured in writing ASAP. This removes the possibility of forgetting and eases the burden on memory. The concrete solution, whether it’s an app, a simple text file or a physical notebook doesn’t matter nearly as much as getting into the habit of using it.</p>
-<p>In addition to transactional notes, I also find that keeping a long term archive of ideas, inspirations and reflections is valuable. It lets me pick up where I left off, make connections between seemingly disparate things.</p>
+<p>One of the main concepts in David Allen’s <a href="https://www.goodreads.com/book/show/1633.Getting_Things_Done">Getting Things Done</a> is “ubiquitous capture”, meaning that tasks are captured in writing ASAP. The concrete solution, whether it’s an app, a simple text file or a physical notebook doesn’t matter nearly as much as getting into the habit of using it.</p>
+<p>In addition to transactional notes, I also find that keeping a long term archive of ideas, inspirations and reflections is valuable. It lets me pick up where I left off and make connections between seemingly disparate things.</p>
 </section>
-<section id="use-writing-as-a-tool-of-thinking" class="level2">
-<h2 class="anchored" data-anchor-id="use-writing-as-a-tool-of-thinking">15. Use writing as a tool of thinking</h2>
-<p>Holding and expanding complex lines of thinking in the brain is hard. By writing things down you can concentrate on one aspect at a time and consider more information than your mental RAM can hold. Further, writing serves as a forcing function for concreteness. Paul Graham puts this eloquently in his article “<a href="https://paulgraham.com/words.html">Putting ideas into words</a>”.</p>
+<section id="use-writing-as-a-tool-for-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="use-writing-as-a-tool-for-thinking">16. Use writing as a tool for thinking</h2>
+<p>Holding and expanding complex lines of thinking in the brain is hard. By writing things down you can concentrate on one aspect at a time and use more information than your mental RAM can hold. Further, writing serves as a forcing function for concreteness. Paul Graham puts this eloquently in his article “<a href="https://paulgraham.com/words.html">Putting ideas into words</a>”.</p>
 <p>In addition to free-form exploration of an idea, concept or decision, you can employ structured formats. They can bring out new perspectives and make writing easier by setting up boxes that can be filled with content. Some examples:</p>
 <ul>
-<li>Chair dialogue: an imagined dialogue between representatives of opposing options</li>
-<li>SWOT analysis: a list of strengths, weaknesses, opportunities and threats for an organization</li>
-<li><a href="https://tim.blog/2017/05/15/fear-setting/">Fear setting</a>: a list of what can go wrong, along with remedies</li>
-<li>Goal breakdown: list the detailed action steps needed to achieve a goal, to turn an abstract desire into compact to-dos</li>
+<li>Chair dialogue: an imagined dialogue between representatives of opposing options.</li>
+<li>Start, stop, continue: a list of things to start, stop and continue doing. Works by yourself and in a group setting.</li>
+<li>Goal breakdown: start with the end goal and break down the requirements into concrete action steps.</li>
+<li><a href="https://tim.blog/2017/05/15/fear-setting/">Fear setting</a>: force yourself to actually spell out possible bad outcomes and their remedies.</li>
 <li>Personal wiki: summaries of topics, connected by links and with references to sources. If this sounds interesting and you’re technically inclined, check out my <a href="./blog/quarto-wiki">article</a> about using <a href="https://quarto.org/">Quarto</a> to build a personal wiki.</li>
 </ul>
 </section>
 <section id="judge-yourself-by-how-well-you-played-your-hand" class="level2">
-<h2 class="anchored" data-anchor-id="judge-yourself-by-how-well-you-played-your-hand">16. Judge yourself by how well you played your hand</h2>
-<p>There are many situations where you can do everything right, but still lose due to bad luck. It’s important not to take away the wrong lessons from such situations.</p>
+<h2 class="anchored" data-anchor-id="judge-yourself-by-how-well-you-played-your-hand">17. Judge yourself by how well you played your hand</h2>
+<p>There are situations where you can do everything right, but still lose due to bad luck. It’s important not to take away the wrong lessons from such situations.</p>
 <p>Let’s imagine someone offered you the following game: roll a die, and if it comes up with any number greater than 1, they will double your bet. Otherwise, you lose the bet. You play the game and roll a 1. Was it a mistake to play? In results-oriented thinking, yes. If you hadn’t played, you wouldn’t have lost your bet. But is that a good lesson to learn here? No, because the bet is lopsided in your favor and in expectation you can make money here.</p>
-<p>Bets in real life are not so obvious, but can be just as lopsided in your favor. So consider replacing the question “Did I win?” with “Given the information I had at the time, did I make the choice that maximized the expected value?”. This is a key frame for poker players and financial investors. Originally I learned it from Magic: The Gathering players Marshall Sutcliffe and Brian Wong in a <a href="https://lrcast.com/limited-resources-226-rotty-and-application-of-tools/">podcast</a>.</p>
+<p>Bets in real life are not so transparent, but can be just as imbalanced. So consider replacing the question “Did I win?” with “Given the information I had at the time, did I make the choice that maximized the expected value?”. This is a key frame for poker players and financial investors. Originally I learned it from Magic: The Gathering players Marshall Sutcliffe and Brian Wong in a <a href="https://lrcast.com/limited-resources-226-rotty-and-application-of-tools/">podcast</a>.</p>
 </section>
 <section id="protect-your-slack" class="level2">
-<h2 class="anchored" data-anchor-id="protect-your-slack">17. Protect your slack</h2>
+<h2 class="anchored" data-anchor-id="protect-your-slack">18. Protect your slack</h2>
 <p>Make sure that you’re not constantly booked at 100% of your hours, attention, monetary and emotional capacity. It’s not sustainable and binds your options: you can’t relax, explore or invest into other things. Protecting your slack is your responsibility - you are the only one with a full overview of commitments and how full your batteries are. Zvi Mowshowitz goes into greater detail in his excellent <a href="https://thezvi.substack.com/p/slack">article</a> on the subject.</p>
 <p>A way to guard slack is to consider the full costs of actions and purchases. Let’s consider the purchase of a product. The obvious cost is the price tag. Money spent here can’t be spent elsewhere. If purchased on finance, future income is consumed. In addition, there are hidden costs: storage (rent for the space the item will occupy), cleaning, repairs and finally disposal. Similar logic can be applied to time commitments.</p>
-<p>Some deals are worth it, most are not. Further guiding ideas may be to consider that “lack of time is a lack of priorities” (Tim Ferriss) and using the maxim “hell yeah or no” (Derek Sivers) in decision making.</p>
+<p>Some deals are worth it, most are not. When deciding whether to take on a new commitment that’s far in the future, consider if you’d be excited to do it if it were tomorrow. Further guiding ideas may be to consider that “lack of time is a lack of priorities” (<a href="https://www.goodreads.com/quotes/7537248-lack-of-time-is-actually-lack-of-priorities-take#:~:text=Quote%20by%20Timothy%20Ferriss%3A%20“lack,is%20actually%20lack%20of%20priorities.">Tim Ferriss</a>) and using the maxim “hell yeah or no” <a href="https://sive.rs/hellyeah">Derek Sivers</a> in decision making. This is partially at odds with advice in the “Create a high surface area for luck” section. However, keeping slack allows you to take spontaneous opportunities.</p>
 </section>
 <section id="apply-the-pareto-principle" class="level2">
-<h2 class="anchored" data-anchor-id="apply-the-pareto-principle">18. Apply the Pareto Principle</h2>
+<h2 class="anchored" data-anchor-id="apply-the-pareto-principle">19. Apply the Pareto Principle</h2>
 <p>The <a href="https://en.wikipedia.org/wiki/Pareto_principle">Pareto Principle</a>, also called the 80/20 rule states that 80% of useful outcomes usually stem from 20% of the inputs. Its inversion is that 80% of the inputs only amount to 20% of the outcomes - meaning they’re not very productive. The exact distribution depends on the task at hand, but the general principle is useful as a rule of thumb to identify useful and wasted effort. I first came across the principle in Tim Ferriss’ <a href="https://www.goodreads.com/book/show/368593.The_4_Hour_Workweek">The Four Hour Workweek</a>.</p>
-<p>I suggest two questions to separate the 20% from the 80%:</p>
+<p>I suggest three questions to separate the 20% from the 80%:</p>
 <ul>
 <li>In the past 6 months, which actions have had the greatest impact on your results?</li>
 <li>If you had to do your work in half the time, how would you do it?</li>
 </ul>
-<p>For the 80% of less useful activities, start by asking whether the task really needs to be done. Don’t invent work and don’t do things only for convention or appearance. Next, see if the task can be automated with machines or software. In our age of AI, this becomes possible for more and more tasks. Finally, if it can’t be automated, consider outsourcing it. This frees up time and resources for the 20% of most useful activities. Pour more into them until they reach their scaling limit.</p>
+<p>For the 80% of less useful activities, start by asking whether the task really needs to be done. Don’t invent work and don’t do things only for convention. Next, see if the task can be automated with machines or software. More and more things are possible with AI. Finally, if it can’t be automated, consider paying someone else to do it. This frees up time for the 20% of most useful activities.</p>
 </section>
 <section id="celebrate-what-you-have" class="level2">
-<h2 class="anchored" data-anchor-id="celebrate-what-you-have">19. Celebrate what you have</h2>
-<p>“If I can’t be happy now, I will never be happy.” is a reminder to myself in objectively good times to occasionally leave the hamster wheel and reflect on what’s important. There is a lot to be grateful for. Modern life offers amenities that were luxuries in the past. Running water, heating and cooling, year-round fresh produce, access to vast amounts of knowledge and entertainment, instant global communication. Things that used to be unaffordable for most are now in reach of many: air travel, computers, home appliances.</p>
-<p>Gratitude is a cheat code for your utility function. It’s a multiplier to the enjoyment of experiences, plus a base happiness constant just for the pleasure of being alive. Even better, someone who is grateful will be a more pleasant partner, parent, friend and colleague, and attract more good things.</p>
-<p>So how to be grateful? That depends on the person, but here are some ideas for practicing both reflective and active gratitude:</p>
+<h2 class="anchored" data-anchor-id="celebrate-what-you-have">20. Celebrate what you have</h2>
+<p>“If I can’t be happy now, I will never be happy.” is a reminder to myself in objectively good times to occasionally leave the hamster wheel and reflect on what’s important. There is a lot to be grateful for. Modern life offers amenities that were luxuries in the past. Running water, heating and cooling, year-round fresh produce, access to vast amounts of knowledge and entertainment, instant global communication. Things that used to be unaffordable for most are now in reach of many: air travel, computers, home appliances. Yet, many people, including me, take them for granted and focus on what they don’t have.</p>
+<p>Social media is major source of envy and fear of missing out. Be keenly aware of the line between inspiration and unhelpful comparisons to unrealistic standards.</p>
+<p>Gratitude is a cheat code for your utility function. It’s a multiplier to the enjoyment of experiences, plus a base happiness constant just for the pleasure of being alive. It’s the antidote to the hedonic treadmill, a phenomenon where people quickly take new haves for granted and their happiness levels returns to a set point.</p>
+<p>So how to be grateful? That’s a personal thing, but here are some ideas for practice.</p>
+<p><strong>Reflective</strong></p>
 <ul>
-<li>Keep a gratitude journal.</li>
+<li>Keep a gratitude journal. It’s proven to be effective: a <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10393216/">meta-analysis</a> of 34 randomized controlled trials found that gratitude journaling reduced anxiety symptoms by 7.8% and depression symptoms by 6.9%, while improving overall mental health.</li>
+<li>Reflect on history: the horrors of war, famine, slavery, black death and child mortality. You probably have it pretty good compared to most people in history.</li>
 <li>Take photos and look at them to remember good times.</li>
-<li>Reflect on history and the experiences of less fortunate people. The horrors of war, famine, slavery, black death, child mortality … being free from these is a blessing.</li>
+</ul>
+<p><strong>Active</strong></p>
+<ul>
 <li>Consciously shift your focus to the present and your sensations. How food tastes, how the air fills your lungs, how the sun feels on your skin. It’s good to be alive.</li>
-<li>Celebrate your health by using your body. Run, jump, play, dance, swim… happiness comes from the body. Health is the easiest blessing to take for granted.</li>
-<li>Celebrate your freedom: explore a place you haven’t been to before, make spontaneous plans, try a new food.</li>
+<li>Celebrate your health by using your body. Run, jump, play, dance, swim. Happiness comes from the body. Health is the easiest blessing to take for granted.</li>
+<li>Exercise your freedom: explore a place you haven’t been to before, try a new food, make spontaneous plans.</li>
 </ul>
 </section>
-<section id="just-do-it" class="level2">
-<h2 class="anchored" data-anchor-id="just-do-it">20. Just do it</h2>
-<p>If something is important to you, act on it. Whether it’s founding a company, changing jobs, starting an education, taking an exam, traveling, moving, asking someone out, ending a bad relationship, or having a child. The stars will never align perfectly. Preparation can turn into procrastination, or be a pretense to hide fear. If you are thinking hard, and there are good arguments for doing and waiting, side with doing. Windows of opportunity close, some gradually and some suddenly.</p>
-<p>The <a href="https://tim.blog/2017/05/15/fear-setting/">fear setting</a> technique from Tim Ferriss I mentioned earlier is a good way to discern real danger from imagined danger. It’s also a way to identify the ways and degree to which a decision can be reversed or amended.</p>
-<p>Even when not mulling a big decision, it can be good to get a “reminder that you can just do stuff” as <a href="https://x.com/ellie_huxtable/status/1843021953508253779">Ellie Huxtable</a> aptly put it. Use your freedoms, even just to show that you can still do new things.</p>
+<section id="dont-wait-for-the-stars-to-align" class="level2">
+<h2 class="anchored" data-anchor-id="dont-wait-for-the-stars-to-align">21. Don’t wait for the stars to align</h2>
+<p>If something is important to you, act on it. Whether it’s founding a company, changing jobs, starting an education, taking an exam, traveling, moving, asking someone out, ending a bad relationship, or having a child. The stars will never align perfectly. Preparation can turn into procrastination, or be a pretense to hide fear. Windows of opportunity close, some gradually and some suddenly. Not choosing is choosing apathy.</p>
+<p>The <a href="https://tim.blog/2017/05/15/fear-setting/">fear setting</a> technique from Tim Ferriss I mentioned earlier is a way to discern real danger from imagined danger. It also helps identify the ways and degree to which a decision can be reversed or amended.</p>
+<blockquote class="blockquote">
+<p>Knowing is not enough, we must apply. Willing is not enough, we must do. – <a href="https://www.goodreads.com/quotes/302319-knowing-is-not-enough-we-must-apply-willing-is-not">Johann Wolfgang von Goethe</a></p>
+</blockquote>
 
 
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
     }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
+    window.setColorSchemeToggle(window.hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/simmering\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
       });
     }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/simmering\.dev");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        return container.innerHTML
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -826,185 +918,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

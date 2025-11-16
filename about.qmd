@@ -4,30 +4,33 @@ image: assets/image/profile.webp
 about:
   template: solana
   links:
-    - icon: twitter-x
-      text: ''
-      href: https://x.com/paul_simmering
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/in/paulsimmering
     - icon: github
       text: Github
       href: https://github.com/psimm
+    - icon: twitter-x
+      text: ''
+      href: https://x.com/paul_simmering
 
 ---
 
-Hi! I'm Paul Simmering, a developer from Germany specializing in machine learning and natural language processing. I work as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de). 
+Welcome to my website! I'm Paul Simmering, a developer from Germany specializing in machine learning and natural language processing. 
 
-My current focus is building end-to-end data pipelines for market research powered by large language models. My team and I are building [AspectWise](/projects/aspectwise/), a data pipeline for review analysis. On this website, I write about machine learning, data engineering and developer productivity.
+### Work
+
+I work as Technical Expert GenAI Platforms & Services at [Landesbank Baden-Württemberg](https://www.lbbw.de) in Stuttgart. I'm a developer on the GenAI team, building an LLM chatbot with a RAG pipeline and other GenAI services for the bank. Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models. On this website, I write about machine learning, data engineering and developer productivity and it's my practice of [learning in public](https://www.swyx.io/learn-in-public).
 
 ### Other interests
 
-- [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid) and [Figgie](https://www.figgie.com).
-- Contemporary art, particularly generative art and art inspired by geometry. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/selected-work/).
+- [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
+- Contemporary art, particularly art inspired by geometry, architecture and nature. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/selected-work/).
 - Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
-- Design and typographyUp. Some examples: [U.S. Graphics](https://usgraphics.com), [iA](https://ia.net), [Stripe's website](https://stripe.com/en-de).
+- Design and typography, in particular minimalist and brutalist design, such as [U.S. Graphics](https://usgraphics.com).
 - Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
 - Reading blogs. Check out my [blogroll](/blogroll.qmd) for recommendations.
+- Video games. I like playing Satisfactory, Riftbreaker and Guild Wars. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
 
 ### Contact
 
