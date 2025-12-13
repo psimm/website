@@ -10,7 +10,7 @@
 <atom:link href="https://simmering.dev/index.xml" rel="self" type="application/rss+xml"/>
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
-<generator>quarto-1.7.28</generator>
+<generator>quarto-1.8.26</generator>
 <lastBuildDate>Tue, 26 Aug 2025 22:00:00 GMT</lastBuildDate>
 <item>
   <title>A Philosophy of AI Coding</title>
@@ -179,6 +179,7 @@
 
 
 
+
 <p>2025 could be the year of agentic AI. The first agentic AI demos came out in early 2023 and the technology has gained momentum through better tools, smarter models, and the first successful commercial products. The interest in agentic AI is also reflected in the number of GitHub stars for frameworks:</p>
 <div id="1fe96921" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
@@ -300,12 +301,12 @@ if (outputEl) {{
 </div>
 <p>Let’s take a look at the most promising use cases. Click on the use cases to expand them.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Deep research
+<span class="screen-reader-only">Note</span>Deep research
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -332,12 +333,12 @@ Deep research
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Computer use
+<span class="screen-reader-only">Note</span>Computer use
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -356,12 +357,12 @@ Computer use
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Coding
+<span class="screen-reader-only">Note</span>Coding
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -386,12 +387,12 @@ Coding
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Customer support
+<span class="screen-reader-only">Note</span>Customer support
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -620,6 +621,7 @@ if (outputEl) {{
 
 
 
+
 <p>HuggingFace recently released ModernBERT <span class="citation" data-cites="warner2024smarterbetterfasterlonger">(Warner et al. 2024)</span>, an updated version of the BERT language model <span class="citation" data-cites="devlin2018bert">(Devlin 2018)</span> which backports many improvements from LLM research back to the classic 2018 model. In contrast to LLMs, ModernBERT is an encoder-only model that is fitted with a task-specific head outputting probabilities for structured NLP tasks, rather than tokens.</p>
 <p>While LLMs with their decoder-only architecture were originally designed for text generation, they have also been used for structured NLP tasks like text classification. They are imbued with a large amount of general knowledge and excel at zero-shot and few-shot learning. Through the proliferation of the LLM ecosystem they are also widely available via APIs and familiar to many developers.</p>
 <p>Here, I will compare ModernBERT to Meta’s Llama 3.2-3B by <span class="citation" data-cites="grattafiori2024llama3herdmodels">Grattafiori et al. (2024)</span> on a text classification task using the dimensions accuracy, speed, cost and ease of use. Text classification is a simple task, yet very common and important in NLP pipelines. It may also be coupled with text generation in a chat bot, such as for intent classification or as a guardrail to prevent undesirable responses.</p>
@@ -810,10 +812,10 @@ if (outputEl) {{
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading header">
-<th colspan="6" class="gt_heading gt_title gt_font_normal">Model Performance Comparison</th>
+<td colspan="6" class="gt_heading gt_title gt_font_normal">Model Performance Comparison</td>
 </tr>
 <tr class="gt_col_headings even">
 <th id="Setup" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Setup</th>
@@ -867,7 +869,6 @@ if (outputEl) {{
 
 
 </div>
-        
 </div>
 </div>
 <p>ModernBERT-base and ModernBERT-large performed similarly. Large has a 3.2 percentage point advantage in F1 score but at the cost of 27% slower inference. The few-shot approach doesn’t need nearly as much training data, but also results in a less accurate model. It also ran slowly, and this didn’t change when I increased the number of threads used by DSPy to communicate with the vLLM server. I suspect it’s due to inefficient batch inference code in DSPy. Higher speeds could be achieved with a more efficient batching approach.</p>
@@ -1092,6 +1093,7 @@ LLM -&gt; User: The word "strawberry" contains 2 instances of the letter "r".</c
 
 
 
+
 <p>OpenAI recently added the ability to fine-tune their models using direct preference optimization (DPO). They call it <a href="https://platform.openai.com/docs/guides/fine-tuning#preference">preference tuning</a>. Previously, their API only supported supervised fine-tuning (SFT). They join <a href="https://openpipe.ai/blog/announcing-dpo-support">OpenPipe</a> as one of the first pay-per-token APIs to offer DPO. This makes DPO more accessible to developers who don’t want the complexity of managing the training infrastructure themselves. In this article I will briefly introduce DPO and then discuss its use cases in contrast to SFT.</p>
 <section id="what-is-dpo" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-dpo">What is DPO?</h3>
@@ -1103,7 +1105,7 @@ LLM -&gt; User: The word "strawberry" contains 2 instances of the letter "r".</c
 <li>A worse assistant reply</li>
 </ul>
 <p>In a training input file, it looks like this:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span></span>
 <span id="cb1-2">  <span class="dt" style="color: #AD0000;
@@ -1218,7 +1220,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb1-22"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>DPO adjusts the model weights such that it is more likely to choose the preferred answers. It’s graded on how much more likely it is to choose the preferred answer. This teaches it not just to answer more like the preferred answer, but also to avoid answering like the rejected answer. It stands in contrast to SFT, which only teaches it to mimic a single answer.</p>
 </section>
 <section id="loss-function" class="level3">
@@ -1379,14 +1381,15 @@ font-style: inherit;">}</span></span></code></pre></div>
 
 
 
+
 <p>Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I’m excited for their take on agents. In this article I’ll walk through an example app and comment on my experience developing with PydanticAI.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-PydanticAI version 0.0.13
+<span class="screen-reader-only">Note</span>PydanticAI version 0.0.13
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1397,12 +1400,12 @@ PydanticAI version 0.0.13
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What is an agent?
+<span class="screen-reader-only">Tip</span>What is an agent?
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1482,7 +1485,7 @@ graph LR
 <h3 class="anchored" data-anchor-id="database">Database</h3>
 <p>I’m using <a href="https://duckdb.org">DuckDB</a> to create an in-memory database which will be made available to the agent.</p>
 <div id="8332ed09" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="annotated-cell-1" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-1" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
 <span id="annotated-cell-1-2"></span>
@@ -1490,7 +1493,7 @@ font-style: inherit;">import</span> duckdb</span>
 background-color: null;
 font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">connect</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">connect</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
@@ -1502,7 +1505,7 @@ font-style: inherit;">connect</span>()</span><div class="code-annotation-gutter-
 </div>
 <p>I’ll insert a set of reports into the database. The data included is fictional and was generated by an LLM. The data consists of 40 reports like this:</p>
 <div id="1554a29c" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
 background-color: null;
@@ -1520,7 +1523,7 @@ background-color: null;
 font-style: inherit;">"data/reports.csv"</span>)</span>
 <span id="cb1-5">GT(reports.head(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">5</span>))</span></code></pre></div>
+font-style: inherit;">5</span>))</span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div id="ylufodktok" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
@@ -1571,7 +1574,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="id" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">id</th>
@@ -1628,12 +1631,11 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 
 
 </div>
-        
 </div>
 </div>
 <p>To make the title searchable, I’ll embed it using an <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embedding endpoint</a>. The result will be stored in a new column with 1536 dimensions.</p>
 <div id="56ef65bc" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> openai <span class="im" style="color: #00769E;
 background-color: null;
@@ -1713,11 +1715,11 @@ font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1536</span>),</span>
 <span id="cb2-18">    )</span>
-<span id="cb2-19">)</span></code></pre></div>
+<span id="cb2-19">)</span></code></pre></div></div>
 </div>
 <p>Now, I’ll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size <code>ARRAY</code> column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.</p>
 <div id="8f1bb9e3" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="annotated-cell-4" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1">con.execute(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1">con.execute(</span>
 <span id="annotated-cell-4-2">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -1754,7 +1756,7 @@ font-style: inherit;">    FROM reports;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-13" class="code-annotation-target"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    """</span></span>
-<span id="annotated-cell-4-14">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<span id="annotated-cell-4-14">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
@@ -1765,7 +1767,7 @@ font-style: inherit;">    """</span></span>
 </div>
 </div>
 <div id="e1503c45" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">con.execute(<span class="st" style="color: #20794D;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">con.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"INSTALL vss;"</span>)</span>
 <span id="cb3-2">con.execute(<span class="st" style="color: #20794D;
@@ -1776,7 +1778,7 @@ font-style: inherit;">"LOAD vss;"</span>)</span>
 <span id="cb3-5">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(title_embedding) WITH (metric='cosine');"</span></span>
-<span id="cb3-6">)</span></code></pre></div>
+<span id="cb3-6">)</span></code></pre></div></div>
 </div>
 <p>I also create a hierarchical navigable small world (HNSW) index on the title embeddings. This enables approximate nearest neighbor search in O(log n). It’s enabled by the <a href="https://duckdb.org/docs/extensions/vss">vss</a> extension. Note that persistence to disk is experimental, so I wouldn’t recommend it for production yet.</p>
 </section>
@@ -1784,7 +1786,7 @@ font-style: inherit;">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(titl
 <h3 class="anchored" data-anchor-id="agent">Agent</h3>
 <p>Let’s set up an agent powered by the <a href="https://groq.com">Groq</a> inference API. It serves a range of open source models. Specifically, I’ll use the <code>llama-3.3-70b-versatile</code> model released by Meta on December 6th. Artificial Analysis has a detailed <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers">report</a> showing that it advanced the speed-accuracy trade-off. The model has tool calling capabilities, which are critical for our use case.</p>
 <div id="6c615539" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="annotated-cell-6" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> pydantic_ai <span class="im" style="color: #00769E;
 background-color: null;
@@ -1812,7 +1814,7 @@ background-color: null;
 font-style: inherit;">"Who are you?"</span>)</span>
 <span id="annotated-cell-6-9"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(result.data)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">print</span>(result.data)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
@@ -1834,7 +1836,7 @@ What specific area of market research would you like to explore?</code></pre>
 <h3 class="anchored" data-anchor-id="tools">Tools</h3>
 <p>The agent’s job will be to answer questions based on the reports in the database. It needs a way to access the database. We can give it a tool, meaning a function that it can call, to query the database. First, it needs a database connection.</p>
 <div id="1b732c95" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="annotated-cell-7" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
 background-color: null;
@@ -1855,7 +1857,7 @@ font-style: inherit;">class</span> AgentDependencies:</span>
 background-color: null;
 font-style: inherit;">=</span> AgentDependencies(db<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
@@ -1871,7 +1873,7 @@ font-style: inherit;">=</span>con)</span><div class="code-annotation-gutter-bg">
 </div>
 <p>Next, let’s give the agent a tool to search the database of reports. Based on the user’s question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.</p>
 <div id="4aa0faf3" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="annotated-cell-8" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-8" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> json</span>
 <span id="annotated-cell-8-2"><span class="im" style="color: #00769E;
@@ -2040,7 +2042,7 @@ font-style: inherit;">"No reports found. Try a different field or value, or use 
 <span id="annotated-cell-8-37">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">return</span> df_to_str(df)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">return</span> df_to_str(df)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
@@ -2076,7 +2078,7 @@ font-style: inherit;">return</span> df_to_str(df)</span><div class="code-annotat
 </div>
 <p>This lets the agent execute searches based on the exact match of a field.</p>
 <div id="5f301a90" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">deps <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">deps <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> AgentDependencies(db<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2090,7 +2092,7 @@ background-color: null;
 font-style: inherit;">=</span>deps)</span>
 <span id="cb5-3"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(result.data)</span></code></pre></div>
+font-style: inherit;">print</span>(result.data)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We have four reports from Germany:
 
@@ -2104,7 +2106,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 </div>
 <p>It works, the agent found the 4 reports from Germany. Let’s check the exact tool call:</p>
 <div id="1e729fc6" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">agent.last_run_messages</span></code></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">agent.last_run_messages</span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>[ModelRequest(parts=[SystemPromptPart(content='You are a market research expert and answer questions using a database of reports.', part_kind='system-prompt'), UserPromptPart(content='Which reports do we have from Germany?', timestamp=datetime.datetime(2024, 12, 18, 17, 38, 58, 663721, tzinfo=datetime.timezone.utc), part_kind='user-prompt')], kind='request'),
  ModelResponse(parts=[ToolCallPart(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "country", "value": "Germany"}'), tool_call_id='call_be61', part_kind='tool-call')], timestamp=datetime.datetime(2024, 12, 18, 17, 38, 58, tzinfo=datetime.timezone.utc), kind='response'),
@@ -2115,7 +2117,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <p>Here, the model correctly translated the user’s question into the tool call with the arguments <code>{"field": "country", "value": "Germany"}</code>.</p>
 <p>To make it easier to evaluate the agent’s output and also make its results useable by other tools, we can create a response model that includes the ids of the identified reports.</p>
 <div id="9dc4de41" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="annotated-cell-11" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-11" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> pydantic <span class="im" style="color: #00769E;
 background-color: null;
@@ -2173,7 +2175,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>,</span>
-<span id="annotated-cell-11-18">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<span id="annotated-cell-11-18">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
@@ -2189,7 +2191,7 @@ font-style: inherit;">3</span>,</span>
 </div>
 <p>The <code>AgentResponse</code> model is used to validate the agent’s output. It will always include a set of integer ids. In an app, these could be used to provide links to the reports.</p>
 <div id="837e1955" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">result <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">result <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> typed_agent.run_sync(<span class="st" style="color: #20794D;
 background-color: null;
@@ -2198,7 +2200,7 @@ background-color: null;
 font-style: inherit;">=</span>deps)</span>
 <span id="cb9-2"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(result.data)</span></code></pre></div>
+font-style: inherit;">print</span>(result.data)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>text='The reports from Germany are titled Global Electric Vehicle Market Outlook 2018-2023, Digital Advertising Spend Analysis, Beverage Market Competitive Analysis and Medical Imaging Equipment Market Size.' relevant_report_ids={32, 1, 12, 21}</code></pre>
 </div>
@@ -2206,7 +2208,7 @@ font-style: inherit;">print</span>(result.data)</span></code></pre></div>
 <p>Now we have an agent that returns a type-checked structured response. Note that I’ve omitted the re-registration of the tool to the new agent instance for brevity.</p>
 <p>However, requests may not exactly match the fields in the database, so let’s also add the ability to search for similar titles.</p>
 <div id="c0d28b41" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="annotated-cell-13" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-13" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">@typed_agent.tool</span></span>
 <span id="annotated-cell-13-2"><span class="at" style="color: #657422;
@@ -2328,7 +2330,7 @@ background-color: null;
 font-style: inherit;">\n\n</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;"> These reports have titles similar to the query, but may not be relevant to the user's question."</span></span>
-<span id="annotated-cell-13-28">    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<span id="annotated-cell-13-28">    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
@@ -2348,7 +2350,7 @@ font-style: inherit;"> These reports have titles similar to the query, but may n
 </div>
 <p>Let’s ask the agent about a topic that is not in the database to see how it uses the title similarity tool.</p>
 <div id="2b25b6e8" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">result <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">result <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> agent.run_sync(<span class="st" style="color: #20794D;
 background-color: null;
@@ -2357,7 +2359,7 @@ background-color: null;
 font-style: inherit;">=</span>deps)</span>
 <span id="cb11-2"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(result.data)</span></code></pre></div>
+font-style: inherit;">print</span>(result.data)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;function=search_reports_by_field {"field": "topic", "value": "quantum computing"}&lt;/function&gt;</code></pre>
 </div>
@@ -2369,7 +2371,7 @@ font-style: inherit;">print</span>(result.data)</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="evals">Evals</h2>
 <p>Automated evaluations are necessary to ensure that an agent is working as expected, and to switch out models, prompts and tools without breaking the app. PydanticAI offers <a href="https://ai.pydantic.dev/testing-evals/">tools</a> for testing the code (without running a model) and for evaluations. Let’s set up a simple evaluation that checks whether the agent correctly answers questions about the database. We measure the precision (how many of the results found are relevant) and recall (how many of the relevant results are found).</p>
 <div id="2d105a1d" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">examples <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">examples <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
 <span id="cb13-2">    {</span>
@@ -2484,10 +2486,10 @@ font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">22</span>},</span>
 <span id="cb13-33">    },</span>
-<span id="cb13-34">]</span></code></pre></div>
+<span id="cb13-34">]</span></code></pre></div></div>
 </div>
 <div id="3db50b93" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="annotated-cell-16" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-16" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> collections <span class="im" style="color: #00769E;
 background-color: null;
@@ -2696,7 +2698,7 @@ font-style: inherit;">{</span>recall<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
@@ -2808,7 +2810,7 @@ font-style: inherit;">"</span>)</span><div class="code-annotation-gutter-bg"></d
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Not every app needs an agent framework
+<span class="screen-reader-only">Tip</span>Not every app needs an agent framework
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2834,6 +2836,7 @@ Not every app needs an agent framework
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/context-constrained/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2889,6 +2892,7 @@ Not every app needs an agent framework
 
 
 
+
 <p>Last year, my colleague Paavo Huoviala and I explored prompting and fine-tuning large language models for aspect-based sentiment analysis (ABSA) <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. Like many researchers at the time, we spent considerable effort manually crafting prompts and selecting few-shot examples. But what if we could automate this process? Enter DSPy - a Python library that automatically optimizes LLM prompts. In this article, I’ll revisit our ABSA experiments using DSPy’s automated approach instead of manual prompt engineering.</p>
 <table class="caption-top table">
 <thead>
@@ -2913,12 +2917,12 @@ Not every app needs an agent framework
 </tbody>
 </table>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-DSPy version 2.5.32
+<span class="screen-reader-only">Note</span>DSPy version 2.5.32
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -3006,7 +3010,7 @@ graph TB
 <h3 class="anchored" data-anchor-id="semeval-2014-task-4">SemEval 2014 Task 4</h3>
 <p>I’m using the SemEval 2014 Task 4 dataset by <span class="citation" data-cites="pontiki_semeval">Pontiki et al. (2014)</span>. The <a href="https://huggingface.co/datasets/psimm/absa-semeval2014-alpaca">dataset</a> is available on Hugging Face. This is a cleaned version of the original XML files consisting of train and test splits. The small number of examples with the “conflict” label are excluded, as is common in the literature.</p>
 <div id="c9a578ab" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
 background-color: null;
@@ -3031,12 +3035,12 @@ font-style: inherit;">=</span> pl.read_parquet(url <span class="op" style="color
 background-color: null;
 font-style: inherit;">+</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"/data/test-00000-of-00001.parquet"</span>)</span></code></pre></div>
+font-style: inherit;">"/data/test-00000-of-00001.parquet"</span>)</span></code></pre></div></div>
 </div>
 <div id="b21443cd" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> great_tables <span class="im" style="color: #00769E;
 background-color: null;
@@ -3092,7 +3096,7 @@ font-style: inherit;">"right"</span>, columns<span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"examples"</span>])</span></code></pre></div>
+font-style: inherit;">"examples"</span>])</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div id="oykrqaoiln" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -3144,10 +3148,10 @@ font-style: inherit;">"examples"</span>])</span></code></pre></div>
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading header">
-<th colspan="3" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 Dataset</th>
+<td colspan="3" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 Dataset</td>
 </tr>
 <tr class="gt_col_headings even">
 <th id="Split" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Split</th>
@@ -3181,7 +3185,6 @@ font-style: inherit;">"examples"</span>])</span></code></pre></div>
 
 
 </div>
-        
 </div>
 </div>
 <p>The dataset contains a similar number of restaurant and laptop reviews.</p>
@@ -3194,7 +3197,7 @@ font-style: inherit;">"examples"</span>])</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="pydantic-models-for-absa">Pydantic models for ABSA</h3>
 <p>We create classes to represent the input and output of the task using the data validation library <a href="https://docs.pydantic.dev/latest/">Pydantic</a>. This helps with validating the data and provides a structured output format for predictor. The <code>Field</code> class is used to describe the expected data type. Their descriptions match the ones used in <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>. This is a form of prompting, but DSPy also supports automatically setting the structure’s descriptions using the <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed#optimizing-typed-predictors"><code>optimize_signature</code></a> optimizer. In this experiment I’ll stick with the original descriptions and only vary the normal prompt and few-shot examples.</p>
 <div id="fa24fc6d" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -3345,7 +3348,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"An array of aspects and their polarities. If no aspects are mentioned in the text, use an empty array."</span></span>
-<span id="cb3-39">    )</span></code></pre></div>
+<span id="cb3-39">    )</span></code></pre></div></div>
 </div>
 <p>The <code>__hash__</code> and <code>__eq__</code> methods will be helpful for evaluation, because they allow for use of set operations to compare gold and predicted aspects.</p>
 </section>
@@ -3353,7 +3356,7 @@ font-style: inherit;">"An array of aspects and their polarities. If no aspects a
 <h3 class="anchored" data-anchor-id="transform-dataset-to-dspy-examples">Transform dataset to DSPy examples</h3>
 <p>Each row in the dataset needs to be turned into an instance of the <code>dspy.Example</code> class. The <code>with_inputs</code> method is used to tell DSPy which column contains the input. Other columns are used as expected model outputs.</p>
 <div id="ba082b2b" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> json</span>
 <span id="cb4-2"><span class="im" style="color: #00769E;
@@ -3405,13 +3408,13 @@ font-weight: bold;
 font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">in</span> test.to_dicts()]</span></code></pre></div>
+font-style: inherit;">in</span> test.to_dicts()]</span></code></pre></div></div>
 </div>
 <p>Let’s look at the first example.</p>
 <div id="ee11a3cc" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainset[<span class="dv" style="color: #AD0000;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainset[<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>]</span></code></pre></div>
+font-style: inherit;">0</span>]</span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>Example({'text': 'I charge it at night and skip taking the cord with me because of the good battery life.', 'aspects': Aspects(aspects=[Aspect(term='cord', polarity='neutral'), Aspect(term='battery life', polarity='positive')])}) (input_keys={'text'})</code></pre>
 </div>
@@ -3422,7 +3425,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 <p>In DSPy, a module is a language model and a way of prompting. They can also consist of multiple requests and also include external tools such as a vector database for retrieval augmented generation. In this example, we have a single request using few-shot examples and chain of thought.</p>
 <p>In order to be able to parse the output as a dictionary, the LLM must output valid JSON. Therefore I’ll use a <a href="https://dspy.ai/learn/8-typed_predictors/?h=typed">Typed Predictor</a> in DSPy, which is similar to structured outputs via instructor or a similar library.</p>
 <div id="01bdde17" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">class</span> AbsaSignature(dspy.Signature):</span>
@@ -3436,12 +3439,12 @@ font-style: inherit;">=</span> dspy.OutputField()</span>
 <span id="cb7-5"></span>
 <span id="cb7-6">predictor <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span></code></pre></div>
+font-style: inherit;">=</span> dspy.ChainOfThought(AbsaSignature)</span></code></pre></div></div>
 </div>
 <p>We also need to choose a language model. DSPy works with OpenAI, Anthropic, Ollama, vllm and other OpenAI-compatible platforms and libraries. This is powered by <a href="https://github.com/BerriAI/litellm">litellm</a> under the hood.</p>
 <p>For this article, I’ll use OpenAI’s gpt-4o-mini as well as the 70B version of Meta’s Llama 3.1 hosted on <a href="https://fireworks.ai">fireworks.ai</a>. Fireworks.ai generously supplied me with credits as part of the <a href="https://maven.com/parlance-labs/fine-tuning?utm_campaign=d45fef&amp;utm_medium=partner&amp;utm_source=instructor">Mastering LLMs For Developers &amp; Data Scientists</a> course.</p>
 <div id="9ba79829" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># FIREWORKS_AI_API_KEY environment variable must be set.</span></span>
 <span id="cb8-2"></span>
@@ -3478,7 +3481,7 @@ font-style: inherit;">250</span>,</span>
 <span id="cb8-9">)</span>
 <span id="cb8-10">dspy.configure(lm<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>lm)</span></code></pre></div>
+font-style: inherit;">=</span>lm)</span></code></pre></div></div>
 </div>
 </section>
 </section>
@@ -3486,11 +3489,11 @@ font-style: inherit;">=</span>lm)</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
 <p>Let’s run a single example to check that everything is working.</p>
 <div id="dcddfe3d" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">predictor(text<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">predictor(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"The pizza was great, but the service was terrible"</span>)</span></code></pre></div>
+font-style: inherit;">"The pizza was great, but the service was terrible"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Prediction(
     rationale='We produce the aspects by identifying the terms "pizza" and "service" as aspects and determining their polarities based on the context. The term "pizza" is associated with the positive sentiment "great", while the term "service" is associated with the negative sentiment "terrible".',
@@ -3500,11 +3503,11 @@ font-style: inherit;">"The pizza was great, but the service was terrible"</span>
 </div>
 <p>That’s a good start. I’m a fan of <a href="https://hamel.dev/blog/posts/prompt/">Hamel Husain’s advice</a> to always demand: “Show me the prompt”, so let’s check what DSPy actually sent to OpenAI:</p>
 <div id="35504bec" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">lm.inspect_history(n<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">lm.inspect_history(n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1</span>)</span></code></pre></div>
+font-style: inherit;">1</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
@@ -3567,7 +3570,7 @@ We produce the aspects by identifying the terms "pizza" and "service" as aspects
 <h3 class="anchored" data-anchor-id="specify-the-evaluation-function">Specify the evaluation function</h3>
 <p>An evaluation function takes an example and a prediction and returns an F1 score. A true positive is a predicted aspect that is also in the gold answer, a false positive is a predicted aspect that is not in the gold answer, and a false negative is a gold answer aspect that is not predicted. Here are the precision, recall, and F1 score functions.</p>
 <div id="2a060d62" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> precision(tp: <span class="bu" style="color: null;
@@ -3689,11 +3692,11 @@ font-style: inherit;">*</span> rec) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span> (prec <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">+</span> rec)</span></code></pre></div>
+font-style: inherit;">+</span> rec)</span></code></pre></div></div>
 </div>
 <p>Next is the evaluation function which compares the gold and predicted aspects. To count as a true positive, both the term and the polarity have to be correct. As it is conventional on this benchmark, the case where both the gold answers and the prediction are empty is treated as a correct prediction of no aspects.</p>
 <div id="a5bf9cf4" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> evaluate_absa(example: dspy.Example, prediction: Aspects, trace<span class="op" style="color: #5E5E5E;
@@ -3768,11 +3771,11 @@ font-style: inherit;"># correct prediction of no aspects</span></span>
 <span id="cb14-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">return</span> f1_score(tp, fp, fn)</span></code></pre></div>
+font-style: inherit;">return</span> f1_score(tp, fp, fn)</span></code></pre></div></div>
 </div>
 <p>Let’s try the evaluation function with a single example. We expect the F1 score to be 1.0, because the prediction matches the gold answer exactly.</p>
 <div id="0bc42ba9" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">example <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">example <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Example(</span>
 <span id="cb15-2">    text<span class="op" style="color: #5E5E5E;
@@ -3814,7 +3817,7 @@ background-color: null;
 font-style: inherit;">=</span> predictor(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>example.text)</span>
-<span id="cb15-11">evaluate_absa(example, prediction)</span></code></pre></div>
+<span id="cb15-11">evaluate_absa(example, prediction)</span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>1.0</code></pre>
 </div>
@@ -3825,7 +3828,7 @@ font-style: inherit;">=</span>example.text)</span>
 <p>DSPy has a variety of <a href="https://dspy.ai/learn/optimization/optimizers/?h=optimizers">optimizers</a>, loops that change the prompt and/or few-shot examples and evaluate the performance. They’re analogous to optimizers like SGD and Adam in PyTorch. The choice of optimizer depends on the task, the amount of labeled data and the computational resources available. As we have a large labeled dataset, it’s not necessary to have the model bootstrap artificial examples. Our 2023 paper found that fine-tuning yields the best results, but the goal of this article is to showcase DSPy’s prompt optimization.</p>
 <p>The most powerful optimizer available for a prompting approach for this task is <a href="[Multiprompt Instruction PRoposal Optimizer Version 2](https://dspy.ai/deep-dive/optimizers/miprov2/?h=miprov)">MIPROv2</a> (Multiprompt Instruction PRoposal Optimizer Version 2) by <span class="citation" data-cites="opsahlong2024optimizinginstructionsdemonstrationsmultistage">Opsahl-Ong et al. (2024)</span>. MIPROv2 uses Bayesian optimization to find an optimal combination of few-shot examples and prompt instructions.</p>
 <div id="556aaa52" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">optimizer_settings <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">optimizer_settings <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
@@ -3852,11 +3855,11 @@ font-style: inherit;"># keep going even when invalid JSON is returned</span></sp
 background-color: null;
 font-style: inherit;">=</span> dspy.teleprompt.MIPROv2(<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">**</span>optimizer_settings)</span></code></pre></div>
+font-style: inherit;">**</span>optimizer_settings)</span></code></pre></div></div>
 </div>
 <p>The final step is to call the <code>compile</code> method, which starts the optimization process. After about 5 minutes, the best prompt and few-shot examples are saved to a JSON file.</p>
 <div id="c003b7c7" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Define settings for the comilation step of the optimizer.</span></span>
 <span id="cb18-2">compile_settings <span class="op" style="color: #5E5E5E;
@@ -3913,10 +3916,10 @@ background-color: null;
 font-style: inherit;">False</span>,  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># skip confirmation dialog</span></span>
-<span id="cb18-10">)</span></code></pre></div>
+<span id="cb18-10">)</span></code></pre></div></div>
 </div>
 <p>We save the optimized predictor to a JSON file. It’s a small config file listing the chosen few-shot examples and the optimized prompt.</p>
-<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">optimized_predictor <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">optimized_predictor <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> optimizer.<span class="bu" style="color: null;
 background-color: null;
@@ -3931,10 +3934,10 @@ font-style: inherit;">**</span>compile_settings</span>
 <span id="cb19-3">)</span>
 <span id="cb19-4">optimized_predictor.save(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
+font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div></div>
 <p>Let’s check if we can load it again:</p>
 <div id="08ac763f" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">optimized_predictor <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">optimized_predictor <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.ChainOfThought(signature<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3943,20 +3946,20 @@ font-style: inherit;">=</span>AbsaSignature)</span>
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div>
+font-style: inherit;">"configs/absa_model.json"</span>)</span></code></pre></div></div>
 </div>
 <p>Again: “Show me the prompt”.</p>
 <div id="eaed34bf" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(optimized_predictor.extended_signature.instructions)</span></code></pre></div>
+font-style: inherit;">print</span>(optimized_predictor.extended_signature.instructions)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>You are a product reviewer tasked with analyzing customer feedback for laptops and netbooks. Given the fields `text`, which contains a customer review, produce the fields `aspects`, which should include the specific features or aspects of the laptop or netbook mentioned in the review, along with their corresponding sentiment or polarity.</code></pre>
 </div>
 </div>
 <p>and show me the chosen few-shot examples:</p>
 <div id="e49e8c57" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">for</span> demo <span class="kw" style="color: #003B4F;
@@ -3976,7 +3979,7 @@ font-style: inherit;">"text"</span>])</span>
 background-color: null;
 font-style: inherit;">print</span>(demo[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"aspects"</span>])</span></code></pre></div>
+font-style: inherit;">"aspects"</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-Called headquarters again, they report that TFT panel is broken, should be fixed by the end of the week (week 3).
 {"aspects":[{"term":"TFT panel","polarity":"negative"}]}
@@ -3992,7 +3995,7 @@ The powerpoint opened seamlessly in the apple and the mac hooked up to the proje
 <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
 <p>So far, we’ve only evaluated on the validation part of the training set (this was automatically done by DSPy). Let’s evaluate the optimized predictor on the test set.</p>
 <div id="9ebae982" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">evaluator <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">evaluator <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dspy.Evaluate(</span>
 <span id="cb25-2">    devset<span class="op" style="color: #5E5E5E;
@@ -4011,12 +4014,12 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span>,</span>
-<span id="cb25-6">)</span></code></pre></div>
+<span id="cb25-6">)</span></code></pre></div></div>
 </div>
 <div id="aab61074" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">score <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">score <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre></div>
+font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre></div></div>
 </div>
 <p>The first run yields an F1 score of 47.6. That’s rather poor, but the compiler settings only allow for 4 labeled examples and 1 bootstrapped example and only 3 trials.</p>
 </section>
@@ -4024,7 +4027,7 @@ font-style: inherit;">=</span> evaluator(optimized_predictor)</span></code></pre
 <h2 class="anchored" data-anchor-id="hyperparameter-optimization">Hyperparameter optimization</h2>
 <p>What would happen if we changed the hyperparameters? Let’s do a grid search over the number of few-shot examples and the number of trials, as well as try different models.</p>
 <div id="d029a7bb" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> itertools</span>
 <span id="cb27-2"></span>
@@ -4116,11 +4119,11 @@ font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">list</span>(</span>
 <span id="cb27-26">    itertools.product(max_labeled_demos, num_trials, chain_of_thought, lm_settings)</span>
-<span id="cb27-27">)</span></code></pre></div>
+<span id="cb27-27">)</span></code></pre></div></div>
 </div>
 <p>This results in a grid with 48 combinations. Next, we iterate over the grid, perform the optimization run and save the results to Weights &amp; Biases.</p>
 <div id="d4cf55fc" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> os</span>
 <span id="cb28-2"><span class="im" style="color: #00769E;
@@ -4484,7 +4487,7 @@ background-color: null;
 font-style: inherit;">"</span></span>
 <span id="cb28-70">        )</span>
 <span id="cb28-71">        artifact.add_file(filepath)</span>
-<span id="cb28-72">        run.log_artifact(artifact)</span></code></pre></div>
+<span id="cb28-72">        run.log_artifact(artifact)</span></code></pre></div></div>
 </div>
 </section>
 <section id="comparison-with-manual-prompts" class="level2">
@@ -4493,7 +4496,7 @@ font-style: inherit;">"</span></span>
 <p>The manual prompts and few-shot examples are available on <a href="https://github.com/psimm/website/blob/master/blog/absa-with-dspy/configs/manual_prompt.json">Github</a>.</p>
 <p>The models <code>gpt-4-0613</code> and <code>gpt-3.5-turbo-0613</code> that were used in the 2023 paper are no longer available on the OpenAI API. Therefore, we use the closest substitutes here.</p>
 <div id="88dcd13e" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">models <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">models <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
 <span id="cb29-2">    <span class="st" style="color: #20794D;
@@ -4648,7 +4651,7 @@ font-style: inherit;">"Manual prompt configuration"</span></span>
 <span id="cb29-40">        artifact.add_file(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"configs/manual_prompt.json"</span>)</span>
-<span id="cb29-41">        run.log_artifact(artifact)</span></code></pre></div>
+<span id="cb29-41">        run.log_artifact(artifact)</span></code></pre></div></div>
 </div>
 </section>
 <section id="results-and-discussion" class="level2">
@@ -4657,7 +4660,7 @@ font-style: inherit;">"configs/manual_prompt.json"</span>)</span>
 <div id="a36f5554" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> wandb</span>
 <span id="cb30-2"></span>
@@ -4901,7 +4904,7 @@ font-style: inherit;">2</span></span>
 <span id="cb30-68">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"¹ Bootstrapped + labeled examples. Notes: Limited Llama 3.1 70B non-CoT runs due to API constraints. Manual prompt runs use 10 examples vs. 6 in original paper."</span></span>
-<span id="cb30-69">)</span></code></pre></div>
+<span id="cb30-69">)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div id="fhjsfutory" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -4953,10 +4956,10 @@ font-style: inherit;">"¹ Bootstrapped + labeled examples. Notes: Limited Llama 
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading header">
-<th colspan="6" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 1+2 Few-Shot Predictors</th>
+<td colspan="6" class="gt_heading gt_title gt_font_normal">SemEval 2014 Task 4 1+2 Few-Shot Predictors</td>
 </tr>
 <tr class="gt_col_headings even">
 <th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
@@ -5354,7 +5357,6 @@ font-style: inherit;">"¹ Bootstrapped + labeled examples. Notes: Limited Llama 
 
 
 </div>
-        
 </div>
 </div>
 <section id="comparison-to-the-2023-manual-prompts" class="level3">
@@ -5367,7 +5369,7 @@ font-style: inherit;">"¹ Bootstrapped + labeled examples. Notes: Limited Llama 
 <div id="6973a37c" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> statsmodels.api <span class="im" style="color: #00769E;
 background-color: null;
@@ -5565,7 +5567,7 @@ font-style: inherit;">{</span>r2<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div>
+font-style: inherit;">"</span>)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <div id="weybrcaczr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -5617,13 +5619,13 @@ font-style: inherit;">"</span>)</span></code></pre></div>
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading header">
-<th colspan="7" class="gt_heading gt_title gt_font_normal">Hyperparameter Analysis</th>
+<td colspan="7" class="gt_heading gt_title gt_font_normal">Hyperparameter Analysis</td>
 </tr>
 <tr class="gt_heading even">
-<th colspan="7" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Dependent variable: F1 score</th>
+<td colspan="7" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Dependent variable: F1 score</td>
 </tr>
 <tr class="gt_col_headings header">
 <th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Parameter</th>
@@ -5691,7 +5693,6 @@ font-style: inherit;">"</span>)</span></code></pre></div>
 
 
 </div>
-        
 </div>
 </div>
 </section>
@@ -5775,6 +5776,7 @@ Simmering, Paul F., and Paavo Huoviala. 2023. <span>“Large Language Models for
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/long-prompts/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6015,9 +6017,10 @@ Yan, Fanjia, Huanzhi Mao, Charlie Cheng-Jie Ji, Tianjun Zhang, Shishir G. Patil,
 
 
 
+
 <p>On August 6 OpenAI released <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">structured outputs</a> in their API. Is structured outputs a replacement for instructor, outlines and other libraries that provide structured outputs for language models? Let’s compare them.</p>
 <p>OpenAI’s structured outputs makes the following code possible:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> json</span>
 <span id="cb1-2"></span>
@@ -6094,7 +6097,7 @@ font-style: inherit;">=</span> Recipe(<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">**</span>json.loads(completion.choices[<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>].message.content))</span></code></pre></div>
+font-style: inherit;">0</span>].message.content))</span></code></pre></div></div>
 <p>It’s guaranteed that the output will be JSON that can be parsed into a <code>Recipe</code> object. The code looks very similar to the code you’d write with any of the <a href="../../blog/structured_output/">10 libraries</a> I compared in May.</p>
 <p>Besides removing the need for a library, structured output works quite differently from function calling under the hood. With function calling the model is trained to follow an instruction given as a JSON schema and is likely but not guaranteed to follow it. At any token position it’s still free to output a token that doesn’t fit the schema. With structured output, the output of the model is constrained to fit the schema. This is the same approach as the <a href="https://github.com/outlines-dev/outlines">outlines</a> library uses for open source models.</p>
 <section id="pros-and-cons" class="level2">
@@ -6142,6 +6145,7 @@ font-style: inherit;">0</span>].message.content))</span></code></pre></div>
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/abstractions/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6221,7 +6225,7 @@ font-style: inherit;">0</span>].message.content))</span></code></pre></div>
 </table>
 <p>To illustrate, let’s compare the type of code you’d write at the low and high levels of abstraction.</p>
 <p>Creating a simple neural network in PyTorch:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> torch</span>
 <span id="cb1-2"><span class="im" style="color: #00769E;
@@ -6299,9 +6303,9 @@ font-style: inherit;">self</span>.l3(x)</span>
 <span id="cb1-15">        <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">return</span> x</span></code></pre></div>
+font-style: inherit;">return</span> x</span></code></pre></div></div>
 <p>Loading a pre-trained transformer model from Hugging Face:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
 background-color: null;
@@ -6316,7 +6320,7 @@ font-style: inherit;">'bert-base-uncased'</span>)</span>
 background-color: null;
 font-style: inherit;">=</span> BertForSequenceClassification.from_pretrained(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
+font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div></div>
 <p>PyTorch confronts you with the details of layers, their sizes, activation functions and more. Hugging Face abstracts them away.</p>
 <section id="more-alternatives-at-higher-levels" class="level3">
 <h3 class="anchored" data-anchor-id="more-alternatives-at-higher-levels">More alternatives at higher levels</h3>
@@ -6394,6 +6398,7 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/waiting/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6526,6 +6531,7 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
 
 
 
+
 <p>The launch of the <a href="../../projects/aspectwise/index.html">review analysis project</a> has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It’s called Text Tournament and the purpose is to compare ideas for company names, taglines, product descriptions and ad copy in a tournament-style competition. The project is available on <a href="https://github.com/psimm/text-tournament">GitHub</a> under the MIT license.</p>
 <p>This is the companion blog post to the project which explains my thought process and technical details.</p>
 <section id="the-tournament" class="level2">
@@ -6578,7 +6584,7 @@ font-style: inherit;">'bert-base-uncased'</span>)</span></code></pre></div>
 <section id="structured-output-reasoning" class="level2">
 <h2 class="anchored" data-anchor-id="structured-output-reasoning">Structured output &amp; reasoning</h2>
 <p>To make sure that the LLM’s answer is interpretable, I used <a href="https://github.com/jxnl/instructor">instructor</a>. Further, I asked the model to not just pick the winner but also to provide a reason. This is done with a simple Pydantic model:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">class</span> Rating(BaseModel):</span>
@@ -6589,7 +6595,7 @@ font-style: inherit;">str</span></span>
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2</span>]</span></code></pre></div>
+font-style: inherit;">2</span>]</span></code></pre></div></div>
 <p>By asking for the reason first, the tokens generated as the reason are influencing the token chosen for the “preferred” field. This makes use of the auto-regressive nature of the model.</p>
 <p>The benefit of the reason is that it typically improves the model’s thinking and it also provides an inspectable record. For example, here are two outputs from the tournament above:</p>
 <p>Streamio vs MelodiX on pronounceability:</p>
@@ -6663,6 +6669,7 @@ Rafailov, Rafael, Archit Sharma, Eric Mitchell, Christopher D Manning, Stefano E
 
 
 
+
 <p>The pace of publishing in machine learning is extremely high. There were 242,290 AI publications in 2022. That’s 663 per day, or one every two minutes. Based on comments on X, Reddit and Discord, I can see that many people feel FOMO, overwhelmed or inadequate because they can’t keep up, even in subfields they’re supposed to be experts in.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -6703,6 +6710,7 @@ Rafailov, Rafael, Archit Sharma, Eric Mitchell, Christopher D Manning, Stefano E
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/detailed-world/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6855,8 +6863,9 @@ Rafailov, Rafael, Archit Sharma, Eric Mitchell, Christopher D Manning, Stefano E
 
 
 
+
 <p>Machine learning is a deep and constantly evolving field. In an applied project, the details of models are typically compressed into a few lines of a configuration file. Take this excerpt from a configuration file for an LLM training run using <a href="https://github.com/OpenAccess-AI-Collective/axolotl">Axolotl</a>:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">adapter</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -6950,7 +6959,7 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.0002</span></span></code></pre></div>
+font-style: inherit;">0.0002</span></span></code></pre></div></div>
 <p>There are so many concepts packed into just 10 lines: low-rank adapters, backpropagation, batching, quantization, optimizers. Each of these decomposes into sub-concepts and sub-sub-concepts. The further you go down, the closer you get to pure mathematics. In this case, matrix factorization, calculus, binary arithmetic and trigonometry.</p>
 <p>I’ve understood each of these at some point in the last 10 years, but I’m not “exam-ready” on all of them at all times. A year ago I started writing a set of notes that form a personal wiki for machine learning topics. In this article I’ll share the software and workflow I use.</p>
 <p>This project helped calm some of my anxiety about forgetting. I can’t remember everything, but I can remember where to find it. Re-learning from a note I’ve written myself is much faster than learning from other sources.</p>
@@ -7025,7 +7034,7 @@ font-style: inherit;">0.0002</span></span></code></pre></div>
 <h3 class="anchored" data-anchor-id="website">Website</h3>
 <p>To turn this collection of files into a website, two additional files are needed:</p>
 <p>index.qmd:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="pp" style="color: #AD0000;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">---</span></span>
 <span id="cb3-2"><span class="fu" style="color: #4758AB;
@@ -7102,9 +7111,9 @@ background-color: null;
 font-style: inherit;">true</span></span>
 <span id="cb3-9"><span class="pp" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">---</span></span></code></pre></div>
+font-style: inherit;">---</span></span></code></pre></div></div>
 <p>and <code>_quarto.yml</code>:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -7175,7 +7184,7 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
 background-color: null;
-font-style: inherit;">true</span></span></code></pre></div>
+font-style: inherit;">true</span></span></code></pre></div></div>
 <p>The overall structure looks like this:</p>
 <pre><code>_quarto.yml
 index.qmd
@@ -7224,7 +7233,7 @@ notes/
 </blockquote>
 <p>and Copilot might generate:</p>
 <div id="1d90c91c" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
 background-color: null;
@@ -7264,7 +7273,7 @@ font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"red"</span></span>
 <span id="cb7-6"></span>
-<span id="cb7-7">fig.show()</span></code></pre></div>
+<span id="cb7-7">fig.show()</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>                            <div id="2743f3fa-a0e7-4b9a-9006-5ce693514382" class="plotly-graph-div" style="height:250px; width:600px;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("2743f3fa-a0e7-4b9a-9006-5ce693514382")) {                    Plotly.newPlot(                        "2743f3fa-a0e7-4b9a-9006-5ce693514382",                        [{"hovertemplate":"total_bill=%{x}\u003cbr\u003etip=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":[16.99,10.34,21.01,23.68,24.59,25.29,8.77,26.88,15.04,14.78,10.27,35.26,15.42,18.43,14.83,21.58,10.33,16.29,16.97,20.65,17.92,20.29,15.77,39.42,19.82,17.81,13.37,12.69,21.7,19.65,9.55,18.35,15.06,20.69,17.78,24.06,16.31,16.93,18.69,31.27,16.04,17.46,13.94,9.68,30.4,18.29,22.23,32.4,28.55,18.04,12.54,10.29,34.81,9.94,25.56,19.49,38.01,26.41,11.24,48.27,20.29,13.81,11.02,18.29,17.59,20.08,16.45,3.07,20.23,15.01,12.02,17.07,26.86,25.28,14.73,10.51,17.92,27.2,22.76,17.29,19.44,16.66,10.07,32.68,15.98,34.83,13.03,18.28,24.71,21.16,28.97,22.49,5.75,16.32,22.75,40.17,27.28,12.03,21.01,12.46,11.35,15.38,44.3,22.42,20.92,15.36,20.49,25.21,18.24,14.31,14.0,7.25,38.07,23.95,25.71,17.31,29.93,10.65,12.43,24.08,11.69,13.42,14.26,15.95,12.48,29.8,8.52,14.52,11.38,22.82,19.08,20.27,11.17,12.26,18.26,8.51,10.33,14.15,16.0,13.16,17.47,34.3,41.19,27.05,16.43,8.35,18.64,11.87,9.78,7.51,14.07,13.13,17.26,24.55,19.77,29.85,48.17,25.0,13.39,16.49,21.5,12.66,16.21,13.81,17.51,24.52,20.76,31.71,10.59,10.63,50.81,15.81,7.25,31.85,16.82,32.9,17.89,14.48,9.6,34.63,34.65,23.33,45.35,23.17,40.55,20.69,20.9,30.46,18.15,23.1,15.69,19.81,28.44,15.48,16.58,7.56,10.34,43.11,13.0,13.51,18.71,12.74,13.0,16.4,20.53,16.47,26.59,38.73,24.27,12.76,30.06,25.89,48.33,13.27,28.17,12.9,28.15,11.59,7.74,30.14,12.16,13.42,8.58,15.98,13.42,16.27,10.09,20.45,13.28,22.12,24.01,15.69,11.61,10.77,15.53,10.07,12.6,32.83,35.83,29.03,27.18,22.67,17.82,18.78],"xaxis":"x","y":[1.01,1.66,3.5,3.31,3.61,4.71,2.0,3.12,1.96,3.23,1.71,5.0,1.57,3.0,3.02,3.92,1.67,3.71,3.5,3.35,4.08,2.75,2.23,7.58,3.18,2.34,2.0,2.0,4.3,3.0,1.45,2.5,3.0,2.45,3.27,3.6,2.0,3.07,2.31,5.0,2.24,2.54,3.06,1.32,5.6,3.0,5.0,6.0,2.05,3.0,2.5,2.6,5.2,1.56,4.34,3.51,3.0,1.5,1.76,6.73,3.21,2.0,1.98,3.76,2.64,3.15,2.47,1.0,2.01,2.09,1.97,3.0,3.14,5.0,2.2,1.25,3.08,4.0,3.0,2.71,3.0,3.4,1.83,5.0,2.03,5.17,2.0,4.0,5.85,3.0,3.0,3.5,1.0,4.3,3.25,4.73,4.0,1.5,3.0,1.5,2.5,3.0,2.5,3.48,4.08,1.64,4.06,4.29,3.76,4.0,3.0,1.0,4.0,2.55,4.0,3.5,5.07,1.5,1.8,2.92,2.31,1.68,2.5,2.0,2.52,4.2,1.48,2.0,2.0,2.18,1.5,2.83,1.5,2.0,3.25,1.25,2.0,2.0,2.0,2.75,3.5,6.7,5.0,5.0,2.3,1.5,1.36,1.63,1.73,2.0,2.5,2.0,2.74,2.0,2.0,5.14,5.0,3.75,2.61,2.0,3.5,2.5,2.0,2.0,3.0,3.48,2.24,4.5,1.61,2.0,10.0,3.16,5.15,3.18,4.0,3.11,2.0,2.0,4.0,3.55,3.68,5.65,3.5,6.5,3.0,5.0,3.5,2.0,3.5,4.0,1.5,4.19,2.56,2.02,4.0,1.44,2.0,5.0,2.0,2.0,4.0,2.01,2.0,2.5,4.0,3.23,3.41,3.0,2.03,2.23,2.0,5.16,9.0,2.5,6.5,1.1,3.0,1.5,1.44,3.09,2.2,3.48,1.92,3.0,1.58,2.5,2.0,3.0,2.72,2.88,2.0,3.0,3.39,1.47,3.0,1.25,1.0,1.17,4.67,5.92,2.0,2.0,1.75,3.0],"yaxis":"y","type":"scatter"},{"hovertemplate":"\u003cb\u003eOLS trendline\u003c\u002fb\u003e\u003cbr\u003etip = 0.105025 * total_bill + 0.92027\u003cbr\u003eR\u003csup\u003e2\u003c\u002fsup\u003e=0.456617\u003cbr\u003e\u003cbr\u003etotal_bill=%{x}\u003cbr\u003etip=%{y} \u003cb\u003e(trend)\u003c\u002fb\u003e\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"lines","name":"","showlegend":false,"x":[3.07,5.75,7.25,7.25,7.51,7.56,7.74,8.35,8.51,8.52,8.58,8.77,9.55,9.6,9.68,9.78,9.94,10.07,10.07,10.09,10.27,10.29,10.33,10.33,10.34,10.34,10.51,10.59,10.63,10.65,10.77,11.02,11.17,11.24,11.35,11.38,11.59,11.61,11.69,11.87,12.02,12.03,12.16,12.26,12.43,12.46,12.48,12.54,12.6,12.66,12.69,12.74,12.76,12.9,13.0,13.0,13.03,13.13,13.16,13.27,13.28,13.37,13.39,13.42,13.42,13.42,13.51,13.81,13.81,13.94,14.0,14.07,14.15,14.26,14.31,14.48,14.52,14.73,14.78,14.83,15.01,15.04,15.06,15.36,15.38,15.42,15.48,15.53,15.69,15.69,15.77,15.81,15.95,15.98,15.98,16.0,16.04,16.21,16.27,16.29,16.31,16.32,16.4,16.43,16.45,16.47,16.49,16.58,16.66,16.82,16.93,16.97,16.99,17.07,17.26,17.29,17.31,17.46,17.47,17.51,17.59,17.78,17.81,17.82,17.89,17.92,17.92,18.04,18.15,18.24,18.26,18.28,18.29,18.29,18.35,18.43,18.64,18.69,18.71,18.78,19.08,19.44,19.49,19.65,19.77,19.81,19.82,20.08,20.23,20.27,20.29,20.29,20.45,20.49,20.53,20.65,20.69,20.69,20.76,20.9,20.92,21.01,21.01,21.16,21.5,21.58,21.7,22.12,22.23,22.42,22.49,22.67,22.75,22.76,22.82,23.1,23.17,23.33,23.68,23.95,24.01,24.06,24.08,24.27,24.52,24.55,24.59,24.71,25.0,25.21,25.28,25.29,25.56,25.71,25.89,26.41,26.59,26.86,26.88,27.05,27.18,27.2,27.28,28.15,28.17,28.44,28.55,28.97,29.03,29.8,29.85,29.93,30.06,30.14,30.4,30.46,31.27,31.71,31.85,32.4,32.68,32.83,32.9,34.3,34.63,34.65,34.81,34.83,35.26,35.83,38.01,38.07,38.73,39.42,40.17,40.55,41.19,43.11,44.3,45.35,48.17,48.27,48.33,50.81],"xaxis":"x","y":[1.2426948819246395,1.5241605885147065,1.6816973645912365,1.6816973645912365,1.7090037391111685,1.7142549649803862,1.7331593781095698,1.7972243337140252,1.814028256495522,1.8150785016693654,1.8213799727124267,1.8413346310154537,1.9232537545752495,1.9285049804444672,1.9369069418352154,1.9474093935736507,1.9642133163551472,1.9778665036151133,1.9778665036151133,1.9799669939628002,1.9988714070919837,2.000971897439671,2.005172878135045,2.005172878135045,2.0062231233088887,2.0062231233088887,2.024077291264229,2.032479252654977,2.036680233350351,2.038780723698038,2.0513836657841606,2.0776397951302488,2.093393472737902,2.1007451889548068,2.1122978858670853,2.1154486213886163,2.1375037700393302,2.1396042603870176,2.1480062217777656,2.1669106349069494,2.182664312514602,2.183714557688446,2.1973677449484117,2.207870196686847,2.225724364642187,2.2288751001637177,2.230975590511405,2.237277061554466,2.2435785325975273,2.2498800036405884,2.253030739162119,2.258281965031337,2.2603824553790237,2.2750858878128333,2.2855883395512686,2.2855883395512686,2.288739075072799,2.2992415268112345,2.302392262332765,2.313944959245044,2.3149952044188877,2.3244474109834794,2.3265479013311667,2.329698636852697,2.329698636852697,2.329698636852697,2.339150843417289,2.370658198632595,2.370658198632595,2.384311385892561,2.390612856935622,2.3979645731525268,2.406366534543275,2.4179192314555538,2.4231704573247717,2.4410246252801118,2.4452256059754855,2.4672807546262,2.472531980495418,2.4777832063646352,2.496687619493819,2.4998383550153496,2.501938845363037,2.5334462005783425,2.53554669092603,2.539747671621404,2.546049142664465,2.5513003685336826,2.568104291315179,2.568104291315179,2.5765062527059275,2.5807072334013017,2.5954106658351113,2.598561401356642,2.598561401356642,2.6006618917043287,2.604862872399703,2.622717040355043,2.629018511398104,2.631119001745791,2.6332194920934784,2.634269737267322,2.64267169865807,2.6458224341796006,2.647922924527288,2.650023414874975,2.6521239052226617,2.6615761117872534,2.6699780731780023,2.6867819959594987,2.6983346928717773,2.7025356735671515,2.7046361639148384,2.713038125305587,2.7329927836086143,2.7361435191301444,2.7382440094778318,2.753997687085485,2.755047932259328,2.7592489129547024,2.767650874345451,2.787605532648478,2.7907562681700084,2.791806513343852,2.799158229560757,2.8023089650822874,2.8023089650822874,2.8149119071684097,2.8264646040806887,2.8359168106452803,2.8380173009929677,2.8401177913406546,2.841168036514498,2.841168036514498,2.8474695075575593,2.8558714689483073,2.8779266175990217,2.8831778434682396,2.8852783338159265,2.8926300500328312,2.9241374052481373,2.961946231506505,2.967197457375722,2.9840013801572187,2.996604322243341,3.000805302938715,3.001855548112559,3.0291619226324906,3.044915600240144,3.0491165809355176,3.051217071283205,3.051217071283205,3.0680209940647014,3.072221974760075,3.07642295545545,3.089025897541572,3.0932268782369463,3.0932268782369463,3.100578594453851,3.11528202688766,3.1173825172353475,3.1268347237999397,3.1268347237999397,3.1425884014075924,3.1782967373182727,3.1866986987090207,3.199301640795143,3.2434119380965716,3.2549646350088506,3.2749192933118776,3.2822710095287824,3.301175422657966,3.309577384048714,3.310627629222558,3.316929100265619,3.346335965133238,3.353687681350143,3.370491604131639,3.4072501852161627,3.435606804909938,3.4419082759529998,3.447159501822217,3.449259992169904,3.4692146504729315,3.4954707798190197,3.49862151534055,3.5028224960359244,3.515425438122047,3.5458825481635095,3.567937696814224,3.5752894130311286,3.576339658204972,3.6046962778987472,3.6204499555064005,3.639354368635584,3.693967117675448,3.712871530804631,3.7412281504984066,3.7433286408460935,3.761182808801434,3.7748359960613995,3.776936486409087,3.7853384477998353,3.8767097779242223,3.8788102682719097,3.907166887965685,3.918719584877964,3.9628298821793924,3.9691313532224535,4.050000231608406,4.055251457477623,4.0636534188683715,4.077306606128338,4.085708567519086,4.113014942039017,4.119316413082079,4.204386272163405,4.250597059812521,4.265300492246331,4.323063976807724,4.352470841675343,4.368224519282996,4.375576235499901,4.522610559837996,4.557268650574833,4.559369140922519,4.576173063704016,4.578273554051703,4.623434096526975,4.683298071436057,4.912251519333947,4.918552990377008,4.987869171850681,5.060336088845886,5.1391044768841505,5.1790137934902045,5.24622948461619,5.4478765579941495,5.572855733681529,5.683131476935101,5.979300615958977,5.989803067697413,5.9961045387404734,6.256565341853671],"yaxis":"y","type":"scatter","line":{"color":"red"}}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"total_bill"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"tip"}},"legend":{"tracegroupgap":0},"height":250,"width":600},                        {"responsive": true}                    ).then(function(){
                             
@@ -7350,6 +7359,7 @@ if (outputEl) {{
 
 
 
+
 <p>The adage goes: fast, good, cheap. Pick two. As a developer, you probably don’t want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -7428,6 +7438,7 @@ if (outputEl) {{
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/structured_output/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -7523,7 +7534,7 @@ if (outputEl) {{
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-May 2024
+<span class="screen-reader-only">Note</span>May 2024
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -7533,26 +7544,26 @@ May 2024
 <p>All libraries are released under the MIT or Apache 2.0 license, which are both permissive open-source licenses. Their code is available on Github and they can be installed via pip.</p>
 <p>I’ll compare the libraries based on three criteria: efficiency, ease of use and flexibility. Efficiency is about how tokens are generated, ease of use is about how easy it is to get started with the library and flexibility is about how much you can customize the output format.</p>
 <p>I’ll use a named entity recognition task as an example because it’s a common task that requires structured output. The task is to extract named entities from the following text:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">text <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">text <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"""BioNTech SE is set to acquire InstaDeep, </span><span class="ch" style="color: #20794D;
+font-style: inherit;">"""BioNTech SE is set to acquire InstaDeep, </span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb1-2"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">a Tunis-born and U.K.-based artificial intelligence </span><span class="ch" style="color: #20794D;
+font-style: inherit;">a Tunis-born and U.K.-based artificial intelligence </span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb1-3"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">(AI) startup, for up to £562 million</span><span class="ch" style="color: #20794D;
+font-style: inherit;">(AI) startup, for up to £562 million</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb1-4"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"""</span></span></code></pre></div>
+font-style: inherit;">"""</span></span></code></pre></div></div>
 <p>In the following sections, I’ll write a code snippet for each library. If possible, I’ll use Pydantic classes to define the schema for the structured output. Depending on the library’s support I’ll use OpenAI’s GPT-4-turbo or Meta’s Llama-3-8B-Instruct (<a href="https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF">8-bit quantized and in GGUF format</a>) running on Ollama. I’ll set the temperature to 0.0 to reduce randomness in the output. This is also a little test of how easy it is to customize the parameters.</p>
 <p>The libraries will be ordered by their method of generating structured output: prompting (llama_index, spacy-llm), function calling (instructor, marvin, mirascope, langchain, texttunnel), and constrained token sampling (outlines and guidance). llama_index also supports function calling and langchain also supports prompting.</p>
 <p>At the start of each section I’ll give an overview of the generation method.</p>
@@ -7584,7 +7595,7 @@ font-style: inherit;">"""</span></span></code></pre></div>
 </ul>
 <section id="llama_index" class="level3">
 <h3 class="anchored" data-anchor-id="llama_index">llama_index</h3>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -7633,14 +7644,14 @@ font-style: inherit;">class</span> ExtractEntities(BaseModel):</span>
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"""</span><span class="ch" style="color: #20794D;
+font-style: inherit;">"""</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb2-17"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">Extract named entities from the following text: </span><span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">{text}</span><span class="ch" style="color: #20794D;
+font-style: inherit;">{text}</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb2-18"><span class="st" style="color: #20794D;
@@ -7680,8 +7691,8 @@ background-color: null;
 font-style: inherit;">=</span>text)</span>
 <span id="cb2-29"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(output)</span></code></pre></div>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">entities<span class="op" style="color: #5E5E5E;
+font-style: inherit;">print</span>(output)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">entities<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -7715,7 +7726,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div></div>
 <p>Note that llama_index also has a function calling mode. I’m showing the prompting mode here.</p>
 <p>✅ Pros:</p>
 <ul>
@@ -7733,7 +7744,7 @@ font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="spacy-llm">spacy-llm</h3>
 <p>spacy-llm uses the prompting approach in a sophisticated way. Prompts are built using a jinja-template based system to describe the task, give examples and implement chain-of-thought reasoning. See their <a href="https://github.com/explosion/spacy-llm/tree/main/spacy_llm/tasks/templates">templates</a> directory for examples.</p>
 <p>To solve our named entity recognition task, we create a <code>config.cfg</code> file:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode cfg code-with-copy"><code class="sourceCode ini"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode cfg code-with-copy"><code class="sourceCode ini"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[nlp]</span></span>
@@ -7812,9 +7823,9 @@ font-style: inherit;">config </span><span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;"> {"temperature": 0.0}</span></span></code></pre></div>
+font-style: inherit;"> {"temperature": 0.0}</span></span></code></pre></div></div>
 <p>Then run:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> spacy_llm.util <span class="im" style="color: #00769E;
 background-color: null;
@@ -7835,8 +7846,8 @@ font-weight: bold;
 font-style: inherit;">for</span> ent <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">in</span> doc.ents])</span></code></pre></div>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">[(<span class="st" style="color: #20794D;
+font-style: inherit;">in</span> doc.ents])</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">[(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'BioNTech SE'</span>, <span class="st" style="color: #20794D;
 background-color: null;
@@ -7848,7 +7859,7 @@ font-style: inherit;">'ORGANIZATION'</span>), (<span class="st" style="color: #2
 background-color: null;
 font-style: inherit;">'Tunis'</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div></div>
 <p>✅ Pros:</p>
 <ul>
 <li>Seamless integration with spaCy and Prodigy (for labeling)</li>
@@ -7866,7 +7877,7 @@ font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="function-calling-for-structured-output">Function calling for structured output</h3>
 <p>Some LLMs have a function calling mode, which allows passing a function signature to the model along with the prompt. The LLM generates the arguments for the function. The <a href="https://platform.openai.com/docs/guides/function-calling">OpenAI</a> docs explain this in detail.</p>
 <p>Example <a href="https://json-schema.org">JSON schema</a> for the named entity recognition task:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span></span>
 <span id="cb7-2">    <span class="dt" style="color: #AD0000;
@@ -8063,9 +8074,9 @@ background-color: null;
 font-style: inherit;">},</span></span>
 <span id="cb7-26"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>In OpenAI’s format, the API would respond with:</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb8-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span></span>
 <span id="cb8-2">    <span class="dt" style="color: #AD0000;
@@ -8208,7 +8219,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb8-18"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>(Simplified for brevity)</p>
 <p>✅ Pros:</p>
 <ul>
@@ -8226,7 +8237,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 <section id="instructor" class="level3">
 <h3 class="anchored" data-anchor-id="instructor">instructor</h3>
 <p>instructor patches LLM clients to accept Pydantic models as input and output. Here’s an example with OpenAI:</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -8312,8 +8323,8 @@ font-style: inherit;">"content"</span>: text}],</span>
 <span id="cb9-28"></span>
 <span id="cb9-29"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(entities)</span></code></pre></div>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">entities<span class="op" style="color: #5E5E5E;
+font-style: inherit;">print</span>(entities)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">entities<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8347,7 +8358,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div></div>
 <p>✅ Pros:</p>
 <ul>
 <li>Easy to use due to its focused nature and plenty of examples</li>
@@ -8364,7 +8375,7 @@ font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
 </section>
 <section id="mirascope" class="level3">
 <h3 class="anchored" data-anchor-id="mirascope">mirascope</h3>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -8439,8 +8450,8 @@ background-color: null;
 font-style: inherit;">=</span>text).extract()</span>
 <span id="cb11-25"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(entities)</span></code></pre></div>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">entities<span class="op" style="color: #5E5E5E;
+font-style: inherit;">print</span>(entities)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">entities<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8474,7 +8485,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div></div>
 <p>✅ Pros:</p>
 <ul>
 <li>Uses function calling with Pydantic models</li>
@@ -8490,7 +8501,7 @@ font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
 </section>
 <section id="marvin" class="level3">
 <h3 class="anchored" data-anchor-id="marvin">marvin</h3>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -8545,8 +8556,8 @@ font-style: inherit;">0.0</span>},</span>
 <span id="cb13-18"></span>
 <span id="cb13-19"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(entities)</span></code></pre></div>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">[Entity(name<span class="op" style="color: #5E5E5E;
+font-style: inherit;">print</span>(entities)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -8578,7 +8589,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div></div>
 <p>✅ Pros:</p>
 <ul>
 <li>Easy to use due to its simple API and clear documentation</li>
@@ -8593,7 +8604,7 @@ font-style: inherit;">'LOCATION'</span>)]</span></code></pre></div>
 </section>
 <section id="fructose" class="level3">
 <h3 class="anchored" data-anchor-id="fructose">fructose</h3>
-<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
 background-color: null;
@@ -8683,8 +8694,8 @@ background-color: null;
 font-style: inherit;">=</span> extract_entities(text)</span>
 <span id="cb15-30"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">print</span>(entities)</span></code></pre></div>
-<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">[Entity(name<span class="op" style="color: #5E5E5E;
+font-style: inherit;">print</span>(entities)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -8724,7 +8735,7 @@ font-style: inherit;">=&lt;</span>Label.LOCATION: <span class="st" style="color:
 background-color: null;
 font-style: inherit;">'LOCATION'</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span>)]</span></code></pre></div>
+font-style: inherit;">&gt;</span>)]</span></code></pre></div></div>
 <p>✅ Pros:</p>
 <ul>
 <li>Chainable functions with an elegant syntax</li>
@@ -8741,7 +8752,7 @@ font-style: inherit;">&gt;</span>)]</span></code></pre></div>
 </section>
 <section id="langchain" class="level3">
 <h3 class="anchored" data-anchor-id="langchain">langchain</h3>
-<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -8841,8 +8852,8 @@ font-style: inherit;">=</span>[ExtractEntities])</span>
 <span id="cb17-28"></span>
 <span id="cb17-29">chain.invoke(text)[<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>]</span></code></pre></div>
-<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">ExtractEntities(entities<span class="op" style="color: #5E5E5E;
+font-style: inherit;">0</span>]</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">ExtractEntities(entities<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8876,7 +8887,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)])</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)])</span></code></pre></div></div>
 <p>This is the function calling solution for langchain. It also supports <a href="https://python.langchain.com/v0.1/docs/modules/model_io/output_parsers/types/json/">prompting</a>.</p>
 <p>✅ Pros:</p>
 <ul>
@@ -8903,7 +8914,7 @@ Note
 <p>I’m the developer of texttunnel, but I’ll evaluate it as objectively as I can.</p>
 </div>
 </div>
-<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> texttunnel <span class="im" style="color: #00769E;
 background-color: null;
@@ -9054,8 +9065,8 @@ font-style: inherit;">in</span> responses]</span>
 background-color: null;
 font-style: inherit;">print</span>(results[<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>])</span></code></pre></div>
-<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb20-1"><span class="fu" style="color: #4758AB;
+font-style: inherit;">0</span>])</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb20-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span><span class="er" style="color: #AD0000;
 background-color: null;
@@ -9147,7 +9158,7 @@ font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>texttunnel exposes the JSON schema directly, rather than wrapping it in a Pydantic model. It also returns the complete API response rather than only the extracted structured data. The unique selling point of texttunnel is its efficiency in calling the OpenAI API, as it uses asyncio to make multiple requests in parallel while respecting the individual rate limits of the user’s API key.</p>
 <p>✅ Pros:</p>
 <ul>
@@ -9181,7 +9192,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 </section>
 <section id="outlines" class="level3">
 <h3 class="anchored" data-anchor-id="outlines">outlines</h3>
-<div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
@@ -9265,8 +9276,8 @@ font-style: inherit;">=</span> generator(prompt)</span>
 background-color: null;
 font-style: inherit;">print</span>(<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">repr</span>(entities))</span></code></pre></div>
-<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">ExtractEntities(entities<span class="op" style="color: #5E5E5E;
+font-style: inherit;">repr</span>(entities))</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">ExtractEntities(entities<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[Entity(name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -9300,7 +9311,7 @@ font-style: inherit;">'U.K.'</span>, label<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'LOCATION'</span>)])</span></code></pre></div>
+font-style: inherit;">'LOCATION'</span>)])</span></code></pre></div></div>
 <p>Under the hood outlines translates the Pydantic model to a CFG. It steps through the CFG token by token and generates the output.</p>
 <p>✅ Pros:</p>
 <ul>
@@ -9318,7 +9329,7 @@ font-style: inherit;">'LOCATION'</span>)])</span></code></pre></div>
 <section id="guidance" class="level3">
 <h3 class="anchored" data-anchor-id="guidance">guidance</h3>
 <p>The guidance libary uses its own programming paradigm for constrained generation. Prompts are constructed from functions that define a CFG. Here is an example from the readme, with slight modifications:</p>
-<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> re</span>
 <span id="cb23-2"></span>
@@ -9355,7 +9366,7 @@ font-style: inherit;">input</span>):</span>
 background-color: null;
 font-style: inherit;">+=</span> <span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">f"""</span><span class="ch" style="color: #20794D;
+font-style: inherit;">f"""</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb23-12"><span class="ss" style="color: #20794D;
@@ -9456,7 +9467,11 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">not</span> re.match(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"\s"</span>, x)</span>
+font-style: inherit;">"</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s"</span>, x)</span>
 <span id="cb23-36">    ]</span>
 <span id="cb23-37">    ret <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -9511,7 +9526,7 @@ font-style: inherit;">input</span>) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> constrained_ner(<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">input</span>)</span></code></pre></div>
+font-style: inherit;">input</span>)</span></code></pre></div></div>
 <p>The <code>constrained_ner()</code> function looks like normal Python, but is actually a CFG that the LLM uses to generate the output. It tokenizes the text and assigns a label to each token that is either PERSON, ORGANIZATION, LOCATION or nothing.</p>
 <p>The model returns:</p>
 <pre><code>BioNTech: PER
@@ -9548,7 +9563,7 @@ to:
 million: </code></pre>
 <p>The simplified tokenization causes inaccurate labels, as terms like “U.K.” are split incorrectly. In addition, Llama-3 falsely labeled “artificial” as a LOCATION.</p>
 <p>To fix this, we could use a simplified approach that doesn’t require tokenization. The model could simply list the named entities, like in the other libraries.</p>
-<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> guidance</span>
 <span id="cb25-2"><span class="im" style="color: #00769E;
@@ -9584,7 +9599,7 @@ font-style: inherit;">input</span>):</span>
 background-color: null;
 font-style: inherit;">+=</span> <span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">f"""</span><span class="ch" style="color: #20794D;
+font-style: inherit;">f"""</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb25-11"><span class="ss" style="color: #20794D;
@@ -9636,15 +9651,27 @@ font-style: inherit;">return</span> lm</span>
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"PERSON:([\w, ]*)</span><span class="ch" style="color: #20794D;
+font-style: inherit;">"PERSON:([</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">w, ]*)</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">ORGANIZATION:([\w, ]*)</span><span class="ch" style="color: #20794D;
+font-style: inherit;">ORGANIZATION:([</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">w, ]*)</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">LOCATION:([\w, ]*)"</span></span>
+font-style: inherit;">LOCATION:([</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">w, ]*)"</span></span>
 <span id="cb25-26"></span>
 <span id="cb25-27">llm <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -9656,14 +9683,14 @@ font-style: inherit;">+</span> gen(stop<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"---"</span>)</span></code></pre></div>
+font-style: inherit;">"---"</span>)</span></code></pre></div></div>
 <p>The regular expression guarantees that each line in the output begins with a label and a colon, in the order PERSON, ORGANIZATION, LOCATION, even if the input text doesn’t follow this order or doesn’t contain all three types of entities. <code>gen(stop="---")</code> stops the generation when the model outputs the <code>---</code> separator between the input and output.</p>
 <p>The model returns:</p>
 <pre><code>PERSON:relative
 ORGANIZATION:UIButtonTypeCustom BioNTech SE, InstaDeep
 LOCATION: Tunis, U.K.</code></pre>
 <p>The output has the correct entities, but also contains garbage tokens like “relative” and “UIButtonTypeCustom”. Is this an issue with the model or the constraints? Let’s try pure generation without constraints:</p>
-<div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">llm <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">llm <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> ner_instruction(text) <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -9671,7 +9698,7 @@ font-style: inherit;">+</span> gen(stop<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"---"</span>)</span></code></pre></div>
+font-style: inherit;">"---"</span>)</span></code></pre></div></div>
 <p>Output:</p>
 <pre><code>PERSON:
 ORGANIZATION: BioNTech SE, InstaDeep
@@ -9727,6 +9754,7 @@ LOCATION: Tunis, U.K.</code></pre>
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/llm-eval/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -10048,6 +10076,7 @@ Zellers, Rowan, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. 2019. <
   <dc:creator>Paul Simmering</dc:creator>
   <link>https://simmering.dev/blog/gold-data/</link>
   <description><![CDATA[ 
+
 
 
 

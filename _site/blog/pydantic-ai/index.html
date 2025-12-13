@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.33">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,8 +23,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -66,17 +67,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-00f11fae924eab01547c059a6c76dfef.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8295ed3e13c7202bf8ad4e3cb691b864.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-fef88b6b554cb9e29c85401ead2d1288.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-beae69d30825339b3e59df20cbf3b707.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-fef88b6b554cb9e29c85401ead2d1288.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-e03fbea212d1bd96ad2ad16bde6d6ece.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4167c8b26984c0751557c0ff96996a0f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3e8bf739271a6be9255b1fd675e0e361.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-be623394180fe9a26f016f67f413a31a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3e8bf739271a6be9255b1fd675e0e361.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -116,7 +121,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -240,14 +407,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
 <p>Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I’m excited for their take on agents. In this article I’ll walk through an example app and comment on my experience developing with PydanticAI.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-PydanticAI version 0.0.13
+<span class="screen-reader-only">Note</span>PydanticAI version 0.0.13
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -258,12 +426,12 @@ PydanticAI version 0.0.13
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What is an agent?
+<span class="screen-reader-only">Tip</span>What is an agent?
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -343,9 +511,9 @@ graph LR
 <h3 class="anchored" data-anchor-id="database">Database</h3>
 <p>I’m using <a href="https://duckdb.org">DuckDB</a> to create an in-memory database which will be made available to the agent.</p>
 <div id="8332ed09" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
@@ -357,11 +525,11 @@ graph LR
 </div>
 <p>I’ll insert a set of reports into the database. The data included is fictional and was generated by an LLM. The data consists of 40 reports like this:</p>
 <div id="1554a29c" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> pl.read_csv(<span class="st">"data/reports.csv"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>GT(reports.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>GT(reports.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div id="ylufodktok" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
@@ -412,7 +580,7 @@ graph LR
  
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="id" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">id</th>
@@ -469,12 +637,11 @@ graph LR
 
 
 </div>
-        
 </div>
 </div>
 <p>To make the title searchable, I’ll embed it using an <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embedding endpoint</a>. The result will be stored in a new column with 1536 dimensions.</p>
 <div id="56ef65bc" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -492,11 +659,11 @@ graph LR
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>title_embeddings,</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>pl.Array(inner<span class="op">=</span>pl.Float64, shape<span class="op">=</span><span class="dv">1536</span>),</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, I’ll insert the data including the embeddings into the database. The embeddings are stored in a fixed-size <code>ARRAY</code> column. The co-location of the structured data and the embeddings in the same table is convenient for our use case.</p>
 <div id="8f1bb9e3" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>con.execute(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>con.execute(</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE OR REPLACE TABLE reports AS</span></span>
 <span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
@@ -509,7 +676,7 @@ graph LR
 <span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a><span class="st">        title_embedding::float[1536] AS title_embedding</span></span>
 <span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM reports;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-13" class="code-annotation-target"><a href="#annotated-cell-4-13" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
-<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
@@ -520,12 +687,12 @@ graph LR
 </div>
 </div>
 <div id="e1503c45" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"INSTALL vss;"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"INSTALL vss;"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"LOAD vss;"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>con.execute(</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CREATE INDEX titles_hnsw_index ON reports USING HNSW(title_embedding) WITH (metric='cosine');"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I also create a hierarchical navigable small world (HNSW) index on the title embeddings. This enables approximate nearest neighbor search in O(log n). It’s enabled by the <a href="https://duckdb.org/docs/extensions/vss">vss</a> extension. Note that persistence to disk is experimental, so I wouldn’t recommend it for production yet.</p>
 </section>
@@ -533,7 +700,7 @@ graph LR
 <h3 class="anchored" data-anchor-id="agent">Agent</h3>
 <p>Let’s set up an agent powered by the <a href="https://groq.com">Groq</a> inference API. It serves a range of open source models. Specifically, I’ll use the <code>llama-3.3-70b-versatile</code> model released by Meta on December 6th. Artificial Analysis has a detailed <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers">report</a> showing that it advanced the speed-accuracy trade-off. The model has tool calling capabilities, which are critical for our use case.</p>
 <div id="6c615539" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> Agent</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> Agent</span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent(</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"groq:llama-3.3-70b-versatile"</span>,</span>
@@ -541,7 +708,7 @@ graph LR
 <span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Who are you?"</span>)</span>
-<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
@@ -563,7 +730,7 @@ What specific area of market research would you like to explore?</code></pre>
 <h3 class="anchored" data-anchor-id="tools">Tools</h3>
 <p>The agent’s job will be to answer questions based on the reports in the database. It needs a way to access the database. We can give it a tool, meaning a function that it can call, to query the database. First, it needs a database connection.</p>
 <div id="1b732c95" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
@@ -571,7 +738,7 @@ What specific area of market research would you like to explore?</code></pre>
 <span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>    db: duckdb.DuckDBPyConnection</span>
 <span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-9" class="code-annotation-target"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-9" class="code-annotation-target"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
@@ -587,7 +754,7 @@ What specific area of market research would you like to explore?</code></pre>
 </div>
 <p>Next, let’s give the agent a tool to search the database of reports. Based on the user’s question, it can choose which field to search. The result is always a markdown-formatted table with one row per report.</p>
 <div id="4aa0faf3" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic_ai <span class="im">import</span> RunContext</span>
 <span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> validate_call, Field</span>
@@ -623,7 +790,7 @@ What specific area of market research would you like to explore?</code></pre>
 <span id="annotated-cell-8-34"><a href="#annotated-cell-8-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-8-35"><a href="#annotated-cell-8-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="7">7</button><span id="annotated-cell-8-36" class="code-annotation-target"><a href="#annotated-cell-8-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"No reports found. Try a different field or value, or use the title similarity tool."</span></span>
-<span id="annotated-cell-8-37"><a href="#annotated-cell-8-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_to_str(df)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-8-37"><a href="#annotated-cell-8-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_to_str(df)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
@@ -659,9 +826,9 @@ What specific area of market research would you like to explore?</code></pre>
 </div>
 <p>This lets the agent execute searches based on the exact match of a field.</p>
 <div id="5f301a90" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> AgentDependencies(db<span class="op">=</span>con)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Which reports do we have from Germany?"</span>, deps<span class="op">=</span>deps)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We have four reports from Germany:
 
@@ -675,7 +842,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 </div>
 <p>It works, the agent found the 4 reports from Germany. Let’s check the exact tool call:</p>
 <div id="1e729fc6" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>agent.last_run_messages</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>agent.last_run_messages</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>[ModelRequest(parts=[SystemPromptPart(content='You are a market research expert and answer questions using a database of reports.', part_kind='system-prompt'), UserPromptPart(content='Which reports do we have from Germany?', timestamp=datetime.datetime(2024, 12, 18, 17, 38, 58, 663721, tzinfo=datetime.timezone.utc), part_kind='user-prompt')], kind='request'),
  ModelResponse(parts=[ToolCallPart(tool_name='search_reports_by_field', args=ArgsJson(args_json='{"field": "country", "value": "Germany"}'), tool_call_id='call_be61', part_kind='tool-call')], timestamp=datetime.datetime(2024, 12, 18, 17, 38, 58, tzinfo=datetime.timezone.utc), kind='response'),
@@ -686,7 +853,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <p>Here, the model correctly translated the user’s question into the tool call with the arguments <code>{"field": "country", "value": "Germany"}</code>.</p>
 <p>To make it easier to evaluate the agent’s output and also make its results useable by other tools, we can create a response model that includes the ids of the identified reports.</p>
 <div id="9dc4de41" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentResponse(BaseModel):</span>
@@ -703,7 +870,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-hidden="true" tabindex="-1"></a>    system_prompt<span class="op">=</span><span class="st">"You are a market research expert and answer questions using a database of reports."</span>,</span>
 <span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-hidden="true" tabindex="-1"></a>    result_type<span class="op">=</span>AgentResponse,</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="2">2</button><span id="annotated-cell-11-17" class="code-annotation-target"><a href="#annotated-cell-11-17" aria-hidden="true" tabindex="-1"></a>    result_retries<span class="op">=</span><span class="dv">3</span>,</span>
-<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
@@ -719,8 +886,8 @@ Let me know if you'd like more information about any of these reports.</code></p
 </div>
 <p>The <code>AgentResponse</code> model is used to validate the agent’s output. It will always include a set of integer ids. In an app, these could be used to provide links to the reports.</p>
 <div id="837e1955" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> typed_agent.run_sync(<span class="st">"Which reports do we have from Germany? Tell me their titles and ids"</span>, deps<span class="op">=</span>deps)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> typed_agent.run_sync(<span class="st">"Which reports do we have from Germany? Tell me their titles and ids"</span>, deps<span class="op">=</span>deps)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>text='The reports from Germany are titled Global Electric Vehicle Market Outlook 2018-2023, Digital Advertising Spend Analysis, Beverage Market Competitive Analysis and Medical Imaging Equipment Market Size.' relevant_report_ids={32, 1, 12, 21}</code></pre>
 </div>
@@ -728,7 +895,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <p>Now we have an agent that returns a type-checked structured response. Note that I’ve omitted the re-registration of the tool to the new agent instance for brevity.</p>
 <p>However, requests may not exactly match the fields in the database, so let’s also add the ability to search for similar titles.</p>
 <div id="c0d28b41" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@typed_agent.tool</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@typed_agent.tool</span></span>
 <span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a><span class="at">@validate_call</span>(config<span class="op">=</span>{<span class="st">"arbitrary_types_allowed"</span>: <span class="va">True</span>})</span>
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_reports_by_title_similarity(</span>
 <span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-hidden="true" tabindex="-1"></a>    ctx: RunContext[AgentDependencies],</span>
@@ -755,7 +922,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <span id="annotated-cell-13-25"><a href="#annotated-cell-13-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
 <span id="annotated-cell-13-26"><a href="#annotated-cell-13-26" aria-hidden="true" tabindex="-1"></a>        df_to_str(df)</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="3">3</button><span id="annotated-cell-13-27" class="code-annotation-target"><a href="#annotated-cell-13-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st"> These reports have titles similar to the query, but may not be relevant to the user's question."</span></span>
-<span id="annotated-cell-13-28"><a href="#annotated-cell-13-28" aria-hidden="true" tabindex="-1"></a>    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-13-28"><a href="#annotated-cell-13-28" aria-hidden="true" tabindex="-1"></a>    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
@@ -775,8 +942,8 @@ Let me know if you'd like more information about any of these reports.</code></p
 </div>
 <p>Let’s ask the agent about a topic that is not in the database to see how it uses the title similarity tool.</p>
 <div id="2b25b6e8" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Do we have reports about quantum computing?"</span>, deps<span class="op">=</span>deps)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.run_sync(<span class="st">"Do we have reports about quantum computing?"</span>, deps<span class="op">=</span>deps)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;function=search_reports_by_field {"field": "topic", "value": "quantum computing"}&lt;/function&gt;</code></pre>
 </div>
@@ -788,7 +955,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <h2 class="anchored" data-anchor-id="evals">Evals</h2>
 <p>Automated evaluations are necessary to ensure that an agent is working as expected, and to switch out models, prompts and tools without breaking the app. PydanticAI offers <a href="https://ai.pydantic.dev/testing-evals/">tools</a> for testing the code (without running a model) and for evaluations. Let’s set up a simple evaluation that checks whether the agent correctly answers questions about the database. We measure the precision (how many of the results found are relevant) and recall (how many of the relevant results are found).</p>
 <div id="2d105a1d" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"How many reports do we have from Germany?"</span>,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">21</span>, <span class="dv">32</span>},</span>
@@ -821,10 +988,10 @@ Let me know if you'd like more information about any of these reports.</code></p
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question"</span>: <span class="st">"What reports do we have from Market Insights Inc.?"</span>,</span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"relevant_report_ids"</span>: {<span class="dv">2</span>, <span class="dv">22</span>},</span>
 <span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="3db50b93" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
 <span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eval_example(</span>
@@ -858,7 +1025,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <span id="annotated-cell-16-32"><a href="#annotated-cell-16-32" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> metric_totals[<span class="st">"tp"</span>] <span class="op">/</span> (metric_totals[<span class="st">"tp"</span>] <span class="op">+</span> metric_totals[<span class="st">"fp"</span>])</span>
 <span id="annotated-cell-16-33"><a href="#annotated-cell-16-33" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> metric_totals[<span class="st">"tp"</span>] <span class="op">/</span> (metric_totals[<span class="st">"tp"</span>] <span class="op">+</span> metric_totals[<span class="st">"fn"</span>])</span>
 <span id="annotated-cell-16-34"><a href="#annotated-cell-16-34" aria-hidden="true" tabindex="-1"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="3">3</button><span id="annotated-cell-16-35" class="code-annotation-target"><a href="#annotated-cell-16-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="sc">:.2f}</span><span class="ss">, Recall: </span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="3">3</button><span id="annotated-cell-16-35" class="code-annotation-target"><a href="#annotated-cell-16-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="sc">:.2f}</span><span class="ss">, Recall: </span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
@@ -970,7 +1137,7 @@ Let me know if you'd like more information about any of these reports.</code></p
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Not every app needs an agent framework
+<span class="screen-reader-only">Tip</span>Not every app needs an agent framework
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -986,383 +1153,256 @@ Not every app needs an agent framework
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
     }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
       return false;
     }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
     }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/simmering\.dev");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/simmering\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1370,226 +1410,202 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-      for (let i=0; i<annoteTargets.length; i++) {
-        const annoteTarget = annoteTargets[i];
-        const targetCell = annoteTarget.getAttribute("data-target-cell");
-        const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-        const contentFn = () => {
-          const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          if (content) {
-            const tipContent = content.cloneNode(true);
-            tipContent.classList.add("code-annotation-tip-content");
-            return tipContent.outerHTML;
-          }
-        }
-        const config = {
-          allowHTML: true,
-          content: contentFn,
-          onShow: (instance) => {
-            selectCodeLines(instance.reference);
-            instance.reference.classList.add('code-annotation-active');
-            window.tippy.hideAll();
-          },
-          onHide: (instance) => {
-            unselectCodeLines();
-            instance.reference.classList.remove('code-annotation-active');
-          },
-          maxWidth: 300,
-          delay: [50, 0],
-          duration: [200, 0],
-          offset: [5, 10],
-          arrow: true,
-          trigger: 'click',
-          appendTo: function(el) {
-            return el.parentElement.parentElement.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'quarto',
-          placement: 'right',
-          positionFixed: true,
-          popperOptions: {
-            modifiers: [
-            {
-              name: 'flip',
-              options: {
-                flipVariations: false, // true by default
-                allowedAutoPlacements: ['right'],
-                fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-              },
-            },
-            {
-              name: 'preventOverflow',
-              options: {
-                mainAxis: false,
-                altAxis: false
-              }
-            }
-            ]        
-          }      
-        };
-        window.tippy(annoteTarget, config); 
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

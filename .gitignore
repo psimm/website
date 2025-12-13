@@ -9,3 +9,5 @@ _environment*
 .specstory/*
 
 /.luarc.json
+
+**/*.quarto_ipynb
