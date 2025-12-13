@@ -10,27 +10,36 @@ about:
     - icon: github
       text: Github
       href: https://github.com/psimm
-    - icon: twitter-x
-      text: ''
-      href: https://x.com/paul_simmering
 
 ---
 
-Welcome to my website! I'm Paul Simmering, a developer from Germany specializing in machine learning and natural language processing. 
+Welcome to my website! I'm Paul Simmering, a developer from Germany specializing in machine learning and natural language processing.
+
+On this website, I write about machine learning, data engineering and developer productivity. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
 
 ### Work
 
-I work as Technical Expert GenAI Platforms & Services at [Landesbank Baden-Württemberg](https://www.lbbw.de) in Stuttgart. I'm a developer on the GenAI team, building an LLM chatbot with a RAG pipeline and other GenAI services for the bank. Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models. On this website, I write about machine learning, data engineering and developer productivity and it's my practice of [learning in public](https://www.swyx.io/learn-in-public).
+I work as Technical Expert GenAI Platforms & Services at [Landesbank Baden-Württemberg](https://www.lbbw.de), a leading German bank. I'm a developer on the GenAI team, building an enterprise-grade LLM chat application connected to internal data via RAG. In addition, I serve as an internal consultant for GenAI initiatives.
+
+Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models.
+
+### Technical interests
+
+- Evaluation of language models and larger systems they are part of
+- Document understanding and retrieval augmented generation (RAG)
+- Data-efficient model fine-tuning
+- Public data sources
+- Data storytelling
 
 ### Other interests
 
-- [Euro-style games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
+- Reading personal blogs. Check out my [blogroll](/blogroll.qmd) for recommendations.
 - Contemporary art, particularly art inspired by geometry, architecture and nature. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/selected-work/).
 - Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
-- Design and typography, in particular minimalist and brutalist design, such as [U.S. Graphics](https://usgraphics.com).
+- Economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. Professionally, I pivoted to data science but am still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
 - Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
-- Reading blogs. Check out my [blogroll](/blogroll.qmd) for recommendations.
-- Video games. I like playing Satisfactory, Riftbreaker and Guild Wars. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
+- [Euro-style board games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
+- Video games. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
 
 ### Contact
 

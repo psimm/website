@@ -1,0 +1,26 @@
+---
+title: "blue.gpt"
+subtitle: "Enterprise-grade LLM chatbot for LBBW"
+date: 2025-12-13
+author: "Paul Simmering"
+draft: false
+categories:
+  - TypeScript
+  - React
+  - Next.js
+  - Python
+  - Azure
+image: "image.webp"
+---
+
+![Image created with GPT-Image-1, own creation](image.png)
+
+blue.gpt is an enterprise-grade LLM chatbot for Landesbank Baden-Württemberg ([LBBW](https://www.lbbw.de)), a leading German bank. It allows users to securely chat with language models, analyze documents and query internal data. The app is built to the highest standards of security and data protection and maintained according to the software development standards of the bank. As a fully compliant solution, users can adopt generative AI into their workflows with confidence. The app is available to more than 8200 employees and enjoys continued high usage. It boosts the productivity of teams ranging from legal to corporate finance.
+
+I'm a part of the GenAI team at LBBW, contributing to the development of blue.gpt and other GenAI services.
+
+Read more about blue.gpt in the German press release from the project start in 2024: [LBBW startet mit eigener generativer KI-Lösung durch](https://www.lbbw.de/artikel/pressemitteilung/lbbw-startet-mit-eigener-generativer-ki-loesung-durch_ah8wecz4u8_d.html).
+
+Tech stack: TypeScript, React, Next.js, Python, Terraform, Azure
+
+LBBW's blue.gpt is not the same as the SaaS BlueGPT.

@@ -63,6 +63,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/projects/blue.gpt/index.html",
       "/projects/aspectwise/index.html",
       "/projects/texttunnel/index.html",
       "/projects/cosmention/index.html",

@@ -14,8 +14,6 @@ website:
       - projects.qmd
       - icon: github
         href: https://github.com/psimm
-      - icon: twitter-x
-        href: https://x.com/paul_simmering
       - icon: linkedin
         href: https://www.linkedin.com/in/paulsimmering
   page-footer: |
