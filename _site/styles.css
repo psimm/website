@@ -73,3 +73,8 @@ body.quarto-dark .quarto-color-scheme-toggle::after {
     content: "☼";
     color: #fff;
 }
+
+body.quarto-light .listing-category:hover {
+    color: rgba(0, 0, 0, 0.85);
+    border-color: rgba(0, 0, 0, 0.4);
+}

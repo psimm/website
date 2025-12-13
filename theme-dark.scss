@@ -85,3 +85,14 @@ code {
   background-color: darken($body-bg, 5%) !important;
   color: #d1d1d1 !important;
 }
+
+.listing-category {
+  color: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: transparent !important;
+}
+
+.listing-category:hover {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
