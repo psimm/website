@@ -21,14 +21,19 @@ website:
         async src="//gc.zgo.at/count.js"></script>
 format:
   html:
+    date-format: "YYYY-MM-DD"
     theme:
-      light: simplex
-      dark: [simplex, theme-dark.scss]
-    css: styles.css
-    linkcolor: "#3478C5"
+      light: theme-light.scss
+      dark: theme-dark.scss
+    css:
+      - fonts.css
+      - styles.css
+    linkcolor: "#2563eb"
     highlight-style:
       light: custom-light.theme
       dark: custom-dark.theme
     code-overflow: wrap
     code-copy: hover
-    code-block-border-left: "#31BAE9"
+    code-block-border-left: "#64748b"
+    mainfont: "Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    monofont: "JetBrains Mono, Consolas, monospace"
