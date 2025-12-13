@@ -1,1 +1,75 @@
 /* css styles */
+
+/* Sun/Moon Theme Toggle */
+.quarto-color-scheme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 48px;
+    min-width: 48px;
+    height: 24px;
+    background: #222;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+    margin-left: 0.5rem;
+    margin-top: -5px;
+    vertical-align: middle;
+}
+
+.quarto-color-scheme-toggle:hover {
+    background: #333;
+}
+
+.quarto-color-scheme-toggle .bi {
+    display: none;
+}
+
+.quarto-color-scheme-toggle::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    background: #fff;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.quarto-color-scheme-toggle::after {
+    content: "☼";
+    position: absolute;
+    font-size: 14px;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
+
+body.quarto-light .quarto-color-scheme-toggle {
+    background: #ddd;
+}
+
+body.quarto-light .quarto-color-scheme-toggle:hover {
+    background: #ccc;
+}
+
+body.quarto-light .quarto-color-scheme-toggle::before {
+    transform: translateX(24px);
+    background: #666;
+}
+
+body.quarto-light .quarto-color-scheme-toggle::after {
+    content: "☾";
+    right: auto;
+    left: 7px;
+    color: #000;
+}
+
+body.quarto-dark .quarto-color-scheme-toggle::after {
+    content: "☼";
+    color: #fff;
+}
