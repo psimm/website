@@ -1,6 +1,6 @@
-/* css styles */
+/* Swiss-Brutalist Theme */
 
-/* Sun/Moon Theme Toggle */
+/* Theme Toggle - minimal pill style */
 .quarto-color-scheme-toggle {
     display: inline-flex;
     align-items: center;
@@ -9,17 +9,17 @@
     width: 48px;
     min-width: 48px;
     height: 24px;
-    background: #222;
+    background: #1e293b;
     border-radius: 12px;
     cursor: pointer;
-    transition: background 0.4s ease;
+    transition: background 0.3s ease;
     margin-left: 0.5rem;
     margin-top: -5px;
     vertical-align: middle;
 }
 
 .quarto-color-scheme-toggle:hover {
-    background: #333;
+    background: #334155;
 }
 
 .quarto-color-scheme-toggle .bi {
@@ -34,47 +34,74 @@
     border-radius: 50%;
     top: 3px;
     left: 3px;
-    background: #fff;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background: #f1f5f9;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .quarto-color-scheme-toggle::after {
     content: "☼";
     position: absolute;
-    font-size: 14px;
-    right: 6px;
+    font-size: 16px;
+    right: 5px;
     top: 50%;
     transform: translateY(-50%);
-    color: #fff;
+    color: #f1f5f9;
     transition: opacity 0.3s ease;
 }
 
 body.quarto-light .quarto-color-scheme-toggle {
-    background: #ddd;
+    background: #e2e8f0;
 }
 
 body.quarto-light .quarto-color-scheme-toggle:hover {
-    background: #ccc;
+    background: #cbd5e1;
 }
 
 body.quarto-light .quarto-color-scheme-toggle::before {
     transform: translateX(24px);
-    background: #666;
+    background: #475569;
 }
 
 body.quarto-light .quarto-color-scheme-toggle::after {
     content: "☾";
     right: auto;
     left: 7px;
-    color: #000;
+    color: #475569;
 }
 
 body.quarto-dark .quarto-color-scheme-toggle::after {
     content: "☼";
-    color: #fff;
+    color: #f1f5f9;
 }
 
+/* Sharp corners everywhere */
+* {
+    border-radius: 0 !important;
+}
+
+/* Keep pill toggle rounded */
+.quarto-color-scheme-toggle,
+.quarto-color-scheme-toggle::before {
+    border-radius: 12px !important;
+}
+
+/* Listing hover states */
 body.quarto-light .listing-category:hover {
-    color: rgba(0, 0, 0, 0.85);
-    border-color: rgba(0, 0, 0, 0.4);
+    color: #0f172a;
+    border-color: #0f172a;
+}
+
+/* Image treatment */
+img {
+    border-radius: 0 !important;
+}
+
+/* Search box */
+.aa-Form {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 0 !important;
+}
+
+body.quarto-dark .aa-Form {
+    border-color: #334155 !important;
 }

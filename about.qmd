@@ -45,6 +45,6 @@ Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](http
 
 The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
 
-### About this website
+### Colophon
 
-This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website).
+This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website). The text font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code.
