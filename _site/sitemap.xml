@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2025-12-13T19:18:23.697Z</lastmod>
+    <lastmod>2025-12-14T08:02:25.226Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/openai_structured_output/index.html</loc>
@@ -78,7 +78,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2025-12-13T15:58:27.583Z</lastmod>
+    <lastmod>2025-12-13T20:47:39.766Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
@@ -198,7 +198,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/projects.html</loc>
-    <lastmod>2025-12-13T19:26:45.760Z</lastmod>
+    <lastmod>2025-12-13T20:47:39.767Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/context-constrained/index.html</loc>
@@ -275,5 +275,13 @@
   <url>
     <loc>https://simmering.dev/blogroll.html</loc>
     <lastmod>2025-11-16T19:16:41.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/assets/fonts/inter/LICENSE.html</loc>
+    <lastmod>2025-12-13T20:47:39.764Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/assets/fonts/jetbrains-mono/LICENSE.html</loc>
+    <lastmod>2025-12-13T20:47:39.766Z</lastmod>
   </url>
 </urlset>

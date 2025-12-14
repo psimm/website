@@ -13,15 +13,17 @@ about:
 
 ---
 
-Welcome to my website! I'm Paul Simmering, a developer from Germany specializing in machine learning and natural language processing.
+Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
-On this website, I write about machine learning, data engineering and developer productivity. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
+On my [blog](/), I write about machine learning, data engineering and developer productivity. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
 
 ### Work
 
 I work as Technical Expert GenAI Platforms & Services at [Landesbank Baden-Württemberg](https://www.lbbw.de), a leading German bank. I'm a developer on the GenAI team, building an enterprise-grade LLM chat application connected to internal data via RAG. In addition, I serve as an internal consultant for GenAI initiatives.
 
 Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models.
+
+You can see more of my work in the [projects](/projects.html) section.
 
 ### Technical interests
 
@@ -47,4 +49,4 @@ The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmer
 
 ### Colophon
 
-This website is built with [Quarto](https://quarto.org). The source is available on [Github](https://github.com/psimm/website). The text font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code.
+This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website). 
