@@ -15,15 +15,17 @@ about:
 
 Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
-On my [blog](/), I write about machine learning, data engineering and developer productivity. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
+On my [blog](/), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. I write about what works: implementations that ship, results you can measure, value you can deliver today, and ideas worth testing. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
+
+> "Knowing is not enough, we must apply. Willing is not enough, we must do." — Goethe
 
 ### Work
 
 I work as Technical Expert GenAI Platforms & Services at [Landesbank Baden-Württemberg](https://www.lbbw.de), a leading German bank. I'm a developer on the GenAI team, building an enterprise-grade LLM chat application connected to internal data via RAG. In addition, I serve as an internal consultant for GenAI initiatives.
 
-Previously, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models.
+Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models. I joined Q after graduating from Aalborg University with an M.Sc. in Economics. During my studies of economics, I discovered my passion for data science and code and decided to pivot to a career in the field. That worked out to be one of the best decisions I've made.
 
-You can see more of my work in the [projects](/projects.html) section.
+You can see examples of my work in the [projects](/projects.html) section.
 
 ### Technical interests
 
@@ -36,17 +38,16 @@ You can see more of my work in the [projects](/projects.html) section.
 ### Other interests
 
 - Reading personal blogs. Check out my [blogroll](/blogroll.qmd) for recommendations.
-- Contemporary art, particularly art inspired by geometry, architecture and nature. My favorites are [Kjetil Golid](https://generated.space), [Owen Pomery](https://owenpomery.com/work) and [Reuben Wu](https://reubenwu.com/selected-work/).
-- Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
-- Economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. Professionally, I pivoted to data science but am still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
 - Practical philosophy. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
+- Economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. Professionally, I pivoted to data science but am still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
+- Parks and gardens, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - [Euro-style board games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
 - Video games. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
 
 ### Contact
 
-The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
+The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev). You can also subscribe to the blog via [RSS](/index.xml).
 
 ### Colophon
 
-This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website). 
+This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website).

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://simmering.dev/assets/fonts/inter/LICENSE.html</loc>
+    <lastmod>2025-12-13T20:47:39.764Z</lastmod>
+  </url>
+  <url>
     <loc>https://simmering.dev/privacy.html</loc>
     <lastmod>2024-08-25T10:11:12.711Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2025-12-14T08:02:25.226Z</lastmod>
+    <lastmod>2025-12-14T08:56:23.178Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/openai_structured_output/index.html</loc>
@@ -254,7 +258,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/blog/fangmant/index.html</loc>
-    <lastmod>2023-10-21T09:55:13.491Z</lastmod>
+    <lastmod>2025-12-14T08:16:24.880Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/agentic-ai/index.html</loc>
@@ -275,10 +279,6 @@
   <url>
     <loc>https://simmering.dev/blogroll.html</loc>
     <lastmod>2025-11-16T19:16:41.262Z</lastmod>
-  </url>
-  <url>
-    <loc>https://simmering.dev/assets/fonts/inter/LICENSE.html</loc>
-    <lastmod>2025-12-13T20:47:39.764Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/assets/fonts/jetbrains-mono/LICENSE.html</loc>
