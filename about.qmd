@@ -67,6 +67,10 @@ I prefer blogging over social media because it allows for more depth, has better
 - **Board and card games**: [Euro-style board games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
 - **Video games**. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
 
+### What I use
+
+I'm a bit of a gearhead and enjoy reading "what I use" lists of others, so here's mine: [What I use](/uses.qmd).
+
 ### Contact
 
 If you find the topics I mentioned above interesting, I would enjoy hearing from you. The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
