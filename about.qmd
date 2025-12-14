@@ -44,7 +44,7 @@ You can see examples of my work in the [projects](/projects.html) section.
 
 ### Contact
 
-The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev). You can also subscribe to the blog via [RSS](/blog.xml).
+The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
 
 ### Colophon
 
