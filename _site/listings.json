@@ -72,5 +72,44 @@
       "/projects/masterthesis/index.html",
       "/projects/bachelorthesis/index.html"
     ]
+  },
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/blog/a-philosophy-of-ai-coding/index.html",
+      "/blog/agentic-ai/index.html",
+      "/blog/modernbert-vs-llm/index.html",
+      "/blog/diagrams/index.html",
+      "/blog/llm-customization/index.html",
+      "/blog/pydantic-ai/index.html",
+      "/blog/context-constrained/index.html",
+      "/blog/absa-with-dspy/index.html",
+      "/blog/long-prompts/index.html",
+      "/blog/openai_structured_output/index.html",
+      "/blog/abstractions/index.html",
+      "/blog/waiting/index.html",
+      "/blog/text-tournament/index.html",
+      "/blog/settled-knowledge/index.html",
+      "/blog/detailed-world/index.html",
+      "/blog/quarto-wiki/index.html",
+      "/blog/fast-and-good/index.html",
+      "/blog/structured_output/index.html",
+      "/blog/llm-eval/index.html",
+      "/blog/gold-data/index.html",
+      "/blog/llm-price-performance/index.html",
+      "/blog/data-grug/index.html",
+      "/blog/nlp-model-escalation/index.html",
+      "/blog/llms-for-absa/index.html",
+      "/blog/one-stop-nlp/index.html",
+      "/blog/dataset-size-vs-correctness/index.html",
+      "/blog/llm-future/index.html",
+      "/blog/ai-assistants/index.html",
+      "/blog/modal-twitter/index.html",
+      "/blog/skills/index.html",
+      "/blog/yarn/index.html",
+      "/blog/fangmant/index.html",
+      "/blog/dataframes/index.html",
+      "/blog/echarts4r/index.html"
+    ]
   }
 ]

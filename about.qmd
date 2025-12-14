@@ -15,9 +15,7 @@ about:
 
 Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
-On my [blog](/), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. I write about what works: implementations that ship, results you can measure, value you can deliver today, and ideas worth testing. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
-
-> "Knowing is not enough, we must apply. Willing is not enough, we must do." — Goethe
+On my [blog](/blog.html), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. I write about what works: implementations that ship, results you can measure, value you can deliver today, and ideas worth testing. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
 
 ### Work
 
@@ -46,7 +44,7 @@ You can see examples of my work in the [projects](/projects.html) section.
 
 ### Contact
 
-The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev). You can also subscribe to the blog via [RSS](/index.xml).
+The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev). You can also subscribe to the blog via [RSS](/blog.xml).
 
 ### Colophon
 

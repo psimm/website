@@ -85,6 +85,14 @@ body.quarto-dark .quarto-color-scheme-toggle::after {
     border-radius: 12px !important;
 }
 
+/* Articles button */
+.btn.btn-outline-secondary {
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 0.8rem;
+    background: transparent;
+    text-decoration: none;
+}
+
 /* Listing hover states */
 body.quarto-light .listing-category:hover {
     color: #0f172a;

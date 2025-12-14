@@ -289,3 +289,14 @@ main a {
         margin: 0;
     }
 }
+
+.btn.btn-outline-secondary {
+    border-color: $gray-300;
+    color: $gray-600;
+
+    &:hover {
+        border-color: $link-color !important;
+        background: rgba($link-color, 0.1) !important;
+        color: $link-color !important;
+    }
+}

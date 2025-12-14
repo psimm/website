@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - _redirects
 
 execute:
   freeze: auto
@@ -11,7 +13,8 @@ website:
   navbar:
     right:
       - about.qmd
-      - index.qmd
+      - text: Blog
+        href: blog.qmd
       - publications.qmd
       - talks.qmd
       - projects.qmd

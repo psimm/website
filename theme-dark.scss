@@ -292,3 +292,15 @@ main a {
     margin: 0;
   }
 }
+
+.btn.btn-outline-secondary {
+  border-color: $gray-100 !important;
+  color: $gray-100 !important;
+  background: transparent !important;
+
+  &:hover {
+    border-color: $link-color !important;
+    background: $gray-100 !important;
+    color: $link-color !important;
+  }
+}

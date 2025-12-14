@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2025-12-14T08:56:23.178Z</lastmod>
+    <lastmod>2025-12-14T10:28:18.165Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/openai_structured_output/index.html</loc>
@@ -82,7 +82,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/index.html</loc>
-    <lastmod>2025-12-13T20:47:39.766Z</lastmod>
+    <lastmod>2025-12-14T10:39:27.550Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/talks/bvmki2021/index.html</loc>
@@ -283,5 +283,9 @@
   <url>
     <loc>https://simmering.dev/assets/fonts/jetbrains-mono/LICENSE.html</loc>
     <lastmod>2025-12-13T20:47:39.766Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog.html</loc>
+    <lastmod>2025-12-14T10:17:04.479Z</lastmod>
   </url>
 </urlset>
