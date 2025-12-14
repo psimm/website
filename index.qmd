@@ -4,15 +4,6 @@ about:
   id: hero-heading
   template: solana
   image: assets/image/profile.webp
-  links:
-    - text: About Me
-      href: about.html
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com/in/paulsimmering
-    - icon: github
-      text: Github
-      href: https://github.com/psimm
 listing:
   id: featured-posts
   contents: blog
@@ -30,9 +21,17 @@ page-layout: full
 AI Engineer from Germany. I write about applied machine learning: implementations that ship, results you can measure, and ideas worth testing. I work as Technical Expert GenAI Platforms & Services at LBBW, a leading German bank.
 
 > "Knowing is not enough, we must apply. Willing is not enough, we must do." — Goethe
+
+::: {.hero-buttons}
+[About Me](about.html){.btn .btn-primary}
+<a href="https://linkedin.com/in/paulsimmering" class="btn btn-social"><i class="bi bi-linkedin"></i> LinkedIn</a>
+<a href="https://github.com/psimm" class="btn btn-social"><i class="bi bi-github"></i> GitHub</a>
+:::
 :::
 
 ## Recent Articles
+
+<br>
 
 :::{#featured-posts}
 :::
