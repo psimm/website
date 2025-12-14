@@ -11,7 +11,9 @@ Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
 I work as Technical Expert GenAI Platforms & Services at [LBBW](https://www.lbbw.de), a leading German bank. I'm a developer on the GenAI team, building an enterprise-grade LLM chat application connected to internal data via RAG. In addition, I serve as an internal consultant for GenAI initiatives.
 
-Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models. I joined Q after graduating from Aalborg University with an M.Sc. in Economics. During my studies of economics, I discovered my passion for data science and code and decided to pivot to a career in the field. That worked out to be one of the best decisions I've made.
+Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), a market research agency. I worked on many projects for small and large businesses in consumer goods, pharmaceuticals, insurance and other industries. A large part of my work was productizing one-off projects into scalable data pipelines powered by languages models. Through that work, I got to experience the evolution of language understanding from bag-of-words models, to transformer models, to large language models.
+
+My educational background is in economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. During my master's degree, I discovered my passion for data science and decided to pivot to a career in the field. That worked out to be one of the best decisions I've made.
 
 
 ::: {.cv-timeline}
@@ -43,6 +45,8 @@ Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für 
 :::
 
 A more complete CV is available on my [LinkedIn profile](https://www.linkedin.com/in/paulsimmering/) or as a PDF on request. You can see examples of my work in the [projects](/projects.html) section.
+
+I occasionally give [talks](/talks.html) at conferences and write [papers](/publications.html) on topics related to my work.
 
 ### Blog
 
