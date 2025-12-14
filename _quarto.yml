@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - _redirects
 
 execute:
   freeze: auto
@@ -11,7 +13,8 @@ website:
   navbar:
     right:
       - about.qmd
-      - index.qmd
+      - text: Blog
+        href: blog.qmd
       - publications.qmd
       - talks.qmd
       - projects.qmd
@@ -20,7 +23,7 @@ website:
       - icon: linkedin
         href: https://www.linkedin.com/in/paulsimmering
   page-footer: |
-    <a href="/imprint.html">Imprint</a> | <a href="/privacy.html">Privacy policy</a> | This website doesn't use cookies.<script data-goatcounter="https://simmering.goatcounter.com/count"
+    <a href="/blog.xml">Subscribe via RSS</a> | <a href="/imprint.html">Imprint</a> | <a href="/privacy.html">Privacy policy</a> | This website doesn't use cookies.<script data-goatcounter="https://simmering.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 format:
   html:

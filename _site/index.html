@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Blog – Paul Simmering</title>
+<title>Hello, I’m Paul Simmering – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -37,16 +37,15 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-45e9c1893d79ef6449417107fda62ae6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1a73c418b9dc4146ad282e13dc36ed62.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-6752b014c72669cb8e1da1f0542cc30e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1a73c418b9dc4146ad282e13dc36ed62.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-85e6d64aa7e44974cafec8583ed60795.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-featured-posts .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -85,13 +84,13 @@ ul.task-list li input[type="checkbox"] {
 
     const options = {
       valueNames: ['listing-date','listing-title','listing-categories','listing-description','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      page: 25,
+      page: 18,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-featured-posts'] = new List('listing-featured-posts', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -137,7 +136,7 @@ window.Quarto = {
 
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Paul Simmering's Blog" href="index.xml" data-external="1"></head>
+</head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
@@ -304,7 +303,7 @@ window.Quarto = {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -323,7 +322,7 @@ window.Quarto = {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
@@ -357,79 +356,91 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blog</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(34)</span></div><div class="category" data-category="QWR2aWNl">Advice <span class="quarto-category-count">(5)</span></div><div class="category" data-category="QWdlbnRz">Agents <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xvdWQ=">Cloud <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGF0YSUyMEVuZ2luZWVyaW5n">Data Engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFZpc3VhbGl6YXRpb24=">Data Visualization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RWNvbm9taWNz">Economics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(21)</span></div><div class="category" data-category="TWFya2V0aW5n">Marketing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHJvZHVjdGl2aXR5">Productivity <span class="quarto-category-count">(7)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(11)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VGlkeSUyMFR1ZXNkYXk=">Tidy Tuesday <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content page-columns page-full column-page" id="quarto-document-content">
 
 
 
 
 
+<div class="quarto-about-solana column-page">
+  <div class="about-entity">
+    <div class="entity-contents">
+      <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hello, I’m Paul Simmering</h1>
+</div>
+<div class="quarto-title-meta column-page">
+  </div>
+</header> <div class="about-links">
+  <a href="/about.html" class="about-link" rel="" target="">
+     <span class="about-link-text">About Me</span>
+  </a>
+  <a href="https://linkedin.com/in/paulsimmering" class="about-link" rel="" target="">
+    <i class="bi bi-linkedin"></i>
+     <span class="about-link-text">LinkedIn</span>
+  </a>
+  <a href="https://github.com/psimm" class="about-link" rel="" target="">
+    <i class="bi bi-github"></i>
+     <span class="about-link-text">Github</span>
+  </a>
+</div>
+      <div class="about-contents"><div id="hero-heading">
+<p>AI Engineer from Germany. I write about applied machine learning: implementations that ship, results you can measure, and ideas worth testing. I work as Technical Expert GenAI Platforms &amp; Services at LBBW, a leading German bank.</p>
+<blockquote class="blockquote">
+<p>“Knowing is not enough, we must apply. Willing is not enough, we must do.” — Goethe</p>
+</blockquote>
+</div></div>
+    </div>
+    <img src="assets/image/profile.webp" class="about-image
+  rounded " style="width: 15em;">
+  </div>
+</div>
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UHJvZHVjdGl2aXR5" data-listing-date-sort="1756245600000" data-listing-file-modified-sort="1756317448972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1904">
-<div class="thumbnail"><a href="./blog/a-philosophy-of-ai-coding/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/a-philosophy-of-ai-coding/image.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/a-philosophy-of-ai-coding/index.html" class="no-external">A Philosophy of AI Coding</a>
-</h3>
+<section id="recent-articles" class="level2">
+<h2 data-anchor-id="recent-articles">Recent Articles</h2>
+<div id="listing-featured-posts" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="UHJvZHVjdGl2aXR5" data-listing-date-sort="1756245600000" data-listing-file-modified-sort="1756317448972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1904">
+<a href="./blog/a-philosophy-of-ai-coding/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./blog/a-philosophy-of-ai-coding/image.webp" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+A Philosophy of AI Coding
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/a-philosophy-of-ai-coding/index.html" class="no-external">
+<div class="card-text listing-description delink">
 This is an analysis of the acclaimed book A Philosophy of Software Design (2nd Edition) by John Ousterhout in the context of AI coding. Building on it, I propose a theory of…
-</a></div>
 </div>
-<div class="metadata">
-<a href="./blog/a-philosophy-of-ai-coding/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 2025-08-27
 </div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDQWdlbnRz" data-listing-date-sort="1740783600000" data-listing-file-modified-sort="1740849237957" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3847">
-<div class="thumbnail"><a href="./blog/agentic-ai/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/agentic-ai/image.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/agentic-ai/index.html" class="no-external">When (Not) to Use Agentic AI</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDQWdlbnRz" data-listing-date-sort="1740783600000" data-listing-file-modified-sort="1740849237957" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3847">
+<a href="./blog/agentic-ai/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./blog/agentic-ai/image.webp" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+When (Not) to Use Agentic AI
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
@@ -437,928 +448,56 @@ This is an analysis of the acclaimed book A Philosophy of Software Design (2nd E
 <div class="listing-category" onclick="window.quartoListingCategory('QWdlbnRz'); return false;">Agents</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/agentic-ai/index.html" class="no-external">
+<div class="card-text listing-description delink">
 2025 could be the year of agentic AI. The first agentic AI demos came out in early 2023 and the technology has gained momentum through better tools, smarter models, and the…
-</a></div>
 </div>
-<div class="metadata">
-<a href="./blog/agentic-ai/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 2025-03-01
 </div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1736636400000" data-listing-file-modified-sort="1736687282626" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2200">
-<div class="thumbnail"><a href="./blog/modernbert-vs-llm/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/modernbert-vs-llm/image.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/modernbert-vs-llm/index.html" class="no-external">ModernBERT vs LLMs for Detecting Adverse Drug Reactions</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1736636400000" data-listing-file-modified-sort="1736687282626" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2200">
+<a href="./blog/modernbert-vs-llm/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./blog/modernbert-vs-llm/image.webp" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+ModernBERT vs LLMs for Detecting Adverse Drug Reactions
+</h5>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/modernbert-vs-llm/index.html" class="no-external">
+<div class="card-text listing-description delink">
 HuggingFace recently released ModernBERT <span class="citation" data-cites="warner2024smarterbetterfasterlonger">(Warner et al. 2024)</span>, an updated version of the BERT language model <span class="citation" data-cites="devlin2018bert">(Devlin 2018)</span> which backports many improvements from LLM…
-</a></div>
 </div>
-<div class="metadata">
-<a href="./blog/modernbert-vs-llm/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 2025-01-12
 </div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="UHJvZHVjdGl2aXR5" data-listing-date-sort="1735340400000" data-listing-file-modified-sort="1735639200942" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1201">
-<div class="thumbnail"><a href="./blog/diagrams/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/diagrams/diagrams.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/diagrams/index.html" class="no-external">Diagrams as Code: Supercharged by AI Assistants</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/diagrams/index.html" class="no-external">
-Diagrams as code are an efficient way to communicate complex ideas and document software architecture. In this post I’ll explain how an AI assistant makes them even better.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/diagrams/index.html" class="no-external">
-<div class="listing-date">
-2024-12-28
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1734822000000" data-listing-file-modified-sort="1734878574672" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1459">
-<div class="thumbnail"><a href="./blog/llm-customization/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/llm-customization/image.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/llm-customization/index.html" class="no-external">When to use Direct Preference Optimization (DPO)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/llm-customization/index.html" class="no-external">
-OpenAI recently added the ability to fine-tune their models using direct preference optimization (DPO). They call it preference tuning. Previously, their API only supported…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/llm-customization/index.html" class="no-external">
-<div class="listing-date">
-2024-12-22
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1734303600000" data-listing-file-modified-sort="1740845883296" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3525">
-<div class="thumbnail"><a href="./blog/pydantic-ai/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/pydantic-ai/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/pydantic-ai/index.html" class="no-external">Type-safe LLM agents with PydanticAI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/pydantic-ai/index.html" class="no-external">
-Pydantic AI is a new agent framework by the company behind Pydantic, the popular data validation library. Pydantic has transformed how I write Python, so I’m excited for…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/pydantic-ai/index.html" class="no-external">
-<div class="listing-date">
-2024-12-16
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UHJvZHVjdGl2aXR5JTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1734130800000" data-listing-file-modified-sort="1734380002444" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="538">
-<div class="thumbnail"><a href="./blog/context-constrained/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/context-constrained/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/context-constrained/index.html" class="no-external">Constrained by Context, Not Reasoning</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/context-constrained/index.html" class="no-external">
-Frontier LLMs rarely give completely wrong answers. Even when their responses aren’t exactly what we need, they’re usually logical given the information provided.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/context-constrained/index.html" class="no-external">
-<div class="listing-date">
-2024-12-14
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1732402800000" data-listing-file-modified-sort="1738446326934" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4710">
-<div class="thumbnail"><a href="./blog/absa-with-dspy/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/absa-with-dspy/image.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/absa-with-dspy/index.html" class="no-external">Aspect-based Sentiment Analysis with DSPy</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/absa-with-dspy/index.html" class="no-external">
-Last year, my colleague Paavo Huoviala and I explored prompting and fine-tuning large language models for aspect-based sentiment analysis (ABSA) <span class="citation" data-cites="simmering2023large">(Simmering and Huoviala 2023)</span>…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/absa-with-dspy/index.html" class="no-external">
-<div class="listing-date">
-2024-11-24
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1725141600000" data-listing-file-modified-sort="1725191959817" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1801">
-<div class="thumbnail"><a href="./blog/long-prompts/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/long-prompts/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/long-prompts/index.html" class="no-external">From 5-7-5 to Thousand Lines: The Case for Longer Prompts</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/long-prompts/index.html" class="no-external">
-Prompts are the key to guide LLMs for any task, from a chatbot to a text classifier. Longer prompts are usually better than shorter ones, as I’ll argue below. There is a…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/long-prompts/index.html" class="no-external">
-<div class="listing-date">
-2024-09-01
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1723240800000" data-listing-file-modified-sort="1723442913059" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
-<div class="thumbnail"><a href="./blog/openai_structured_output/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/openai_structured_output/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/openai_structured_output/index.html" class="no-external">OpenAI’s structured output vs.&nbsp;instructor and outlines</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/openai_structured_output/index.html" class="no-external">
-On August 6 OpenAI released structured outputs in their API. Is structured outputs a replacement for instructor, outlines and other libraries that provide structured outputs…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/openai_structured_output/index.html" class="no-external">
-<div class="listing-date">
-2024-08-10
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1723068000000" data-listing-file-modified-sort="1734380002444" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1479">
-<div class="thumbnail"><a href="./blog/abstractions/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/abstractions/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/abstractions/index.html" class="no-external">Levels of Abstraction in the LLM Stack</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/abstractions/index.html" class="no-external">
-Training and serving LLMs requires a tall software stack. You can engage with this stack at different levels of abstraction, from low-level frameworks like CUDA to…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/abstractions/index.html" class="no-external">
-<div class="listing-date">
-2024-08-08
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="UHJvZHVjdGl2aXR5" data-listing-date-sort="1722117600000" data-listing-file-modified-sort="1723288978896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="810">
-<div class="thumbnail"><a href="./blog/waiting/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/waiting/clocks.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/waiting/index.html" class="no-external">Less stress, more focus: How to handle waiting times in development</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/waiting/index.html" class="no-external">
-It’s unfortunate, but there are many waiting times in data science. Dealing with them well can make work more productive and enjoyable. Common waiting times include:
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/waiting/index.html" class="no-external">
-<div class="listing-date">
-2024-07-28
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9uJTJDTWFya2V0aW5n" data-listing-date-sort="1721685600000" data-listing-file-modified-sort="1727169861861" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="847">
-<div class="thumbnail"><a href="./blog/text-tournament/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/text-tournament/tournament.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/text-tournament/index.html" class="no-external">Text Tournament: Rank Marketing Copy with LLMs</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFya2V0aW5n'); return false;">Marketing</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/text-tournament/index.html" class="no-external">
-The launch of the review analysis project has me working on various marketing tasks. Naturally, I built a tool to let LLMs help with the creative process. It’s called Text…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/text-tournament/index.html" class="no-external">
-<div class="listing-date">
-2024-07-23
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-categories="QWR2aWNlJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1721426400000" data-listing-file-modified-sort="1721458853436" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="521">
-<div class="thumbnail"><a href="./blog/settled-knowledge/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/settled-knowledge/spiral.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/settled-knowledge/index.html" class="no-external">Let Research Settle Before Consuming It</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWR2aWNl'); return false;">Advice</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/settled-knowledge/index.html" class="no-external">
-The pace of publishing in machine learning is extremely high. There were 242,290 AI publications in 2022. That’s 663 per day, or one every two minutes. Based on comments on…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/settled-knowledge/index.html" class="no-external">
-<div class="listing-date">
-2024-07-20
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="14" data-categories="RWNvbm9taWNz" data-listing-date-sort="1720821600000" data-listing-file-modified-sort="1734380002444" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1100">
-<div class="thumbnail"><a href="./blog/detailed-world/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/detailed-world/world.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/detailed-world/index.html" class="no-external">The World is Large and Very Detailed</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('RWNvbm9taWNz'); return false;">Economics</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/detailed-world/index.html" class="no-external">
-It’s easy to underestimate how vast and heterogeneous the world is. For entrepreneurs and developers this has two implications:
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/detailed-world/index.html" class="no-external">
-<div class="listing-date">
-2024-07-13
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="15" data-categories="UHJvZHVjdGl2aXR5JTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1720303200000" data-listing-file-modified-sort="1721156275447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1171">
-<div class="thumbnail"><a href="./blog/quarto-wiki/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/quarto-wiki/library.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/quarto-wiki/index.html" class="no-external">Rich Personal Wiki in Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/quarto-wiki/index.html" class="no-external">
-Machine learning is a deep and constantly evolving field. In an applied project, the details of models are typically compressed into a few lines of a configuration file.…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/quarto-wiki/index.html" class="no-external">
-<div class="listing-date">
-2024-07-07
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="16" data-categories="UHJvZHVjdGl2aXR5JTJDQWR2aWNl" data-listing-date-sort="1719007200000" data-listing-file-modified-sort="1734380002445" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="735">
-<div class="thumbnail"><a href="./blog/fast-and-good/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/fast-and-good/good_fast_cheap.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/fast-and-good/index.html" class="no-external">Fast and good</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWR2aWNl'); return false;">Advice</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/fast-and-good/index.html" class="no-external">
-The adage goes: fast, good, cheap. Pick two. As a developer, you probably don’t want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/fast-and-good/index.html" class="no-external">
-<div class="listing-date">
-2024-06-22
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="17" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1715378400000" data-listing-file-modified-sort="1722438277465" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4524">
-<div class="thumbnail"><a href="./blog/structured_output/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/structured_output/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/structured_output/index.html" class="no-external">The best library for structured LLM output</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/structured_output/index.html" class="no-external">
-By default, Large Language Models (LLMs) output free-form text. But many use cases such as text classification, named entity recognition, relation extraction and information…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/structured_output/index.html" class="no-external">
-<div class="listing-date">
-2024-05-11
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="18" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1714255200000" data-listing-file-modified-sort="1714977256479" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2706">
-<div class="thumbnail"><a href="./blog/llm-eval/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/llm-eval/llm_eval.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/llm-eval/index.html" class="no-external">Evaluating an LLM for your use case</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/llm-eval/index.html" class="no-external">
-In the last two months we’ve seen releases of flagship LLMs like Llama 3, Mixtral 8x22B, and Claude 3. The title of Mistral’s announcement summarizes the dynamic well: <em>Cheape…</em>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/llm-eval/index.html" class="no-external">
-<div class="listing-date">
-2024-04-28
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="19" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1710025200000" data-listing-file-modified-sort="1714977256466" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2066">
-<div class="thumbnail"><a href="./blog/gold-data/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/gold-data/vault.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/gold-data/index.html" class="no-external">How to get gold standard data for NLP</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/gold-data/index.html" class="no-external">
-With the attention on new LLM releases, it’s easy to forget that correctly labeled examples are still a critical factor for accuracy in most NLP tasks. I think they’re the…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/gold-data/index.html" class="no-external">
-<div class="listing-date">
-2024-03-10
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="20" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDQ2xvdWQlMkNFY29ub21pY3M=" data-listing-date-sort="1704927600000" data-listing-file-modified-sort="1714977256489" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="799">
-<div class="thumbnail"><a href="./blog/llm-price-performance/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/llm-price-performance/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/llm-price-performance/index.html" class="no-external">LLM Price Comparison</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2xvdWQ='); return false;">Cloud</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RWNvbm9taWNz'); return false;">Economics</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/llm-price-performance/index.html" class="no-external">
-This article is about prices as of January 11, 2024. For current prices and more comprehensive analysis, check artificialanalysis.ai (not affiliated with me).
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/llm-price-performance/index.html" class="no-external">
-<div class="listing-date">
-2024-01-11
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="21" data-categories="QWR2aWNl" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1714977256459" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1070">
-<div class="thumbnail"><a href="./blog/data-grug/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/data-grug/grug.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/data-grug/index.html" class="no-external">The Grug Brained Data Scientist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWR2aWNl'); return false;">Advice</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/data-grug/index.html" class="no-external">
-The Grug Brained Developer is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/data-grug/index.html" class="no-external">
-<div class="listing-date">
-2023-12-09
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="22" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDQWR2aWNl" data-listing-date-sort="1699743600000" data-listing-file-modified-sort="1714977256496" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="871">
-<div class="thumbnail"><a href="./blog/nlp-model-escalation/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/nlp-model-escalation/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/nlp-model-escalation/index.html" class="no-external">NLP escalation ladder: Use the simplest NLP model that does the job</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWR2aWNl'); return false;">Advice</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/nlp-model-escalation/index.html" class="no-external">
-With all the hype and breathtaking demos, it’s tempting to see LLMs as the universal tool for every language problem. And yes, GPT-4 in particular will achieve decent to…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/nlp-model-escalation/index.html" class="no-external">
-<div class="listing-date">
-2023-11-12
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="23" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1698793200000" data-listing-file-modified-sort="1723034450168" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="287">
-<div class="thumbnail"><a href="./blog/llms-for-absa/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/llms-for-absa/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/llms-for-absa/index.html" class="no-external">Large language models for aspect-based sentiment analysis</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/llms-for-absa/index.html" class="no-external">
-A finetuned GPT-3.5 Turbo model achieves state-of-the-art performance in aspect-based sentiment analysis (ABSA). Zero-shot and few-shot settings with GPT-4 and GPT-3.5 reach…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/llms-for-absa/index.html" class="no-external">
-<div class="listing-date">
-2023-11-01
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="24" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1698530400000" data-listing-file-modified-sort="1714977256502" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2130">
-<div class="thumbnail"><a href="./blog/one-stop-nlp/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/one-stop-nlp/knife.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/one-stop-nlp/index.html" class="no-external">One-stop NLP: Multi-task prompts for LLMs</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/one-stop-nlp/index.html" class="no-external">
-In NLP, we often want to extract multiple pieces of information from a text. Each extraction task is typically done by one model. For example, we might want to classify the…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/one-stop-nlp/index.html" class="no-external">
-<div class="listing-date">
-2023-10-29
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="25" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHl0aG9u" data-listing-date-sort="1698444000000" data-listing-file-modified-sort="1714977256461" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2189">
-<div class="thumbnail"><a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/dataset-size-vs-correctness/scale.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">Dataset Size vs.&nbsp;Label Correctness: What is more important for training a model?</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">
-Supervised models are trained on labeled data. The more data, the better the model. But what if the labels are wrong? How much does the quality of the labels matter compared…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/dataset-size-vs-correctness/index.html" class="no-external">
-<div class="listing-date">
-2023-10-28
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="26" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1697839200000" data-listing-file-modified-sort="1714977256487" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1133">
-<div class="thumbnail"><a href="./blog/llm-future/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/llm-future/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/llm-future/index.html" class="no-external">Future Directions for Large Language Models</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/llm-future/index.html" class="no-external">
-Large language models (LLMs) have taken the world by storm in the last year. It’s not even been one year since ChatGPT was released, and we have seen countless applications…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/llm-future/index.html" class="no-external">
-<div class="listing-date">
-2023-10-21
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="27" data-categories="UHJvZHVjdGl2aXR5" data-listing-date-sort="1681077600000" data-listing-file-modified-sort="1714977256455" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1007">
-<div class="thumbnail"><a href="./blog/ai-assistants/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/ai-assistants/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/ai-assistants/index.html" class="no-external">A Critical Evaluation of Github Copilot and GPT-4 in a Data Science Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZHVjdGl2aXR5'); return false;">Productivity</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/ai-assistants/index.html" class="no-external">
-AI assistants like Github Copilot and ChatGPT promise breakthrough productivity improvements for developers. In this article, I’ll explore how these tools can be used in a…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/ai-assistants/index.html" class="no-external">
-<div class="listing-date">
-2023-04-10
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="28" data-categories="UHl0aG9uJTJDQ2xvdWQlMkNEYXRhJTIwRW5naW5lZXJpbmc=" data-listing-date-sort="1674687600000" data-listing-file-modified-sort="1714977256493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2074">
-<div class="thumbnail"><a href="./blog/modal-twitter/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/modal-twitter/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/modal-twitter/index.html" class="no-external">Twitter API data collector with Modal</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2xvdWQ='); return false;">Cloud</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMEVuZ2luZWVyaW5n'); return false;">Data Engineering</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/modal-twitter/index.html" class="no-external">
-In this article, I’ll show how to build a Twitter data collector in just 100 lines of code. Twitter data has many applications, from social science research to marketing…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/modal-twitter/index.html" class="no-external">
-<div class="listing-date">
-2023-01-26
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="29" data-categories="QWR2aWNl" data-listing-date-sort="1673218800000" data-listing-file-modified-sort="1734380002449" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="982">
-<div class="thumbnail"><a href="./blog/skills/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/skills/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/skills/index.html" class="no-external">Investing in data science skills for the long run</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWR2aWNl'); return false;">Advice</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/skills/index.html" class="no-external">
-Data science is a field that is constantly evolving and requires a lot of practice to master. Picking the right skills to focus on is critical for career development.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/skills/index.html" class="no-external">
-<div class="listing-date">
-2023-01-09
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="30" data-categories="UHl0aG9uJTJDVGlkeSUyMFR1ZXNkYXk=" data-listing-date-sort="1666389600000" data-listing-file-modified-sort="1714977256516" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1469">
-<div class="thumbnail"><a href="./blog/yarn/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/yarn/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/yarn/index.html" class="no-external">Tidy Tuesday: analyzing yarns with polars</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGlkeSUyMFR1ZXNkYXk='); return false;">Tidy Tuesday</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/yarn/index.html" class="no-external">
-In this article, I’m taking the Python data frame library polars for a spin. Polars is a super fast alternative to pandas, implemented in Rust. It also has a leaner…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/yarn/index.html" class="no-external">
-<div class="listing-date">
-2022-10-22
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="31" data-categories="UHl0aG9u" data-listing-date-sort="1640559600000" data-listing-file-modified-sort="1765700184880" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1404">
-<div class="thumbnail"><a href="./blog/fangmant/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/fangmant/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/fangmant/index.html" class="no-external">FANGMANT: Tech stock analysis with pandas</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/fangmant/index.html" class="no-external">
-The acronym FANGMANT stands for Facebook, Apple, Netflix, Google, Microsoft, Amazon, Nvidia and Tesla. Large, highly profitable US tech companies that dominate their…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/fangmant/index.html" class="no-external">
-<div class="listing-date">
-2021-12-27
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="32" data-categories="UiUyQ1B5dGhvbg==" data-listing-date-sort="1639954800000" data-listing-file-modified-sort="1714977256460" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3237">
-<div class="thumbnail"><a href="./blog/dataframes/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/dataframes/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/dataframes/index.html" class="no-external">Data frame wars: Choosing a Python dataframe library as a dplyr user</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/dataframes/index.html" class="no-external">
-I’m a long time R user and lately I’ve seen more and more signals that it’s worth investing into Python. I use it for NLP with spaCy and to build functions on AWS Lambda.…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/dataframes/index.html" class="no-external">
-<div class="listing-date">
-2021-12-20
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="33" data-categories="UiUyQ0RhdGElMjBWaXN1YWxpemF0aW9u" data-listing-date-sort="1581116400000" data-listing-file-modified-sort="1714977256461" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2415">
-<div class="thumbnail"><a href="./blog/echarts4r/index.html" class="no-external">
-
-<img loading="lazy" data-src="./blog/echarts4r/image.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/echarts4r/index.html" class="no-external">Exploring echarts4r</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFZpc3VhbGl6YXRpb24='); return false;">Data Visualization</div>
-
-</div>
-<div class="delink listing-description"><a href="./blog/echarts4r/index.html" class="no-external">
-As web-oriented presentation in R Markdown and Shiny becomes more and more popular, there is increasing demand for interactive graphics with R. Whereas ggplot2 and its vast…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/echarts4r/index.html" class="no-external">
-<div class="listing-date">
-2020-02-08
-</div>
-</a>
-</div>
+</div></a>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
-  <ul class="pagination"></ul>
-</nav>
-</div></main> <!-- /main -->
+</div>
+<div style="text-align: center; margin-top: 2rem;">
+<p><a href="./blog.html" class="btn btn-outline-secondary" style="padding: 0.5rem 1.5rem;">See all articles →</a></p>
+</div>
+
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1374,13 +513,6 @@ As web-oriented presentation in R Markdown and Shiny becomes more and more popul
       window.document.body.appendChild(a);
     }
     setColorSchemeToggle(hasAlternateSentinel())
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
@@ -1779,7 +911,7 @@ As web-oriented presentation in R Markdown and Shiny becomes more and more popul
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<a href="./imprint.html">Imprint</a> | <a href="./privacy.html">Privacy policy</a> | This website doesn’t use cookies.
+<a href="./blog.xml">Subscribe via RSS</a> | <a href="./imprint.html">Imprint</a> | <a href="./privacy.html">Privacy policy</a> | This website doesn’t use cookies.
 <script data-goatcounter="https://simmering.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 </div>
     <div class="nav-footer-right">
