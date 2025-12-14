@@ -180,11 +180,92 @@ body.quarto-dark .aa-Form {
 }
 
 body.quarto-dark .hero-buttons .btn-social {
-    border-color: #475569;
-    color: #94a3b8;
+    border-color: #fff;
+    color: #fff;
 }
 
 body.quarto-dark .hero-buttons .btn-social:hover {
     border-color: #60a5fa;
     color: #60a5fa;
+}
+
+/* CV Timeline */
+.cv-timeline {
+    position: relative;
+    padding-left: 140px;
+    margin: 2rem 0;
+}
+
+.cv-timeline::before {
+    content: "";
+    position: absolute;
+    left: 120px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #cbd5e1;
+}
+
+body.quarto-dark .cv-timeline::before {
+    background: #475569;
+}
+
+.cv-entry {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.cv-entry:last-child {
+    padding-bottom: 0;
+}
+
+.cv-years {
+    position: absolute;
+    left: -140px;
+    width: 110px;
+    text-align: right;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 0.85rem;
+    color: #64748b;
+    top: 0;
+}
+
+body.quarto-dark .cv-years {
+    color: #94a3b8;
+}
+
+.cv-entry::before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    background: #2563eb;
+    border-radius: 50% !important;
+}
+
+.cv-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.cv-org {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+body.quarto-dark .cv-org {
+    color: #94a3b8;
+}
+
+.cv-promotion {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: #059669;
+    margin-left: 0.5rem;
+}
+
+body.quarto-dark .cv-promotion {
+    color: #34d399;
 }

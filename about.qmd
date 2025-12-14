@@ -13,11 +13,42 @@ I work as Technical Expert GenAI Platforms & Services at [LBBW](https://www.lbbw
 
 Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), where I led the development of end-to-end data pipelines for market research powered by large language models. I joined Q after graduating from Aalborg University with an M.Sc. in Economics. During my studies of economics, I discovered my passion for data science and code and decided to pivot to a career in the field. That worked out to be one of the best decisions I've made.
 
-You can see examples of my work in the [projects](/projects.html) section.
+
+::: {.cv-timeline}
+
+::: {.cv-entry}
+[2025]{.cv-years}
+[Technical Expert GenAI Platforms & Services]{.cv-title}  
+[LBBW, Stuttgart]{.cv-org}
+:::
+
+::: {.cv-entry}
+[2018 – 2025]{.cv-years}
+[Data Analyst → Data Scientist → Senior Data Scientist]{.cv-title}  
+[Q | Agentur für Forschung, Mannheim & remote]{.cv-org}
+:::
+
+::: {.cv-entry}
+[2016 – 2018]{.cv-years}
+[M.Sc. Innovation, Knowledge and Economic Dynamics (Economics)]{.cv-title}  
+[Aalborg University]{.cv-org}
+:::
+
+::: {.cv-entry}
+[2012 – 2015]{.cv-years}
+[B.Sc. Economics]{.cv-title}  
+[University of Mannheim]{.cv-org}
+:::
+
+:::
+
+A more complete CV is available on my [LinkedIn profile](https://www.linkedin.com/in/paulsimmering/) or as a PDF on request. You can see examples of my work in the [projects](/projects.html) section.
 
 ### Blog
 
 On my [blog](/blog.html), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
+
+I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found through search engines and surfaced by AI assistants searching the web.
 
 ### Technical interests
 
@@ -38,8 +69,8 @@ On my [blog](/blog.html), I write about applied machine learning with a mix of t
 
 ### Contact
 
-The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
+If you find the topics I mentioned above interesting, I would enjoy hearing from you. The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
 
 ### Colophon
 
-This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website).
+This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. Posts are written in Markdown and may contain executable code blocks, which are executed and rendered as static HTML. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website).
