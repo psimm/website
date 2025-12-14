@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/blog.html",
     "items": [
       "/blog/a-philosophy-of-ai-coding/index.html",
       "/blog/agentic-ai/index.html",
@@ -39,6 +39,19 @@
     ]
   },
   {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/blue.gpt/index.html",
+      "/projects/aspectwise/index.html",
+      "/projects/texttunnel/index.html",
+      "/projects/cosmention/index.html",
+      "/projects/stakex/index.html",
+      "/projects/gpexp/index.html",
+      "/projects/masterthesis/index.html",
+      "/projects/bachelorthesis/index.html"
+    ]
+  },
+  {
     "listing": "/talks.html",
     "items": [
       "/talks/gor2025presentation/index.html",
@@ -61,20 +74,7 @@
     ]
   },
   {
-    "listing": "/projects.html",
-    "items": [
-      "/projects/blue.gpt/index.html",
-      "/projects/aspectwise/index.html",
-      "/projects/texttunnel/index.html",
-      "/projects/cosmention/index.html",
-      "/projects/stakex/index.html",
-      "/projects/gpexp/index.html",
-      "/projects/masterthesis/index.html",
-      "/projects/bachelorthesis/index.html"
-    ]
-  },
-  {
-    "listing": "/blog.html",
+    "listing": "/index.html",
     "items": [
       "/blog/a-philosophy-of-ai-coding/index.html",
       "/blog/agentic-ai/index.html",
