@@ -66,7 +66,7 @@ I prefer blogging over social media because it allows for more depth, has better
 
 - **Reading personal blogs**. Check out my [blogroll](/blogroll.qmd) for recommendations of lateral thinkers, deep dives and personal reflections. This is the healthier alternative to doomscrolling on social media.
 - **Practical philosophy**. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
-- **Economics**. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. Professionally, I pivoted to data science but am still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
+- **Economics**. While I've pivoted professionally, I'm still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
 - **Parks and gardens**, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - **Board and card games**: [Euro-style board games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
 - **Video games**. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
