@@ -41,7 +41,9 @@ I use two of these keylights set to maximum brightness as an alternative to a SA
 
 ![](/assets/image/uses/raycast.webp)
 
-Raycast is an app launcher that has turned into a massive collection of useful tools and an AI assistant. I use it on Mac, iOS and Windows. New AI models are usually added shortly after release. I've set up several system prompts and tool configurations for different tasks. Raycast also supports connecting to MCP Servers, which I've used to run a custom NetNewsWire connector.
+![Raycast Wrapped for 2025](/assets/image/uses/raycast-wrapped.webp)
+
+Raycast is an app launcher that has turned into a massive collection of useful tools and an AI assistant. I use it on Mac, iOS and Windows. New AI models are usually added shortly after release. I've set up several system prompts and tool configurations for different tasks. Raycast also supports connecting to MCP Servers, which I've used to run a custom NetNewsWire connector. The second image shows my Raycast Wrapped for 2025.
 
 ### [Cursor](https://cursor.com/)
 
