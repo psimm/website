@@ -8,7 +8,9 @@ image: "image.webp"
 
 ![Climbing the tech wall. Image generated with GPT Image 1.5](image_wide.webp)
 
-In 2018, I graduated with a degree in economics and promptly pivoted to a career in data science.The nights and weekends of studying and building training projects paid off with technical work I enjoy, career flexibility and financial security. In this article, I'll share a strategy for smart specialization and leverage of existing domain knowledge.
+In 2018, I graduated with a degree in economics and promptly pivoted to a career in data science. I effectively discarded the majority of the knowledge I had just acquired. My main motivation was my late discovery of a passion for programming. It took years of extra effort on nights and weekends to catch up to the capabilities of someone who had studied computer science instead. I was lucky to work in a company that was willing to invest in me and take chances with experiments in data science. 
+
+If you're also considering a pivot to AI and data, this article is for you. I'll share a strategy for smart specialization and leverage of your existing domain knowledge.
 
 The explosion of the AI trend since the release of large language models has made such a pivot both easier and harder. Easier, because AI unlocked many new opportunities and can serve as a tutor. Harder, because companies replace entry level technical jobs with AI, making the competition for the remaining ones fierce.
 
