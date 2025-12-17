@@ -2,7 +2,7 @@
 title: "NLP escalation ladder: Use the simplest NLP model that does the job"
 author: "Paul Simmering"
 date: "2023-11-12"
-categories: ["Machine Learning", "Advice"]
+categories: ["Machine Learning"]
 image: "image.jpg"
 ---
 

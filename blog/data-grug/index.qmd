@@ -2,7 +2,7 @@
 title: "The Grug Brained Data Scientist"
 author: "Paul Simmering"
 date: "2023-12-09"
-categories: ["Advice"]
+categories: ["Productivity"]
 image: "grug.png"
 ---
 

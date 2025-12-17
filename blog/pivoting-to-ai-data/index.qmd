@@ -1,0 +1,111 @@
+---
+title: "Pivoting to a Career in AI and Data"
+author: "Paul Simmering"
+date: "2025-12-17"
+categories: ["Career"]
+image: "image.webp"
+---
+
+![Climbing the tech wall. Image generated with GPT Image 1.5](image_wide.webp)
+
+In 2018, I graduated with a degree in economics and promptly pivoted to a career in data science.The nights and weekends of studying and building training projects paid off with technical work I enjoy, career flexibility and financial security. In this article, I'll share a strategy for smart specialization and leverage of existing domain knowledge.
+
+The explosion of the AI trend since the release of large language models has made such a pivot both easier and harder. Easier, because AI unlocked many new opportunities and can serve as a tutor. Harder, because companies replace entry level technical jobs with AI, making the competition for the remaining ones fierce.
+
+## Pick a role and go depth first
+
+Data and AI are enormous fields with different archetypical job roles. Each of them is deep and constantly evolving. Pick only one and acquire its foundational skillset.
+
+| Role | Deliverable | Code | Math/Stats | Communication |
+|-----------|------------|---|---|---|
+| Data Engineer | Pipeline | Heavy | Light | Low |
+| ML Engineer | Model serving infra. | Heavy | Moderate | Low |
+| AI Engineer | AI-powered app | Heavy | Moderate | Medium |
+| Data Scientist | Prediction model | Heavy | Heavy | Medium |
+| Research Scientist | Paper | Heavy | Heavy | Medium |
+| Data Analyst | Report, dashboard | Light | Light | High |
+| AI Consultant | Management pitch | Light | Light | High |
+| AI Champion | AI adoption | None | Light | High |
+
+Disambiguations:
+
+- Data Engineer vs. Data Analyst: Data Engineers build pipelines and infrastructure that get the data into a usable state. Data Analysts query the data to answer business questions.
+- ML vs. AI Engineer: ML Engineers focus on model serving, monitoring, and infrastructure. AI Engineers build and tune the applications on top of it.
+- Research Scientist vs. Data Scientist: Research Scientists focus on creating new models and papers, currently in particular on LLMs. Data Scientists apply models in a business context and frequently work with classic machine learning models over LLMs.
+- AI Consultant vs AI Champion: AI Consultants analyze a business problem and propose an AI solution. They are typically external to the business unit. AI Champions are domain experts in the business unit who work on requirements with developers and third party suppliers, compare solutions and promote use by the business unit.
+
+The names and scopes differ between organizations. The larger the organization, the more specialized the roles tend to be. Look for job postings for the roles you are interested in to get a sense of the scope and requirements. Also read experiences that people share online regarding what the roles actually involve. In practice, almost every job in this area involves a significant amount of finding, cleaning and transforming data, whether your job title contains "data" or not.
+
+## Use your domain knowledge
+
+In less technical fields, it is relatively easy to become better at data and AI than 95% of your colleagues. My example: I worked in market research, where many have some skills in statistical analysis but few had the chops to write an automated data pipeline. Skills that are trivial for programmers are outstanding among market researchers. This gap also let me become a speaker at market research conferences early in my career.
+
+One way to get there is to volunteer to automate something painful for the team. Some examples:
+
+| Domain | AI Pivot | Project |
+|--------|----------|--------------------------|
+| Customer Support | AI-Assisted Reply Drafting | Set up prompts that draft replies from your help docs, agents edit and send instead of typing from scratch |
+| Finance | Reporting Automation | Automate the monthly report everyone dreads—pull from different tools, format, deliver without the copy-paste ritual |
+| Content Marketing | Content Repurposing | Turn one long-form piece into social posts, email snippets, and summaries using prompts tuned to your voice |
+| Non-profit Fundraising | Donor Dashboard | Unify donor data from events, email, and payment tools into one view, automatically group by giving behavior |
+| Journalism | Public Records Structuring | Turn messy PDFs and spreadsheets from government disclosures into searchable data you can actually analyze |
+
+Lots of opportunities for automation with AI and data engineering have not been realized, because programmers lack the necessary domain knowledge. You can be the domain expert who picks up programming and realize these opportunities.
+
+Such roles are not typically advertised, they are created within organizations and may later be formalized with a job title. The cleanest pivot may not be quitting your job to study, then applying cold. It's creating an AI/data role where you already are.
+
+## Learn one set of tools
+
+Pick one programming language, one cloud provider, one LLM API, one database and so on. If you know one, picking up another as necessary will be much easier. Learning multiple alternatives upfront slows you down.
+
+You can go harder on the specialization on one ecosystem by pursuing certifications in it. For example, you could aim to get the relevant Azure certifications for your chosen role. This route can give you a speed boost, because you quickly get to specialized knowledge that employers on that stack need. However, it also locks you into an ecosystem. Research your choice well, for example by checking the number of job openings mentioning it.
+
+If you prefer to stay more open, prioritize learning open source software and common standards. For example, instead of learning AWS Cloud Formation, their infrastructure as code framework, learn Terraform which handles multiple cloud providers.
+
+## Learn the essentials of software engineering alongside your first programming language
+
+While many techniques are coming and going, there are some essential skills that every professional who codes has to know, regardless of the programming language they use. These are:
+
+- Using a code editor, such as VSCode
+- Command line basics
+- Version management with Git and a code repository like Github
+- Calling an API
+- Querying a database with SQL
+
+The actual list of useful and expected skills is much longer, these are just the absolute essentials.
+
+Learn them alongside your first programming language. There are great YouTube videos teaching them and you can try them right away on your computer. MIT’s “The Missing Semester” course is an advanced version. The 2020 lectures are on [YouTube](https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J).
+
+## Leapfrog
+
+AI technology is evolving rapidly. This is an opportunity for newcomers. You can pick up the latest techniques and be competitive on them right away. You don’t have to study the whole tech tree. Skip the obsolete technologies. If the newer technique replaced rather than built upon the old one, you can skip the old; if it's foundational, learn it. 
+
+For example, when you get into natural language processing today, start with large language models, skip learning recurrent neural networks, as they were superseded by transformers.
+
+This shortens the time to your first role and you can always come back to fill in the gaps.
+
+Data engineering also evolves, but at a slower pace. Database migrations are expensive and risky, so companies tend to stick with them for longer.
+
+## Understanding over speed
+
+Grokking a concept gives you the power to apply it yourself. Just nodding along doesn’t. Done doesn’t mean that the code is running: it means that you could explain the concept clearly to someone else.
+
+When programming with an AI assistant, it’s tempting to go hands off and gloss over the code. But that doesn’t teach you much. On learning projects, turn off AI autocompletion and ask AI to review your code, rather than write it for you. Ask it for advice when you get badly stuck, not as the default.
+
+## Create proof of work
+
+Without a CS degree, you need other evidence of capability. Create it as you go:
+
+1. Job experience, which you may be able to build up with side projects in your current job or after a lateral move inside your company.
+2. Published work, such as GitHub repositories, websites, apps, videos, or articles. Creating an original project is more impressive than a solution to a common tutorial. Your first project doesn't have to be groundbreaking, but make sure it's polished and easy to grasp in the few moments someone spends reviewing it. The readme may be the most important file.
+3. Certifications, but choose carefully. A LinkedIn badge signals nothing. Advanced platform-specific certifications, such as the AWS Data Engineer Associate, are a signal for jobs focused on that platform. Don’t collect certificates for the sake of it; one serious one beats five easy ones.
+
+## Milestone: Move it into your core hours
+
+The pivot is a marathon, not a sprint. It gets easier once you're in a position where you're working in AI / data during your core working hours. Spending nights and weekends is often necessary, but you won’t be at your best learning ability and for many people it’s not sustainable.
+
+Getting there might mean adjusting your current job, taking a hybrid job between domain and technology, or taking time off to study. Once you have an in, keep steering towards your goal position or prepare to take the leap to a full AI / data job.
+
+---
+
+The path isn't linear. You'll work on projects that don't pan out and learn tools that become obsolete. That's normal. A good check is to look at your work from a few months ago: if you shake your head and would do it much better now, you're learning. Focus on depth in one role and leverage what you already know. Whether you end up switching careers or add a technical side to you current job, learning AI and data skills will put you in the driver's seat as AI reshapes all knowledge work.

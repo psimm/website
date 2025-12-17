@@ -2,7 +2,7 @@
 title: "Let Research Settle Before Consuming It"
 author: "Paul Simmering"
 date: "2024-07-20"
-categories: ["Advice", "Machine Learning"]
+categories: ["Productivity"]
 image: "spiral.jpg"
 ---
 

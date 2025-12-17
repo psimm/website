@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paul Simmering">
-<meta name="dcterms.date" content="2023-12-09">
+<meta name="dcterms.date" content="2025-12-17">
 
-<title>The Grug Brained Data Scientist – Paul Simmering</title>
+<title>Pivoting to a Career in AI and Data – Paul Simmering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -301,9 +301,9 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">The Grug Brained Data Scientist</h1>
+      <h1 class="title">Pivoting to a Career in AI and Data</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">Productivity</div>
+                <div class="quarto-category">Career</div>
               </div>
                   </div>
   </div>
@@ -321,7 +321,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">2023-12-09</p>
+        <p class="date">2025-12-17</p>
       </div>
     </div>
     
@@ -341,82 +341,189 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p><a href="https://grugbrain.dev">The Grug Brained Developer</a> is a funny essay on advice for software developers. The lessons resonated with me. This is my own version, geared towards data professionals.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="grug.png" class="img-fluid figure-img"></p>
-<figcaption>grug and the demons - made with DALL-E</figcaption>
+<p><img src="image_wide.webp" class="img-fluid figure-img"></p>
+<figcaption>Climbing the tech wall. Image generated with GPT Image 1.5</figcaption>
 </figure>
 </div>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>this collection of data science thoughts. good for young grugs that liked The Grug Brained Developer and now want more into data</p>
-<p>grug data scientist not understand all but try many thing and fail and learn and do better over time and share what not awful</p>
+<p>In 2018, I graduated with a degree in economics and promptly pivoted to a career in data science.The nights and weekends of studying and building training projects paid off with technical work I enjoy, career flexibility and financial security. In this article, I’ll share a strategy for smart specialization and leverage of existing domain knowledge.</p>
+<p>The explosion of the AI trend since the release of large language models has made such a pivot both easier and harder. Easier, because AI unlocked many new opportunities and can serve as a tutor. Harder, because companies replace entry level technical jobs with AI, making the competition for the remaining ones fierce.</p>
+<section id="pick-a-role-and-go-depth-first" class="level2">
+<h2 class="anchored" data-anchor-id="pick-a-role-and-go-depth-first">Pick a role and go depth first</h2>
+<p>Data and AI are enormous fields with different archetypical job roles. Each of them is deep and constantly evolving. Pick only one and acquire its foundational skillset.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Deliverable</th>
+<th>Code</th>
+<th>Math/Stats</th>
+<th>Communication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data Engineer</td>
+<td>Pipeline</td>
+<td>Heavy</td>
+<td>Light</td>
+<td>Low</td>
+</tr>
+<tr class="even">
+<td>ML Engineer</td>
+<td>Model serving infra.</td>
+<td>Heavy</td>
+<td>Moderate</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td>AI Engineer</td>
+<td>AI-powered app</td>
+<td>Heavy</td>
+<td>Moderate</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>Data Scientist</td>
+<td>Prediction model</td>
+<td>Heavy</td>
+<td>Heavy</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td>Research Scientist</td>
+<td>Paper</td>
+<td>Heavy</td>
+<td>Heavy</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>Data Analyst</td>
+<td>Report, dashboard</td>
+<td>Light</td>
+<td>Light</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td>AI Consultant</td>
+<td>Management pitch</td>
+<td>Light</td>
+<td>Light</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>AI Champion</td>
+<td>AI adoption</td>
+<td>None</td>
+<td>Light</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<p>Disambiguations:</p>
+<ul>
+<li>Data Engineer vs.&nbsp;Data Analyst: Data Engineers build pipelines and infrastructure that get the data into a usable state. Data Analysts query the data to answer business questions.</li>
+<li>ML vs.&nbsp;AI Engineer: ML Engineers focus on model serving, monitoring, and infrastructure. AI Engineers build and tune the applications on top of it.</li>
+<li>Research Scientist vs.&nbsp;Data Scientist: Research Scientists focus on creating new models and papers, currently in particular on LLMs. Data Scientists apply models in a business context and frequently work with classic machine learning models over LLMs.</li>
+<li>AI Consultant vs AI Champion: AI Consultants analyze a business problem and propose an AI solution. They are typically external to the business unit. AI Champions are domain experts in the business unit who work on requirements with developers and third party suppliers, compare solutions and promote use by the business unit.</li>
+</ul>
+<p>The names and scopes differ between organizations. The larger the organization, the more specialized the roles tend to be. Look for job postings for the roles you are interested in to get a sense of the scope and requirements. Also read experiences that people share online regarding what the roles actually involve. In practice, almost every job in this area involves a significant amount of finding, cleaning and transforming data, whether your job title contains “data” or not.</p>
 </section>
-<section id="complexity-bad-in-data-science-too" class="level2">
-<h2 class="anchored" data-anchor-id="complexity-bad-in-data-science-too">Complexity bad in data science too</h2>
-<p>data science much complex. many thing go wrong, invisible to grug</p>
-<p>complexity bad, make grug’s brain hurt and cause mistakes that bite grug later</p>
-<p>some complexity necessary to solve business problem. that is grug’s job. but grug must not add complexity that not needed</p>
+<section id="use-your-domain-knowledge" class="level2">
+<h2 class="anchored" data-anchor-id="use-your-domain-knowledge">Use your domain knowledge</h2>
+<p>In less technical fields, it is relatively easy to become better at data and AI than 95% of your colleagues. My example: I worked in market research, where many have some skills in statistical analysis but few had the chops to write an automated data pipeline. Skills that are trivial for programmers are outstanding among market researchers. This gap also let me become a speaker at market research conferences early in my career.</p>
+<p>One way to get there is to volunteer to automate something painful for the team. Some examples:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 22%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Domain</th>
+<th>AI Pivot</th>
+<th>Project</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Customer Support</td>
+<td>AI-Assisted Reply Drafting</td>
+<td>Set up prompts that draft replies from your help docs, agents edit and send instead of typing from scratch</td>
+</tr>
+<tr class="even">
+<td>Finance</td>
+<td>Reporting Automation</td>
+<td>Automate the monthly report everyone dreads—pull from different tools, format, deliver without the copy-paste ritual</td>
+</tr>
+<tr class="odd">
+<td>Content Marketing</td>
+<td>Content Repurposing</td>
+<td>Turn one long-form piece into social posts, email snippets, and summaries using prompts tuned to your voice</td>
+</tr>
+<tr class="even">
+<td>Non-profit Fundraising</td>
+<td>Donor Dashboard</td>
+<td>Unify donor data from events, email, and payment tools into one view, automatically group by giving behavior</td>
+</tr>
+<tr class="odd">
+<td>Journalism</td>
+<td>Public Records Structuring</td>
+<td>Turn messy PDFs and spreadsheets from government disclosures into searchable data you can actually analyze</td>
+</tr>
+</tbody>
+</table>
+<p>Lots of opportunities for automation with AI and data engineering have not been realized, because programmers lack the necessary domain knowledge. You can be the domain expert who picks up programming and realize these opportunities.</p>
+<p>Such roles are not typically advertised, they are created within organizations and may later be formalized with a job title. The cleanest pivot may not be quitting your job to study, then applying cold. It’s creating an AI/data role where you already are.</p>
 </section>
-<section id="data-quality" class="level2">
-<h2 class="anchored" data-anchor-id="data-quality">Data quality</h2>
-<p>data quality most important. if data bad, model bad. if model bad, prediction bad. if prediction bad, business bad, so no shiny rocks for grug</p>
-<p>bad data is demon of data sciencing. is sneaky demon that hides in data and makes grug look bad, or worse, give bad info to business shamans. many shiny rocks lost to bad data</p>
-<p>grug likes being close to data. but big brain data tools hide data and make it hard for grug to look at tables. grug like to look at tables. grug finds problems in data by looking at tables</p>
-<p>grug work in data warehouse for years and when grug smells a stink, grug look at tables and find problem. when grug ignores stink and not look at tables, grug always regret</p>
-<p>but projects have many tables and grug busy. so grug must automate look at tables. data quality framework check if data is missing, is in wrong format, or is out of range and if foreign keys are valid</p>
-<p>best guarantee comes from enforced constraints in database. constraints always on guard and never sleep</p>
-<p>but analytics databases are too lazy to enforce constraints. so grug must use data quality framework to check data. grug not like this but best grug can do</p>
+<section id="learn-one-set-of-tools" class="level2">
+<h2 class="anchored" data-anchor-id="learn-one-set-of-tools">Learn one set of tools</h2>
+<p>Pick one programming language, one cloud provider, one LLM API, one database and so on. If you know one, picking up another as necessary will be much easier. Learning multiple alternatives upfront slows you down.</p>
+<p>You can go harder on the specialization on one ecosystem by pursuing certifications in it. For example, you could aim to get the relevant Azure certifications for your chosen role. This route can give you a speed boost, because you quickly get to specialized knowledge that employers on that stack need. However, it also locks you into an ecosystem. Research your choice well, for example by checking the number of job openings mentioning it.</p>
+<p>If you prefer to stay more open, prioritize learning open source software and common standards. For example, instead of learning AWS Cloud Formation, their infrastructure as code framework, learn Terraform which handles multiple cloud providers.</p>
 </section>
-<section id="data-problem-needs-data-solution" class="level2">
-<h2 class="anchored" data-anchor-id="data-problem-needs-data-solution">Data problem needs data solution</h2>
-<p>grugs tempted to use complex methods to fix problem of missing data and other stink. but better to fix at source</p>
-<p>if data is bad, fix data</p>
-<p>say again: <em>if data is bad, fix data</em></p>
-<p>to fix data, grugs need talk other grugs and business shamans. much wait. but must endure and fix data. tempting, use code to fix. very bad idea</p>
+<section id="learn-the-essentials-of-software-engineering-alongside-your-first-programming-language" class="level2">
+<h2 class="anchored" data-anchor-id="learn-the-essentials-of-software-engineering-alongside-your-first-programming-language">Learn the essentials of software engineering alongside your first programming language</h2>
+<p>While many techniques are coming and going, there are some essential skills that every professional who codes has to know, regardless of the programming language they use. These are:</p>
+<ul>
+<li>Using a code editor, such as VSCode</li>
+<li>Command line basics</li>
+<li>Version management with Git and a code repository like Github</li>
+<li>Calling an API</li>
+<li>Querying a database with SQL</li>
+</ul>
+<p>The actual list of useful and expected skills is much longer, these are just the absolute essentials.</p>
+<p>Learn them alongside your first programming language. There are great YouTube videos teaching them and you can try them right away on your computer. MIT’s “The Missing Semester” course is an advanced version. The 2020 lectures are on <a href="https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J">YouTube</a>.</p>
 </section>
-<section id="counting-things" class="level2">
-<h2 class="anchored" data-anchor-id="counting-things">Counting things</h2>
-<p>grug like to count things. when data quality nice, counting things already good enough to make business shamans happy. grug can count anything: users, orders, clicks, shiny rocks collected and more. grug can also separate counting by time, location, and other things</p>
-<p>counting easy to do and fit into brain</p>
+<section id="leapfrog" class="level2">
+<h2 class="anchored" data-anchor-id="leapfrog">Leapfrog</h2>
+<p>AI technology is evolving rapidly. This is an opportunity for newcomers. You can pick up the latest techniques and be competitive on them right away. You don’t have to study the whole tech tree. Skip the obsolete technologies. If the newer technique replaced rather than built upon the old one, you can skip the old; if it’s foundational, learn it.</p>
+<p>For example, when you get into natural language processing today, start with large language models, skip learning recurrent neural networks, as they were superseded by transformers.</p>
+<p>This shortens the time to your first role and you can always come back to fill in the gaps.</p>
+<p>Data engineering also evolves, but at a slower pace. Database migrations are expensive and risky, so companies tend to stick with them for longer.</p>
 </section>
-<section id="visualization" class="level2">
-<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
-<p>bar chart is grug’s best friend forever. grug can make bar chart of anything. easy for business shamans and grug to understand</p>
-<p>complex chart like network graph or tree map or radar chart too hard to understand. message get lost in complexity</p>
-<p>pie chart and word cloud look easy but cause misunderstanding. almost always better to use bar chart. sometimes business shamans ask for pie chart, and when pie has few slices, is ok. when pie has many slices, grug must say no</p>
+<section id="understanding-over-speed" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-over-speed">Understanding over speed</h2>
+<p>Grokking a concept gives you the power to apply it yourself. Just nodding along doesn’t. Done doesn’t mean that the code is running: it means that you could explain the concept clearly to someone else.</p>
+<p>When programming with an AI assistant, it’s tempting to go hands off and gloss over the code. But that doesn’t teach you much. On learning projects, turn off AI autocompletion and ask AI to review your code, rather than write it for you. Ask it for advice when you get badly stuck, not as the default.</p>
 </section>
-<section id="machine-learning" class="level2">
-<h2 class="anchored" data-anchor-id="machine-learning">Machine learning</h2>
-<p>machine learning is powerful tool and unlocker of many shiny rocks. grug understands is not magic and not always best tool for job</p>
-<p>big brains use complex machine learning models to solve problem that can be solved with simple model. like to show off big brain</p>
-<p>this very bad because big model cost many shiny rocks for train and run. grug can’t look into big model to see what is doing and grug can’t explain big model to business shamans</p>
-<p>some hard problem can only be solved with big model. then grug must use big model</p>
-<p>grug likes reproducible model training and evaluation. grug and colleagues need to retrain models and compare. easy to forget settings and which data was used. brain limited. better to have tool that logs everything</p>
-<p>last few years many big model change grug’s life. grug can now do things that grug could not before. big brains work very fast to make big model better and better. grug very happy about this and grug hope big brains keep doing this</p>
-<p>grug prepares for new big model to change. grug knows: model come and go. model is not forever. new model will come and make old model look bad</p>
+<section id="create-proof-of-work" class="level2">
+<h2 class="anchored" data-anchor-id="create-proof-of-work">Create proof of work</h2>
+<p>Without a CS degree, you need other evidence of capability. Create it as you go:</p>
+<ol type="1">
+<li>Job experience, which you may be able to build up with side projects in your current job or after a lateral move inside your company.</li>
+<li>Published work, such as GitHub repositories, websites, apps, videos, or articles. Creating an original project is more impressive than a solution to a common tutorial. Your first project doesn’t have to be groundbreaking, but make sure it’s polished and easy to grasp in the few moments someone spends reviewing it. The readme may be the most important file.</li>
+<li>Certifications, but choose carefully. A LinkedIn badge signals nothing. Advanced platform-specific certifications, such as the AWS Data Engineer Associate, are a signal for jobs focused on that platform. Don’t collect certificates for the sake of it; one serious one beats five easy ones.</li>
+</ol>
 </section>
-<section id="performance-and-productivity" class="level2">
-<h2 class="anchored" data-anchor-id="performance-and-productivity">Performance and productivity</h2>
-<p>when grug has to wait for model to train or database to query, grug gets bored and grug’s brain wanders. bad for grug’s productivity. make business shamans impatient too</p>
-<p>data exploration and model experimentation is more fun when machine goes brrrr rather than when machine goes zzzzz. so when slow, grug uses performance profiling tools to find bottleneck</p>
-<p>caching grug’s #2 best friend. grug ask for same thing many times. indexing also good friend</p>
-<p>cloud development twisted concept. cloud scales in production - nice! but bad for developer experience. write code on laptop, package, upload, and wait for cloud to run. very slow and tiny bug that grug could fix in 1 minute takes long time. grug look for ways to develop locally or with quick feedback loop. setup can be headache but worth it!</p>
-</section>
-<section id="expanding-the-grug-brain" class="level2">
-<h2 class="anchored" data-anchor-id="expanding-the-grug-brain">Expanding the grug brain</h2>
-<p>grug’s brain too small and grug too busy to keep up with all new shiny toys. grug must choose which shiny toys to learn</p>
-<p>popular data shamans have new toys every day and promise that new toys will solve all problems. grug not always believe this. but some tools are actually good. so grug must choose wisely</p>
-<p>learn evergreen skills - always good idea. grug loves SQL because SQL was good for shiny rock collection for decades and will be good for long time more. many new toys use SQL so grug can use SQL with new toys</p>
-<p>grug wants to have brain shaped like letter T. grug wants to know basics of many things and aspires to big brain in one thing</p>
-<p>always need data quality and visualization and model evaluation. these are basic demon defense skills that every grug must have. cloud also good</p>
-<p>to get more shiny rocks, grug must be extra good at one more thing, like model deepthink or huge data organization or business shaman rituals</p>
-<p>some grugs identify by their tools. grug is wary of this. grug is grug, not Spark grug or Snowflake grug or AWS grug. when grug join new shiny rock mine, grug will use tool that other grugs use</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>good data better than complex pipeline</p>
+<section id="milestone-move-it-into-your-core-hours" class="level2">
+<h2 class="anchored" data-anchor-id="milestone-move-it-into-your-core-hours">Milestone: Move it into your core hours</h2>
+<p>The pivot is a marathon, not a sprint. It gets easier once you’re in a position where you’re working in AI / data during your core working hours. Spending nights and weekends is often necessary, but you won’t be at your best learning ability and for many people it’s not sustainable.</p>
+<p>Getting there might mean adjusting your current job, taking a hybrid job between domain and technology, or taking time off to study. Once you have an in, keep steering towards your goal position or prepare to take the leap to a full AI / data job.</p>
+<hr>
+<p>The path isn’t linear. You’ll work on projects that don’t pan out and learn tools that become obsolete. That’s normal. A good check is to look at your work from a few months ago: if you shake your head and would do it much better now, you’re learning. Focus on depth in one role and leverage what you already know. Whether you end up switching careers or add a technical side to you current job, learning AI and data skills will put you in the driver’s seat as AI reshapes all knowledge work.</p>
 
 
 </section>
