@@ -54,6 +54,8 @@ On my [blog](/blog.html), I write about applied machine learning with a mix of t
 
 I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found through search engines and surfaced by AI assistants searching the web.
 
+More details about the website itself can be found in the [colophon](/colophon.html).
+
 ### Technical interests
 
 - **LLM Evals & Monitoring**: The biggest barrier to scaled AI adoption in business is reliablity and evaluation is the key to proving it. Multi-step reasoning, agentic systems and multi-modal flows have made evaluation much harder than it was with classic NLP, but it's more important than ever.
@@ -78,7 +80,3 @@ I'm a bit of a gearhead and enjoy reading "what I use" lists of others, so here'
 ### Contact
 
 If you find the topics I mentioned above interesting, I would enjoy hearing from you. The best way to contact me is via email: [paul@simmering.dev](mailto:paul@simmering.dev).
-
-### Colophon
-
-This website is built with [Quarto](https://quarto.org) and uses the Solana theme with some customizations. Posts are written in Markdown and may contain executable code blocks, which are executed and rendered as static HTML. The font is [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. The website hosted on [Netlify](https://www.netlify.com). The source is available on [Github](https://github.com/psimm/website).

@@ -282,7 +282,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2025-12-14T17:21:50.776Z</lastmod>
+    <lastmod>2025-12-18T08:08:11.694Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/privacy.html</loc>
@@ -295,5 +295,9 @@
   <url>
     <loc>https://simmering.dev/blog/pivoting-to-ai-data/index.html</loc>
     <lastmod>2025-12-17T13:06:08.255Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/colophon.html</loc>
+    <lastmod>2025-12-18T08:18:47.116Z</lastmod>
   </url>
 </urlset>
