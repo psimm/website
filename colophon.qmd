@@ -14,7 +14,7 @@ The design of the website is based on the Solana theme. I have done some customi
 - custom dark mode switch
 - some custom CSS, e.g. the CV timeline on the about page
 
-The fonts are [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. I chose them because they have a technical look and feel.
+The fonts are [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code.
 
 ## Hosting
 

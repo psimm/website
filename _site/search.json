@@ -2146,7 +2146,7 @@
     "href": "colophon.html#theme",
     "title": "Colophon",
     "section": "Theme",
-    "text": "Theme\nThe design of the website is based on the Solana theme. I have done some customizations:\n\nhome page with a greeting and latest articles\ncustom dark mode switch\nsome custom CSS, e.g. the CV timeline on the about page\n\nThe fonts are Inter for text and JetBrains Mono for code. I chose them because they have a technical look and feel."
+    "text": "Theme\nThe design of the website is based on the Solana theme. I have done some customizations:\n\nhome page with a greeting and latest articles\ncustom dark mode switch\nsome custom CSS, e.g. the CV timeline on the about page\n\nThe fonts are Inter for text and JetBrains Mono for code."
   },
   {
     "objectID": "colophon.html#hosting",
