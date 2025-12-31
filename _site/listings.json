@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/agent-benchmarks/index.html",
       "/blog/pivoting-to-ai-data/index.html",
       "/blog/a-philosophy-of-ai-coding/index.html",
       "/blog/agentic-ai/index.html",
@@ -77,6 +78,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/agent-benchmarks/index.html",
       "/blog/pivoting-to-ai-data/index.html",
       "/blog/a-philosophy-of-ai-coding/index.html",
       "/blog/agentic-ai/index.html",

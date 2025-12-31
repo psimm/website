@@ -4,6 +4,7 @@ author: "Paul Simmering"
 date: "2025-03-01"
 categories: ["Machine Learning", "Agents"]
 image: "image.webp"
+description: "A framework for deciding when agentic AI adds value versus when simpler approaches work better."
 toc: true
 ---
 
