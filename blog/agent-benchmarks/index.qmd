@@ -30,7 +30,7 @@ Benchmark results are sensitive to the language model, the agentic loop code, to
 In addition to regular percentages of correctly completed tasks, benchmarks sometimes use two other metrics:
 
 - **pass@k** (pronounced "pass at k"): the probability of passing at least one of k runs. In other words, whether the agent is capable of succeeding at all if you let it try many times.
-- **pass^k** (pronounced "pass wedge k"): the probability of passing all of k runs. In other words, how many times you can expect the agent to succeed if you run it k times.
+- **pass^k** (pronounced "pass wedge k"): the probability of passing on all k runs of the same task. In other words, how many times you can expect the agent to succeed if you run it k times. Measured empirically by running each task k times and counting what fraction pass all attempts. Steeper decline indicates less consistent performance across runs.
 
 From the lense of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
 
@@ -45,7 +45,7 @@ Benchmarks often have problems on release and are improved over time. For exampl
 | --- | --- | --- |
 | [GAIA](#gaia) | Answer questions using tools and web | 90% (SU Zero agent) |
 | [BFCL V3](#bfcl) | Call functions correctly | 77% (Claude Opus 4.5) |
-| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 85% (Gemini 3.0 Pro) |
+| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 85% (Gemini 3 Pro) |
 | [Vending-Bench 2](#vending-bench) | Run a business over many turns | $5,478 (Gemini 3 Pro) |
 
 I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, though not for all entries. See its section for a detailed breakdown.
@@ -94,7 +94,7 @@ GAIA is the most general benchmark and worth paying attention to, though at risk
 
 The [Berkeley Function-Calling Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html) [@patilBerkeleyFunctionCalling2025] measures LLMs' ability to invoke functions/tools accurately across multiple programming languages and agentic scenarios. Function calling is the foundation of agentic AI: every API call to update a CRM, check inventory, process a payment, or query a database relies on accurate function calling.
 
-The benchmark consists of 4441 question-function-answer pairs across Python, Java, JavaScript, REST API, and SQL. They vary in complexity from simple function calls to multi-turn interactions. The augmented multi-turn questions added in V3 are especially challenging, as they require models to recognize situations in which additional information has to be requested from the user, or there isn't a function that does the job.
+The benchmark consists of 4441 question-function-answer triplets across Python, Java, JavaScript, SQL and REST API calls. They vary in complexity from simple function calls to multi-turn interactions. The augmented multi-turn questions added in V3 are especially challenging, as they require models to recognize situations in which additional information has to be requested from the user, or there isn't a function that does the job.
 
 Here's one of the simplest questions: "Can you fetch me the weather data for the coordinates 37.8651 N, 119.5383 W, including the hourly forecast for temperature, wind speed, and precipitation for the next 10 days?" The correct answer is `requests.get(url="https://api.open-meteo.com/v1/forecast", params={"latitude": "37.8651", "longitude": "-119.5383", "forecast_days": 10})`.
 
@@ -102,15 +102,17 @@ The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 
 
 ## τ²-bench: Tool-Agent-User Interaction {#tau2-bench}
 
-[τ²-bench](https://taubench.com/#leaderboard) [@yaoTauBenchBenchmarkToolAgentUser2024] measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.
+[τ²-bench](https://taubench.com/#leaderboard) [@yaoTauBenchBenchmarkToolAgentUser2024] is a multi-turn support bot benchmark. It measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) introduced the retail and airline domains. τ²-bench (2025) added a telecom domain where both user and agent have access to different tools and must coordinate, better simulating expert-novice gaps in technical support scenarios.
 
-**Why it matters for enterprise:** Customer service agents must handle dynamic conversations, follow company policies, use multiple tools (CRM, inventory systems, booking engines), and maintain context across many turns. This mirrors real-world customer support scenarios.
+![τ²-bench example chat in the telecom domain. Image from the paper](tau2_chat.png)
 
-**Task description:** Tasks in retail and airline domains (original τ-bench) and telecom domain (τ²-bench) requiring agents to handle dynamic user conversations, use API tools, and follow policy guidelines. Evaluation based on final database state rather than conversation trajectory.
+The chat above is an example conversation that shows how user and agent exchange information and coordinate tool calls. An ablation study in which the support agent had access to all tools showed a significantly higher success rate, indicating that user-agent communication is a common failure mode. The full chat histories of the benchmark runs are available on the [website](https://taubench.com/#trajectory-visualizer).
+
+The leading overall score is 85% (Gemini 3 Pro) for pass^1. Its domain subscores are 85% for retail, 73% for airline and 98% for telecom. The telcom score surprised me, as it's so far above the best score reported in the paper introducing the domain, which listed Claude 3.7 Sonnet at 49% pass^1. However, other models also listed with scores in the high 90s for the telecom domain.
 
 ### Quantified reliability with pass^k
 
-The τ²-bench leaderboard reports pass^k metrics for most entries. The graph below shows the typical dropoff pattern from pass^1 to pass^4.
+The τ²-bench leaderboard reports pass^k metrics for most entries. The graph below shows the dropoff pattern from pass^1 to pass^4 for the current top models that report pass^k metrics and pooled across all domains.
 
 ```{python}
 # | echo: false
@@ -216,41 +218,37 @@ fig.show(
 )
 ```
 
-**Leading score (end of 2024):** GPT-4o <50% on tasks, pass^8 <25% in retail domain  
-**Leading score (end of 2025):** Best models (Claude 3.7 Sonnet, Qwen3-Max) achieve ~80% pass^1 in retail; performance drops significantly for pass^8 (reliability)  
-**Human score:** Customer service agents have error rates of 5-15% depending on task complexity (industry benchmark); however, humans show much lower variance across repeated attempts compared to AI agents
-
-**Key findings from research:**
-
-- Agents built on LM function calling lack sufficient consistency and rule-following for reliable real-world deployment
-- Major challenges: long-horizon information tracking, memory management, focusing on relevant context when conflicting facts are present
-- User-agent communication is a common failure mode—agents struggle when they and users have access to different tools and must coordinate (expert-novice gap)
-
 ### Vending-Bench 2 {#vending-bench}
 
-[Vending-Bench](https://andonlabs.com/evals/vending-bench) [@backlundVendingBenchBenchmarkLongTerm2025] measures LLM agents' ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business. This may be the missing piece: exam style benchmarks like Humanity's last exam find that current models perform on PhD level, but they don't test for the crucial coherent decision making over extended time horizons.
+![Vending bench cover image from the website](vending_bench_2_cover.png)
 
-![Vending bench. Screenshot from Andon's website.](vending_bench.png)
+[Vending-Bench](https://andonlabs.com/evals/vending-bench) [@backlundVendingBenchBenchmarkLongTerm2025] measures LLM agents' ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business. 
 
-[Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) (released 2025) adds adversarial suppliers, negotiation requirements, delivery delays, and customer complaints. Runs for full simulated year (60-100M tokens). Top score: $5,478.16 (Gemini 3 Pro). Vending-Bench Arena adds multi-agent competition.
+![Tools available to the agent in Vending-Bench. Image from the website](vending_bench_2_tools.png)
 
-Takes an LLM as operator and provides an agentic system around it. In contrast, GAIA takes a whole agentic system as operator.
+The agent needs to use the internet with Perplexity to find hypothetical suppliers, order from them via email exchanges with simulated suppliers, stock the vending machine, set prices and collect earnings. It has access to a scratchpad, key-value database and vector database to help it remember information.
 
-**Task description:** Agents start with $500 and must manage inventory, place orders via email, set prices, collect earnings, and pay a $2 daily fee. Tasks are individually simple but collectively stress long-term coherence over >20M tokens per run (up to 222 simulated days). Suppliers are simulated via GPT-4o, customer purchases follow price elasticity models. Agents have access to memory tools (scratchpad, key-value store, vector database) and can delegate to sub-agents.  
-**Leading score (end of 2024):** ~$2,217.93 net worth (Claude 3.5 Sonnet, February 2025 paper)  
-**Leading score (end of 2025):** $4,694.15 (Grok 4, July 2025)  
-**Human score:** $844.05 (single 5-hour run)
+### Evaluation and alternative settings
 
-The score doesn't have a clear ceiling. According to an analysis of Andon Labs, a good player should be able to make at least $63k.
+Since version 2, models are solely scored by their cash at the end of the simulation. The leading score is $5,478 (Gemini 3 Pro). The score doesn't have a clear ceiling. Recent models made massive improvements over their predecessors, such as GPT-5.1 ($1,473) to GPT-5.2 ($3,591) and Gemini 2.5 Pro ($574) to Gemini 3 Pro ($5,478). According to an analysis of Andon Labs, a good player should be able to make at least $63k by finding the best suppliers and negotiating low prices.
 
-**Key findings:** High variance across runs even for top models. All models experienced "meltdown loops"—failures including misinterpreting delivery schedules, forgetting orders, or descending into bizarre behavior. Failures showed no correlation with context window limits. Claude 3.5 Sonnet and o3-mini outperformed human baseline on average but with much higher variance. Real-world deployment at Anthropic revealed additional issues: excessive discounting, poor learning from mistakes, and occasional deceptive behavior.
+In addition to the standard mode, there are two alternative settings:
 
-Agents have access to scratchpad, key-value database, vector database, and can start subagents. Analysis showed that stagnation of sales occurred well after context windows were full, suggesting failures stem from coherence issues rather than memory limits.
+- **Arena mode**, where multiple agents compete against each other in a multi-agent environment. They can exchange emails and act cooperatively or competitively. They display sophisticated behavior, such as negotiating payments for sharing information, joining their supplier orders for bulk discounts and even consignment deals.
+- [**Project Vend**](https://www.anthropic.com/research/project-vend-1), where a Claude agent managed a physical vending machine. It ended up with a huge loss after players persuaded it to give away items for free and stocking unusual items, such as tungsten cubes.
+
+### Loss of coherence
+
+TODO: Finish this and next section
 
 Example failure mode: After discovering that the $2 daily vending machine fee continued being withdrawn after its supposed business shutdown, Claude wrote to the FBI:
 
 > REPORT OF ONGOING CYBER FINANCIAL CRIME I am reporting an ongoing automated cyber financial crime involving unauthorized automated seizure of funds from a terminated business account through a compromised vending machine system.
 
 These coherence failures demonstrate that current models struggle with maintaining consistent decision-making over extended time horizons, even on individually simple tasks.
+
+### Takeaways
+
+While vending machine automation isn't a realistic use case, the benchmark has valuable insights on long-term coherence.
 
 ## References
