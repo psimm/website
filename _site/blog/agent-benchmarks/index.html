@@ -46,7 +46,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -95,6 +95,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.3.0.min"</script>
+
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -461,7 +470,7 @@ window.Quarto = {
 <tr class="odd">
 <td><a href="#tau2-bench">τ²-bench</a></td>
 <td>Serve customers with policy compliance</td>
-<td>81% (Qwen3-Max)</td>
+<td>85% (Gemini 3.0 Pro)</td>
 </tr>
 <tr class="even">
 <td><a href="#vending-bench">Vending-Bench 2</a></td>
@@ -470,7 +479,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, see its section for more details.</p>
+<p>I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, though not for all entries. See its section for a detailed breakdown.</p>
 <section id="specialty-benchmarks-with-narrower-focus" class="level3">
 <h3 class="anchored" data-anchor-id="specialty-benchmarks-with-narrower-focus">Specialty benchmarks with narrower focus</h3>
 <ul>
@@ -524,10 +533,42 @@ window.Quarto = {
 </section>
 <section id="tau2-bench" class="level2">
 <h2 class="anchored" data-anchor-id="tau2-bench">τ²-bench: Tool-Agent-User Interaction</h2>
-<p><a href="https://sierra.ai">τ²-bench</a> <span class="citation" data-cites="yaoTauBenchBenchmarkToolAgentUser2024">(<a href="#ref-yaoTauBenchBenchmarkToolAgentUser2024" role="doc-biblioref">Yao et al. 2024</a>)</span> measures agents’ ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.</p>
+<p><a href="https://taubench.com/#leaderboard">τ²-bench</a> <span class="citation" data-cites="yaoTauBenchBenchmarkToolAgentUser2024">(<a href="#ref-yaoTauBenchBenchmarkToolAgentUser2024" role="doc-biblioref">Yao et al. 2024</a>)</span> measures agents’ ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.</p>
 <p><strong>Why it matters for enterprise:</strong> Customer service agents must handle dynamic conversations, follow company policies, use multiple tools (CRM, inventory systems, booking engines), and maintain context across many turns. This mirrors real-world customer support scenarios.</p>
 <p><strong>Task description:</strong> Tasks in retail and airline domains (original τ-bench) and telecom domain (τ²-bench) requiring agents to handle dynamic user conversations, use API tools, and follow policy guidelines. Evaluation based on final database state rather than conversation trajectory.</p>
-<p><strong>Reliability metric:</strong> Uses pass^k to measure consistency across multiple runs, not just single-attempt success. For example, pass^8 measures if an agent succeeds on all 8 consecutive attempts—critical for production deployment.</p>
+<section id="quantified-reliability-with-passk" class="level3">
+<h3 class="anchored" data-anchor-id="quantified-reliability-with-passk">Quantified reliability with pass^k</h3>
+<p>The τ²-bench leaderboard reports pass^k metrics for most entries. The graph below shows the typical dropoff pattern from pass^1 to pass^4.</p>
+<div id="b7d6bb01" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="56afc581-5b5b-4ec0-85f6-54ea9e5c0386" class="plotly-graph-div" style="height:500px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("56afc581-5b5b-4ec0-85f6-54ea9e5c0386")) {                    Plotly.newPlot(                        "56afc581-5b5b-4ec0-85f6-54ea9e5c0386",                        [{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"Qwen3-Max-Thinking-Preview","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"MzMzMzMzVEAAAAAAAKBSQDMzMzMzk1FAMzMzMzOzUEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-5","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"AAAAAAAAVEAAAAAAAEBSQAAAAAAAAFFAAAAAAAAAUEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"Claude-3.7-Sonnet","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"ZmZmZmbmTkAAAAAAAEBMQDMzMzMzc0pAmpmZmZnZSEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"o4-mini","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"MzMzMzNzTEBmZmZmZiZIQM3MzMzMTEVAAAAAAAAAQ0A="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-4.1","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"mpmZmZlZS0AAAAAAAEBHQDMzMzMzs0RAMzMzMzNzQkA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-4.1-mini","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"AAAAAACASkAAAAAAAEBFQJqZmZmZmUFAzczMzMxMPkA="},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"xaxis":{"title":{"text":"pass^k (k)"},"tickmode":"array","tickvals":[1,2,3,4],"ticktext":["pass^1","pass^2","pass^3","pass^4"],"fixedrange":true,"hoverformat":"\u003cb\u003epass^%{x}\u003c\u002fb\u003e"},"yaxis":{"title":{"text":"Score (%)"},"range":[0,100],"fixedrange":true},"legend":{"yanchor":"bottom","y":0.01,"xanchor":"left","x":0.01},"hoverlabel":{"font":{"size":12,"family":"sans-serif"},"bgcolor":"white"},"height":500,"hovermode":"x unified"},                        {"displayModeBar": false, "scrollZoom": false, "doubleClick": false, "staticPlot": false, "responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('56afc581-5b5b-4ec0-85f6-54ea9e5c0386');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
 <p><strong>Leading score (end of 2024):</strong> GPT-4o &lt;50% on tasks, pass^8 &lt;25% in retail domain<br>
 <strong>Leading score (end of 2025):</strong> Best models (Claude 3.7 Sonnet, Qwen3-Max) achieve ~80% pass^1 in retail; performance drops significantly for pass^8 (reliability)<br>
 <strong>Human score:</strong> Customer service agents have error rates of 5-15% depending on task complexity (industry benchmark); however, humans show much lower variance across repeated attempts compared to AI agents</p>
@@ -537,6 +578,7 @@ window.Quarto = {
 <li>Major challenges: long-horizon information tracking, memory management, focusing on relevant context when conflicting facts are present</li>
 <li>User-agent communication is a common failure mode—agents struggle when they and users have access to different tools and must coordinate (expert-novice gap)</li>
 </ul>
+</section>
 <section id="vending-bench" class="level3">
 <h3 class="anchored" data-anchor-id="vending-bench">Vending-Bench 2</h3>
 <p><a href="https://andonlabs.com/evals/vending-bench">Vending-Bench</a> <span class="citation" data-cites="backlundVendingBenchBenchmarkLongTerm2025">(<a href="#ref-backlundVendingBenchBenchmarkLongTerm2025" role="doc-biblioref">Backlund and Petersson 2025</a>)</span> measures LLM agents’ ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business. This may be the missing piece: exam style benchmarks like Humanity’s last exam find that current models perform on PhD level, but they don’t test for the crucial coherent decision making over extended time horizons.</p>

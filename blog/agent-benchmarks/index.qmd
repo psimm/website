@@ -45,10 +45,10 @@ Benchmarks often have problems on release and are improved over time. For exampl
 | --- | --- | --- |
 | [GAIA](#gaia) | Answer questions using tools and web | 90% (SU Zero agent) |
 | [BFCL V3](#bfcl) | Call functions correctly | 77% (Claude Opus 4.5) |
-| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 81% (Qwen3-Max) |
+| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 85% (Gemini 3.0 Pro) |
 | [Vending-Bench 2](#vending-bench) | Run a business over many turns | $5,478 (Gemini 3 Pro) |
 
-I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, see its section for more details.
+I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, though not for all entries. See its section for a detailed breakdown.
 
 ### Specialty benchmarks with narrower focus
 
@@ -102,13 +102,119 @@ The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 
 
 ## τ²-bench: Tool-Agent-User Interaction {#tau2-bench}
 
-[τ²-bench](https://sierra.ai) [@yaoTauBenchBenchmarkToolAgentUser2024] measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.
+[τ²-bench](https://taubench.com/#leaderboard) [@yaoTauBenchBenchmarkToolAgentUser2024] measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.
 
 **Why it matters for enterprise:** Customer service agents must handle dynamic conversations, follow company policies, use multiple tools (CRM, inventory systems, booking engines), and maintain context across many turns. This mirrors real-world customer support scenarios.
 
 **Task description:** Tasks in retail and airline domains (original τ-bench) and telecom domain (τ²-bench) requiring agents to handle dynamic user conversations, use API tools, and follow policy guidelines. Evaluation based on final database state rather than conversation trajectory.
 
-**Reliability metric:** Uses pass^k to measure consistency across multiple runs, not just single-attempt success. For example, pass^8 measures if an agent succeeds on all 8 consecutive attempts—critical for production deployment.
+### Quantified reliability with pass^k
+
+The τ²-bench leaderboard reports pass^k metrics for most entries. The graph below shows the typical dropoff pattern from pass^1 to pass^4.
+
+```{python}
+# | echo: false
+
+import polars as pl
+import plotly.graph_objects as go
+
+data = [
+    {
+        "model": "Qwen3-Max-Thinking-Preview",
+        "pass_1": 80.8,
+        "pass_2": 74.5,
+        "pass_3": 70.3,
+        "pass_4": 66.8,
+    },
+    {"model": "GPT-5", "pass_1": 80.0, "pass_2": 73.0, "pass_3": 68.0, "pass_4": 64.0},
+    {
+        "model": "Claude-3.7-Sonnet",
+        "pass_1": 61.8,
+        "pass_2": 56.5,
+        "pass_3": 52.9,
+        "pass_4": 49.7,
+    },
+    {
+        "model": "o4-mini",
+        "pass_1": 56.9,
+        "pass_2": 48.3,
+        "pass_3": 42.6,
+        "pass_4": 38.0,
+    },
+    {
+        "model": "GPT-4.1",
+        "pass_1": 54.7,
+        "pass_2": 46.5,
+        "pass_3": 41.4,
+        "pass_4": 36.9,
+    },
+    {
+        "model": "GPT-4.1-mini",
+        "pass_1": 53.0,
+        "pass_2": 42.5,
+        "pass_3": 35.2,
+        "pass_4": 30.3,
+    },
+]
+
+df = pl.DataFrame(data)
+
+df_long = (
+    df.unpivot(
+        index="model",
+        on=["pass_1", "pass_2", "pass_3", "pass_4"],
+        variable_name="k_col",
+        value_name="score",
+    )
+    .with_columns(pl.col("k_col").str.extract(r"(\d+)").cast(pl.Int32).alias("k"))
+    .select(["model", "k", "score"])
+)
+
+fig = go.Figure()
+
+for model in df["model"]:
+    model_data = df_long.filter(pl.col("model") == model).sort("k")
+    fig.add_trace(
+        go.Scatter(
+            x=model_data["k"],
+            y=model_data["score"],
+            mode="lines+markers",
+            name=model,
+            line=dict(width=2),
+            marker=dict(size=8),
+            hovertemplate="%{fullData.name}: %{y:.1f}%<extra></extra>",
+        )
+    )
+
+fig.update_layout(
+    xaxis_title="pass^k (k)",
+    yaxis_title="Score (%)",
+    xaxis=dict(
+        tickmode="array",
+        tickvals=[1, 2, 3, 4],
+        ticktext=["pass^1", "pass^2", "pass^3", "pass^4"],
+        fixedrange=True,
+        hoverformat=".0f",
+    ),
+    yaxis=dict(range=[0, 100], fixedrange=True),
+    legend=dict(yanchor="bottom", y=0.01, xanchor="left", x=0.01),
+    template="plotly_white",
+    height=500,
+    hovermode="x unified",
+    hoverlabel=dict(font=dict(size=12), bgcolor="white", font_family="sans-serif"),
+)
+
+fig.update_xaxes(hoverformat="<b>pass^%{x}</b>")
+
+fig.show(
+    config={
+        "displayModeBar": False,
+        "scrollZoom": False,
+        "doubleClick": False,
+        "staticPlot": False,
+    }
+)
+```
 
 **Leading score (end of 2024):** GPT-4o <50% on tasks, pass^8 <25% in retail domain  
 **Leading score (end of 2025):** Best models (Claude 3.7 Sonnet, Qwen3-Max) achieve ~80% pass^1 in retail; performance drops significantly for pass^8 (reliability)  
