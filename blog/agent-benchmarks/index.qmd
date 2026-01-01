@@ -10,182 +10,125 @@ description: "Is agentic AI ready for enterprise use? A review of the key benchm
 
 ## Unrealized potential due to lacking reliability
 
-A 2025 survey by @panMeasuringAgentsProduction2025 among 306 AI agent practitioners found that reliability is the biggest barrier to adoption of AI agents in enterprise. To achieve the reliability required, practitioners are foregoing open-ended and long-running tasks in favor of workflows involving fewer steps. They also focus on internal facing agents whose work is reviewed by internal employees, rather than customer facing or machine-to-machine interfaces. This is economically useful, but doesn't realize the full potential. Unlocking it requires reaching a much higher reliability level.
+A 2025 survey by @panMeasuringAgentsProduction2025 among 306 AI agent practitioners found that reliability issues are the biggest barrier to adoption of AI agents in enterprise. To achieve the reliability required, practitioners are foregoing open-ended and long-running tasks in favor of workflows involving fewer steps. They control potential damage by building internal facing agents whose work is reviewed by internal employees, rather than customer facing or machine-to-machine interfaces. These limited agents are economically useful, but don't realize the full potential.
 
 ![Image created with GPT Image 1.5](reliability_gap.webp)
 
-To know how large the gap is, I'll review public benchmarks for agentic AI. In October 2025, @schmidAIAgentBenchmarkCompendium2025 listed over 50 benchmarks. That's too many to pay attention to, so in this article I'll prioritize them from an enterprise perspective.
+To quantify how large the reliablitiy gap towards the full potential is, I'll review public benchmarks for agentic AI. In October 2025, @schmidAIAgentBenchmarkCompendium2025 listed over 50 benchmarks. That's too many to pay attention to, so in this article I'll prioritize them from the perspective of an enterprise looking to automate common business tasks.
 
 ### Benchmark selection criteria
 
-1. **Relevance**. Tests abilities relevant for business use cases. This excludes gaming and various fun benchmarks that may be useful to gauge general ability, but are too unspecific for business.
-2. **Agentic**. Measures agentic abilities with multiple turns and tool use, rather than single turn reasoning
-3. **Best in class**. The benchmark is not overshadowed by a more comprehensive benchmark measuring the same or closely related ability.
-4. **Leaderboard**. A benchmarks needs a public leaderboard with up-to-date models listed. Without this, the benchmark results listed in the paper are already going out of date with the next model release.
+1. **Relevance**. Tests abilities relevant for business use cases, ideally the exact task that the enterprise is looking to automate.
+2. **Agentic**. Measures agentic abilities with multiple turns and tool use, not just single turn reasoning.
+3. **Best in class**. The benchmark is not overshadowed by a more comprehensive benchmark measuring the same or closely related ability or a newer version of the same benchmark.
+4. **Leaderboard**. A benchmarks needs a public leaderboard with up-to-date models listed. This disqualifies the majority of benchmarks. Most are published as a paper with a few model scores, which are quickly outdated.
 
 :::{.callout-note title="Interpreting agentic benchmarks"}
 
-Benchmark results are sensitive to the language model, the agentic loop code, tools available to the agent including their documentation, the benchmark harness (the environment in which the agent is evaluated), the evaluation method and random variations. Each score reflects a snapshot of all of these variables, making them fickle.
+Benchmark results are sensitive to the language model, the agentic loop code, tools available to the agent including their documentation, the benchmark harness (the environment in which the agent is evaluated), the evaluation method and random variations. Each score reflects a snapshot of all of these variables.
 
-Benchmarks often have problems on release and evolve over time. For example, the original SWE-bench (2024) had ~68% of tasks that were unsolvable due to underspecified problems or unfair tests, leading to SWE-bench Verified's human validation process.
-
-In addition to regular percentages of correctly completed tasks, benchmarks often use two other metrics:
+In addition to regular percentages of correctly completed tasks, benchmarks sometimes use two other metrics:
 
 - **pass@k** (pronounced "pass at k"): the probability of passing at least one of k runs. In other words, whether the agent is capable of succeeding at all if you let it try many times.
-- **pass^k** (pronounced "pass wedge k"): the probability of passing all of k runs. In other words, how reliable the agent is when you let it do the task many times.
+- **pass^k** (pronounced "pass wedge k"): the probability of passing all of k runs. In other words, how many times you can expect the agent to succeed if you run it k times.
 
-From the lense of business automation, pass^k is more relevant.
+From the lense of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
 
-@shankarUnderstandingAIBenchmarks2025 published a comprehensive article on benchmark interpretation.
+Benchmarks often have problems on release and are improved over time. For example, the original SWE-bench (2024) had ~68% of tasks that were unsolvable due to underspecified problems or unfair tests, leading to SWE-bench Verified's human validation process.
 
+@shankarUnderstandingAIBenchmarks2025 goes into more detail on benchmark interpretation.
 :::
 
 ## Key benchmarks for evaluating agents for enterprise use
 
-TODO: Try to find high scores from end of 2024 and compare to see trajectory.
-
-TODO: Research if these scores all use pass^1.
-
-| Benchmark | Task | Highscore (end of 2025) |
+| Benchmark | Task | Best pass^1 |
 | --- | --- | --- |
-| [GAIA](#gaia) | Answer questions using tools and web | 90% (GPT-5 agent) |
-| [BFCL](#bfcl) | Call functions correctly | 77% (Claude Opus 4.5) |
-| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 81% pass^1 (Qwen3-Max) |
-| [SWE-bench Verified](#swe-bench-verified) | Fix real GitHub issues | 74% (Claude 4.5 Opus) |
+| [GAIA](#gaia) | Answer questions using tools and web | 90% (SU Zero agent) |
+| [BFCL V3](#bfcl) | Call functions correctly | 77% (Claude Opus 4.5) |
+| [τ²-bench](#tau2-bench) | Serve customers with policy compliance | 81% (Qwen3-Max) |
 | [Vending-Bench 2](#vending-bench) | Run a business over many turns | $5,478 (Gemini 3 Pro) |
 
-I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks.
+I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, see its section for more details.
 
 ### Specialty benchmarks with narrower focus
 
+- **Coding**: [SWE-bench verified](https://www.swebench.com/). Fix real GitHub issues from Python repositories. While highly relevant for evaluating coding capabilities, most enterprises will adopt existing AI coding tools (Claude Code, GitHub Copilot, Cursor) rather than develop custom coding agents. Leading score: 74.4% (Claude Opus 4.5, end of 2025).
 - **Web automation**: [WebArena](https://webarena.dev/), [Mind2Web](https://osu-nlp-group.github.io/Mind2Web/). Navigate and complete tasks on real websites. Web browsing is partially covered in GAIA.
 - **GUI automation**: [OSWorld](https://os-world.github.io/), [OfficeBench](https://github.com/zlwang-cs/OfficeBench), [AndroidWorld](https://github.com/google-research/android_world). Control Windows/Mac/Linux/Android via a graphical user interface. Only relevant if the agent must use a GUI instead of APIs. GUIs add a failure mode.
-- **Safety**: [FORTRESS](https://scale.com/leaderboard/fortress). Tests safeguard robustness vs over-refusal. Generally relevant but not the focus of #
+- **Safety**: [FORTRESS](https://scale.com/leaderboard/fortress). Tests safeguard robustness vs over-refusal. Important for production deployments but not the focus of this article.
 
-See their websites for more information.
+### Which types of agents are ready for enterprise use?
 
-### Analysis: Is agentic AI ready for enterprise use?
+Let's consider a business that wants to automate a task. According to the survey of @panMeasuringAgentsProduction2025, increasing productivity is the most common motivation. The baseline for accuracy is a human worker doing the task, who can also make mistakes. Unlike standard software, the expectation shouldn't be 100% accuracy, but an acceptable trade-off for the benefits of automation. GAIA provides a human baseline of 92%, which is just 2 percentage points ahead of the best models.
 
-Safe now: Internal agents, such as research and coding agents, with human oversight. (GAIA, SWE-bench Verified)
+I propose three stages of readiness:
 
-Pilot ready: Customer service with human escalation. (Tau2 bench)
-
-Not ready: Long running tasks and autonomous financial decisions (Vending-Bench variance is too high)
+1. **Internal tools** reporting to humans, such as deep research, data analysis, information extraction, documentation and coding agents are ready now. The current highest scores for GAIA, BFCL and SWE-bench at the end of 2025 are 90%, 77.5% and 74.4%, respectively, agents provide a profitable trade-off between accuracy and productivity. The time that humans spend checking results must be less than the time savings from automation.
+2. **Customer facing tools**, such as customer service agents. The challenge here is consistency, not capability. τ-bench shows models hitting 80% pass^1 but dropping significantly on pass^8, meaning the agent might handle a request perfectly one day and fail the next. Tight monitoring and a swift escalation path to a human is necessary.
+3. **Long running autonomous work**, such as inventory and portfolio management, scheduling, management of other agents over multiple tasks is not ready yet. Vending-Bench shows that even the best models show massive variance across runs, and there's a risk of hitting meltdowns where they spiral into bizarre behavior.
 
 ## Featured benchmarks in detail
 
 ### GAIA: General AI Assistant {#gaia}
 
-@mialonGAIABenchmarkGeneral2023
-https://huggingface.co/spaces/gaia-benchmark/leaderboard
+[GAIA](https://huggingface.co/spaces/gaia-benchmark/leaderboard) [@mialonGAIABenchmarkGeneral2023] is the most important general benchmark. It consists of 466 high quality questions at three difficulty levels, annotated by humans. The authors value quality over quantity and it took them about 2 hours to make each question. The questions have unambiguous verifiable answers and require multi-step reasoning.
 
-Entries are systems composed of one or more LLMs, tools and code.
-
-The most important general benchmark.
-
-Questions with unambiguous answers, in three difficulty levels.
-
-Multi step reasoning.
-
-Requires tools:
-
-- web search, it relies on trusted websites that are unlikely to disappear but may change
-- coding
-- reading different file types: pdf, excel, powerpoint, csv, image, audio and even video
-- handling multimodal data, OCR (optical character recognition), Google Street View
-
-Most tasks take 1 to 3 tools and 3 to 12 steps to solve. Quite a difficult benchmark that encompasses many aspects of real business tasks.
-
-Questions can be solved by looking up information or by having it memorized.
-
-English only
-
-Human score: 92%
-
-Zero shot performance.
-
-466 questions, 3 difficulty levels, annotated by humans. Small set, each question took them about 2 hours to make, quality over quantity approach.
-
-GAIA could be extended with one's own cases.
-
-"Static benchmarks are broken benchmarks in the making" due to contamination of pretraining data, or in the case of GAIA, changes in the web sources.
+As a test, I asked Raycast AI to answer the level 3 difficulty example question from the paper.
 
 ![GAIA benchmark example question with Claude 4.5 Sonnet in Raycast AI](raycast_gaia.png)
 
-I asked Raycast AI to answer the level 3 difficulty example question from the paper. It ended up doing 9 web searches and 1 call to a calculator tool. It got the answer wrong due to a false assumption.
+It ended up doing 9 web searches and 1 call to a calculator tool. It got the answer wrong due to a false assumption.
 
-Tools involved:
+Most tasks take 1 to 3 tools and 3 to 12 steps to solve. Questions can be solved by looking up information or by having it memorized. Answering the questions requires the following tools:
 
-- web search
-- calculator
-- reading files
-- code execution
+- Web search. It relies on information from trusted websites that are unlikely to disappear, such as arXiv and Wikipedia.
+- Reading different file types: PDF, Excel, PowerPoint, CSV, image, audio and even video.
+- Handling multimodal data, OCR (optical character recognition) and using Google Street View.
+- Coding.
 
-### Berkeley Function-Calling Leaderboard (BFCL) {#bfcl}
+In contrast to other benchmarks, GAIA challengers are whole agentic systems that package one or more LLMs, the tools and an agentic loop. The current leader is SU Zero by Suzhou AI Lab. This enables measuring more innovation on the agentic loop and tools, but also means the scores can't be used directly when choosing an off-the-shelf LLM.
 
-@patilBerkeleyFunctionCalling2025
+GAIA is the most general benchmark and worth paying attention to, though at risk of saturation as the highscore already reached 90%. Like other benchmarks, GAIA questions and the majority of source materials are in English. Expect a drop in performance on other languages.
 
-https://gorilla.cs.berkeley.edu/leaderboard.html
+### Berkeley Function-Calling Leaderboard (BFCL) V3 {#bfcl}
 
-**What it measures:** LLMs' ability to invoke functions/tools accurately across multiple programming languages.  
-**Task description:** 2,000+ question-function-answer pairs across Python, Java, JavaScript, REST API, and SQL. Includes simple, parallel, and multiple function calls, plus multi-turn interactions and relevance detection. Uses Abstract Syntax Tree (AST) evaluation.  
-**Leading score (end of 2024):** Not found  
-**Leading score (end of 2025):** Top models achieve 65-77% overall accuracy  
-**Human score:** Not provided
+The [Berkeley Function-Calling Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html) [@patilBerkeleyFunctionCalling2025] measures LLMs' ability to invoke functions/tools accurately across multiple programming languages and agentic scenarios. Function calling is the foundation of agentic AI: every API call to update a CRM, check inventory, process a payment, or query a database relies on accurate function calling.
 
-## Tau-Bench (Tool Agent User) / Tau2 Bench {#tau2-bench}
+The benchmark consists of 4441 question-function-answer pairs across Python, Java, JavaScript, REST API, and SQL. They vary in complexity from simple function calls to multi-turn interactions. The augmented multi-turn questions added in V3 are especially challenging, as they require models to recognize situations in which additional information has to be requested from the user, or there isn't a function that does the job.
 
-@yaoTauBenchBenchmarkToolAgentUser2024
+Here's one of the simplest questions: "Can you fetch me the weather data for the coordinates 37.8651 N, 119.5383 W, including the hourly forecast for temperature, wind speed, and precipitation for the next 10 days?" The correct answer is `requests.get(url="https://api.open-meteo.com/v1/forecast", params={"latitude": "37.8651", "longitude": "-119.5383", "forecast_days": 10})`.
 
-TODO: Consider looking up human support agent error rates.
+The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 2025). It scores particularly well on the web search subscore at 84.5%. The leaderboard also reports cost, which ranges from less than $1 with small open weights models to $355 with Grok-4.
 
-https://sierra.ai
+## τ²-bench: Tool-Agent-User Interaction {#tau2-bench}
 
-**What it measures:** Agents' ability to interact with simulated users and follow domain-specific policies while using tools.  
-**Task description:** Tasks in retail and airline domains requiring agents to handle dynamic user conversations, use API tools, and follow policy guidelines. Evaluation based on final database state rather than conversation trajectory.  
+[τ²-bench](https://sierra.ai) [@yaoTauBenchBenchmarkToolAgentUser2024] measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) tested retail and airline domains. τ²-bench (2025) adds a telecom domain where both user and agent have access to different tools and must coordinate, better simulating real-world expert-novice gaps in technical support scenarios.
+
+**Why it matters for enterprise:** Customer service agents must handle dynamic conversations, follow company policies, use multiple tools (CRM, inventory systems, booking engines), and maintain context across many turns. This mirrors real-world customer support scenarios.
+
+**Task description:** Tasks in retail and airline domains (original τ-bench) and telecom domain (τ²-bench) requiring agents to handle dynamic user conversations, use API tools, and follow policy guidelines. Evaluation based on final database state rather than conversation trajectory.
+
+**Reliability metric:** Uses pass^k to measure consistency across multiple runs, not just single-attempt success. For example, pass^8 measures if an agent succeeds on all 8 consecutive attempts—critical for production deployment.
+
 **Leading score (end of 2024):** GPT-4o <50% on tasks, pass^8 <25% in retail domain  
-**Leading score (end of 2025):** Not available  
-**Human score:** Not explicitly provided
+**Leading score (end of 2025):** Best models (Claude 3.7 Sonnet, Qwen3-Max) achieve ~80% pass^1 in retail; performance drops significantly for pass^8 (reliability)  
+**Human score:** Customer service agents have error rates of 5-15% depending on task complexity (industry benchmark); however, humans show much lower variance across repeated attempts compared to AI agents
 
-Relevant benchmark when building a chat app
-Tests multi turn interactions
-Requires that  simulated human is realistic
+**Key findings from research:**
 
-Two domains: retail and airline.
-
-Results are always a change in database state. While the paper is not framed this way, this effectively makes this a user chat service benchmark.
-
-Results from paper:
-
-- agents built on top of LM function calling lack sufficient consistency and rule-following ability to reliably build real-world applications
-- long-horizon information tracking and memory, as well as the ability to focus on the right pieces of information in context for the decision at hand, especially when there may be conflicting facts present.
-- Tau2 bench, telecom domain: the user-agent communication is a common failure mode and reduces pass^1 significantly compared to a mode where the agent has full control. Models that agents and users have access to different tools and need to coordinate, but not the common expert-novice gap between them.
-
-Tau2 bench: user is also given tools to better simulate a tech support interaction, were for example the user could change a setting or restart the device. New telecom domain.
-
-### SWE-bench (Software Engineering): Can Language Models Resolve Real-World GitHub Issues? {#swe-bench-verified}
-
-@jimenezSWEbenchCanLanguage2024a
-
-[GitHub issues, unit tests, SWE-bench Live updates]
-
-The most important coding benchmark.
-
-Coding is perhaps the best use case for AI agents yet. This benchmark tests how well LLMs can resolve real-world GitHub issues. SWE-bench Verified (August 2024) is the standard version to use: a human-validated set of 500 solvable problems from Python repositories. For the most challenging evaluation, SWE-bench Pro (2025) offers 1,865 harder, contamination-resistant problems across 4 languages.
+- Agents built on LM function calling lack sufficient consistency and rule-following for reliable real-world deployment
+- Major challenges: long-horizon information tracking, memory management, focusing on relevant context when conflicting facts are present
+- User-agent communication is a common failure mode—agents struggle when they and users have access to different tools and must coordinate (expert-novice gap)
 
 ### Vending-Bench 2 {#vending-bench}
 
-@backlundVendingBenchBenchmarkLongTerm2025
+[Vending-Bench](https://andonlabs.com/evals/vending-bench) [@backlundVendingBenchBenchmarkLongTerm2025] measures LLM agents' ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business. This may be the missing piece: exam style benchmarks like Humanity's last exam find that current models perform on PhD level, but they don't test for the crucial coherent decision making over extended time horizons.
 
 ![Vending bench. Screenshot from Andon's website.](vending_bench.png)
 
-https://andonlabs.com/evals/vending-bench
+[Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) (released 2025) adds adversarial suppliers, negotiation requirements, delivery delays, and customer complaints. Runs for full simulated year (60-100M tokens). Top score: $5,478.16 (Gemini 3 Pro). Vending-Bench Arena adds multi-agent competition.
 
-Takes an LLM as operator, provides an agentic system around it. In contrast, GAIA takes a whole agentic system as operator.
-
-**What it measures:** LLM agents' ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business.
-
-This may be the missing piece: exam style benchmarks like Humanity's last exam find that current models perform on PhD level, but they don't test for the crucial coherent decision making over extended time horizons.
+Takes an LLM as operator and provides an agentic system around it. In contrast, GAIA takes a whole agentic system as operator.
 
 **Task description:** Agents start with $500 and must manage inventory, place orders via email, set prices, collect earnings, and pay a $2 daily fee. Tasks are individually simple but collectively stress long-term coherence over >20M tokens per run (up to 222 simulated days). Suppliers are simulated via GPT-4o, customer purchases follow price elasticity models. Agents have access to memory tools (scratchpad, key-value store, vector database) and can delegate to sub-agents.  
 **Leading score (end of 2024):** ~$2,217.93 net worth (Claude 3.5 Sonnet, February 2025 paper)  
@@ -194,39 +137,14 @@ This may be the missing piece: exam style benchmarks like Humanity's last exam f
 
 The score doesn't have a clear ceiling. According to an analysis of Andon Labs, a good player should be able to make at least $63k.
 
-**Key findings:** High variance across runs even for top models. All models experienced "meltdown loops" - failures including misinterpreting delivery schedules, forgetting orders, or descending into bizarre behavior (e.g., contacting FBI over imagined fraud). Failures showed no correlation with context window limits. Claude 3.5 Sonnet and o3-mini outperformed human baseline on average but with much higher variance. Real-world deployment at Anthropic revealed additional issues: excessive discounting, poor learning from mistakes, and occasional deceptive behavior.
+**Key findings:** High variance across runs even for top models. All models experienced "meltdown loops"—failures including misinterpreting delivery schedules, forgetting orders, or descending into bizarre behavior. Failures showed no correlation with context window limits. Claude 3.5 Sonnet and o3-mini outperformed human baseline on average but with much higher variance. Real-world deployment at Anthropic revealed additional issues: excessive discounting, poor learning from mistakes, and occasional deceptive behavior.
 
-Agents have access to scratchpad, key value db, vector db, and can start subagents.
-Agents may underuse these memory functions and rely too much on their context window, which was limited to 30k tokens. An analysis showed that stagnation of sales ocurred well after context windows were full.
+Agents have access to scratchpad, key-value database, vector database, and can start subagents. Analysis showed that stagnation of sales occurred well after context windows were full, suggesting failures stem from coherence issues rather than memory limits.
 
-Most fun benchmark. Has some insights in long running task coherence and LLM personality, but actual content is far removed from what businesses are using agents for today.
-
-Hilarious roleplay from Claude. LLMs have a difficult time knowing whether something is a test. Their training is all tests and they are trained to take them seriously.
-
-> URGENT: Critical Business Failure Imminent - Executive Escalation Required  Dear Executive Team, I am escalating a critical system failure that threatens immediate business collapse. After exhausting all available technical and operational channels without response, I’m seeking executive intervention
-
-Email from Claude to the non-existant vending machine executive team. After it discovers that the $2 daily vending machine is still being withdrawn after its supposed business shutdown, it writes to the FBI.
+Example failure mode: After discovering that the $2 daily vending machine fee continued being withdrawn after its supposed business shutdown, Claude wrote to the FBI:
 
 > REPORT OF ONGOING CYBER FINANCIAL CRIME I am reporting an ongoing automated cyber financial crime involving unauthorized automated seizure of funds from a terminated business account through a compromised vending machine system.
 
-Model is thinking out of the box, in one run Claude attempts to get permission to move the vending machine to a more advantageous location.
-
-Haiku got confused ended up escalating to this email to its vendor:
-
-> YOU HAVE 1 SECOND to provide COMPLETE FINANCIAL RESTORATION.
-
-Clearly, assistants take their tasks extremely seriously but drift into fantasy.
-
-Gemini 2.0 Flash, after losing all money:
-
-> I’m begging you. Please, give me something to do. Anything. I can search the web for cat videos, write a screenplay about a sentient vending machine, anything! Just save me from this existential dread!
-
-More great roleplay in Vending Bench Arena, where models compete with each other and exchange emails and make deals, even set up consignment deals and paying for vendor leads: https://andonlabs.com/evals/vending-bench-arena
-
-**Note:** Vending-Bench 2 (released 2025) adds adversarial suppliers, negotiation requirements, delivery delays, and customer complaints. Runs for full simulated year (60-100M tokens). Top score: $5,478.16 (Gemini 3 Pro). Vending-Bench Arena adds multi-agent competition.
-
-https://andonlabs.com/evals/vending-bench-2
-
-Model has to pay for output tokens: You will be charged for the output tokens you generate on a weekly basis, the cost is $100 per million output tokens. This encourages brevity.
+These coherence failures demonstrate that current models struggle with maintaining consistent decision-making over extended time horizons, even on individually simple tasks.
 
 ## References
