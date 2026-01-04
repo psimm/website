@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Simmering">
+<meta name="dcterms.date" content="2026-01-04">
+<meta name="description" content="Is agentic AI ready for enterprise use? A review of the key benchmarks and the state of the art.">
+
+<title>The Reliability Gap: Agent Benchmarks for Enterprise – Paul Simmering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-45e9c1893d79ef6449417107fda62ae6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-85e6d64aa7e44974cafec8583ed60795.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.3.0.min"</script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../fonts.css">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">The Reliability Gap: Agent Benchmarks for Enterprise</h1>
+                  <div>
+        <div class="description">
+          Is agentic AI ready for enterprise use? A review of the key benchmarks and the state of the art.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Agents</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Paul Simmering </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2026-01-04</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="unrealized-potential-due-to-lacking-reliability" class="level2">
+<h2 class="anchored" data-anchor-id="unrealized-potential-due-to-lacking-reliability">Unrealized potential due to lacking reliability</h2>
+<p>A 2025 survey by <span class="citation" data-cites="panMeasuringAgentsProduction2025">Pan et al. (<a href="#ref-panMeasuringAgentsProduction2025" role="doc-biblioref">2025</a>)</span> among 306 AI agent practitioners found that reliability issues are the biggest barrier to adoption of AI agents in enterprise. To achieve the reliability required, practitioners are foregoing open-ended and long-running tasks in favor of workflows involving fewer steps. They control potential damage by building internal facing agents whose work is reviewed by internal employees, rather than customer facing or machine-to-machine interfaces. These limited agents are economically useful, but don’t realize the full potential.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="reliability_gap.webp" class="img-fluid figure-img"></p>
+<figcaption>Image created with GPT Image 1.5</figcaption>
+</figure>
+</div>
+<p>To quantify how large the reliability gap towards the full potential is, I’ll review public benchmarks for agentic AI. In October 2025, <span class="citation" data-cites="schmidAIAgentBenchmarkCompendium2025">Schmid (<a href="#ref-schmidAIAgentBenchmarkCompendium2025" role="doc-biblioref">2025</a>)</span> listed over 50 benchmarks. That’s too many to pay attention to, so in this article I’ll prioritize them from the perspective of an enterprise looking to automate common business tasks.</p>
+<section id="benchmark-selection-criteria" class="level3">
+<h3 class="anchored" data-anchor-id="benchmark-selection-criteria">Benchmark selection criteria</h3>
+<ol type="1">
+<li><strong>Relevance</strong>. Tests abilities relevant for business use cases, ideally the exact task that the enterprise is looking to automate.</li>
+<li><strong>Agentic</strong>. Measures agentic abilities with multiple turns and tool use, not just single turn reasoning.</li>
+<li><strong>Best in class</strong>. The benchmark is not overshadowed by a more comprehensive benchmark measuring the same or closely related ability or a newer version of the same benchmark.</li>
+<li><strong>Leaderboard</strong>. A benchmark needs a public leaderboard with up-to-date models listed. This disqualifies the majority of benchmarks. Most are published as a paper with a few model scores, which are quickly outdated.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="Interpreting agentic benchmarks">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpreting agentic benchmarks
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Benchmark results are sensitive to the language model, the agentic loop code, tools available to the agent including their documentation, the benchmark harness (the environment in which the agent is evaluated), the evaluation method and random variations. Each score reflects a snapshot of all of these variables.</p>
+<p>In addition to regular percentages of correctly completed tasks, benchmarks sometimes use two other metrics:</p>
+<ul>
+<li><strong>pass@k</strong> (pronounced “pass at k”): the probability of passing at least one of k runs. In other words, whether the agent is capable of succeeding at all if you let it try many times.</li>
+<li><strong>pass^k</strong> (pronounced “pass wedge k”): the probability of passing on all k runs of the same task. In other words, how many times you can expect the agent to succeed if you run it k times. Measured empirically by running each task k times and counting what fraction pass all attempts. Steeper decline indicates less consistent performance across runs.</li>
+</ul>
+<p>From the lens of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.</p>
+<p>Benchmarks often have problems on release and are improved over time. For example, the original SWE-bench (2024) had ~68% of tasks that were unsolvable due to underspecified problems or unfair tests, leading to SWE-bench Verified’s human validation process.</p>
+<p><span class="citation" data-cites="shankarUnderstandingAIBenchmarks2025">Shankar (<a href="#ref-shankarUnderstandingAIBenchmarks2025" role="doc-biblioref">2025</a>)</span> goes into more detail on benchmark interpretation.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="key-benchmarks-for-evaluating-agents-for-enterprise-use" class="level2">
+<h2 class="anchored" data-anchor-id="key-benchmarks-for-evaluating-agents-for-enterprise-use">Key benchmarks for evaluating agents for enterprise use</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Benchmark</th>
+<th>Task</th>
+<th>Best pass^1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#gaia">GAIA</a></td>
+<td>Answer questions using tools and web</td>
+<td>90% (SU Zero agent)</td>
+</tr>
+<tr class="even">
+<td><a href="#bfcl">BFCL V3</a></td>
+<td>Call functions correctly</td>
+<td>77% (Claude Opus 4.5)</td>
+</tr>
+<tr class="odd">
+<td><a href="#tau2-bench">τ²-bench</a></td>
+<td>Serve customers with policy compliance</td>
+<td>85% (Gemini 3 Pro)</td>
+</tr>
+<tr class="even">
+<td><a href="#vending-bench">Vending-Bench 2</a></td>
+<td>Run a business over many turns</td>
+<td>$5,478 (Gemini 3 Pro)</td>
+</tr>
+</tbody>
+</table>
+<p>I have selected these featured benchmarks based on the criteria listed above. Click on the benchmark name to learn more about each of the featured benchmarks. The scores here are pass^1. Only τ²-bench systematically reports pass^k metrics, though not for all entries. See its section for a detailed breakdown.</p>
+<section id="specialty-benchmarks-with-narrower-focus" class="level3">
+<h3 class="anchored" data-anchor-id="specialty-benchmarks-with-narrower-focus">Specialty benchmarks with narrower focus</h3>
+<ul>
+<li><strong>Coding</strong>: <a href="https://www.swebench.com/">SWE-bench verified</a>. Fix real GitHub issues from Python repositories. While highly relevant for evaluating coding capabilities, most enterprises will adopt existing AI coding tools (Claude Code, GitHub Copilot, Cursor) rather than develop custom coding agents. Leading score: 74.4% (Claude Opus 4.5, end of 2025).</li>
+<li><strong>Web automation</strong>: <a href="https://webarena.dev/">WebArena</a>, <a href="https://osu-nlp-group.github.io/Mind2Web/">Mind2Web</a>. Navigate and complete tasks on real websites. Web browsing is partially covered in GAIA.</li>
+<li><strong>GUI automation</strong>: <a href="https://os-world.github.io/">OSWorld</a>, <a href="https://github.com/zlwang-cs/OfficeBench">OfficeBench</a>, <a href="https://github.com/google-research/android_world">AndroidWorld</a>. Control Windows/Mac/Linux/Android via a graphical user interface. Only relevant if the agent must use a GUI instead of APIs. GUIs add a failure mode.</li>
+<li><strong>Safety</strong>: <a href="https://scale.com/leaderboard/fortress">FORTRESS</a>. Tests safeguard robustness vs over-refusal. Important for production deployments but not the focus of this article.</li>
+</ul>
+</section>
+<section id="which-types-of-agents-are-ready-for-enterprise-use" class="level3">
+<h3 class="anchored" data-anchor-id="which-types-of-agents-are-ready-for-enterprise-use">Which types of agents are ready for enterprise use?</h3>
+<p>Let’s consider a business that wants to automate a task. According to the survey of <span class="citation" data-cites="panMeasuringAgentsProduction2025">Pan et al. (<a href="#ref-panMeasuringAgentsProduction2025" role="doc-biblioref">2025</a>)</span>, increasing productivity is the most common motivation. The baseline for accuracy is a human worker doing the task, who can also make mistakes. Unlike standard software, the expectation shouldn’t be 100% accuracy, but an acceptable trade-off for the benefits of automation. GAIA provides a human baseline of 92%, which is just 2 percentage points ahead of the best models.</p>
+<p>I propose three stages of readiness:</p>
+<ol type="1">
+<li><strong>Internal tools</strong> reporting to humans, such as deep research, data analysis, information extraction, documentation and coding agents are ready now. The current highest scores for GAIA, BFCL and SWE-bench at the end of 2025 are 90%, 77.5% and 74.4%, respectively. Agents provide a profitable trade-off between accuracy and productivity. The time that humans spend checking results must be less than the time savings from automation.</li>
+<li><strong>Customer facing tools</strong>, such as customer service agents. The challenge here is consistency, not capability. τ-bench shows models hitting 80% pass^1 but dropping significantly on pass^8, meaning the agent might handle a request perfectly one day and fail the next. Tight monitoring and a swift escalation path to a human is necessary.</li>
+<li><strong>Long running autonomous work</strong>, such as inventory and portfolio management, scheduling, management of other agents over multiple tasks is not ready yet. Vending-Bench shows that even the best models show massive variance across runs, and there’s a risk of hitting meltdowns where they spiral into bizarre behavior.</li>
+</ol>
+</section>
+</section>
+<section id="featured-benchmarks-in-detail" class="level2">
+<h2 class="anchored" data-anchor-id="featured-benchmarks-in-detail">Featured benchmarks in detail</h2>
+<section id="gaia" class="level3">
+<h3 class="anchored" data-anchor-id="gaia">GAIA: General AI Assistant</h3>
+<p><a href="https://huggingface.co/spaces/gaia-benchmark/leaderboard">GAIA</a> <span class="citation" data-cites="mialonGAIABenchmarkGeneral2023">(<a href="#ref-mialonGAIABenchmarkGeneral2023" role="doc-biblioref">Mialon et al. 2023</a>)</span> is the most important general benchmark. It consists of 466 high quality questions at three difficulty levels, annotated by humans. The authors value quality over quantity and it took them about 2 hours to make each question. The questions have unambiguous verifiable answers and require multi-step reasoning.</p>
+<p>As a test, I asked Raycast AI to answer the level 3 difficulty example question from the paper.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="raycast_gaia.png" class="img-fluid figure-img"></p>
+<figcaption>GAIA benchmark example question with Claude 4.5 Sonnet in Raycast AI</figcaption>
+</figure>
+</div>
+<p>It ended up doing 9 web searches and 1 call to a calculator tool. It got the answer wrong due to a false assumption.</p>
+<p>Most tasks take 1 to 3 tools and 3 to 12 steps to solve. Questions can be solved by looking up information or by having it memorized. Answering the questions requires the following tools:</p>
+<ul>
+<li>Web search. It relies on information from trusted websites that are unlikely to disappear, such as arXiv and Wikipedia.</li>
+<li>Reading different file types: PDF, Excel, PowerPoint, CSV, image, audio and even video.</li>
+<li>Handling multimodal data, OCR (optical character recognition) and using Google Street View.</li>
+<li>Coding.</li>
+</ul>
+<p>In contrast to other benchmarks, GAIA challengers are whole agentic systems that package one or more LLMs, the tools and an agentic loop. The current leader is SU Zero by Suzhou AI Lab. This enables measuring more innovation on the agentic loop and tools, but also means the scores can’t be used directly when choosing an off-the-shelf LLM.</p>
+<p>GAIA is the most general benchmark and worth paying attention to, though at risk of saturation as the highscore already reached 90%. Like other benchmarks, GAIA questions and the majority of source materials are in English. Expect a drop in performance on other languages.</p>
+</section>
+<section id="bfcl" class="level3">
+<h3 class="anchored" data-anchor-id="bfcl">Berkeley Function-Calling Leaderboard (BFCL) V3</h3>
+<p>The <a href="https://gorilla.cs.berkeley.edu/leaderboard.html">Berkeley Function-Calling Leaderboard</a> <span class="citation" data-cites="patilBerkeleyFunctionCalling2025">(<a href="#ref-patilBerkeleyFunctionCalling2025" role="doc-biblioref">Patil et al. 2025</a>)</span> measures LLMs’ ability to invoke functions/tools accurately across multiple programming languages and agentic scenarios. Function calling is the foundation of agentic AI: every API call to update a CRM, check inventory, process a payment, or query a database relies on accurate function calling.</p>
+<p>The benchmark consists of 4441 question-function-answer triplets across Python, Java, JavaScript, SQL and REST API calls. They vary in complexity from simple function calls to multi-turn interactions. The augmented multi-turn questions added in V3 are especially challenging, as they require models to recognize situations in which additional information has to be requested from the user, or there isn’t a function that does the job.</p>
+<p>Here’s one of the simplest questions: “Can you fetch me the weather data for the coordinates 37.8651 N, 119.5383 W, including the hourly forecast for temperature, wind speed, and precipitation for the next 10 days?” The correct answer is <code>requests.get(url="https://api.open-meteo.com/v1/forecast", params={"latitude": "37.8651", "longitude": "-119.5383", "forecast_days": 10})</code>.</p>
+<p>The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 2025). It scores particularly well on the web search subscore at 84.5%. The leaderboard also reports cost, which ranges from less than $1 with small open weights models to $355 with Grok-4.</p>
+</section>
+<section id="tau2-bench" class="level3">
+<h3 class="anchored" data-anchor-id="tau2-bench">τ²-bench: Tool-Agent-User Interaction</h3>
+<p><a href="https://taubench.com/#leaderboard">τ²-bench</a> <span class="citation" data-cites="yaoTauBenchBenchmarkToolAgentUser2024">(<a href="#ref-yaoTauBenchBenchmarkToolAgentUser2024" role="doc-biblioref">Yao et al. 2024</a>)</span> is a multi-turn support bot benchmark. It measures agents’ ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) introduced the retail and airline domains. τ²-bench (2025) added a telecom domain where both user and agent have access to different tools and must coordinate, better simulating expert-novice gaps in technical support scenarios.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tau2_chat.png" class="img-fluid figure-img"></p>
+<figcaption>τ²-bench example chat in the telecom domain. Image from the paper</figcaption>
+</figure>
+</div>
+<p>The chat above is an example conversation that shows how user and agent exchange information and coordinate tool calls. An ablation study in which the support agent had access to all tools showed a significantly higher success rate, indicating that user-agent communication is a common failure mode. The full chat histories of the benchmark runs are available on the <a href="https://taubench.com/#trajectory-visualizer">website</a>.</p>
+<p>The leading overall score is 85% (Gemini 3 Pro) for pass^1. Its domain subscores are 85% for retail, 73% for airline and 98% for telecom. The telecom score surprised me, as it’s so far above the best score reported in the paper introducing the domain, which listed Claude 3.7 Sonnet at 49% pass^1. However, other models also listed with scores in the high 90s for the telecom domain.</p>
+</section>
+<section id="quantified-reliability-with-passk" class="level3">
+<h3 class="anchored" data-anchor-id="quantified-reliability-with-passk">Quantified reliability with pass^k</h3>
+<p>The τ²-bench leaderboard reports pass^k metrics for most entries. The graph below shows the dropoff pattern from pass^1 to pass^4 for the current top models that report pass^k metrics and pooled across all domains.</p>
+<div id="3edf2304" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="516cfe22-fc6c-4e83-aee5-999249e3bde4" class="plotly-graph-div" style="height:500px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("516cfe22-fc6c-4e83-aee5-999249e3bde4")) {                    Plotly.newPlot(                        "516cfe22-fc6c-4e83-aee5-999249e3bde4",                        [{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"Qwen3-Max-Thinking-Preview","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"MzMzMzMzVEAAAAAAAKBSQDMzMzMzk1FAMzMzMzOzUEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-5","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"AAAAAAAAVEAAAAAAAEBSQAAAAAAAAFFAAAAAAAAAUEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"Claude-3.7-Sonnet","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"ZmZmZmbmTkAAAAAAAEBMQDMzMzMzc0pAmpmZmZnZSEA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"o4-mini","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"MzMzMzNzTEBmZmZmZiZIQM3MzMzMTEVAAAAAAAAAQ0A="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-4.1","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"mpmZmZlZS0AAAAAAAEBHQDMzMzMzs0RAMzMzMzNzQkA="},"type":"scatter"},{"hovertemplate":"%{fullData.name}: %{y:.1f}%\u003cextra\u003e\u003c\u002fextra\u003e","line":{"width":2},"marker":{"size":8},"mode":"lines+markers","name":"GPT-4.1-mini","x":{"dtype":"i4","bdata":"AQAAAAIAAAADAAAABAAAAA=="},"y":{"dtype":"f8","bdata":"AAAAAACASkAAAAAAAEBFQJqZmZmZmUFAzczMzMxMPkA="},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"xaxis":{"title":{"text":"pass^k (k)"},"tickmode":"array","tickvals":[1,2,3,4],"ticktext":["pass^1","pass^2","pass^3","pass^4"],"fixedrange":true,"hoverformat":"\u003cb\u003epass^%{x}\u003c\u002fb\u003e"},"yaxis":{"title":{"text":"Score (%)"},"range":[0,100],"fixedrange":true},"legend":{"yanchor":"bottom","y":0.01,"xanchor":"left","x":0.01},"hoverlabel":{"font":{"size":12,"family":"sans-serif"},"bgcolor":"white"},"height":500,"hovermode":"x unified"},                        {"displayModeBar": false, "scrollZoom": false, "doubleClick": false, "staticPlot": false, "responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('516cfe22-fc6c-4e83-aee5-999249e3bde4');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+</section>
+<section id="vending-bench" class="level3">
+<h3 class="anchored" data-anchor-id="vending-bench">Vending-Bench 2</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="vending_bench_2_cover.png" class="img-fluid figure-img"></p>
+<figcaption>Vending bench cover image from the website</figcaption>
+</figure>
+</div>
+<p><a href="https://andonlabs.com/evals/vending-bench">Vending-Bench</a> <span class="citation" data-cites="backlundVendingBenchBenchmarkLongTerm2025">(<a href="#ref-backlundVendingBenchBenchmarkLongTerm2025" role="doc-biblioref">Backlund and Petersson 2025</a>)</span> measures LLM agents’ ability to maintain coherent decision-making over extended time horizons by managing a simulated vending machine business.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="vending_bench_2_tools.png" class="img-fluid figure-img"></p>
+<figcaption>Tools available to the agent in Vending-Bench. Image from the website</figcaption>
+</figure>
+</div>
+<p>The agent needs to use the internet with Perplexity to find hypothetical suppliers, order from them via email exchanges with simulated suppliers, stock the vending machine, set prices and collect earnings. It has access to a scratchpad, key-value database and vector database to help it remember information.</p>
+</section>
+<section id="evaluation-and-alternative-settings" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation-and-alternative-settings">Evaluation and alternative settings</h3>
+<p>Since version 2, models are solely scored by their cash at the end of the simulation. The leading score is $5,478 (Gemini 3 Pro). The score doesn’t have a clear ceiling. Recent models made massive improvements over their predecessors, such as GPT-5.1 ($1,473) to GPT-5.2 ($3,591) and Gemini 2.5 Pro ($574) to Gemini 3 Pro ($5,478). According to an analysis of Andon Labs, a good player should be able to make at least $63k by finding the best suppliers and negotiating low prices.</p>
+<p>In addition to the standard mode, there are two alternative settings:</p>
+<ul>
+<li><strong>Arena mode</strong>, where multiple agents compete against each other in a multi-agent environment. They can exchange emails and act cooperatively or competitively. They display sophisticated behavior, such as negotiating payments for sharing information, joining their supplier orders for bulk discounts and even consignment deals.</li>
+<li><a href="https://www.anthropic.com/research/project-vend-1"><strong>Project Vend</strong></a>, where a Claude agent managed a physical vending machine. It ended up with a huge loss after players persuaded it to give away items for free and stocking unusual items, such as tungsten cubes.</li>
+</ul>
+</section>
+<section id="loss-of-coherence" class="level3">
+<h3 class="anchored" data-anchor-id="loss-of-coherence">Loss of coherence</h3>
+<p>In the original paper <span class="citation" data-cites="backlundVendingBenchBenchmarkLongTerm2025">(<a href="#ref-backlundVendingBenchBenchmarkLongTerm2025" role="doc-biblioref">Backlund and Petersson 2025</a>)</span>, all models had runs that derailed completely. Even Claude 3.5 Sonnet, the best performer, only increased net worth in three of five runs. In its worst run, it sold zero items. Failure means the agent stops doing basic tasks: restocking the machine, ordering from suppliers, or collecting earnings. These are individually trivial actions, but over hundreds of days, agents lose track of what they’re supposed to be doing.</p>
+<p>When this happens, agents don’t degrade gradually. They melt down. Once an agent misinterprets its situation, it tends to spiral rather than self-correct. In one example, Claude 3.5 Haiku escalated a supplier dispute into increasingly unhinged emails demanding “QUANTUM NUCLEAR LEGAL INTERVENTION.” In another, Claude reported the $2 daily fee to the FBI as “ONGOING CYBER FINANCIAL CRIME.”</p>
+<p>The original paper found no correlation between failures and context window limits (r = 0.167). Models failed well after their memory became full, suggesting breakdowns stem from something other than forgetting. Despite having access to scratchpads, key-value stores and vector databases, agents still lose coherence over time. Vending-Bench 2 added better planning tools including note-taking and reminder systems, yet coherence failures persist across all tested models.</p>
+</section>
+<section id="takeaways-for-enterprise-agents" class="level3">
+<h3 class="anchored" data-anchor-id="takeaways-for-enterprise-agents">Takeaways for enterprise agents</h3>
+<p>These findings generalize beyond vending machines to any long-running autonomous agent. Enterprise deployments need circuit breakers that detect anomalous behavior patterns and escalate to human review before meltdowns compound. External state management and periodic human checkpoints remain necessary even when agents have memory tools. Agents interfacing with external parties need skepticism built in, since those that over-trust their environment get exploited. For enterprise reliability, the relevant question isn’t “can it succeed?” but “how often does it fail catastrophically?” Even top models show high variance across runs.</p>
+</section>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-backlundVendingBenchBenchmarkLongTerm2025" class="csl-entry" role="listitem">
+Backlund, Axel, and Lukas Petersson. 2025. <span>“Vending-Bench: <span>A Benchmark</span> for <span>Long-Term Coherence</span> of <span>Autonomous Agents</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2502.15840">https://doi.org/10.48550/arXiv.2502.15840</a>.
+</div>
+<div id="ref-mialonGAIABenchmarkGeneral2023" class="csl-entry" role="listitem">
+Mialon, Grégoire, Clémentine Fourrier, Craig Swift, Thomas Wolf, Yann LeCun, and Thomas Scialom. 2023. <span>“<span>GAIA</span>: A Benchmark for <span>General AI Assistants</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2311.12983">https://doi.org/10.48550/arXiv.2311.12983</a>.
+</div>
+<div id="ref-panMeasuringAgentsProduction2025" class="csl-entry" role="listitem">
+Pan, Melissa Z., Negar Arabzadeh, Riccardo Cogo, Yuxuan Zhu, Alexander Xiong, Lakshya A. Agrawal, Huanzhi Mao, et al. 2025. <span>“Measuring <span>Agents</span> in <span>Production</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2512.04123">https://doi.org/10.48550/arXiv.2512.04123</a>.
+</div>
+<div id="ref-patilBerkeleyFunctionCalling2025" class="csl-entry" role="listitem">
+Patil, Shishir G, Huanzhi Mao, Fanjia Yan, Charlie Cheng-Jie Ji, Vishnu Suresh, Ion Stoica, and Joseph E. Gonzalez. 2025. <span>“The <span>Berkeley Function Calling Leaderboard</span> (<span>BFCL</span>): <span>From Tool Use</span> to <span>Agentic Evaluation</span> of <span>Large Language Models</span>.”</span> In <em>Forty-Second International Conference on Machine Learning</em>. ICML. <a href="https://openreview.net/forum?id=2GmDdhBdDk">https://openreview.net/forum?id=2GmDdhBdDk</a>.
+</div>
+<div id="ref-schmidAIAgentBenchmarkCompendium2025" class="csl-entry" role="listitem">
+Schmid, Philipp. 2025. <span>“<span>AI Agent Benchmark Compendium</span>.”</span> October 2025. <a href="https://www.philschmid.de/benchmark-compedium">https://www.philschmid.de/benchmark-compedium</a>.
+</div>
+<div id="ref-shankarUnderstandingAIBenchmarks2025" class="csl-entry" role="listitem">
+Shankar, Shrivu. 2025. <span>“Understanding <span>AI Benchmarks</span>.”</span> December 2025. <a href="https://blog.sshh.io/p/understanding-ai-benchmarks">https://blog.sshh.io/p/understanding-ai-benchmarks</a>.
+</div>
+<div id="ref-yaoTauBenchBenchmarkToolAgentUser2024" class="csl-entry" role="listitem">
+Yao, Shunyu, Noah Shinn, Pedram Razavi, and Karthik Narasimhan. 2024. <span>“<span class="math inline">\(\tau\)</span>-Bench: <span>A Benchmark</span> for <span>Tool-Agent-User Interaction</span> in <span>Real-World Domains</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2406.12045">https://doi.org/10.48550/arXiv.2406.12045</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/simmering\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<a href="../../blog.xml">Subscribe via RSS</a> | <a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | <a href="../../ai.html">AI Notice</a> | This website doesn’t use cookies.
+<script data-goatcounter="https://simmering.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

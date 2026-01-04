@@ -1,0 +1,37 @@
+---
+title: "AI Notice: How I use AI for this website"
+---
+
+I use AI as part of my workflow to help me create content for this website.
+
+:::{.callout-note title="The AI Manifesto"}
+This page is inspired by [The AI Manifesto](https://www.bydamo.la/p/ai-manifesto), a call for transparency in the use of AI.
+:::
+
+## What I use AI for
+
+- **Scoping topics**: I often discuss the merits of topics and perspectives with AI before writing.
+- **Deep research**: I use AI to find relevant sources and sort them by criteria I define. I verify those sources manually. It's one tool in a broader arsenal of literature search tools.
+- **Steelmanning**: I ask AI to come up with the strongest counterarguments to my claims. This helps me think through arguments more thoroughly.
+- **Copy editing**: Before publishing, I ask an assistant to proofread my articles and point out awkward phrasing. This consistently improves the readability.
+- **Generating images**: I use AI to preview images for blog posts. My creative ideas are greater than my ability to execute them. Without AI, I couldn't express them. In 2025, AI images still have a distinctive look, that I don't enjoy. So my ranking of image sources is: own photos > relevant plots > AI images > stock photos.
+
+The actual text is written by me, with the occasional tab completion from Cursor.
+
+## "Not by AI" is a quality signal
+
+AI is new and I understand the ick some people get, or the worry that it erodes human thinking, as [Andrew Heiss](https://www.andrewheiss.com/ai/) argues. I hate slop too.
+
+When I notice typical signs of AI-generated content, such as em-dashes or monotonous paragraph structure, I become suspicious. If someone told me that they wrote a text entirely with AI, I'd ask them for the prompt instead of the result. Ole Lehmann wrote a [tweet thread](https://x.com/itsolelehmann/status/1879905371902644393) on how to sound the exact opposite of AI, using lower-case, spelling errors and posting selfies along with the text. It's ugly, but I have to admit that it carries authenticity.
+
+A few blogs I read display the [Not by AI](https://notbybyai.fyi/) badge. To display it, authors must be compliant with the [90% rule](https://notbyai.fyi/not-by-ai-90-rule), meaning 90% of the content must not be by AI. While my website probably doesn't qualify, I value it as a signal of genuineness of personal reflections, thinking and voice, and of course as non-contaminated training material for language models. Knowing that human struggle went into the creation makes it appear more valuable.
+
+The EU is currently [drafting a law](https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content) requiring companies to label AI-generated content. I'm generally concerned about overregulation, but I see merit in transparency, hence this page. Photos and polished text used to be a signal of trustworthiness, which was lost when AI-generated content became nearly indistinguishable.
+
+## Quality and ownership over tools
+
+The person that publishes content is responsible for its quality, regardless of the tools used to create it. They vouch with their name that the content is correct and not slop. A developer that commits code to a repository is responsible for its quality, even if AI wrote it. An AI assistant is not a citeable authority, meaning "Claude said X" isn't substantial evidence for X.
+
+> A computer can never be held accountable. -- [IBM training manual, 1979](https://simonwillison.net/2025/Feb/3/a-computer-can-never-be-held-accountable/)
+
+I recognize the value of "Not by AI" content and the ideal of pure human cognitive labor. But I'm prioritizing completeness of research, argumentation and productivity over process purity.

@@ -2,19 +2,19 @@
 title: "Colophon"
 ---
 
-## Building the website
+## Static site generation
 
 This website is built with [Quarto](https://quarto.org), a publishing system for technical writing. Posts are written in Markdown and may contain executable code blocks, which are executed as Jupyter notebooks. The result is static HTML. The source is available on [Github](https://github.com/psimm/website).
 
 ## Theme
 
-The design of the website is based on the Solana theme. I have done some customizations:
+The design of the website is based on the built-in Solana template. I have made some customizations to it:
 
 - home page with a greeting and latest articles
 - custom dark mode switch
-- some custom CSS, e.g. the CV timeline on the about page
+- some custom elements in CSS, e.g. the CV timeline on the about page
 
-The fonts are [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. I chose them because they have a technical look and feel.
+The fonts are [Inter](https://rsms.me/inter/) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code.
 
 ## Hosting
 

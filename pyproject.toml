@@ -10,8 +10,12 @@ dependencies = [
     "polars>=1.13.1",
     "nbclient>=0.8.0",
     "ipykernel>=6.25.2",
-    "plotly>=5.17.0",
+    "plotly[express]>=5.17.0",
     "ipywidgets>=8.1.1",
     "pydantic>=2.4.2",
     "great-tables>=0.14.0",
+    "pyyaml>=6.0.3",
+    "numpy>=2.4.0",
+    "pyarrow>=18.0.0",
+    "pandas>=2.3.3",
 ]

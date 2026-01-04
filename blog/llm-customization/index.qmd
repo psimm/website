@@ -4,6 +4,7 @@ author: "Paul Simmering"
 date: "2024-12-22"
 categories: ["Machine Learning"]
 image: "image.webp"
+description: "Introduction to Direct Preference Optimization (DPO) and when to use it vs supervised fine-tuning (SFT) for customizing LLMs."
 format:
     html:
         mermaid: 
