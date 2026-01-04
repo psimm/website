@@ -247,6 +247,6 @@ The original paper found no correlation between failures and context window limi
 
 ### Takeaways for enterprise agents
 
-These findings generalize beyond vending machines to any long-running autonomous agent. Enterprise deployments need circuit breakers that detect anomalous behavior patterns and escalate to human review before meltdowns compound. External state management and periodic human checkpoints remain necessary even when agents have memory tools. Agents interfacing with external parties need skepticism built in, since those that over-trust their environment get exploited. For enterprise reliability, the relevant question isn't "can it succeed?" but "how often does it fail catastrophically?" Even top models show high variance across runs.
+The same problems likely affect any long-running autonomous agent. Enterprise deployments need circuit breakers that detect anomalous behavior patterns and escalate to human review before meltdowns compound. External state management and periodic human checkpoints remain necessary even when agents have memory tools. Agents interfacing with external parties need skepticism built in, since those that over-trust their environment get exploited. For enterprise reliability, the relevant question isn't "can it succeed?" but "how often does it fail catastrophically?" Even top models show high variance across runs.
 
 ## References
