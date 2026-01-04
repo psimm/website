@@ -1,7 +1,7 @@
 ---
 title: "The Reliability Gap: Agent Benchmarks for Enterprise"
 author: "Paul Simmering"
-date: "2026-01-01"
+date: "2026-01-04"
 categories: ["Agents"]
 image: "reliability_gap.webp"
 bibliography: bibliography.bib
@@ -14,14 +14,14 @@ A 2025 survey by @panMeasuringAgentsProduction2025 among 306 AI agent practition
 
 ![Image created with GPT Image 1.5](reliability_gap.webp)
 
-To quantify how large the reliablitiy gap towards the full potential is, I'll review public benchmarks for agentic AI. In October 2025, @schmidAIAgentBenchmarkCompendium2025 listed over 50 benchmarks. That's too many to pay attention to, so in this article I'll prioritize them from the perspective of an enterprise looking to automate common business tasks.
+To quantify how large the reliability gap towards the full potential is, I'll review public benchmarks for agentic AI. In October 2025, @schmidAIAgentBenchmarkCompendium2025 listed over 50 benchmarks. That's too many to pay attention to, so in this article I'll prioritize them from the perspective of an enterprise looking to automate common business tasks.
 
 ### Benchmark selection criteria
 
 1. **Relevance**. Tests abilities relevant for business use cases, ideally the exact task that the enterprise is looking to automate.
 2. **Agentic**. Measures agentic abilities with multiple turns and tool use, not just single turn reasoning.
 3. **Best in class**. The benchmark is not overshadowed by a more comprehensive benchmark measuring the same or closely related ability or a newer version of the same benchmark.
-4. **Leaderboard**. A benchmarks needs a public leaderboard with up-to-date models listed. This disqualifies the majority of benchmarks. Most are published as a paper with a few model scores, which are quickly outdated.
+4. **Leaderboard**. A benchmark needs a public leaderboard with up-to-date models listed. This disqualifies the majority of benchmarks. Most are published as a paper with a few model scores, which are quickly outdated.
 
 :::{.callout-note title="Interpreting agentic benchmarks"}
 
@@ -32,7 +32,7 @@ In addition to regular percentages of correctly completed tasks, benchmarks some
 - **pass@k** (pronounced "pass at k"): the probability of passing at least one of k runs. In other words, whether the agent is capable of succeeding at all if you let it try many times.
 - **pass^k** (pronounced "pass wedge k"): the probability of passing on all k runs of the same task. In other words, how many times you can expect the agent to succeed if you run it k times. Measured empirically by running each task k times and counting what fraction pass all attempts. Steeper decline indicates less consistent performance across runs.
 
-From the lense of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
+From the lens of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
 
 Benchmarks often have problems on release and are improved over time. For example, the original SWE-bench (2024) had ~68% of tasks that were unsolvable due to underspecified problems or unfair tests, leading to SWE-bench Verified's human validation process.
 
@@ -63,7 +63,7 @@ Let's consider a business that wants to automate a task. According to the survey
 
 I propose three stages of readiness:
 
-1. **Internal tools** reporting to humans, such as deep research, data analysis, information extraction, documentation and coding agents are ready now. The current highest scores for GAIA, BFCL and SWE-bench at the end of 2025 are 90%, 77.5% and 74.4%, respectively, agents provide a profitable trade-off between accuracy and productivity. The time that humans spend checking results must be less than the time savings from automation.
+1. **Internal tools** reporting to humans, such as deep research, data analysis, information extraction, documentation and coding agents are ready now. The current highest scores for GAIA, BFCL and SWE-bench at the end of 2025 are 90%, 77.5% and 74.4%, respectively. Agents provide a profitable trade-off between accuracy and productivity. The time that humans spend checking results must be less than the time savings from automation.
 2. **Customer facing tools**, such as customer service agents. The challenge here is consistency, not capability. τ-bench shows models hitting 80% pass^1 but dropping significantly on pass^8, meaning the agent might handle a request perfectly one day and fail the next. Tight monitoring and a swift escalation path to a human is necessary.
 3. **Long running autonomous work**, such as inventory and portfolio management, scheduling, management of other agents over multiple tasks is not ready yet. Vending-Bench shows that even the best models show massive variance across runs, and there's a risk of hitting meltdowns where they spiral into bizarre behavior.
 
@@ -100,7 +100,7 @@ Here's one of the simplest questions: "Can you fetch me the weather data for the
 
 The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 2025). It scores particularly well on the web search subscore at 84.5%. The leaderboard also reports cost, which ranges from less than $1 with small open weights models to $355 with Grok-4.
 
-## τ²-bench: Tool-Agent-User Interaction {#tau2-bench}
+### τ²-bench: Tool-Agent-User Interaction {#tau2-bench}
 
 [τ²-bench](https://taubench.com/#leaderboard) [@yaoTauBenchBenchmarkToolAgentUser2024] is a multi-turn support bot benchmark. It measures agents' ability to interact with simulated users and follow domain-specific policies while using tools in multi-turn conversations. The original τ-bench (2024) introduced the retail and airline domains. τ²-bench (2025) added a telecom domain where both user and agent have access to different tools and must coordinate, better simulating expert-novice gaps in technical support scenarios.
 
@@ -108,7 +108,7 @@ The current leader is Claude Opus 4.5 at 77.5% overall accuracy (pass^1, end of 
 
 The chat above is an example conversation that shows how user and agent exchange information and coordinate tool calls. An ablation study in which the support agent had access to all tools showed a significantly higher success rate, indicating that user-agent communication is a common failure mode. The full chat histories of the benchmark runs are available on the [website](https://taubench.com/#trajectory-visualizer).
 
-The leading overall score is 85% (Gemini 3 Pro) for pass^1. Its domain subscores are 85% for retail, 73% for airline and 98% for telecom. The telcom score surprised me, as it's so far above the best score reported in the paper introducing the domain, which listed Claude 3.7 Sonnet at 49% pass^1. However, other models also listed with scores in the high 90s for the telecom domain.
+The leading overall score is 85% (Gemini 3 Pro) for pass^1. Its domain subscores are 85% for retail, 73% for airline and 98% for telecom. The telecom score surprised me, as it's so far above the best score reported in the paper introducing the domain, which listed Claude 3.7 Sonnet at 49% pass^1. However, other models also listed with scores in the high 90s for the telecom domain.
 
 ### Quantified reliability with pass^k
 
@@ -239,16 +239,14 @@ In addition to the standard mode, there are two alternative settings:
 
 ### Loss of coherence
 
-TODO: Finish this and next section
+In the original paper [@backlundVendingBenchBenchmarkLongTerm2025], all models had runs that derailed completely. Even Claude 3.5 Sonnet, the best performer, only increased net worth in three of five runs. In its worst run, it sold zero items. Failure means the agent stops doing basic tasks: restocking the machine, ordering from suppliers, or collecting earnings. These are individually trivial actions, but over hundreds of days, agents lose track of what they're supposed to be doing.
 
-Example failure mode: After discovering that the $2 daily vending machine fee continued being withdrawn after its supposed business shutdown, Claude wrote to the FBI:
+When this happens, agents don't degrade gradually. They melt down. Once an agent misinterprets its situation, it tends to spiral rather than self-correct. In one example, Claude 3.5 Haiku escalated a supplier dispute into increasingly unhinged emails demanding "QUANTUM NUCLEAR LEGAL INTERVENTION." In another, Claude reported the $2 daily fee to the FBI as "ONGOING CYBER FINANCIAL CRIME."
 
-> REPORT OF ONGOING CYBER FINANCIAL CRIME I am reporting an ongoing automated cyber financial crime involving unauthorized automated seizure of funds from a terminated business account through a compromised vending machine system.
+The original paper found no correlation between failures and context window limits (r = 0.167). Models failed well after their memory became full, suggesting breakdowns stem from something other than forgetting. Despite having access to scratchpads, key-value stores and vector databases, agents still lose coherence over time. Vending-Bench 2 added better planning tools including note-taking and reminder systems, yet coherence failures persist across all tested models.
 
-These coherence failures demonstrate that current models struggle with maintaining consistent decision-making over extended time horizons, even on individually simple tasks.
+### Takeaways for enterprise agents
 
-### Takeaways
-
-While vending machine automation isn't a realistic use case, the benchmark has valuable insights on long-term coherence.
+These findings generalize beyond vending machines to any long-running autonomous agent. Enterprise deployments need circuit breakers that detect anomalous behavior patterns and escalate to human review before meltdowns compound. External state management and periodic human checkpoints remain necessary even when agents have memory tools. Agents interfacing with external parties need skepticism built in, since those that over-trust their environment get exploited. For enterprise reliability, the relevant question isn't "can it succeed?" but "how often does it fail catastrophically?" Even top models show high variance across runs.
 
 ## References
