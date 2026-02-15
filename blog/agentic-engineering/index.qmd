@@ -1,0 +1,141 @@
+---
+title: "From Vibe Coding to Agentic Engineering"
+author: "Paul Simmering"
+date: "2026-02-15"
+categories: ["Productivity", "Agents"]
+image: "image.webp"
+description: A framework for choosing between coding styles based on the tradeoffs between speed, control and learning. How do you avoid cognitive debt while shipping AI-generated code?
+toc: true
+---
+
+The term *vibe coding* just turned one. Andrej Karpathy, who [coined](https://x.com/karpathy/status/1886192184808149383?lang=de) it in February 2025 and long preferred autocomplete over agents, flipped to 80% agentic coding in [January 2026]((https://x.com/karpathy/status/2015883857489522876)). Agentic coding has leveled up massively: Claude 4.5 Opus reached 80.9% on [SWE-bench Verified](https://www.swebench.com), better harnesses enable longer runs and multi-agent collaboration, and we have new apps such as Codex for controlling them.
+
+In 2023, I reported on my first experiences with AI assistance and the [post](https://simmering.dev/blog/ai-assistants/) is now a window into a quaint past. The problems I noticed then were fixed by better tools. Now developers need to catch up on how to use them. New practices under the banner of *agentic engineering* are emerging. This article is a framework for using coding agents professionally: five coding styles with different tradeoffs between speed, control and learning, followed by practical techniques for context engineering and harness design. It also confronts an uncomfortable finding from recent research: AI boosts output but erodes understanding, creating *cognitive debt*.
+
+## Five coding styles
+
+The improvements in AI assistance and automation tools have enabled new styles of coding. I'm classifying them into distinct styles, which I've rated in terms of speed, control and learning, the main tradeoffs I see in choosing a style.
+
+- **Speed**: How fast you complete the code. I mean the time taken for a single change, not development velocity over the long run.
+- **Control**: How many of the decisions involved you make rather than delegate to an AI. This involves the architecture level and the micro level of individual lines of code or chunks like functions and classes. Reviewing code doesn't give the same control as creating it from scratch, as it anchors on the AI's choices.
+- **Learning**: How much you advance your own coding skills and knowledge of the project. Experiments from [Anthropic](https://www.anthropic.com/research/AI-assistance-coding-skills), [MIT](https://www.media.mit.edu/publications/your-brain-on-chatgpt/) and [Zhejiang University](https://www.nature.com/articles/s41598-025-98385-2) found that knowledge workers using AI have enhanced results, but that the gain doesn't carry over when working alone afterward. Further, they don't retain as much information and report lower sense of ownership. The MIT study coins this condition *cognitive debt*. [Margaret-Anne Storey](https://margaretstorey.com/blog/2026/02/09/cognitive-debt/) from the University of Victoria relates it back to coding as a new type of debt that projects accumulate when developer's understanding doesn't keep up with growing complexity.
+
+| Style                             | Speed | Control | Learning |
+| --------------------------------- | ----- | ------- | -------- |
+| [No AI](#no-ai)                   | ●○○○○ | ●●●●●   | ●●●●●    |
+| [Autocomplete](#autocomplete)     | ●●○○○ | ●●●●○   | ●●●●○    |
+| [Single agent](#single-agent)     | ●●●○○ | ●●●○○   | ●●○○○    |
+| [Multi agent for parallel features](#multi-agent-for-parallel-features) | ●●●●● | ●○○○○   | ●○○○○    |
+| [Multi agent for exploration](#multi-agent-for-exploration) | ●●○○○ | ●●●○○   | ●●●●○    |
+
+The ratings are my subjective view and outcomes depend on how exactly a style is performed. For instance, asking the agent questions about its implementation can boost learning again. Ownership could be a fourth aspect, but its ratings would highly correlate with control and learning. I don't list copy-pasting into a chatbot as a viable style, because it's so inefficient in comparison to the others.
+
+### No AI
+
+Manual coding speed is highly dependent on how well a developer has memorized the programming language they're using. Writing code manually repeats the basics such as loops, conditions and indexing over and over. You solve small logic problems all the time and become fluent in a programming language. After writing a piece of code, you know the ins and outs of it.
+
+**Strengths:** learning on micro and macro level, drilling the basics, control, ownership
+
+**Weaknesses:** slow, limited to familiar programming languages, high cognitive load
+
+### Autocomplete
+
+Using the autocomplete with a coding extension for an IDE or a VSCode fork provides a very nice speed boost. You can skip over the common small logic problems. Knowing the language is still important. Autocomplete also doesn't do architecture, it focuses on the micro. As the generated code comes in small chunks, developers naturally check it as they go.
+
+The speed of the coding model is critical for this style; if you have to wait, the flow state is broken. The recent [GPT-5.3-Codex-Spark](https://openai.com/index/introducing-gpt-5-3-codex-spark/) is promising near-instant answers with decent intelligence.
+
+Early on, I used to write comments specifically to trigger the autocomplete to write the implementation. With agents that take direct prompts as an instruction, I wouldn't recommend this specific technique anymore. Overall I see autocomplete as a nicely balanced style.
+
+**Strengths:** speed up over manual coding, good control
+
+**Weaknesses:** not as fast as agents, less learning on micro level
+
+### Single agent
+
+Write a prompt, perhaps use planning mode and let a CLI agent or an agent embedded in an IDE go off reading docs, writing code and running tests until it reports back with a result. I'll share productivity tips in a section below.
+
+**Strengths:** fast, work in unfamiliar languages
+
+**Weaknesses:** loss of ownership, control and learning, wait for agent to complete
+
+### Multi agent for parallel features
+
+Kick off multiple agents, each working on a different task. This is a style favored by Peter Steinberger, developer of OpenClaw, famously programming from his smartphone. I tried it with OpenAI's Codex app for a React + NextJS side project and found that I could run the app in a browser, write instructions to Codex and see the update in real time. It completely moved my focus to the app's functionality and UX, rather than the code. This generated an ungodly amout of changes that I dreaded to review, so I kept vibing instead.
+
+This is fantastic for hackathons, demos and experiments. Personally, I don't feel confident doing this for a serious project, where I am responsible for each line of code. I'd also run out of token budget before the end of the month.
+
+**Strengths:** absurdly fast
+
+**Weaknesses:** extreme loss of ownership, control and learning, token usage
+
+### Multi agent for exploration
+
+Kick off multiple agents to do the same task independently, then review their solutions and pick the best one. This makes sense for complex tasks with many possible solutions that have advantages and drawbacks that only become clear during implementation.
+
+Cursor implements this explicitly by letting you compare the results of different models.
+
+![Cursor's multi agent interface](cursor.webp)
+
+This is a rare, but promising style that I haven't built much experience with yet.
+
+**Strengths:** can improve quality of architecture, learning on the macro level
+
+**Weaknesses:** time consuming to review, loss of learning on micro level, token usage
+
+## Optimizing agent productivity
+
+Let's look at how exactly we can get maximum productivity from agentic engineering and the best ways to stay in control of the macro while delegating the micro.
+
+### Plan mode
+
+Everything you don't specify has to be guessed by the LLM. That's similar to a stakeholder formulating a business requirement and a developer having to fill in all the technical details. For complex changes, I'm a fan of *plan mode*, where the agent answers with a to do list, rather than jumping into action. It's a forcing function for clarity and a dedicated place for the developer to review architecture. If the plan doesn't match what you meant, you catch it in 30 seconds instead of 10 minutes reviewing generated code. That's also token-efficient.
+
+Simple changes don't need plan mode, but if I already know how I want something implemented, I'll mention it in the prompt, e.g. "implement this with an env var" or "upsert the entry to the database". For UI, pasting screenshots of your own app or inspirations works surprisingly well.
+
+Keep in mind that LLMs are still optimized to please. Current leaders aren't quite as sycophantic as the notorious GPT-4o, but they're still not pushing back on bad ideas like a real senior engineer would. If you ask an LLM to find a bug, it will try really hard to constitute a bug, whether there is one or not. If you ask whether something could be simpler, it will try to simplify that bit, perhaps at the expense of complexity elsewhere.
+
+### Context engineering by example
+
+Context engineering is the art of managing the LLM's context window and seeding it with all relevant information at the start of an interaction. The best context engineering doesn't happen in the prompt, but in the code base:
+
+- Making the project *agent legible* helps, i.e. using a monorepo, paying attention to consistent variable names and co-locating related information such as content and style using Tailwind CSS.
+- Readmes and other notes explain the purpose of the project, conventions and instructions to run it. Anything that helps a new hire also helps an agent. Rule files like `copilot-instructions.md` or `AGENTS.md` are more specifically aimed at agents. Effort invested here is leveraged by every agent run. Less is more: a few well maintained rules beat an overstuffed and rotting tome. Turning `AGENTS.md` into a table of contents linking to other notes worked well for a large AI engineering project by [OpenAI](https://openai.com/index/harness-engineering/). They took it further with custom linters by the principle: "Human taste is captured once, then enforced continuously on every line of code".
+- Existing code serves as examples of how to write.
+
+These help with the intial context loading. Later, as the chat fills with prompts and responses, it's important to be mindful of context window size and purity. Wrong information and failed attempts mislead LLMs. Claude's phrase "You're absolutely right" has become a meme because of this. When you see it, your context is rotten, and it's time to start a new thread. One way to wrap up a thread is manual compaction: asking the LLM to summarize the problem, what it has tried and learned. The answer can be both educational and useful as a starting point for a new attempt. Anthropic has a full [guide](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) on context engineering for agents.
+
+### Harness engineering
+
+Beyond context, you're designing the agent's development environment: the information it gets, the tools to unblock itself, and the guidance that keeps it aligned with your plans. Models are trained to hill-climb via RLHF and don't give up easily, but they need instruments and feedback. Watch for situations where the LLM is blind to a problem and add the tools it needs to resolve problems without human intervention.
+
+Among tooling, type checking deserves special mention: it lets agents easily catch errors statically. [Theo Browne](https://www.youtube.com/watch?v=iV1EcfZSdCM&pp=0gcJCZEKAYcqIYzv) makes a strong case for TypeScript as an optimal language for agentic coding, as it guarantees type safety in frontend, backend and on their interfaces. [Matt Honnibal](https://honnibal.dev/blog/llm-style-tips) gives practical Python advice focused on type safety and testability through pure functions. Linters, unit tests and tools to let agents look at the app's UI are also important.
+
+The most ambitious projects take multi-agent setups and long runs that span multiple context windows with compaction steps. Anthropic's [guide on effective harnesses](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) covers failure modes and fixes, [OpenAI's case study](https://openai.com/index/harness-engineering) is another good read. This is the forefront of agentic engineering.
+
+## Staying in control
+
+### Resisting fragmentation
+
+While an AI chat window formally places the user in control, the dynamic can flip in practice: agents going off making unwanted changes, notifications interrupting the user's work and the user becoming the agent's QA help. It's also easy to get lazy and let the agent do all the thinking.
+
+Developers reporting on their experience emphasize controlling the dynamic:
+
+> Try to avoid workflow loops where you go off and do things, paste the error back into the LLM, and then go do whatever it tells you. I’ve seen this anti-pattern called a “reverse centaur”: you want to be the head of the human/horse hybrid, not the ass. -- Matt Honnibal
+
+> "I found that it was my job as a human to be in control of when I interrupt the agent, not the other way around." -- Mitchell Hashimoto
+
+Keeping agents running in the background while you're working on something else is efficient, but can also be exhausting context switching. A [study](https://hbr.org/2026/02/ai-doesnt-reduce-work-it-intensifies-it) tracking AI use at a tech company found that AI use increased multitasking, such as manually coding while orchestrating agents working on other tasks. Workers reported increased cognitive fatigue as they took on extra tasks outside of their core competence and filled natural breaks with AI usage.
+
+### Taking responsibility
+
+Opening a pull request is saying: I believe this code is good enough to be merged and is worthy of the reviewer's time. But popular open source projects are facing an onslaught of low quality vibe coded pull request. As a consequence, [new norms](https://github.com/ghostty-org/ghostty/pull/10412) about AI-generated code are forming. Maintainers are rightfully angry when someone expects them to review an AI-generated mess. Reviewing is harder than generating.
+
+The solution is to increase the burden of proof in regards to relevance and correctness. Simon Willison [wrote](https://simonwillison.net/2025/Dec/18/code-proven-to-work/): "Your job is to deliver code you have proven to work" and suggests more comprehensive tests, screenshots or even a video attached to the PR. I'd add that it's also a developer's job to understand the code and be able to answer questions about it during review.
+
+Part of packaging code up for review is using Git. I find that staging changes for a commit is a natural point for human control to review generated code. Conceding git control to agents would remove this valuable loop.
+
+## There's no going back
+
+Some are [exhilarated](https://world.hey.com/dhh/promoting-ai-agents-3ee04945) with new possiblities, others are [mourning](https://nolanlawson.com/2026/02/07/we-mourn-our-craft/) the loss of their craft, still others are [concerned](https://ezhik.jp/ai-slop-terrifies-me/) that we're about to enter a new era of slop. What they agree on is that software engineering is changed forever. Even if LLMs never become better than today, which is unlikely, just better tooling will keep getting us better coding agents.
+
+Based on Anthropic's [estimates](https://www.anthropic.com/research/estimating-productivity-gains), the programmers cited in this article and my own experience, agentic engineering is a 2x or greater speed-up for experienced developers. It's also an enabler for beginners. But as the studies discussed above have shown, they're also a trap for cognitive debt and loss of craftsmanship. It's a challenge for both individual developers and organizations to find work patterns and shared expectations that get the best of both worlds, classic and agentic software engineering.
