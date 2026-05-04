@@ -4,7 +4,9 @@ author: "Paul Simmering"
 date: "2026-05-04"
 categories: ["Agents"]
 image: "image.webp"
+description: "A structured comparison of ways to connect AI agents to tools, apps, code, and other agents."
 toc: true
+
 format:
     html:
         mermaid: 
