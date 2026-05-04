@@ -5,11 +5,13 @@ Quarto website with per-post Python environments.
 ## Rendering
 
 **Full site (uses frozen/cached Python outputs):**
+
 ```bash
 quarto render
 ```
 
 **Individual post with specific dependencies:**
+
 ```bash
 cd blog/postname
 uv sync
@@ -27,4 +29,3 @@ The `_freeze/` directory caches Python execution results. Full site renders use 
 1. Create `blog/newpost/pyproject.toml` with required packages
 2. Run `cd blog/newpost && uv sync && uv run quarto render index.qmd`
 3. Commit the `_freeze/` output
-

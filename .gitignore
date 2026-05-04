@@ -3,6 +3,7 @@ _environment*
 /_*.local
 .venv
 .env
+.firecrawl/
 .DS_Store
 *.pyc
 .env

@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",
       "/blog/agent-benchmarks/index.html",
       "/blog/pivoting-to-ai-data/index.html",
@@ -79,6 +80,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",
       "/blog/agent-benchmarks/index.html",
       "/blog/pivoting-to-ai-data/index.html",

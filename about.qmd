@@ -8,14 +8,14 @@ Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
 I work as Technical Expert GenAI Platforms & Services at [LBBW](https://www.lbbw.de), a German bank. I'm a developer on the GenAI team, building an enterprise-grade LLM chat application connected to internal data via RAG. In addition, I serve as an internal consultant for GenAI initiatives.
 
-Between 2018 and mid-2025, I worked as Senior Data Scientist at [Q Agentur für Forschung](https://teamq.de), a market research agency. I worked on many projects for small and large businesses in consumer goods, pharmaceuticals, insurance and other industries. A large part of my work was productizing one-off projects into scalable data pipelines powered by languages models. Through that work, I got to experience the evolution of language understanding from bag-of-words models, to transformer models, to large language models.
+Between 2018 and mid-2025, I worked in different roles at [Q Agentur für Forschung](https://teamq.de), a market research agency. I worked on projects for small and large businesses in consumer goods, pharmaceuticals, insurance and other industries. A large part of my work was productizing one-off projects into scalable data pipelines powered by languages models. Through that work, I got to experience the evolution of language understanding from bag-of-words models, to transformer models, to large language models.
 
-My educational background is in economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. During my master's degree, I discovered my passion for data science and decided to pivot to a career in the field. Eight years later, I'm positive that this was one of the best decisions I've made.
+My educational background is in economics. I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. At Aalborg University, I discovered my passion for data science and decided to pivot to a career in the field.
 
 ::: {.cv-timeline}
 
 ::: {.cv-entry}
-[2025]{.cv-years}
+[2025 - present]{.cv-years}
 [Technical Expert GenAI Platforms & Services]{.cv-title}  
 [LBBW, Stuttgart]{.cv-org}
 :::
@@ -48,7 +48,7 @@ I occasionally give [talks](/talks.html) at conferences and write [papers](/publ
 
 On my [blog](/blog.html), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. It's my practice of [learning in public](https://www.swyx.io/learn-in-public).
 
-I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found through search engines and surfaced by AI assistants searching the web.
+I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found by search engines.
 
 I use AI as part of my workflow and have written an [AI notice](/ai.html) about it. More details about the website itself can be found in the [colophon](/colophon.html). 
 
@@ -67,7 +67,7 @@ I use AI as part of my workflow and have written an [AI notice](/ai.html) about 
 - **Economics**. While I've pivoted professionally, I'm still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
 - **Parks and gardens**, especially [Japanese gardens](/japanese_gardens.qmd). I'm lucky to live close to [Blühendes Barock](https://www.blueba.de/en/) in Ludwigsburg.
 - **Board and card games**: [Euro-style board games](https://en.wikipedia.org/wiki/Eurogame), Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as [Power Grid](https://en.wikipedia.org/wiki/Power_Grid), [Figgie](https://www.figgie.com) and [Bohnanza](https://en.wikipedia.org/wiki/Bohnanza).
-- **Video games**. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing as a trader in EVE Online as a teenager drew me to economics and programming.
+- **Video games**. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing a trader in EVE Online as a teenager drew me to economics and programming.
 
 ### What I use
 

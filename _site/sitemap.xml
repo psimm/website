@@ -282,7 +282,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/about.html</loc>
-    <lastmod>2026-02-15T14:19:49.987Z</lastmod>
+    <lastmod>2026-05-04T09:13:50.772Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/privacy.html</loc>
@@ -319,5 +319,13 @@
   <url>
     <loc>https://simmering.dev/blog/agentic-engineering/index.html</loc>
     <lastmod>2026-02-17T11:14:00.296Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/connect-agent/index.html</loc>
+    <lastmod>2026-05-04T09:11:01.844Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/connect-agent/deep-research-report.html</loc>
+    <lastmod>2026-04-23T09:51:19.724Z</lastmod>
   </url>
 </urlset>

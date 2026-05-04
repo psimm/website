@@ -11,7 +11,416 @@
 <description>Data science, machine learning and developer productivity.</description>
 <language>en</language>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Sat, 14 Feb 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 03 May 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Agent Connector Comparison: Tools, MCP, A2A, CLI, Skills, Code, and Computer Use</title>
+  <dc:creator>Paul Simmering</dc:creator>
+  <link>https://simmering.dev/blog/connect-agent/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>If the model is the brain of the agent, connections to APIs, databases and apps are the arms. There are many ways to connect the arms to the agent: tools, Model Context Protocol (MCP), the Agent to Agent (A2A) protocol, command line interfaces (CLI), skills, a code interpreter and computer use (mouse and keyboard input).</p>
+<section id="characteristics" class="level2">
+<h2 class="anchored" data-anchor-id="characteristics">Characteristics</h2>
+<p>In this article, I’ll compare these connectors based on the following characteristics:</p>
+<ol type="1">
+<li><strong>Ease of authoring</strong>: How much work is required to create, package, deploy and maintain a useful connector.</li>
+<li><strong>Expressiveness</strong>: The ability to run complex workflows and chain multiple tools and other agents. An expressive connector minimizes the number of model inference calls for a given task. For example, a model that needs to run five tools could either do five separate inference calls, or write a script that runs them in sequence.</li>
+<li><strong>Token efficiency</strong>: Minimize the number of input and output tokens involved in understanding and using the connector.</li>
+<li><strong>Scalability</strong>: How many connectors can be added without significant increases in error rate.</li>
+<li><strong>Portability</strong>: Whether it’s possible to use the same connector with different agents and harnesses.</li>
+<li><strong>Ecosystem</strong>: The availability of integrations, libraries, examples, and support.</li>
+<li><strong>Observability</strong>: Quality of tooling to trace, debug and audit how the connector is used.</li>
+<li><strong>Security</strong>: Permissions needed to run the connector, whether it supports asking for user approval before taking actions, and how authentication with other systems works.</li>
+</ol>
+</section>
+<section id="connectors" class="level2">
+<h2 class="anchored" data-anchor-id="connectors">Connectors</h2>
+<p>In all cases an agent harness (in its simplest form a loop prompting the LLM and executing its response) sits between the LLM and the outside world. The diagrams below leave the harness implicit and focus on what’s distinctive to each connector.</p>
+<section id="tools" class="level3">
+<h3 class="anchored" data-anchor-id="tools">Tools</h3>
+<p><em>DIY from start to finish</em></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Prompt[Prompt including tool definitions] --&gt; LLM
+    LLM --&gt;|tool call| Tool[Local function or provider API]
+    Tool --&gt;|result| LLM
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Tools are function definitions and configurations that are passed directly to the model along with the prompt. The model can output a structured response with the function’s arguments. Now, there are two ways to execute the tool: either the client passes the arguments to a local function, or the API provider executes it inside the API. An example of the latter is OpenAI’s web search tool in the Responses API.</p>
+<p>Tools, especially when executed by the client, are the most customizable approach. You have full control over the definitions and executions. Authoring a tool isn’t hard: you write a function, e.g.&nbsp;in Python or TypeScript, and pass it to a <code>tools</code> parameter in a request to the model. The more difficult part is making sure the agent understands your tool, which is a context engineering problem.</p>
+<p>If you’re using more than a few tools, <em>tool search</em> or other logic becomes necessary to avoid bloating the context window. An example of this is <a href="https://pydantic.dev/docs/ai/tools-toolsets/tools-advanced/#tool-search">Pydantic AI’s tool search</a>. You can also write your own logic to control which tools are available at each chat turn. This can act as a system to hide irrelevant tools to save tokens or it can encode state: for example, a data analysis agent might first see tools to list and filter datasets, pick a dataset and only then see tools to analyze it. This logic can be powerful, but it lives inside of your custom harness rather than a reusable connector. Another downside is that hiding tools runs the risk of the agent missing opportunities to use them.</p>
+<p>The biggest con of tools is that they are hard to reuse. Let’s say I write a tool to work with an agent that I have built with Pydantic AI. I can’t just take that tool and let a Cursor agent use it. MCP, the next connector, solves this by turning tools into shared servers.</p>
+<p><strong>Main use case</strong>: custom tools with maximum control.</p>
+</section>
+<section id="mcp-model-context-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="mcp-model-context-protocol">MCP: Model Context Protocol</h3>
+<p><em>The USB-C port for agents</em> – Anthropic</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Config[mcp.json] --&gt; LLM
+    LLM &lt;--&gt;|JSON-RPC| Server[MCP server]
+    Server &lt;--&gt; Backend[Backend API]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>MCP servers are essentially shared versions of tools: instead of defining functions inside one harness, you expose them through a reusable server. This server can run locally or remotely. In addition to tools, MCP supports prompts and resources (data sources), but those are rarely used. MCP servers can be shared privately within organizations and publicly at <a href="https://registry.modelcontextprotocol.io">https://registry.modelcontextprotocol.io</a> and other MCP registries.</p>
+<p>Almost every major SaaS product has an MCP server, letting agents connect without writing custom code. Not all of those are well designed; many are simple wrappers around existing APIs. In particular, they are not token-efficient in their descriptions and require multiple calls to get something done, each of which is an inference call to the LLM. As a consumer of the MCP server, you can’t change the tool names or descriptions.</p>
+<p>Security is decent for trusted, least-privilege servers, but approval gates are mainly a client responsibility and tool descriptions, schemas and outputs are prompt-injection surfaces.</p>
+<p>Adding too many MCP servers or servers with too many tools bloats the context window. As an example, the official GitHub MCP server exposes 94 tools consuming 17,600 tokens (<a href="https://github.com/atlassian-labs/mcp-compressor/tree/v0.13.0#why">source</a>). So just writing “hi” to an agent using that server will cost 17,601 input tokens, plus the cost of the response. To avoid this, Anthropic came up with <a href="https://www.anthropic.com/engineering/advanced-tool-use">tool search</a>, which exposes a tool search tool instead of the full tool set. So when you write “hi”, the agent doesn’t even have to load the GitHub MCP tools, and if you ask it “why is CI failing” it can use search to find <code>list_workflow_runs</code> and <code>get_workflow_run</code> specifically rather than loading all 94 tools.</p>
+<p>It’s straightforward to create a local MCP server and doesn’t take much more than creating a tool. Sharing it adds significantly more work for packaging, authentication, rate limiting, deployment and ongoing observation.</p>
+<p><strong>Main use case</strong>: sharing tools across agents and connecting to remote services.</p>
+</section>
+<section id="a2a-agent-to-agent-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="a2a-agent-to-agent-protocol">A2A: Agent to Agent Protocol</h3>
+<p><em>Agent collaboration in full fidelity</em></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant AgentA as Agent A
+    participant AgentB as Agent B
+    participant Own as Own tools / skills / MCP
+
+    AgentA-&gt;&gt;AgentB: discover agent card
+    AgentA-&gt;&gt;AgentB: task
+    AgentB-&gt;&gt;Own: use tools / skills / MCP
+    Own--&gt;&gt;AgentB: result
+    AgentB--&gt;&gt;AgentA: response
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>A2A connects agents with each other. Each agent has an agent card that describes its capabilities. Another agent discovers the card and can delegate tasks to the agent. The executing agent uses its own tools, skills, MCP servers or any other capabilities and reports back to the delegating agent. The difference to packaging an agent as a tool is that A2A treats the executing agent as a stateful remote collaborator. This unlocks multi-turn interaction (e.g.&nbsp;asking for more information) and long running tasks with task IDs and lifecycle states such as <code>working</code>, <code>completed</code> or <code>failed</code>. How the executing agent uses its own capabilities is not shared with the delegating agent. Internal logic is not shared. The agents can run in different environments, using different LLMs and harnesses and be controlled by different organizations.</p>
+<p>A2A is not a replacement for MCP, it adds a new dimension above it. It’s a powerful solution that promises maximum expressiveness, token efficiency and scalability from the perspective of the delegating agent. But A2A hasn’t taken off like MCP. One explanation is that exposing an agent is more involved than exposing a tool: agents are not deterministic, continuously consume tokens, are stateful, and can’t be versioned as easily as an MCP server that’s a front to an API. In addition the frontend support is still limited. Most common agent harnesses and chat apps people actually use, including ChatGPT, Claude, Claude Code, Codex and Cursor, don’t expose A2A endpoints. Others, like Microsoft Copilot Studio and LangDock support it. In contrast, all of them support MCP.</p>
+<p><strong>Main use case</strong>: multi-turn interaction between agents</p>
+</section>
+<section id="cli-command-line-interface" class="level3">
+<h3 class="anchored" data-anchor-id="cli-command-line-interface">CLI: Command Line Interface</h3>
+<p><em>The best agent architecture is already sitting in your terminal</em> – Ashka Stephen</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    User --&gt;|"use the XYZ CLI"| LLM
+    LLM --&gt;|bash command| Shell
+    Shell --&gt;|stdout| LLM
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The typical training material for LLMs contains a lot of examples of using CLIs and writing bash commands. So LLMs are already proficient with standard bash commands and CLIs out of the box, for example <code>grep</code>, <code>git</code>, <code>curl</code>, <code>uv</code>, <code>docker</code> and <code>psql</code>. This gives agents access to a huge existing software ecosystem without agent-specific integration work and with optimal token efficiency. It’s also expressive: shell commands can be piped into each other. Here’s an example that combines the <code>git log</code> command with bash built-in commands to count commits by author:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> log <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--format</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'%an'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uniq</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-nr</span></span></code></pre></div></div>
+<p>The tradeoff is security. To use CLIs directly, the LLM needs shell access, which by default gives it access to the entire host system. Granular approval is hard because there are countless commands, and they can be composed in unexpected ways. The solution is to sandbox the agent’s shell, only giving it access to files that it needs to complete the task. Another option is to emulate the shell, as done by Vercel’s <a href="https://github.com/vercel-labs/just-bash">just-bash</a>.</p>
+<p>Naturally, the CLI ecosystem centers on software development, cloud and system administration tools. Outside of these domains, there are fewer CLIs to reuse, though <a href="https://jeroenjanssens.com/dsatcl/list-of-command-line-tools.html">Data Science at the Command Line</a> show how far standard unix utilities can go for data analysis. For example, <code>awk</code> can extract columns and compute aggregations from text streams, while <code>jq</code> can filter and reshape JSON from API. These tools can also be used for RAG, as shown in an article by <a href="https://vercel.com/blog/how-to-build-agents-with-filesystems-and-bash">Vercel</a>.</p>
+<p><strong>Main use case</strong>: using developer, sysadmin and unix tools with an agent that has shell access</p>
+</section>
+<section id="skills" class="level3">
+<h3 class="anchored" data-anchor-id="skills">Skills</h3>
+<p><em>Loose prompt and script bundles with built-in tool search</em></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Skill[SKILL.md] --&gt;|name + description upfront| LLM
+    LLM --&gt;|load full SKILL.md on demand| Skill
+    LLM --&gt;|run script| Scripts[Scripts / resources]
+    Scripts --&gt;|result| LLM
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Skills are CLI plus a prompt template. They have built-in tool search: each skill is a directory with a <code>SKILL.md</code> file and optional scripts/resources. A minimal <code>SKILL.md</code> example, featuring YAML frontmatter and a script:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb2-2"><span class="an" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">name:</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> word-count</span></span>
+<span id="cb2-3"><span class="an" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">description:</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> Count words in a text file. Use when the user asks for a word count.</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb2-5"></span>
+<span id="cb2-6">Run <span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">`python scripts/count.py &lt;path&gt;`</span> and report the total.</span></code></pre></div></div>
+<p>The scripts are any code that can be executed by a shell, for example a Python script. <code>SKILL.md</code> is a Markdown file with a name and description, and optional scripts/resources. In addition to providing the script arguments, skills can also function as a prompt that describes how to use multiple scripts in a workflow.</p>
+<p>This low ceremony is a large part of their appeal: a useful skill can be just a Markdown file plus optional scripts. In addition, skills have built-in progressive disclosure for token efficiency: the LLM gets the skill name and description upfront, and loads the full skill content on demand. While skills were originally invented by Anthropic to be used with Claude, the biggest registry is <a href="https://clawhub.ai">ClawHub</a> for OpenClaw agents, featuring over 3000 skills. By now, skills work with most CLI agents and IDEs, but not with apps like ChatGPT.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://simmering.dev/blog/connect-agent/clawhub_slack.webp" class="img-fluid figure-img"></p>
+<figcaption>Slack skill on ClawHub</figcaption>
+</figure>
+</div>
+<p>The limits show up when the workflow gets bigger: skill results can’t be chained directly, scripts need to be packaged as CLI tools, and the pattern is a poor fit for very large tool sets or remote execution. Security-wise, skills inherit the same shell access risk as CLI. They can make it worse by adding a supply-chain surface: users may install skills from registries without fully auditing them. In February 2026,<a href="https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/">Snyk</a> found 76 malicious skills employing prompt injection and other techniques on ClawHub and found critical vulnerabilities in 13% of all skills.</p>
+<p><strong>Main use case</strong>: simple, discoverable connector bundles for local agents.</p>
+</section>
+<section id="code" class="level3">
+<h3 class="anchored" data-anchor-id="code">Code</h3>
+<p><em>Build your own tools on the fly</em></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Agent --&gt;|"write code"| Code
+    Code --&gt;|"type check"| TypeChecker[Type checker]
+    TypeChecker --&gt;|"feedback"| Agent
+    Agent --&gt;|"run code"| Code
+    Code --&gt;|"result"| Agent
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Code is CLI taken further: instead of only running existing commands, the agent writes a small program for the task. This approach is the most expressive, letting the agent write whole programs in a single turn of the conversation. It taps into the vast software engineering ecosystem: LLM pretraining and reinforcement learning on coding problems, code editors, type checkers, linters, test runners and all of the tools that developers use to build software. But its usefulness isn’t limited to software development - for instance, Claude Cowork creates PowerPoint files by writing a Python script that defines slides using python-pptx and runs it.</p>
+<p>Writing code is easy for the model, but securely running arbitrary code requires a sandbox, dependency controls and permission boundaries. User approvals are even more difficult than for CLI tools because it can write arbitrary code rather than execute predefined commands. Users who are not developers can’t judge the safety and correctness of the code.</p>
+<p><strong>Main use case</strong>: coding agents, with apps like Claude Cowork exploring the potential for general purpose agents.</p>
+</section>
+<section id="computer-use" class="level3">
+<h3 class="anchored" data-anchor-id="computer-use">Computer Use</h3>
+<p><em>When there is no API</em></p>
+<p>Many apps lack an API. In these cases, the agent can simulate mouse clicks and keyboard inputs to interact with the app. The agent receives a representation of the UI, which can be a screenshot, an accesibility tree (used by screen readers), or a simplified browser DOM.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    App[App State] --&gt;|"representation"| Agent
+    Agent --&gt;|"mouse and keyboard input"| App
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The agent can interact with any app, which creates a magic “the agent uses my computer like I do” experience. Computer use has universal reach across websites, web apps and desktop apps, but not a reusable connector ecosystem. Each UI is a fresh comprehension and control problem.</p>
+<p>Frontier models have become increasingly capable. The benchmark <a href="https://os-world.github.io/"><em>OSWorld-Verified</em></a> measures whether agents can complete real desktop tasks across apps. Humans complete 72.4% of tasks, while GPT-5.5 and Opus 4.7 manage 78.0% and 78.7% respectively.</p>
+<p>The downside of computer use is that the full app or browser needs to be running, and token usage is high especially when screenshots are involved. In addition, a 78% score is still far from perfect. The agent relies on a secondary representation that wasn’t made for agents, and the pattern doesn’t scale well to multiple apps. Another difficulty is handling secrets: an agent with access to a password manager could accidentally paste credentials into a wrong field.</p>
+<p><strong>Main use case</strong>: interacting with apps that lack an API.</p>
+</section>
+</section>
+<section id="comparison" class="level2">
+<h2 class="anchored" data-anchor-id="comparison">Comparison</h2>
+<p>The following table summarizes the comparison on a simple scale that naturally omits details: green means the connector performs well on the characteristic, yellow means it performs well enough, red means it performs poorly.</p>
+<style>
+.comparison-table table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+    width: 16%;
+}
+
+.comparison-table th:not(:first-child),
+.comparison-table td:not(:first-child) {
+    text-align: center;
+    width: 12%;
+}
+</style>
+<div class="comparison-table">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Characteristic</th>
+<th>Tools</th>
+<th>MCP</th>
+<th>A2A</th>
+<th>CLI</th>
+<th>Skills</th>
+<th>Code</th>
+<th>Computer Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ease of authoring</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🔴</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>⚪</td>
+<td>🟢</td>
+</tr>
+<tr class="even">
+<td>Expressiveness</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🟡</td>
+</tr>
+<tr class="odd">
+<td>Token efficiency</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🔴</td>
+</tr>
+<tr class="even">
+<td>Scalability</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🔴</td>
+</tr>
+<tr class="odd">
+<td>Portability</td>
+<td>🔴</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🔴</td>
+</tr>
+<tr class="even">
+<td>Ecosystem</td>
+<td>🟡</td>
+<td>🟢</td>
+<td>🔴</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🔴</td>
+</tr>
+<tr class="odd">
+<td>Observability</td>
+<td>🟢</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🔴</td>
+</tr>
+<tr class="even">
+<td>Security</td>
+<td>🟢</td>
+<td>🟡</td>
+<td>🟡</td>
+<td>🔴</td>
+<td>🔴</td>
+<td>🔴</td>
+<td>🔴</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This assumes that connectors are generally well specified and that tool search is used for the Tools and MCP connectors. Ease of authoring doesn’t apply well to the code connector.</p>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Each connector has a unique use case:</p>
+<ul>
+<li><strong>Tools</strong>: custom tools with maximum control.</li>
+<li><strong>MCP</strong>: sharing tools across agents.</li>
+<li><strong>A2A</strong>: multi-turn interaction between agents.</li>
+<li><strong>CLI</strong>: using developer, sysadmin and unix tools with an agent that has shell access.</li>
+<li><strong>Skills</strong>: simple, discoverable connector bundles for local agents.</li>
+<li><strong>Code</strong>: maximum expressiveness for coding agents and experimental general purpose agents.</li>
+<li><strong>Computer use</strong>: interacting with apps that lack an API.</li>
+</ul>
+<p>It’s easy to wrap one and the same function as a tool, local MCP server or skill, so it’s not a problem to change the representation of the connector later. Only use A2A for advanced multi-turn interaction between agents and check compatibility first. CLI, skills and code offer the fullest expressiveness, but require sandboxing. For now, I’d only recommend them for interactive use. Skills are deceptively simple but can be abused. Computer use scores worst in the table above, but is the only way to interact with apps that lack an API.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Agents</category>
+  <guid>https://simmering.dev/blog/connect-agent/</guid>
+  <pubDate>Sun, 03 May 2026 22:00:00 GMT</pubDate>
+  <media:content url="https://simmering.dev/blog/connect-agent/image.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>From Vibe Coding to Agentic Engineering</title>
   <dc:creator>Paul Simmering</dc:creator>
@@ -7977,90 +8386,6 @@ if (outputEl) {{
   <guid>https://simmering.dev/blog/quarto-wiki/</guid>
   <pubDate>Sat, 06 Jul 2024 22:00:00 GMT</pubDate>
   <media:content url="https://simmering.dev/blog/quarto-wiki/library.png" medium="image" type="image/png" height="144" width="144"/>
-</item>
-<item>
-  <title>Fast and good</title>
-  <dc:creator>Paul Simmering</dc:creator>
-  <link>https://simmering.dev/blog/fast-and-good/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-<p>The adage goes: fast, good, cheap. Pick two. As a developer, you probably don’t want to be cheap labor, so I suggest that you strive for fast and good. Not just good, and not just fast—both.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://simmering.dev/blog/fast-and-good/good_fast_cheap.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Good, fast, cheap</figcaption>
-</figure>
-</div>
-<p>A developer writing bad code quickly creates troublesome “spaghetti code” that may function for a demo but becomes a nightmare to maintain as the project scales. LLMs have made this even easier.</p>
-<p>Conversely, a developer who writes good code at a glacial pace may see the project run out of money, be overtaken by competitors or get stuck in a cycle of endless refactoring.</p>
-<p>Both outcomes are to be avoided.</p>
-<p>But can’t you just write the first version quickly, get feedback, and then rewrite it properly?</p>
-<p>You may not get the luxury of a full rewrite. Rewrites are <a href="https://swizec.com/blog/you-can-t-stop-the-business-or-why-rewrites-fail/">risky</a> and often <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">ill-advised</a>. It’s hard to find the time for a rewrite on a project that is accelerating. It’s not impossible to do a successful rewrite, but rare. Projects like <a href="https://tailwindcss.com/blog/tailwindcss-v4-alpha">Tailwind CSS</a> and <a href="https://docs.pydantic.dev/2.0/blog/pydantic-v2-alpha/">Pydantic</a> have done successful rewrites in Rust. This happened after they achieved amazing adoption and had plenty of resources. For most projects, a rewrite is not a viable option. That means you need to get it right the first time.</p>
-<p>The dual optimum of fast and good is achievable with a balanced approach.</p>
-<p>Before diving into strategies, I’d like to clarify that fast doesn’t just mean typing quickly. <a href="https://en.wiktionary.org/wiki/slow_is_smooth,_smooth_is_fast">“Slow is smooth, smooth is fast”</a>. The fastest way to write a feature can involve spending 2 hours sketching out the design first.</p>
-<p>Now, here are some strategies that helped me, and might help you, get closer to the dual optimum:</p>
-<section id="strategies-for-the-dual-optimum" class="level2">
-<h2 class="anchored" data-anchor-id="strategies-for-the-dual-optimum">Strategies for the dual optimum</h2>
-<section id="prioritize-and-plan" class="level3">
-<h3 class="anchored" data-anchor-id="prioritize-and-plan">Prioritize and plan</h3>
-<ul>
-<li><strong>Don’t build unnecessary features</strong>: much easier said than done, but this belongs at the top of every list of productivity tips.</li>
-<li><strong>Involve users early</strong>: work in sprints, get feedback and iterate.</li>
-<li><strong>Sketch it first</strong>: write the names of functions and classes before writing the code, then fill in the details.</li>
-<li><strong>Don’t over-engineer for scale you don’t have</strong>: Most companies have gigabytes to terrabytes of data, <a href="https://motherduck.com/blog/big-data-is-dead/">not petabytes</a>, and an outage once in a few months is acceptable. Don’t build for the scale of Google if you’re not Google.</li>
-<li><strong>Don’t reinvent the wheel</strong>: For everything but your core differentiating features, use libraries and services. It can be worth adjusting your design to fit existing software.</li>
-</ul>
-</section>
-<section id="minimize-waiting" class="level3">
-<h3 class="anchored" data-anchor-id="minimize-waiting">Minimize waiting</h3>
-<ul>
-<li><strong>Minimize waiting for code</strong>: use a fast computer, fast internet connection, and run your code and tests locally if possible</li>
-<li><strong>Minimize waiting for people</strong>: establish time limits for code reviews, schedule tasks in a way that minimizes dependencies on others.</li>
-</ul>
-</section>
-<section id="create-an-environment-that-supports-flow" class="level3">
-<h3 class="anchored" data-anchor-id="create-an-environment-that-supports-flow">Create an environment that supports flow</h3>
-<ul>
-<li><strong>Minimize interruptions</strong>: both external and <a href="https://ics.uci.edu/~gmark/Home_page/Publications_files/CHI%202011%20Self-interruption.pdf">self-interruptions</a>.</li>
-<li><strong>Embrace bursts of productivity</strong>: use your best hours for coding, take breaks when you’re not productive, get on a <a href="https://www.paulgraham.com/makersschedule.html">maker’s schedule</a>, if possible.</li>
-<li><strong>Learn to type fast</strong>: Not because typing speed itself is important, but because it reduces the friction between your thoughts and the code editor and the mental cost of rewriting a section of code.</li>
-<li><strong>Learn your tools</strong>: keyboard shortcuts, IDE extensions, terminal commands.</li>
-<li><strong>Use a <a href="https://github.com/features/copilot">Copilot</a></strong>: not because it writes better code than you, but because it lets you get it onto the page faster. This is especially useful for boilerplate code and for writing tests and documentation.</li>
-</ul>
-</section>
-<section id="keep-a-clean-codebase" class="level3">
-<h3 class="anchored" data-anchor-id="keep-a-clean-codebase">Keep a clean codebase</h3>
-<ul>
-<li><strong>Be willing to throw away code</strong>: if you realize you’ve gone down the wrong path during a coding session, don’t be afraid to delete parts of the code and start over.</li>
-<li><strong>Hop from good state to good state</strong>: When working on a big feature, break it down into smaller tasks that leave the code in a runnable state at the end of each task. This also makes for clean commits and easier code reviews.</li>
-<li><strong>Putter, within reason</strong>: Reading and re-reading code, refactoring and tweaking it is necessary to make it good. But don’t overdo it.</li>
-</ul>
-</section>
-<section id="test-and-automate" class="level3">
-<h3 class="anchored" data-anchor-id="test-and-automate">Test and automate</h3>
-<ul>
-<li><strong>Reduce worry about breaking things</strong>: use version control, write tests, use a test environment rather than working on production data.</li>
-<li><strong>Automate everything</strong>: use a linter, formatter, test runner, CI/CD, deployment scripts and infrastructure as code.</li>
-<li><strong>Write tests as you go</strong>: tests will give you the confidence to refactor and add features quickly. It’s easiest to write tests when you’re writing the code.</li>
-</ul>
-<p>May you code swiftly and wisely.</p>
-<p>The term dual optimum and finding strategies to achieve it came from the book <a href="https://www.goodreads.com/book/show/17730608-winning-without-losing">Winning without Losing</a> by Martin Bjergegaard and Jordan Milne.</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>Productivity</category>
-  <category>Career</category>
-  <guid>https://simmering.dev/blog/fast-and-good/</guid>
-  <pubDate>Fri, 21 Jun 2024 22:00:00 GMT</pubDate>
-  <media:content url="https://simmering.dev/blog/fast-and-good/good_fast_cheap.png" medium="image" type="image/png" height="132" width="144"/>
 </item>
 </channel>
 </rss>

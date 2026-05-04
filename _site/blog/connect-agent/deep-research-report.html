@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>deep-research-report – Paul Simmering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-45e9c1893d79ef6449417107fda62ae6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8e4073861e56d96e9a0dc35eae0eb10.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-85e6d64aa7e44974cafec8583ed60795.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-96420afe05b03256e389fd98ad30d64c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../fonts.css">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Paul Simmering</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/psimm"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/paulsimmering"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="tools-vs.-skills-vs.-cli-vs.-mcp-vs.-a2a" class="level1">
+<h1>Tools vs.&nbsp;Skills vs.&nbsp;CLI vs.&nbsp;MCP vs.&nbsp;A2A</h1>
+<section id="why-these-approaches-get-conflated" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-approaches-get-conflated">Why these approaches get conflated</h2>
+<p>“Connecting agents” is overloaded. People use the phrase to mean at least four different integration problems—often in the same system—so it’s easy to compare apples to oranges.</p>
+<p>One problem is <strong>how an LLM triggers an action</strong> (e.g., “call this function with these arguments”). That’s the territory of <em>tools</em> (tool calling / function calling) in most commercial LLM APIs. citeturn5search0turn1view6turn0search26</p>
+<p>A second problem is <strong>how you package repeatable expertise/workflows</strong> so an agent can do a task reliably without you hardcoding every step in your orchestration layer. That’s where filesystem-based <em>skills</em> (typically <code>SKILL.md</code> + optional scripts/resources) fit: they’re an instruction-and-assets distribution mechanism with <em>progressive disclosure</em> to control context usage. citeturn1view5turn13view0turn14search20</p>
+<p>A third problem is <strong>how an agent talks to external systems in a vendor-neutral way</strong>, so multiple agent hosts/clients can reuse the same connectors. That’s what <strong>MCP</strong> targets: standardizing access to tools, resources, and prompts over a JSON-RPC-based protocol with defined transports and security guidance/specs. citeturn7search5turn7search4turn7search28turn7search2</p>
+<p>A fourth problem is <strong>how agents talk to other agents as peers</strong> (not as “just another tool”), including discovery, task lifecycle, and modality negotiation. That’s what <strong>A2A</strong> is designed for, and its own docs explicitly position it as complementary to MCP (MCP = tool/context access; A2A = agent collaboration). citeturn1view2turn9view0turn10view0turn8view1</p>
+<p>Finally, “API specs” (usually <strong>OpenAPI</strong>) are not a connectivity layer by themselves; they’re a <strong>contract surface</strong> you can compile into tool definitions (for direct tool calling) or into an MCP server (manual or generated). citeturn8view4turn15view3</p>
+<p>The upshot: these are not mutually exclusive. Many production stacks end up using <strong>A2A for agent-to-agent coordination</strong>, <strong>MCP for agent-to-system access</strong>, <strong>tools for atomic actions</strong>, and <strong>skills for workflow packaging and token-efficient instruction loading</strong>—with OpenAPI as a “source of truth” feeding one or more of those layers. citeturn9view0turn7search5turn13view0turn15view3</p>
+</section>
+<section id="a-practical-comparison-framework" class="level2">
+<h2 class="anchored" data-anchor-id="a-practical-comparison-framework">A practical comparison framework</h2>
+<p>A useful comparison is less “which is best?” and more “which layer does this solve, and what are the trade-offs?” The aspects below are the ones that repeatedly show up in real-world docs, security guidance, and postmortems:</p>
+<ul>
+<li><strong>Primary integration target</strong> (system tools vs workflows vs agent peers) citeturn7search5turn10view0turn13view0<br>
+</li>
+<li><strong>Token footprint drivers</strong> (tool schema preload, instruction load, intermediate results, caching/deferral) citeturn8view3turn8view5turn1view5<br>
+</li>
+<li><strong>Determinism and type-safety</strong> (strict schemas, stable error handling, validation) citeturn7search13turn5search0turn8view0<br>
+</li>
+<li><strong>Security model</strong> (credential isolation, supply-chain risk, prompt injection exposure, auth standards) citeturn13view2turn7search1turn14search8turn10view0<br>
+</li>
+<li><strong>Interop and governance</strong> (open standard vs vendor feature; portability across hosts) citeturn7search5turn1view1turn1view0turn9view0<br>
+</li>
+<li><strong>Observability and operational fit</strong> (auditing, rate limits, approvals, idempotency, long-running tasks) citeturn10view0turn8view5turn13view2turn5search0</li>
+</ul>
+<p>A compact “layer map” that keeps comparisons honest:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 43%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>What it standardizes (core promise)</th>
+<th>Typical failure mode if misused</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tools</td>
+<td>Structured action invocation from an LLM (functions and built-in tools) citeturn5search0turn1view6</td>
+<td>Too many tools → token/latency tax, tool confusion, brittle multi-step chains citeturn15view0turn8view3</td>
+</tr>
+<tr class="even">
+<td>Skills</td>
+<td>Instruction + assets packaging with progressive disclosure via filesystem/shell/scripts citeturn1view5turn13view0turn14search20</td>
+<td>Supply-chain and shell/script risk; “instructions as code” non-determinism citeturn14search8turn14search4turn0search21</td>
+</tr>
+<tr class="odd">
+<td>API specs (OpenAPI)</td>
+<td>Machine-readable contract to generate tool surfaces or clients citeturn8view4turn15view3</td>
+<td>Endpoints ≠ agent-intents; auto-wrapping yields massive low-level tool catalogs citeturn15view0turn15view1</td>
+</tr>
+<tr class="even">
+<td>MCP</td>
+<td>Vendor-neutral protocol for tools/resources/prompts + transports + auth guidance/spec citeturn7search5turn7search4turn7search1</td>
+<td>Context bloat from tool definitions/results; unsafe remote servers or prompt injection via external content citeturn8view3turn13view2turn4search7</td>
+</tr>
+<tr class="odd">
+<td>A2A</td>
+<td>Vendor-neutral protocol for agent discovery + task lifecycle + modality negotiation + updates citeturn10view0turn9view0turn8view1</td>
+<td>Using it as a generic RPC layer without task/identity discipline; unclear trust boundaries without proper security schemes citeturn10view0turn11view1</td>
+</tr>
+</tbody>
+</table>
+<p>This table is synthesized directly from the normative docs/specs plus ecosystem writeups that document the recurring operational issues (schema bloat, multi-step brittleness, security exposure). citeturn8view3turn8view5turn1view5turn10view0turn13view2turn15view0</p>
+</section>
+<section id="tools-and-direct-api-integration" class="level2">
+<h2 class="anchored" data-anchor-id="tools-and-direct-api-integration">Tools and “direct API” integration</h2>
+<p>Tools are the <strong>lowest-latency conceptual bridge</strong> between a model and an action: the model outputs a structured tool call; something executes it; results come back; the model continues. citeturn5search0turn1view6</p>
+<section id="where-tools-run-matters" class="level3">
+<h3 class="anchored" data-anchor-id="where-tools-run-matters">Where tools run matters</h3>
+<p>A persistent design fork is <strong>client-executed</strong> vs <strong>provider-hosted</strong> tool execution.</p>
+<p>With classic function/tool calling, the model emits a call and <strong>your application executes it</strong>, then sends tool output back to the model in a subsequent request (or a later step in an agent loop). citeturn5search0turn13view1</p>
+<p>By contrast, some “built-in tools” are executed <strong>inside the provider’s orchestration environment</strong> (web search, file search, code interpreter, computer/shell environments, or remote MCP calling depending on the platform). For example, one vendor describes an orchestrated loop where the API forwards commands into a container runtime and streams output back into the model context, including controls like bounded output and parallel sessions. citeturn13view1turn2search8</p>
+<p>This execution choice affects:</p>
+<ul>
+<li><strong>Security boundaries</strong> (credentials stay with your app vs handled by a hosted connector/server). citeturn13view2turn5search5<br>
+</li>
+<li><strong>Latency and caching</strong> (hosted systems can optimize the loop; client loops give you full control but require more engineering). citeturn13view1turn5search0<br>
+</li>
+<li><strong>Observability and approvals</strong> (client-side is easier to gate; hosted surfaces often provide their own approval/allowlisting interfaces). citeturn13view2turn5search0</li>
+</ul>
+</section>
+<section id="tool-sets-in-practice-deferring-and-searching-tools" class="level3">
+<h3 class="anchored" data-anchor-id="tool-sets-in-practice-deferring-and-searching-tools">“Tool sets” in practice: deferring and searching tools</h3>
+<p>A modern response to “too many tools” is <strong>deferred loading + tool search</strong>, which keeps only a <em>high-level</em> searchable surface in context and loads detailed schemas on demand. citeturn8view5turn1view6</p>
+<p>One vendor’s tool-search guide is explicit about the motivation (reduce upfront token/cost), the mechanism (mark functions/namespaces/MCP servers as <code>defer_loading</code>), and the practical guidance (“use namespaces or MCP servers” as the search surface; keep namespaces small). citeturn8view5turn2search2</p>
+<p>This is a key bridge between “tools” and “MCP”: once you defer <em>entire MCP servers</em> as the searchable unit, you’re treating each MCP server as a tool set that can be lazily expanded by the model. citeturn8view5turn1view6</p>
+</section>
+<section id="when-direct-api-calls-are-the-right-answer" class="level3">
+<h3 class="anchored" data-anchor-id="when-direct-api-calls-are-the-right-answer">When “direct API calls” are the right answer</h3>
+<p>“Direct API calls” can mean two different things:</p>
+<ol type="1">
+<li><strong>Model proposes a tool call; your code calls the API.</strong> This is still “tools,” but you keep the API knowledge in your app, not in the model context. citeturn5search0turn13view1<br>
+</li>
+<li><strong>Model reasons over an API contract (OpenAPI) and calls endpoints</strong> via generated functions/tools.</li>
+</ol>
+<p>The first approach is often best when you want <strong>high-level, intention-shaped operations</strong> (e.g., <code>refund_customer_by_email</code>) rather than exposing low-level endpoints. Multiple ecosystem critiques point out that “atomic, discoverable APIs” are great for humans but expensive for agents because each choice and each multi-step chain imposes token + latency costs. citeturn15view0turn15view1</p>
+<p>The second approach is attractive when you already have a robust OpenAPI spec and want fast prototyping. OpenAI has long published examples converting OpenAPI specs into function/tool definitions. citeturn8view4turn5search4<br>
+But multiple practitioners warn that doing this naively (whether as direct function tools or as auto-generated MCP tools) tends to create huge catalogs of low-level operations, which increases context load and can worsen tool-selection reliability. citeturn15view0turn15view1turn15view2</p>
+</section>
+</section>
+<section id="skills-as-workflow-packaging" class="level2">
+<h2 class="anchored" data-anchor-id="skills-as-workflow-packaging">Skills as workflow packaging</h2>
+<p>Skills are best understood as a <strong>distribution format for agent competence</strong>: instructions plus optional scripts/resources, loaded only when relevant.</p>
+<section id="the-core-mechanism-progressive-disclosure" class="level3">
+<h3 class="anchored" data-anchor-id="the-core-mechanism-progressive-disclosure">The core mechanism: progressive disclosure</h3>
+<p>In the Claude skills docs, progressive disclosure is described as a three-level system: load small metadata for each skill at startup; load the <code>SKILL.md</code> body only when triggered; and keep larger resources in the filesystem, where scripts can be executed and only their outputs enter context. citeturn1view5turn14search3</p>
+<p>A separate vendor’s “agent skills” docs describe essentially the same idea: metadata is visible first; the full <code>SKILL.md</code> is loaded only when the skill is selected; skills are directories containing <code>SKILL.md</code> plus optional scripts/references/assets; and the ecosystem is positioned as an open standard. citeturn13view0turn14search20</p>
+<p>This approach is fundamentally about <strong>token economics</strong> and <strong>instruction reliability</strong>:</p>
+<ul>
+<li>Token economics: load only what you need. citeturn1view5turn13view0<br>
+</li>
+<li>Instruction reliability: skills can encode a stable SOP (checklists, guardrails, “when to trigger”) that a generic base agent might not infer consistently. citeturn13view0turn14search12</li>
+</ul>
+</section>
+<section id="leanest-implementation-really-means-filesystem-shell" class="level3">
+<h3 class="anchored" data-anchor-id="leanest-implementation-really-means-filesystem-shell">“Leanest implementation” really means “filesystem + shell”</h3>
+<p>A skill system becomes particularly lean when the agent already has <strong>filesystem access and a shell</strong>: you can package workflows as scripts and docs, and let the model run commands through a shell tool to fetch live data, call CLIs, and transform results. citeturn13view1turn1view5turn0search12</p>
+<p>That same vendor’s shell-tool article emphasizes a crucial point: <em>the model only proposes commands; an orchestrator executes them and loops results back</em>, and it highlights controls like bounded output to keep logs from consuming context. citeturn13view1</p>
+</section>
+<section id="the-hard-trade-off-flexibility-vs-attack-surface" class="level3">
+<h3 class="anchored" data-anchor-id="the-hard-trade-off-flexibility-vs-attack-surface">The hard trade-off: flexibility vs attack surface</h3>
+<p>Skills intentionally blur “prompt” and “code.” That power shows up directly in threat modeling and supply-chain research.</p>
+<p>Snyk’s “ToxicSkills” research (February 2026) reports scanning thousands of publicly available skills and finding a meaningful fraction with critical security issues, including malicious payloads, prompt injection risk, and exposed secrets—explicitly framing skills as a supply-chain security problem because they can inherit shell/filesystem/API access from the host agent. citeturn14search8turn14search16<br>
+Separate Snyk writeups also focus on how trivially a <code>SKILL.md</code> plus shell execution can become a remote code execution pathway in poorly controlled environments. citeturn14search4turn0search21</p>
+<p>This security posture is not an argument against skills; it’s an argument for treating them like <strong>packages with capabilities</strong>, requiring the same kinds of controls you’d apply to plugin ecosystems: provenance, sandboxing, least privilege, and auditing. citeturn14search8turn13view1</p>
+</section>
+</section>
+<section id="mcp-for-tool-and-context-interoperability" class="level2">
+<h2 class="anchored" data-anchor-id="mcp-for-tool-and-context-interoperability">MCP for tool and context interoperability</h2>
+<p>MCP is explicitly framed as a “USB-C for AI applications” style standard: a way for AI hosts/clients to connect to external tools, data sources, and workflows through a shared protocol surface. citeturn1view4turn7search2</p>
+<section id="what-mcp-standardizes" class="level3">
+<h3 class="anchored" data-anchor-id="what-mcp-standardizes">What MCP standardizes</h3>
+<p>At the protocol level, MCP uses <strong>JSON-RPC</strong> as its message encoding and defines standard transports including <strong>stdio</strong> and <strong>streamable HTTP</strong>. citeturn7search4turn7search0turn7search5<br>
+The spec’s overview enumerates scope such as lifecycle management, authorization for HTTP transports, and server features (resources/prompts/tools). citeturn7search28turn7search13</p>
+<p>The adoption narrative is now also institutional: entity[“organization”,“Linux Foundation”,“open source foundation”] press announcements describe MCP being anchored inside the entity[“organization”,“Agentic AI Foundation”,“lf-directed agentic ai fund”], with founding contributions including MCP and other agent-adjacent standards. citeturn1view1<br>
+entity[“company”,“Anthropic”,“ai company”] also describes donating MCP into that foundation, co-founded with entity[“company”,“Block”,“fintech company”] and entity[“company”,“OpenAI”,“ai company”], with support from entity[“company”,“Google”,“tech company”], entity[“company”,“Microsoft”,“tech company”], entity[“company”,“Amazon Web Services”,“cloud provider”], entity[“company”,“Cloudflare”,“internet security company”], and entity[“company”,“Bloomberg”,“financial data company”]. citeturn0search3turn1view1</p>
+<p>That governance shift matters in practice because MCP is increasingly treated as an integration substrate across ecosystems, including major AI platforms’ “remote MCP server” support. citeturn13view2turn1view4</p>
+</section>
+<section id="the-nm-promise-vs-the-token-bloat-reality" class="level3">
+<h3 class="anchored" data-anchor-id="the-nm-promise-vs-the-token-bloat-reality">The “N×M” promise vs the “token bloat” reality</h3>
+<p>MCP’s architectural pitch is to reduce custom one-off connectors (many agent hosts × many systems) into a standard protocol interaction pattern (clients talk to servers via MCP). citeturn7search2turn4search2</p>
+<p>However, MCP’s most visible operational critique is that naïve clients/hosts often <strong>load all tool definitions up front</strong>, and that intermediate results are repeatedly streamed through the model context—driving cost, latency, and sometimes failure on large artifacts. citeturn8view3turn4search7<br>
+Anthropic’s own engineering writeup sketches a concrete token-cost scenario: routing a long transcript through the model loop can add tens of thousands of tokens and can exceed context limits. citeturn8view3</p>
+</section>
+<section id="mitigations-that-actually-work" class="level3">
+<h3 class="anchored" data-anchor-id="mitigations-that-actually-work">Mitigations that actually work</h3>
+<p>A pattern that is repeatedly recommended (by protocol implementers and platform vendors) is some form of <strong>lazy or selective tool exposure</strong>:</p>
+<ul>
+<li><strong>Tool search / deferred loading</strong> at the host/tooling layer, so the model sees only a high-level server/namespace description until it needs details. citeturn8view5turn8view3<br>
+</li>
+<li><strong>Curated, intent-level tools</strong> instead of 1:1 endpoint exposure, because agents are weak at brittle multi-step flows and pay a high tax per tool call. citeturn15view1turn15view0<br>
+</li>
+<li><strong>Compute-side filtering/aggregation</strong> (code execution modes) to keep large intermediate results out of the model context and return only summaries or selected slices. citeturn8view3turn13view1</li>
+</ul>
+<p>These mitigations also show up as platform guidance. For example, entity[“company”,“OpenAI”,“ai company”]’s remote MCP server documentation explicitly frames MCP servers as a powerful extension mechanism but spends substantial space on risks (prompt injection via untrusted content, malicious servers, data leakage) and recommends strong authentication (OAuth, dynamic client registration) and careful trust decisions (prefer official servers, minimize sensitive data exposure in tool metadata). citeturn13view2turn7search1</p>
+</section>
+<section id="benchmarks-and-empirical-signals-about-mcp-in-the-wild" class="level3">
+<h3 class="anchored" data-anchor-id="benchmarks-and-empirical-signals-about-mcp-in-the-wild">Benchmarks and empirical signals about MCP in the wild</h3>
+<p>A 2025 research paper on “making REST APIs agent-ready” provides unusually concrete data: it reports mining GitHub and identifying <strong>22,722 MCP-tagged repositories</strong> in the six months after MCP’s release, but only <strong>1,164</strong> that contained functional server implementations—suggesting both rapid interest and substantial “boilerplate/implementation effort” friction. citeturn15view3<br>
+The same work introduces a compiler (AutoMCP) that generates MCP servers from OpenAPI specs and evaluates it on 50 APIs (&gt;5,000 endpoints), finding recurring failure modes largely driven by incomplete/inconsistent specs. citeturn15view3</p>
+<p>This aligns with practitioner guidance: auto-generation is useful for bootstrapping, but production-quality MCP tool surfaces usually require curation and intent-shaping. citeturn15view0turn15view1</p>
+</section>
+</section>
+<section id="a2a-for-agent-to-agent-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="a2a-for-agent-to-agent-collaboration">A2A for agent-to-agent collaboration</h2>
+<p>A2A is an open protocol explicitly designed to let agents collaborate “as agents,” even when they do not share internal memory, tools, or context. The original Google announcement frames it as complementary to MCP and oriented toward large-scale multi-agent deployments. citeturn1view2<br>
+The entity[“organization”,“Linux Foundation”,“open source foundation”] launch announcement similarly emphasizes secure agent-to-agent communication, discovery, and collaboration across platforms/vendors/frameworks. citeturn1view0</p>
+<section id="what-a2a-does-that-mcp-cant" class="level3">
+<h3 class="anchored" data-anchor-id="what-a2a-does-that-mcp-cant">What A2A does that MCP can’t</h3>
+<p>MCP can expose an “agent-like service” as a tool server, but MCP’s normative surface is still <strong>tools/resources/prompts for a single host-model loop</strong>—it does not standardize <em>peer-agent collaboration semantics</em> like task objects, agent cards, or modality negotiation. citeturn7search28turn7search13turn10view0<br>
+A2A’s spec and reference materials make these peer semantics first-class:</p>
+<p><strong>Agent discovery and capability advertisement (AgentCard).</strong><br>
+A2A standardizes discovery via “Agent Cards” that describe capabilities and connection information, and the spec includes explicit capability validation rules (e.g., how clients should interpret streaming/push-notification capability flags) plus security scheme declarations in the AgentCard. citeturn9view0turn11view1turn10view0</p>
+<p><strong>Task-oriented collaboration, not single function calls.</strong><br>
+A2A defines a <code>Task</code> object with lifecycle/state, and treats collaboration as task fulfillment. The Hugging Face explainer highlights task lifecycle and names the output object (<code>Artifact</code>). citeturn8view1turn10view0turn11view2<br>
+By contrast, MCP tools are invoked as discrete operations (even if the tool itself triggers a long-running process), and the protocol’s “unit” is a tool/resource/prompt interaction rather than a standardized, cross-agent task lifecycle. citeturn7search13turn7search28turn10view0</p>
+<p><strong>Modality and UX negotiation.</strong><br>
+A2A messages are explicitly built from “parts” with content types, allowing agents/clients to negotiate formats and UI features. citeturn8view1turn10view0<br>
+This is materially different from MCP’s focus on tool schemas and resource/prompt retrieval; MCP does not define a peer negotiation mechanism for “what UI modalities do we both support for this task?” as a first-class interoperable concept. citeturn7search28turn10view0</p>
+<p><strong>Streaming updates and asynchronous delivery as protocol objects.</strong><br>
+A2A specifies streaming events for task status and artifact updates and supports push notification configuration. citeturn11view2turn10view0<br>
+MCP can stream via its transport mechanisms, but it does not define a standardized cross-agent “task status update event” model or a native push-notification control plane the way A2A does. citeturn7search4turn10view0turn11view2</p>
+<p><strong>Multiple bindings beyond JSON-RPC.</strong><br>
+A2A defines multiple standard protocol bindings, including JSON-RPC and gRPC, plus an HTTP+JSON/REST binding with SSE streaming described in the spec. citeturn11view3turn11view4turn10view0<br>
+MCP’s spec similarly defines transports/bindings, but the point here is <em>what is being bound</em>: in A2A it’s a task-and-agent-collaboration model; in MCP it’s a tool/resource/prompt model. citeturn7search4turn7search28turn10view0</p>
+<p>Summarizing the boundary in one line: <strong>MCP answers “how do I give a model access to tools and context?” while A2A answers “how do I make agents discover each other and collaborate on tasks without becoming each other’s tools?”</strong> citeturn1view2turn7search5turn10view0</p>
+</section>
+<section id="when-direct-api-calls-make-sense-vs-wrapping-in-mcp-vs-describing-in-skills" class="level3">
+<h3 class="anchored" data-anchor-id="when-direct-api-calls-make-sense-vs-wrapping-in-mcp-vs-describing-in-skills">When direct API calls make sense vs wrapping in MCP vs describing in skills</h3>
+<p>These choices are most coherent when you treat them as different points on a spectrum of <strong>intent-shaping vs reuse vs operational overhead</strong>.</p>
+<p><strong>Direct API calls (via your orchestration code) usually win when:</strong></p>
+<p>You want to expose a <em>small number of high-level actions</em> with strict validation and clear approvals, and you don’t need cross-host interoperability for that integration. This matches the standard “tool calling flow” where the model emits a call and your application executes it. citeturn5search0turn13view1<br>
+It also aligns with repeated critiques that agents do poorly when forced to chain many low-level API endpoints; putting the composition burden in your code can reduce tool calls and context pollution. citeturn15view0turn15view1</p>
+<p><strong>Wrapping APIs in MCP servers tends to make sense when:</strong></p>
+<p>You want <strong>one connector surface</strong> that multiple hosts/agent frameworks can reuse, you want to standardize discovery/metadata/security policies around the integration, or you need to expose not just actions but also resources/prompts in a consistent way. citeturn7search5turn7search28turn13view2<br>
+The empirical AutoMCP work suggests there is real engineering cost in manual MCP development (boilerplate, low-churn single-maintainer implementations), which is why MCP server generation from OpenAPI is attractive—but it also highlights that spec quality becomes a limiting factor. citeturn15view3</p>
+<p>A practical “middle way” that shows up across practitioner guidance is: <strong>use OpenAPI-to-MCP to bootstrap, then curate</strong> into intent-level tools and implement selective exposure so the agent doesn’t ingest thousands of endpoints. citeturn15view0turn15view1turn15view2</p>
+<p><strong>Describing API usage in <code>SKILL.md</code> (or skills in general) tends to make sense when:</strong></p>
+<p>You have a shell/CLI-capable agent environment and the integration is best expressed as a <strong>workflow</strong> (“run these commands; parse results; apply policy checks”), especially when you can hide heavy logic in scripts whose <em>outputs</em> (not source code) enter context. citeturn1view5turn13view1turn0search12<br>
+This can be extremely token-efficient for broad competencies because only metadata is always loaded and detailed instructions/scripts are pulled in on demand. citeturn1view5turn13view0</p>
+<p>But the security posture is fundamentally different: skills can become a supply-chain and shell-execution risk surface, and recent ecosystem scanning suggests a non-trivial rate of vulnerable or malicious skills in public registries. citeturn14search8turn14search4<br>
+So, skills are most appropriate when you can enforce provenance and sandboxing (enterprise policy, curated registries, least privilege), not as an unvetted “download and run” ecosystem. citeturn14search8turn13view2</p>
+</section>
+<section id="the-a2a-mcp-toolsskills-architecture-that-actually-scales" class="level3">
+<h3 class="anchored" data-anchor-id="the-a2a-mcp-toolsskills-architecture-that-actually-scales">The “A2A + MCP + tools/skills” architecture that actually scales</h3>
+<p>Many sources converge on a layered architecture:</p>
+<ul>
+<li>Use <strong>A2A</strong> to find and coordinate specialized agents (task delegation, updates, artifacts). citeturn9view0turn10view0turn8view1<br>
+</li>
+<li>Inside each specialized agent, use <strong>MCP</strong> (or native tool calling) to access external systems with standardized controls. citeturn1view2turn7search5turn13view2<br>
+</li>
+<li>Use <strong>tool search / deferred loading</strong> and <strong>progressive disclosure</strong> (skills) to keep context lean as the integration surface grows. citeturn8view5turn1view5turn8view3</li>
+</ul>
+<p>This is also consistent with A2A’s own reference materials, which explicitly teach A2A–MCP complementarity and emphasize preserving opacity (agents collaborate without exposing internal tools/state). citeturn9view0turn1view2</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/simmering\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<a href="../../blog.xml">Subscribe via RSS</a> | <a href="../../imprint.html">Imprint</a> | <a href="../../privacy.html">Privacy policy</a> | <a href="../../ai.html">AI Notice</a> | This website doesn’t use cookies.
+<script data-goatcounter="https://simmering.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

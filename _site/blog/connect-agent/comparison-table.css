@@ -1,0 +1,15 @@
+.comparison-table table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+    width: 16%;
+}
+
+.comparison-table th:not(:first-child),
+.comparison-table td:not(:first-child) {
+    text-align: center;
+    width: 12%;
+}
