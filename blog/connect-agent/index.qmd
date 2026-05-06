@@ -188,9 +188,9 @@ graph LR
 
 The agent can interact with any app, which creates a magic "the agent uses my computer like I do" experience. Computer use has universal reach across websites, web apps and desktop apps, but not a reusable connector ecosystem. Each UI is a fresh comprehension and control problem. 
 
-Frontier models have become increasingly capable. The benchmark [*OSWorld-Verified*](https://os-world.github.io/) measures whether agents can complete real desktop tasks across apps. Humans complete 72.4% of tasks, while GPT-5.5 and Opus 4.7 manage 78.0% and 78.7% respectively.
+Frontier models have become increasingly capable. The benchmark [*OSWorld-Verified*](https://os-world.github.io/) measures whether agents can complete real desktop tasks across apps. Humans complete 72.4% of tasks, while GPT-5.5 and Opus 4.7 manage 78.0% and 78.7% respectively. Still, the agent relies on a secondary representation that wasn't made for agents, and the pattern doesn't scale well to multiple apps. A typical mistake is missing UI elements that are not visible in the initial screenshot and require scrolling.
 
-The downside of computer use is that the full app or browser needs to be running, and token usage is high especially when screenshots are involved. In addition, a 78% score is still far from perfect. The agent relies on a secondary representation that wasn't made for agents, and the pattern doesn't scale well to multiple apps. Another difficulty is handling secrets: an agent with access to a password manager could accidentally paste credentials into a wrong field.
+Scalability is where computer use scores worst. The full app or browser needs to be running. Token usage is high especially when screenshots are involved. In an experiment by [reflex.dev](https://reflex.dev/blog/computer-use-is-45x-more-expensive-than-structured-apis/) where an agent had to navigate an admin interface either by computer use or using API calls, computer use was 45x more expensive. Another difficulty is handling secrets: an agent with access to a password manager could accidentally paste credentials into a wrong field.
 
 **Main use case**: interacting with apps that lack an API.
 
