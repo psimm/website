@@ -23,6 +23,7 @@
 
 
 
+<p><img src="https://simmering.dev/blog/connect-agent/connectors_wide.jpg" class="img-fluid" style="width:100.0%"></p>
 <p>If the model is the brain of the agent, connections to APIs, databases and apps are the arms. There are many ways to connect the arms to the agent: tools, Model Context Protocol (MCP), the Agent to Agent (A2A) protocol, command line interfaces (CLI), skills, a code interpreter and computer use (mouse and keyboard input).</p>
 <section id="characteristics" class="level2">
 <h2 class="anchored" data-anchor-id="characteristics">Characteristics</h2>

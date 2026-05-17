@@ -13,6 +13,8 @@ format:
           theme: neutral
 ---
 
+![](connectors_wide.jpg){width=100%}
+
 If the model is the brain of the agent, connections to APIs, databases and apps are the arms. There are many ways to connect the arms to the agent: tools, Model Context Protocol (MCP), the Agent to Agent (A2A) protocol, command line interfaces (CLI), skills, a code interpreter and computer use (mouse and keyboard input).
 
 ## Characteristics
