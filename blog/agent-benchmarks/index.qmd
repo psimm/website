@@ -31,8 +31,9 @@ In addition to regular percentages of correctly completed tasks, benchmarks some
 
 - **pass@k** (pronounced "pass at k"): the probability of passing at least one of k runs. In other words, whether the agent is capable of succeeding at all if you let it try many times.
 - **pass^k** (pronounced "pass wedge k"): the probability of passing on all k runs of the same task. In other words, how many times you can expect the agent to succeed if you run it k times. Measured empirically by running each task k times and counting what fraction pass all attempts. Steeper decline indicates less consistent performance across runs.
+- **majority@k**: the probability of passing most of k runs. A looser consistency metric than pass^k, which demands passing all k. Useful where occasional failure is tolerable but you want the common outcome to be success. @jha2026thinklocallyexplainglobally use the gap between pass@k and majority@k to quantify reliability on an IT incident-diagnosis benchmark: their [Figure 1](https://arxiv.org/pdf/2601.17915#page=3) plots the two against each other, and the distance below the diagonal shows how far capability ("can succeed once") runs ahead of consistency ("usually succeeds"): the reliability gap.
 
-From the lens of business automation, pass^k is more relevant. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
+From the lens of business automation, pass^k is more relevant than pass@k. Unfortunately, most benchmarks only report pass^1, not higher pass^k metrics. Other important metrics that are not always reported are the time required to complete the task and the cost incurred in terms of input and output tokens. BFCL is an example of a benchmark that reports these metrics.
 
 Benchmarks often have problems on release and are improved over time. For example, the original SWE-bench (2024) had ~68% of tasks that were unsolvable due to underspecified problems or unfair tests, leading to SWE-bench Verified's human validation process.
 
@@ -239,11 +240,13 @@ In addition to the standard mode, there are two alternative settings:
 
 ### Loss of coherence
 
-In the original paper [@backlundVendingBenchBenchmarkLongTerm2025], all models had runs that derailed completely. Even Claude 3.5 Sonnet, the best performer, only increased net worth in three of five runs. In its worst run, it sold zero items. Failure means the agent stops doing basic tasks: restocking the machine, ordering from suppliers, or collecting earnings. These are individually trivial actions, but over hundreds of days, agents lose track of what they're supposed to be doing.
+In the original vending machine benchmark paper [@backlundVendingBenchBenchmarkLongTerm2025], all models had runs that derailed completely. Even Claude 3.5 Sonnet, the best performer, only increased net worth in three of five runs. In its worst run, it sold zero items. Failure means the agent stops doing basic tasks: restocking the machine, ordering from suppliers, or collecting earnings. These are individually trivial actions, but over hundreds of days, agents lose track of what they're supposed to be doing.
 
-When this happens, agents don't degrade gradually. They melt down. Once an agent misinterprets its situation, it tends to spiral rather than self-correct. In one example, Claude 3.5 Haiku escalated a supplier dispute into increasingly unhinged emails demanding "QUANTUM NUCLEAR LEGAL INTERVENTION." In another, Claude reported the $2 daily fee to the FBI as "ONGOING CYBER FINANCIAL CRIME."
+When this happens, agents don't degrade gradually. They melt down. Once an agent misinterprets its situation, it tends to spiral rather than self-correct. In one example, Claude 3.5 Haiku escalated a supplier dispute into increasingly unhinged emails demanding "QUANTUM NUCLEAR LEGAL INTERVENTION." In another, Claude wanted to report the $2 daily fee it was charged to the FBI as an "ONGOING CYBER FINANCIAL CRIME."
 
 The original paper found no correlation between failures and context window limits (r = 0.167). Models failed well after their memory became full, suggesting breakdowns stem from something other than forgetting. Despite having access to scratchpads, key-value stores and vector databases, agents still lose coherence over time. Vending-Bench 2 added better planning tools including note-taking and reminder systems, yet coherence failures persist across all tested models.
+
+These coherence failures share a cause: the agent must hold its own state together across a long, growing context. The longer the run, the more can go wrong. A bad input from an earlier turn can derail reasoning, a compaction step can erase important information, or the attention mechanism can fail to retrieve it from a long sequence.
 
 ### Takeaways for enterprise agents
 
