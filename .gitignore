@@ -12,3 +12,5 @@ _environment*
 /.luarc.json
 
 **/*.quarto_ipynb
+
+.cursor/rules/

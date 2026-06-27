@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Token boundary comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 24px;
+      width: 920px;
+    }
+    .token-viz {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+    }
+    .token-viz-head {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #cbd5e1;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .token-viz-row {
+      padding: 1rem 1rem 0.25rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .token-viz-row:last-of-type { border-bottom: none; }
+    .token-viz-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.65rem;
+    }
+    .token-viz-lang { font-weight: 600; font-size: 0.95rem; }
+    .token-viz-count {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.82rem;
+      color: #475569;
+    }
+    .token-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      line-height: 1.55;
+      font-size: 1.05rem;
+    }
+    .token-chunk {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      padding: 0.2rem 0.45rem 0.28rem;
+      border: 2px solid var(--tb);
+      background: var(--tg);
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.92rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .token-chunk-partial {
+      border-style: dashed;
+      opacity: 0.85;
+      color: var(--tb);
+    }
+    .token-idx {
+      font-size: 0.62rem;
+      line-height: 1;
+      color: var(--tb);
+      opacity: 0.85;
+      min-width: 0.85rem;
+      text-align: center;
+    }
+    .token-viz-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-top: 1px solid #cbd5e1;
+      background: #fff;
+      font-size: 0.88rem;
+      color: #334155;
+    }
+    .token-viz-ratio {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-weight: 600;
+      color: #b45309;
+    }
+    code {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <div class="token-viz">
+    <div class="token-viz-head">
+      Same sentence · <code>o200k_base</code> tokenizer · matching colors = same phrase
+    </div>
+    <div class="token-viz-row">
+      <div class="token-viz-meta">
+        <span class="token-viz-lang">English</span>
+        <span class="token-viz-count"><strong>9</strong> tokens</span>
+      </div>
+      <div class="token-line"><span class="token-chunk" style="--tb:#0891b2;--tg:#cffafe" title="token 0"><span class="token-idx">0</span>Please</span><span class="token-chunk" style="--tb:#db2777;--tg:#fce7f3" title="token 1"><span class="token-idx">1</span> summarize</span><span class="token-chunk" style="--tb:#2563eb;--tg:#dbeafe" title="token 2"><span class="token-idx">2</span> this</span><span class="token-chunk" style="--tb:#2563eb;--tg:#dbeafe" title="token 3"><span class="token-idx">3</span> article</span><span class="token-chunk" style="--tb:#d97706;--tg:#fef3c7" title="token 4"><span class="token-idx">4</span> in</span><span class="token-chunk" style="--tb:#7c3aed;--tg:#ede9fe" title="token 5"><span class="token-idx">5</span> three</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 6"><span class="token-idx">6</span> bullet</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 7"><span class="token-idx">7</span> points</span><span class="token-chunk" style="--tb:#dc2626;--tg:#fee2e2" title="token 8"><span class="token-idx">8</span>.</span></div>
+    </div>
+    <div class="token-viz-row">
+      <div class="token-viz-meta">
+        <span class="token-viz-lang">Japanese</span>
+        <span class="token-viz-count"><strong>15</strong> tokens</span>
+      </div>
+      <div class="token-line"><span class="token-chunk" style="--tb:#2563eb;--tg:#dbeafe" title="token 0"><span class="token-idx">0</span>この記事</span><span class="token-chunk" style="--tb:#2563eb;--tg:#dbeafe" title="token 1"><span class="token-idx">1</span>を</span><span class="token-chunk" style="--tb:#7c3aed;--tg:#ede9fe" title="token 2"><span class="token-idx">2</span>3</span><span class="token-chunk" style="--tb:#7c3aed;--tg:#ede9fe" title="token 3"><span class="token-idx">3</span>つ</span><span class="token-chunk" style="--tb:#7c3aed;--tg:#ede9fe" title="token 4"><span class="token-idx">4</span>の</span><span class="token-chunk token-chunk-partial" style="--tb:#059669;--tg:#d1fae5" title="token 5"><span class="token-idx">5</span>·</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 6"><span class="token-idx">6</span>箇</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 7"><span class="token-idx">7</span>条</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 8"><span class="token-idx">8</span>書</span><span class="token-chunk" style="--tb:#059669;--tg:#d1fae5" title="token 9"><span class="token-idx">9</span>き</span><span class="token-chunk" style="--tb:#d97706;--tg:#fef3c7" title="token 10"><span class="token-idx">10</span>で</span><span class="token-chunk" style="--tb:#db2777;--tg:#fce7f3" title="token 11"><span class="token-idx">11</span>要</span><span class="token-chunk" style="--tb:#db2777;--tg:#fce7f3" title="token 12"><span class="token-idx">12</span>約</span><span class="token-chunk" style="--tb:#0891b2;--tg:#cffafe" title="token 13"><span class="token-idx">13</span>してください</span><span class="token-chunk" style="--tb:#dc2626;--tg:#fee2e2" title="token 14"><span class="token-idx">14</span>。</span></div>
+    </div>
+    <div class="token-viz-foot">
+      <span>Each box is one billed token.</span>
+      <span class="token-viz-ratio">+67% tokens in Japanese</span>
+    </div>
+  </div>
+</body>
+</html>

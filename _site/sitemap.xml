@@ -314,7 +314,7 @@
   </url>
   <url>
     <loc>https://simmering.dev/ai.html</loc>
-    <lastmod>2026-02-15T14:19:49.987Z</lastmod>
+    <lastmod>2026-06-25T06:57:36.180Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/blog/agentic-engineering/index.html</loc>
@@ -327,5 +327,9 @@
   <url>
     <loc>https://simmering.dev/blog/connect-agent/deep-research-report.html</loc>
     <lastmod>2026-04-23T09:51:19.724Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/save-token-costs/index.html</loc>
+    <lastmod>2026-06-27T12:37:08.761Z</lastmod>
   </url>
 </urlset>

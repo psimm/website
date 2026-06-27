@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/save-token-costs/index.html",
       "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",
       "/blog/agent-benchmarks/index.html",
@@ -80,6 +81,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/save-token-costs/index.html",
       "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",
       "/blog/agent-benchmarks/index.html",
