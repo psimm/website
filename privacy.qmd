@@ -17,5 +17,3 @@ Netlify retains data according to the purpose, nature, and legal requirements of
 ## Your rights
 
 Subject to the applicable conditions, you may request access, correction, deletion, or restriction of your personal data and object to processing based on legitimate interests. You also have the right to lodge a complaint with a supervisory authority.
-
-Technical request data is necessary to deliver this website; without it, the website cannot be used. Sending an email is voluntary.
