@@ -2,6 +2,9 @@ project:
   type: website
   resources:
     - _redirects
+    - assets/vendor
+  post-render:
+    - python3 scripts/localize_remote_assets.py
 
 execute:
   freeze: auto
@@ -24,9 +27,12 @@ website:
         href: https://www.linkedin.com/in/paulsimmering
   page-footer: |
     <a href="/blog.xml">Subscribe via RSS</a> | <a href="/imprint.html">Imprint</a> | <a href="/privacy.html">Privacy policy</a> | <a href="/ai.html">AI Notice</a> | This website doesn't use cookies.<script data-goatcounter="https://simmering.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+        async src="/assets/vendor/goatcounter/count.js"></script>
 format:
   html:
+    html-math-method:
+      method: mathjax
+      url: /assets/vendor/mathjax/tex-svg-full-3.2.2.js
     date-format: "YYYY-MM-DD"
     theme:
       light: theme-light.scss
