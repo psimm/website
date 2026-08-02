@@ -10,104 +10,104 @@ Photos of Japanese gardens I've visited in Japan and Germany. Click on images to
 
 Ginkaku-ji's garden was created in the late 15th century and represents the pinnacle of wabi-sabi aesthetics with its famous raked white sand. The walking paths reveal different perspectives of the temple.
 
-![](assets/image/ginkaku_ji2.webp){group="gallery"}
+![](assets/image/japanese_gardens/ginkaku_ji2.webp){group="gallery"}
 
-![](assets/image/ginkaku_ji3.webp){group="gallery"}
+![](assets/image/japanese_gardens/ginkaku_ji3.webp){group="gallery"}
 
-![](assets/image/ginkaku_ji4.webp){group="gallery"}
+![](assets/image/japanese_gardens/ginkaku_ji4.webp){group="gallery"}
 
-![](assets/image/ginkaku_ji1.webp){group="gallery"}
+![](assets/image/japanese_gardens/ginkaku_ji1.webp){group="gallery"}
 
 ## Tenryu-ji, Kyoto
 
 Tenryu-ji's garden, designed by monk Muso Soseki in 1339, is one of Japan's oldest surviving Zen gardens and a UNESCO World Heritage site. It pioneered the use of borrowed scenery, integrating the Arashiyama mountains into the garden's composition.
 
-![](assets/image/tenryu_ji1.webp){group="gallery"}
+![](assets/image/japanese_gardens/tenryu_ji1.webp){group="gallery"}
 
-![](assets/image/tenryu_ji2.webp){group="gallery"}
+![](assets/image/japanese_gardens/tenryu_ji2.webp){group="gallery"}
 
-![](assets/image/tenryu_ji3.webp){group="gallery"}
+![](assets/image/japanese_gardens/tenryu_ji3.webp){group="gallery"}
 
-![](assets/image/tenryu_ji4.webp){group="gallery"}
+![](assets/image/japanese_gardens/tenryu_ji4.webp){group="gallery"}
 
 ## Hakusasonso Hashimoto Kansetsu Museum, Kyoto
 
 Created in the 1910s by painter Hashimoto Kansetsu, this villa garden was designed to inspire artistic work. The three-story pagoda and seasonal displays provided a contemplative setting for cultural gatherings. My visit in 2024 was a serene experience and a welcome break from the tourist crowds at other places.
 
-![](assets/image/hakusasonso1.webp){group="gallery"}
+![](assets/image/japanese_gardens/hakusasonso1.webp){group="gallery"}
 
-![](assets/image/hakusasonso2.webp){group="gallery"}
+![](assets/image/japanese_gardens/hakusasonso2.webp){group="gallery"}
 
-![](assets/image/hakusasonso4.webp){group="gallery"}
+![](assets/image/japanese_gardens/hakusasonso4.webp){group="gallery"}
 
-![](assets/image/hakusasonso3.webp){group="gallery"}
+![](assets/image/japanese_gardens/hakusasonso3.webp){group="gallery"}
 
 ## Koko-en, Himeji
 
 Built in 1992 on former samurai residence foundations, Koko-en consists of nine themed gardens demonstrating different classical styles. It is like walking through a textbook of perfect examples of each style.
 
-![](assets/image/kokoen1.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen1.webp){group="gallery"}
 
-![](assets/image/kokoen2.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen2.webp){group="gallery"}
 
-![](assets/image/kokoen3.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen3.webp){group="gallery"}
 
-![](assets/image/kokoen4.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen4.webp){group="gallery"}
 
-![](assets/image/kokoen5.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen5.webp){group="gallery"}
 
-![](assets/image/kokoen6.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen6.webp){group="gallery"}
 
-![](assets/image/kokoen7.webp){group="gallery"}
+![](assets/image/japanese_gardens/kokoen7.webp){group="gallery"}
 
 ## Hamarikyū Park, Tokyo
 
 Originally a 17th-century feudal hunting ground, Hamarikyu features Japan's only surviving tidal pond connected to Tokyo Bay. It features a mix of Edo-period tea houses and skyscraper views.
 
-![](assets/image/hamarikyu1.webp){group="gallery"}
+![](assets/image/japanese_gardens/hamarikyu1.webp){group="gallery"}
 
-![](assets/image/hamarikyu2.webp){group="gallery"}
+![](assets/image/japanese_gardens/hamarikyu2.webp){group="gallery"}
 
 ## Kiyosumi Park, Tokyo
 
 A park built in 1891 that has a collection of stones from all over Japan.
 
-![](assets/image/kiyosumi1.webp){group="gallery"}
+![](assets/image/japanese_gardens/kiyosumi1.webp){group="gallery"}
 
-![](assets/image/kiyosumi2.webp){group="gallery"}
+![](assets/image/japanese_gardens/kiyosumi2.webp){group="gallery"}
 
-![](assets/image/kiyosumi3.webp){group="gallery"}
+![](assets/image/japanese_gardens/kiyosumi3.webp){group="gallery"}
 
 ## Blühendes Barock, Ludwigsburg
 
 This garden is part of an 18th-century Baroque garden. It has a bonsai exhibition.
 
-![](assets/image/bluehendes_barock1.webp){group="gallery"}
+![](assets/image/japanese_gardens/bluehendes_barock1.webp){group="gallery"}
 
-![](assets/image/bluehendes_barock2.webp){group="gallery"}
+![](assets/image/japanese_gardens/bluehendes_barock2.webp){group="gallery"}
 
-![](assets/image/bluehendes_barock3.webp){group="gallery"}
+![](assets/image/japanese_gardens/bluehendes_barock3.webp){group="gallery"}
 
 ## Rheinaue, Bonn
 
 Created in 1979 as part of the Bundesgartenschau (National Garden Exhibition) as a gift from Japan to celebrate German-Japanese friendship.
 
-![](assets/image/rheinaue1.webp){group="gallery"}
+![](assets/image/japanese_gardens/rheinaue1.webp){group="gallery"}
 
-![](assets/image/rheinaue2.webp){group="gallery"}
+![](assets/image/japanese_gardens/rheinaue2.webp){group="gallery"}
 
-![](assets/image/rheinaue3.webp){group="gallery"}
+![](assets/image/japanese_gardens/rheinaue3.webp){group="gallery"}
 
-![](assets/image/rheinaue4.webp){group="gallery"}
+![](assets/image/japanese_gardens/rheinaue4.webp){group="gallery"}
 
 ## Japanese Garden in Augsburg
 
 Opened in 1985 to commemorate Augsburg's partnership with Amagasaki, Japan.
 
-![](assets/image/augsburg1.webp){group="gallery"}
+![](assets/image/japanese_gardens/augsburg1.webp){group="gallery"}
 
-![](assets/image/augsburg2.webp){group="gallery"}
+![](assets/image/japanese_gardens/augsburg2.webp){group="gallery"}
 
-![](assets/image/augsburg3.webp){group="gallery"}
+![](assets/image/japanese_gardens/augsburg3.webp){group="gallery"}
 
-![](assets/image/augsburg4.webp){group="gallery"}
+![](assets/image/japanese_gardens/augsburg4.webp){group="gallery"}

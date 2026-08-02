@@ -1,0 +1,14 @@
+name: Paul Simmering
+image: /assets/image/profile.webp
+image-alt: Paul Simmering
+label: About the author
+bio: |
+  I’m an AI Engineer from Germany. I work at Q Agentur für Forschung,
+  a market research agency where I build agentic AI, natural language
+  processing, and data engineering tools. My specialty is social media
+  and sentiment analysis at scale. On this blog I write about applied
+  machine learning, with a mix of technical articles, strategic insights,
+  and personal reflections.
+more-text: Read more →
+more-href: /about.html
+script: /assets/js/blog-post-nav.js

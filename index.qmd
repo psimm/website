@@ -18,7 +18,7 @@ page-layout: full
 ---
 
 :::{#hero-heading}
-I'm an AI Engineer from Germany. I write a technical blog about AI and data science. I work at Q Agentur für Forschung, a German market research agency.
+I'm an AI Engineer from Germany working at Q Agentur für Forschung. I apply AI to elevate market research to new levels of speed and scale. On this website I share articles about agentic AI, natural language processing, and data engineering.
 
 ::: {.hero-buttons}
 [About Me](about.html){.btn .btn-primary}

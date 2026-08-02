@@ -269,3 +269,256 @@ body.quarto-dark .cv-org {
 body.quarto-dark .cv-promotion {
     color: #34d399;
 }
+
+/* About page portrait groups */
+.about-opening,
+.about-public-layout,
+.about-personal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 30%);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+}
+
+.about-opening {
+    margin-bottom: 1.75rem;
+}
+
+.about-opening-copy > :first-child {
+    margin-top: 0;
+}
+
+.about-personal-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.55rem, 1.2vw, 0.9rem);
+}
+
+.about-personal-gallery > p {
+    display: contents;
+}
+
+.about-professional-gallery {
+    padding-top: 0.35rem;
+}
+
+.about-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.about-photo-headshot {
+    aspect-ratio: 5 / 4;
+}
+
+.about-public-layout {
+    margin: 1rem 0 2.75rem;
+}
+
+.about-public-copy > :first-child {
+    margin-top: 0;
+}
+
+.about-speaking-photo {
+    align-self: center;
+    padding-top: 0.75rem;
+}
+
+.about-speaking-photo .about-photo {
+    aspect-ratio: 1.24 / 1;
+}
+
+.about-personal-layout {
+    margin: 1rem 0 2.5rem;
+}
+
+.about-personal-copy ul {
+    margin-top: 0;
+}
+
+.about-personal-gallery {
+    padding-top: 0.4rem;
+}
+
+.about-personal-gallery .about-photo:first-child {
+    align-self: end;
+    margin-top: 2.25rem;
+}
+
+.about-personal-gallery .about-photo:nth-child(2) {
+    margin-top: 0;
+}
+
+.about-personal-gallery .about-photo {
+    aspect-ratio: 4 / 5;
+}
+
+.about-personal-gallery .about-photo-wide {
+    grid-column: 1 / -1;
+    aspect-ratio: 4 / 3;
+    margin-top: 1.5rem;
+}
+
+.about-personal-gallery .about-photo:nth-child(2),
+.about-personal-gallery .about-photo:nth-child(4) {
+    transform: translateY(1.5rem);
+}
+
+@media (max-width: 767px) {
+    .about-opening,
+    .about-public-layout,
+    .about-personal-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .about-personal-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: end;
+    }
+
+    .about-personal-gallery .about-photo {
+        aspect-ratio: 4 / 5;
+    }
+
+    .about-personal-gallery .about-photo-wide {
+        aspect-ratio: 4 / 3;
+        margin-top: 0;
+    }
+
+    .about-personal-gallery .about-photo:first-child {
+        margin-top: 0;
+    }
+
+    .about-personal-gallery .about-photo:nth-child(2),
+    .about-personal-gallery .about-photo:nth-child(4) {
+        transform: none;
+    }
+}
+
+/* Blog post footer: previous/next + about the author */
+.blog-post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 45rem;
+    margin: 3.5rem auto 0;
+    padding: 0 1.25rem 2.5rem;
+    position: relative;
+}
+
+.blog-post-nav::after {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    bottom: 2.5rem;
+    left: 50%;
+    border-left: 1px dotted #cbd5e1;
+    transform: translateX(-50%);
+}
+
+body.quarto-dark .blog-post-nav::after {
+    border-left-color: #475569;
+}
+
+.blog-post-nav-prev,
+.blog-post-nav-next {
+    min-width: 0;
+}
+
+.blog-post-nav-next {
+    text-align: right;
+}
+
+.blog-post-nav-label {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+}
+
+body.quarto-dark .blog-post-nav-label {
+    color: #94a3b8;
+}
+
+.blog-post-nav-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    line-height: 1.4;
+    display: inline-block;
+}
+
+.blog-post-nav-link:hover {
+    color: #2563eb;
+}
+
+body.quarto-dark .blog-post-nav-link:hover {
+    color: #60a5fa;
+}
+
+.about-the-author {
+    max-width: 45rem;
+    margin: 0 auto 3rem;
+    padding: 0 1.25rem 0.5rem;
+    overflow: auto;
+}
+
+.about-the-author-photo {
+    float: right;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50% !important;
+    margin: 0.15rem 0 0.75rem 1.5rem;
+}
+
+.about-the-author-label {
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+}
+
+.about-the-author-name {
+    margin: 0.2rem 0 0.5rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.about-the-author-bio {
+    margin: 0;
+    color: inherit;
+}
+
+.about-the-author-more {
+    display: inline-block;
+    margin-top: 0.35rem;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+@media (max-width: 767px) {
+    .blog-post-nav {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .blog-post-nav::after {
+        display: none;
+    }
+
+    .blog-post-nav-next {
+        text-align: left;
+    }
+
+    .about-the-author-photo {
+        width: 120px;
+        height: 120px;
+        margin: 0.15rem 0 0.75rem 1rem;
+    }
+}

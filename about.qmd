@@ -2,11 +2,23 @@
 title: "About"
 ---
 
+::: {.about-opening}
+
+::: {.about-opening-copy}
+
 Welcome to my website! I'm Paul Simmering, an AI Engineer from Germany.
 
 ### Work
 
 I'm Lead AI Engineer at [Q Agentur für Forschung](https://teamq.de), a German market research agency. Using agentic AI, natural language processing and data engineering, I build tools and workflows to accelerate market research. My specialty is social media and sentiment analysis at scale. If your organization needs to understand consumer trends, market opportunities or sentiment towards a brand or product, I can help. Whether it's a report, a dashboard, a data pipeline or an MCP server, I can deliver the insights in a format that fits into your workflow or agent.
+
+:::
+
+<div class="about-professional-gallery" aria-label="Professional portraits">
+<img src="assets/image/about/paul-simmering-headshot.webp" class="about-photo about-photo-headshot" alt="Paul Simmering in a blue blazer" loading="eager">
+</div>
+
+:::
 
 Previously, I was Technical Expert GenAI Platforms & Services at [LBBW](https://www.lbbw.de), the state bank of Baden-Württemberg. I was a developer on the GenAI team, building an enterprise-grade LLM chat application equipped with an agentic loop and tools to access internal data via RAG. In addition, I served as an internal consultant for GenAI initiatives.
 
@@ -50,11 +62,23 @@ I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Econo
 
 A more complete CV is available on my [LinkedIn profile](https://www.linkedin.com/in/paulsimmering/). You can see examples of my work in the [projects](/projects.html) section.
 
-I give [talks](/talks.html) at conferences and write [papers](/publications.html) on topics related to my work.
+### Writing & speaking
 
-### Blog
+::: {.about-public-layout}
 
-On my [blog](/blog.html), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. It's my practice of [learning in public](https://www.swyx.io/learn-in-public). I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found by search engines. I use AI as part of my workflow and have written an [AI notice](/ai.html) about it. More details about the website itself can be found in the [colophon](/colophon.html). 
+::: {.about-public-copy}
+
+On my [blog](/blog.html), I write about applied machine learning with a mix of technical articles, strategic insights and personal reflections. It's my practice of [learning in public](https://www.swyx.io/learn-in-public). I prefer blogging over social media because it allows for more depth, has better tools for code and interactivity, and lets authors stay in control of their content. It lacks the algorithmic discovery and engagement that social media platforms offer, but content can be found by search engines.
+
+I also give [talks](/talks.html) at conferences and write [papers](/publications.html) on topics related to my work.
+
+:::
+
+<div class="about-speaking-photo">
+<img src="assets/image/about/paul-simmering-speaking.webp" class="about-photo" alt="Paul Simmering presenting research at a conference" loading="lazy">
+</div>
+
+:::
 
 ### Professional interests
 
@@ -66,6 +90,10 @@ On my [blog](/blog.html), I write about applied machine learning with a mix of t
 
 ### Personal interests
 
+::: {.about-personal-layout}
+
+::: {.about-personal-copy}
+
 - **Reading personal blogs**. Check my [blogroll](/blogroll.qmd) for recommendations of technical deep dives, lateral thinkers, and genuine personal reflections.
 - **Economics**. While I've pivoted professionally, I'm still interested in public finance, regional development, pricing strategies and the intersection of sociology, psychology and economics.
 - **Practical philosophy**. I keep a list of the [principles](/principles.qmd) that I find most useful for decision making and contentedness.
@@ -73,9 +101,21 @@ On my [blog](/blog.html), I write about applied machine learning with a mix of t
 - **Board and card games**: Euro-style board games, Magic: The Gathering, Poker, Backgammon and other games that involve luck in a single game but are skill-based in the long run. I also like games involving trading and auctions, such as Power Grid and Bohnanza.
 - **Video games**. Particular favorites are: Guild Wars, Baldurs Gate 3, Satisfactory, the Hitman series and the Dark Souls series. Playing a trader in EVE Online as a teenager drew me to economics and programming.
 
+:::
+
+<div class="about-personal-gallery" aria-label="Personal portraits outdoors">
+<img src="assets/image/about/paul-simmering-in-pink-grass.webp" class="about-photo" alt="Paul Simmering in a field of pink grass" loading="lazy">
+<img src="assets/image/about/paul-simmering-in-garden.webp" class="about-photo" alt="Paul Simmering visiting a garden" loading="lazy">
+<img src="assets/image/about/paul-simmering-hiking.webp" class="about-photo" alt="Paul Simmering hiking in the woods" loading="lazy">
+<img src="assets/image/about/paul-simmering-pram.webp" class="about-photo" alt="Paul Simmering pushing a pram on a tree-lined path" loading="lazy">
+<img src="assets/image/about/carcassonne-board-game.webp" class="about-photo about-photo-wide" alt="A completed game of Carcassonne on a table" loading="lazy">
+</div>
+
+:::
+
 ### What I use
 
-I enjoy reading "what I use" lists of others, so here's mine: [What I use](/uses.qmd).
+I enjoy reading "what I use" lists of others, so here's mine: [What I use](/uses.qmd).  More details about the website itself can be found in the [colophon](/colophon.html).
 
 ### Contact
 

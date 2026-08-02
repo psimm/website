@@ -1,6 +1,7 @@
 _environment*
 /.quarto/
 /_*.local
+/includes/_author-footer.generated.html
 .venv
 .env
 .firecrawl/

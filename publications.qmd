@@ -41,7 +41,3 @@ Sieben, Swen and Paul Simmering. "Storytelling vs. Dashboards - Wie Sie die rich
 Simmering, Paul. "Celebration 2020 - R wird 20! Q war in Kopenhagen dabei." TeamQ Blog, 2020. [PDF](/assets/pdf/Simmering_2020_CelebRation_2020_TeamQ.pdf)
 
 Simmering, Paul. "KI - ein Blick in die Black Box." Research & Results, vol. 4, 2019. [PDF](/assets/pdf/Simmering_2019_KI_Research_Results.pdf)
-
----
-
-Publications are preserved as PDF to prevent link rot.

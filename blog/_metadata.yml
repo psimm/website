@@ -6,3 +6,8 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+
+# Author bio + previous/next (content from includes/author-footer.yml)
+format:
+  html:
+    include-after-body: ../includes/_author-footer.generated.html
