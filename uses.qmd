@@ -5,7 +5,7 @@ about:
 
 ---
 
-Last updated: 2025-12-14
+Last updated: 2026-08-02
 
 This is the list of "interesting" hardware and software I regularly use. Apart from these, I run the basic set of Apple products, their built-in apps and iCloud.
 
@@ -33,7 +33,7 @@ These wireless ANC headphones deliver audiophile sound quality. They come with t
 
 ![](/assets/image/uses/razer-keylight-chroma.webp)
 
-I use two of these keylights set to maximum brightness as an alternative to a SAD light in winter. My wife says my mood is noticeably better when I use them. They're also great for video calls, where the right lighting often makes as much of a difference as the webcam itself. The RGB colors are fun but I rarely use them.
+I use two of these keylights set to maximum brightness as an alternative to a SAD light in winter. My wife says my mood is  better when I use them. They're also great for video calls, where the right lighting is as important as the webcam. The RGB colors are fun but I rarely use them.
 
 ## Software (macOS and iOS)
 
@@ -43,7 +43,13 @@ I use two of these keylights set to maximum brightness as an alternative to a SA
 
 ![Raycast Wrapped for 2025](/assets/image/uses/raycast-wrapped.webp)
 
-Raycast is an app launcher that has turned into a massive collection of useful tools and an AI assistant. I use it on Mac, iOS and Windows. New AI models are usually added shortly after release. I've set up several system prompts and tool configurations for different tasks. Raycast also supports connecting to MCP Servers, which I've used to run a custom NetNewsWire connector. The second image shows my Raycast Wrapped for 2025.
+Raycast is an app launcher that is a Swiss Army knife for macOS and iOS. It has a massive collection of useful tools and an AI assistant. I use it for launching apps, finding files, clipboard management, system control, calculator, translation, bookmarking websites and more.
+
+### [Codex / whatever the current highest value LLM subscription is](https://openai.com/codex/)
+
+![](/assets/image/uses/codex.webp)
+
+ChatGPT offers a fantastic subsidization when comparing subscription usage to the API prices. In particular, low-cost models such as 5.6 Luna at xhigh reasoning effort let me run many parallel agent sessions and schedule any automation I want without running out of credits. Codex itself has a decent UI, many plugins and a capable agent harness. That said, the space is evolving so quickly that I may switch to another tool offering an even better deal at any time.
 
 ### [Cursor](https://cursor.com/)
 
@@ -69,11 +75,11 @@ A minimalist markdown editor that I use for journaling and writing blog posts th
 
 NetNewsWire is the best RSS reader for macOS and iOS. It's fast, has a clean UI, supports many feeds and syncs via iCloud. It's almost unbelievable that it's completely free. I've set up a workflow that syncs its database to a vector database and exposes it as an MCP Server, which I can then query with Raycast. If you're looking for blogs to read, check my [blogroll](/blogroll.qmd).
 
-### [Homerow](https://www.homerow.app)
+### [Obsidian](https://obsidian.md)
 
-![](/assets/image/uses/homerow.webp)
+![](/assets/image/uses/obsidian.webp)
 
-Homerow is a unique way to keep your hands on the keyboard rather than reaching for your mouse. After tapping a hotkey, every clickable element on screen gets labeled with a two or three letter code. You can type the code to click the element. It's not as good as learning keyboard shortcuts and doesn't handle every situation where you'd use a mouse, but greatly reduces the number of mouse pickups.
+After going down the rabbit hole of finding the perfect note-taking app multiple times, I've settled on Obsidian. Notes are stored as plan Markdown files, which makes them portable and accessible for a local AI agent. The app is extensible and comes with a powerful link-building feature to create a personal knowledge graph. My only gripe is that indexing can be slow especially on mobile.
 
 ### [Hevy](https://www.hevyapp.com)
 
