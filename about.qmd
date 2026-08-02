@@ -10,7 +10,7 @@ I'm Lead AI Engineer at [Q Agentur für Forschung](https://teamq.de), a German m
 
 Previously, I was Technical Expert GenAI Platforms & Services at [LBBW](https://www.lbbw.de), the state bank of Baden-Württemberg. I was a developer on the GenAI team, building an enterprise-grade LLM chat application equipped with an agentic loop and tools to access internal data via RAG. In addition, I served as an internal consultant for GenAI initiatives.
 
-Between 2018 and mid-2025, I worked in different roles at [Q Agentur für Forschung](https://teamq.de). I worked on projects for small and large businesses in consumer goods, pharmaceuticals, insurance and other industries. A large part of my work was productizing one-off projects into scalable data pipelines powered by languages models. Through that work, I got to experience the evolution of language understanding from bag-of-words models, to transformer models, to large language models.
+Between 2018 and mid-2025, I worked in different roles at Q. My projects were for small and large businesses in consumer goods, pharmaceuticals, insurance and other industries. A large part of my work was productizing one-off projects into scalable data pipelines powered by languages models. Over seven years, I got to experience the evolution of language understanding from bag-of-words models to transformer models to large language models.
 
 I hold a B.Sc. in Economics from the University of Mannheim and a M.Sc. in Economics from Aalborg University. Working on agent-based simulation models and Twitter data analysis during my studies sparked my decade-long interest in data science and AI.
 
