@@ -7,7 +7,7 @@ freeze: true
 # Enable banner style title blocks
 title-block-banner: true
 
-# Author bio + previous/next (content from includes/author-footer.yml)
+# Author bio + previous/next: stub loads shared fragment (includes/author-footer.yml)
 format:
   html:
-    include-after-body: ../includes/_author-footer.generated.html
+    include-after-body: ../includes/_author-footer.stub.html

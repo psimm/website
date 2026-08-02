@@ -4,8 +4,9 @@ project:
     - _redirects
     - assets/vendor
     - assets/js
+    - assets/author-footer.html
   pre-render:
-    - ruby scripts/generate_author_footer.rb
+    - uv run python scripts/generate_author_footer.py
   post-render:
     - python3 scripts/localize_remote_assets.py
 
