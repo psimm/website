@@ -1,0 +1,5 @@
+runs/
+data/
+gabriel/
+.env
+bucket_definitions.md
