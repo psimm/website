@@ -188,7 +188,7 @@ The crawler starts with a set of questions that define the topic and seeds a set
 
 Data and decisions, including rejections, are saved incrementally as `.jsonl` files; checkpoints preserve queues and budget state so the crawl can be resumed or extended later.
 
-The crawler is available on [GitHub]([link](https://github.com/psimm/yt-crawl)). It's a one time project and won't be updated.
+The crawler is available on [GitHub](https://github.com/psimm/yt-crawl). It's a one time project and won't be updated.
 
 ### Scoping to German personal finance videos
 
