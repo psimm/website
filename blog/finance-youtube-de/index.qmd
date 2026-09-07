@@ -169,12 +169,12 @@ I collected `{python} n_videos` YouTube videos across `{python} n_channels` chan
 
 ### Data source: SearchAPI
 
-YouTube data is provided by [SearchAPI](https://www.searchapi.io/?utm_source=&utm_medium=Ambassador&utm_campaign=simmering.dev). The crawler uses four endpoints:
+YouTube data is provided by [SearchAPI](https://www.searchapi.io/?utm_source=&utm_medium=Ambassador&utm_campaign=simmering.dev). The crawler uses four engines:
 
-- YouTube Search (`/youtube` endpoint) to discover videos and channels for the initial queries.
-- YouTube Video (`/youtube_video`) to retrieve metadata for individual videos.
-- YouTube Channel Videos (`/youtube_channel_videos`) to find further videos from relevant channels.
-- YouTube Transcripts (`/youtube_transcripts`) to download the transcript in the requested language.
+- YouTube Search (`youtube`) to discover videos and channels for the initial queries.
+- YouTube Video (`youtube_video`) to retrieve metadata for individual videos.
+- YouTube Channel Videos (`youtube_channel_videos`) to find further videos from relevant channels.
+- YouTube Transcripts (`youtube_transcripts`) to download the transcript in the requested language.
 
 SearchAPI also covers Google and many other data sources.
 
@@ -858,7 +858,7 @@ Personal finance is a relevant topic for almost every adult in Germany. The view
 
 A recent change that is already starting to generate videos is the new type of retirement account, the AVD (Altersvorsorgedepot). This corpus already includes `{python} n_avd_videos` videos about it. Again, millions of viewers are coming to YouTube to be educated about their options.
 
-The analysis in this article only scratches the surface of what this dataset offers. There are countless strategies, stories and viewpoints told in more than 25000 transcripts.
+The analysis in this article only scratches the surface of what this dataset offers. There are countless strategies, stories and viewpoints told in more than 25000 transcripts. Even more can be found in the comments.
 
 The crawler released along with this article is not finance-specific. It takes a bounded topic (language, date range, positive and negative examples), and snowballs through search, related videos and channel catalogues. Swap the seed questions and build a corpus for any niche on YouTube.
 
