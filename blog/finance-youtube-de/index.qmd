@@ -1,7 +1,7 @@
 ---
 title: "10 years of German personal finance YouTube videos analyzed"
 author: "Paul Simmering"
-date: "2026-09-06"
+date: "2026-09-07"
 categories: ["Social Media", "Python", "Machine Learning"]
 image: "image.webp"
 execute:
@@ -153,6 +153,10 @@ subtopic_quarter = prepared["subtopic_popularity_by_quarter"].with_columns(
 subtopic_count = prepared["subtopic_counts"].with_columns(
     pl.col("subtopic").cast(pl.Utf8).replace("Ruerup", "Rürup")
 )
+n_avd_videos = int(
+    subtopic_count.filter(pl.col("subtopic") == "Altersvorsorgedepot")
+    .get_column("subtopic_videos")[0]
+)
 classified_videos = prepared["classified_videos"]
 topic_levels = topic_count.sort("topic_order").get_column("topic").to_list()
 ```
@@ -223,8 +227,6 @@ When the crawler is kicked off, the CLI interviews the user to calibrate the cla
 :::
 :::
 
-In addition, the user specifies the language (German for this project) and a start date (1st of January 2016).
-
 Other settings for the crawler:
 
 - `language`: German
@@ -238,11 +240,9 @@ In total, the crawl took about 200k SearchAPI credits and $50 in OpenAI credits.
 
 ## Part II: 10 years of German personal finance videos
 
-The following is an exploratory data analysis of the videos, based on their statistics, metadata and transcripts. We continue only with videos classified as relevant after their transcript was downloaded. Other videos may have been classified as irrelevant during data collection, after transcript review, or YouTube didn't consider them notable enough to provide a transcript. I also drop ARD Marktcheck, a public-TV consumer magazine: the classifier kept supermarket tests and product comparisons because they talk about prices, but they are not personal finance.
+The following is an exploratory data analysis of the videos, based on their statistics, metadata and transcripts. I continue only with videos classified as relevant after their transcript was downloaded. Other videos may have been classified as irrelevant during data collection, after transcript review, or YouTube didn't consider them notable enough to provide a transcript. I also drop ARD Marktcheck, a public-TV consumer magazine: the classifier kept supermarket tests and product comparisons because they talk about prices, but they are not personal finance.
 
 ## Rising popularity
-
-To check how much recency bias we have in our data. May want to cut off earlier.
 
 ::: {.article-plot}
 ```{python}
@@ -286,7 +286,7 @@ build_videos_year_plot()
 ```
 :::
 
-The higher number of recent videos has two reasons:
+The majority of videos in the dataset come from 2024 to 2026. The years 2016 to 2019 have much fewer videos. This has two reasons:
 
 1. YouTube grew as a platform from 1.4 billion users in 2016 to 2.7 billion in 2026 ([Source: GMI](https://www.globalmediainsight.com/blog/youtube-users-statistics/)).
 2. The crawling method can miss older videos: The crawler starts by using YouTube search. These tend to be recent videos. The same is true for suggested related videos. Historic videos are primarily found by collecting the whole video catalogue of channels. I set a high value for `max_channel_pages` to avoid missing any old videos. Still, the crawler may never find the channels that actively posted many years ago.
@@ -297,7 +297,7 @@ To handle these effects in historical analyses, I'll focus on ratios such as sha
 
 ### Top channels
 
-Let's see what the most important channels are. Depending on the definition of importance, the selection changes substantially. The number of subscribers is the typical way to rank, but it measures the whole channel. News outlets like DER SPIEGEL or tagesschau have millions of subscribers from general journalism, not from the handful of personal-finance videos in this crawl. Going by number of videos puts spammy channels at the top. Going by average views favors channels that had one breakout success. After trying various definitions, I ended up borrowing an idea from academia: the h-index. It considers both volume and popularity, and it is computed only on videos in this crawl: the h index of a channel is how many videos it has with at least h x 10000 views.
+Let's see what the most important channels are. Depending on the definition of importance, the selection changes substantially. The number of subscribers is the typical way to rank, but it measures the whole channel. News outlets like DER SPIEGEL or Tagesschau have millions of subscribers from general journalism, not from the handful of personal-finance videos in this crawl. Going by number of videos puts spammy channels at the top. Going by average views favors channels that had one breakout success. After trying various definitions, I ended up borrowing an idea from academia: the h-index. It considers both volume and popularity, and it is computed only on videos in this crawl: the h index of a channel is how many videos it has with at least h x 10000 views.
 
 ```{python}
 def html_link(label: str, url: str) -> str:
@@ -413,7 +413,9 @@ def build_h_index_table():
 build_h_index_table()
 ```
 
-The leading channel is Finanzfluss, which has an h-index of `{python} finanzfluss_h`: `{python} finanzfluss_h` videos with at least `{python} f"{finanzfluss_h_views:,}"` views. This puts it in a huge lead over the second channel. Finanzfluss is a polished educational channel by Thomas Kehl with a calm style that treats its viewers as self-deciders. It arrived when young Germans started looking up ETFs. In addition, its bonus content channel Überfluss takes third place. Among the top 10, we see more general channels like Finanztip but also specialized channels like rentenbescheid24.de targeting retirees and immocation, focussing on real estate. Achieving a high h index requires popularity and consistency, so it's not surprising that the top channels have typically been posting for more than five years.
+The leading channel is Finanzfluss, which has an h-index of `{python} finanzfluss_h`: `{python} finanzfluss_h` videos with at least `{python} f"{finanzfluss_h_views:,}"` views. This puts it in a huge lead over the second channel. Finanzfluss is a polished educational channel by Thomas Kehl with a calm style that treats its viewers as self-deciders. It arrived when young Germans started looking up ETFs. In addition, its bonus content channel Überfluss takes third place.
+
+Among the top 10, we see more general channels like Finanztip but also specialized channels like rentenbescheid24.de targeting retirees and immocation, focussing on real estate. Achieving a high h index requires popularity and consistency, so it's not surprising that the top channels have typically been posting for more than five years.
 
 ### Timely advice and popular aspirations make topics for hit videos
 
@@ -759,7 +761,7 @@ build_investment_vehicles_plot()
 
 ![Envelope method](envelope_method.png)
 
-Within budgeting, the largest named system is the envelope method (German: Umschlagmethode). It's a way of organizing a budget with cash in physical envelopes. In short: After fixed costs, leftover cash is split into labeled envelopes for variable spending such as groceries, fuel and leisure. You pay only from the matching envelope. When it is empty, that category waits until the next month. It's anachronistic in an increasingly digitalized financial world, yet enjoys high popularity on YouTube. There are many reasons: a physical system makes budgeting tangible in a way that an app can't. Filling carefully labeled envelopes with crisp bank notes also makes for more satisfying scenes than a screen share.
+Within the budgeting topic, the most commonly mentioned one is the envelope method (German: Umschlagmethode), which came up 3700 times. It's a way of organizing a budget with cash in physical envelopes. In short: After fixed costs, leftover cash is split into labeled envelopes for variable spending such as groceries, fuel and leisure. You pay only from the matching envelope. When it is empty, that category waits until the next month. It's anachronistic in an increasingly digitalized financial world, yet enjoys high popularity on YouTube. There are many reasons: a physical system makes budgeting tangible in a way that an app can't. Filling carefully labeled envelopes with crisp bank notes also makes for more satisfying scenes than a screen share.
 
 ### The neo-broker wars
 
@@ -850,16 +852,15 @@ build_broker_mentions_plot()
 ```
 :::
 
-## Discussion
+## YouTube videos are financial education for millions
 
-Personal finance is a relevant topic for almost every adult in Germany. Millions are turning to YouTube for financial education and investment advice. Videos are aimed at beginners with practical budgeting approaches all the way to expert topics like derivatives. They can also be divided into evergreen topics like setting up an ETF savings plan, and even driven ones, such as the property tax reform in 2022.
+Personal finance is a relevant topic for almost every adult in Germany. The view counts going into the millions demonstrate that YouTube is a key information source. Finanzfluss in particular has become a household name. To match the demand, there are videos aiming at beginner topics like practical budgeting all the way to expert topics like derivatives. Videos can also be divided into evergreen topics like setting up an ETF savings plan, and event driven ones, such as the property tax reform in 2022.
 
-A recent change that is already starting to generate videos is the new type of retirement account, the AVD (Altersvorsorgedepot). Again, millions of viewers are coming to YouTube to be educated about their options.
+A recent change that is already starting to generate videos is the new type of retirement account, the AVD (Altersvorsorgedepot). This corpus already includes `{python} n_avd_videos` videos about it. Again, millions of viewers are coming to YouTube to be educated about their options.
 
 The analysis in this article only scratches the surface of what this dataset offers. There are countless strategies, stories and viewpoints told in more than 25000 transcripts.
 
 The crawler released along with this article is not finance-specific. It takes a bounded topic (language, date range, positive and negative examples), and snowballs through search, related videos and channel catalogues. Swap the seed questions and build a corpus for any niche on YouTube.
-
 
 ## Acknowledgements
 
