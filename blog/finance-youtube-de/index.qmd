@@ -466,7 +466,7 @@ build_top_organic_table()
 
 - FinanzNerd's Grundsteuer ELSTER walkthrough is a field-by-field tutorial for handling Germany's property tax reform. The video came at the right time when millions of home owners looked for an explanation.
 - Dr. Andreas Beck's lecture on living from invested capital is the only real investment advice in the top five. It talks to people who already have a lump sum, from a house sale or inheritance.
-- Two Finanzfluss videos sit on round numbers. One is a myth or bust video on passive income. The other explains why saving the first 100,000 € feels so slow. They have the highest like rates of the five.
+- Two Finanzfluss videos: One is a myth or bust video on passive income. The other explains why saving the first 100,000 € feels so slow. They have the highest like rates of the five.
 - smartsteuer's "7 wichtige Neuerungen für Rentner 2024" is the same civic genre as the Grundsteuer video, aimed at 21 million pensioners and timed for January rule changes.
 
 ### Individual vs corporate channels
