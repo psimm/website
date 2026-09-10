@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/finance-youtube-de/index.html",
       "/blog/save-token-costs/index.html",
       "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",
@@ -81,6 +82,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/finance-youtube-de/index.html",
       "/blog/save-token-costs/index.html",
       "/blog/connect-agent/index.html",
       "/blog/agentic-engineering/index.html",

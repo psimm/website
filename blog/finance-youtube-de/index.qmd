@@ -1,0 +1,870 @@
+---
+title: "10 years of German personal finance YouTube videos analyzed"
+author: "Paul Simmering"
+date: "2026-09-10"
+categories: ["Social Media", "Python", "Machine Learning"]
+image: "image.webp"
+description: "A snowball crawl of German personal finance YouTube, then a transcript analysis of the most influential channels, topics, and brokers since 2016."
+execute:
+  echo: false
+resources:
+  - "assets/crawler-diagram/*.svg"
+---
+
+```{python}
+from pathlib import Path
+import json
+import sys
+from html import escape
+
+import pandas as pd
+import plotly.express as px
+import polars as pl
+from IPython.display import HTML, display
+from great_tables import GT, loc, nanoplot_options, style
+from lets_plot import (
+    LetsPlot,
+    aes,
+    as_discrete,
+    coord_flip,
+    element_blank,
+    geom_bar,
+    geom_line,
+    geom_point,
+    ggplot,
+    ggsize,
+    labs,
+    layer_tooltips,
+    scale_color_manual,
+    scale_shape_manual,
+    scale_x_continuous,
+    scale_y_continuous,
+    theme,
+)
+```
+
+```{python}
+# Import the shared plot and table themes
+sys.path.insert(0, str(Path.cwd().parents[1]))
+from plot_theme import (
+    COLOR_CUSTOM,
+    COLORS_CUSTOM,
+    PLOT_BACKGROUND,
+    PLOT_MUTED,
+    PLOT_RULE,
+    PLOT_TEXT,
+    theme_custom,
+)
+from table_theme import theme_custom as table_theme_custom
+```
+
+```{python}
+LetsPlot.setup_html(
+    isolated_frame=False,
+    offline=True,
+    responsive=True,
+    width_mode="scaled",
+    height_mode="scaled",
+    width=680,
+    height=700,
+    force_immediate_render=False,
+)
+```
+
+```{python}
+# Load pre-formatted data
+data_dir = Path("data")
+required_tables = (
+    "summary",
+    "channels",
+    "top_channels_h_index",
+    "top_organic_videos",
+    "topic_counts",
+    "top_channels_by_topic",
+    "videos_by_quarter",
+    "broker_mentions_by_year",
+    "topic_popularity_by_quarter",
+    "subtopic_popularity_by_quarter",
+    "subtopic_counts",
+    "classified_videos",
+)
+missing_tables = [
+    name for name in required_tables if not (data_dir / f"{name}.parquet").exists()
+]
+assert not missing_tables, (
+    "Prepared article data is missing. Run `uv run python "
+    "blog/finance-youtube-de/prepare_data.py` first. Missing: "
+    f"{', '.join(missing_tables)}"
+)
+
+prepared = {
+    name: pl.read_parquet(data_dir / f"{name}.parquet") for name in required_tables
+}
+summary = prepared["summary"].row(0, named=True)
+n_videos = summary["videos_with_transcript"]
+start_date = summary["start_date"].isoformat()
+end_date = summary["end_date"].isoformat()
+
+channels = prepared["channels"]
+n_channels = channels.height
+channel_type_map = json.loads(
+    Path("channel_type_map.json").read_text(encoding="utf-8")
+)["labels"]
+channel_type_stats = (
+    channels.with_columns(
+        pl.col("channel_name")
+        .replace_strict(channel_type_map, default="unknown")
+        .alias("channel_type")
+    )
+    .filter(pl.col("channel_type").is_in(["individual", "corporate"]))
+    .group_by("channel_type")
+    .agg(
+        pl.len().alias("n_channels"),
+        pl.sum("videos").alias("videos"),
+        (pl.col("videos").cast(pl.Int64) * pl.col("views_mean")).sum().alias("views"),
+    )
+)
+individual_stats = channel_type_stats.filter(
+    pl.col("channel_type") == "individual"
+).row(0, named=True)
+corporate_stats = channel_type_stats.filter(pl.col("channel_type") == "corporate").row(
+    0, named=True
+)
+n_individual_channels = int(individual_stats["n_channels"])
+n_corporate_channels = int(corporate_stats["n_channels"])
+n_individual_videos = int(individual_stats["videos"])
+n_corporate_videos = int(corporate_stats["videos"])
+n_individual_views = int(individual_stats["views"])
+n_corporate_views = int(corporate_stats["views"])
+top_channels_h_index = prepared["top_channels_h_index"]
+top_organic_videos = prepared["top_organic_videos"]
+finanzfluss = top_channels_h_index.filter(
+    pl.col("channel_name").str.contains("Finanzfluss")
+).row(0, named=True)
+finanzfluss_h = int(finanzfluss["h"])
+finanzfluss_h_views = finanzfluss_h * 10_000
+topic_count = prepared["topic_counts"]
+top_channels = prepared["top_channels_by_topic"]
+videos_quarter = prepared["videos_by_quarter"]
+broker_mentions = prepared["broker_mentions_by_year"]
+topic_quarter = prepared["topic_popularity_by_quarter"]
+subtopic_quarter = prepared["subtopic_popularity_by_quarter"].with_columns(
+    pl.col("subtopic").cast(pl.Utf8).replace("Ruerup", "Rürup")
+)
+subtopic_count = prepared["subtopic_counts"].with_columns(
+    pl.col("subtopic").cast(pl.Utf8).replace("Ruerup", "Rürup")
+)
+n_avd_videos = int(
+    subtopic_count.filter(pl.col("subtopic") == "Altersvorsorgedepot")
+    .get_column("subtopic_videos")[0]
+)
+classified_videos = prepared["classified_videos"]
+topic_levels = topic_count.sort("topic_order").get_column("topic").to_list()
+```
+
+YouTube videos are an information source and guide for many consumers making decisions about investments, banking and insurance. This article is an analysis of the current and historical most influential topics and channels in Germany. It also matches my current career transition from banking back to market research! The article has two parts: 1. [data collection via a YouTube crawler](#part-i-data-collection-with-a-youtube-crawler) and 2. [an analysis of the retrieved transcripts](#part-ii-10-years-of-german-personal-finance-videos).
+
+## Part I: Data collection with a YouTube crawler
+
+I collected `{python} n_videos` YouTube videos across `{python} n_channels` channels from `{python} start_date` to `{python} end_date` using a custom crawler. The crawler collects all transcript relevant to a given topic using a snowball system.
+
+### Data source: SearchAPI
+
+YouTube data is provided by [SearchAPI](https://www.searchapi.io/?utm_source=&utm_medium=Ambassador&utm_campaign=simmering.dev). The crawler uses four engines:
+
+- YouTube Search (`youtube`) to discover videos and channels for the initial queries.
+- YouTube Video (`youtube_video`) to retrieve metadata for individual videos.
+- YouTube Channel Videos (`youtube_channel_videos`) to find further videos from relevant channels.
+- YouTube Transcripts (`youtube_transcripts`) to download the transcript in the requested language.
+
+SearchAPI also covers Google and many other data sources.
+
+### Snowball system crawl
+
+The crawler starts with a set of questions that define the topic and seeds a set of search queries. It looks for videos, finds related videos and channels and continues expanding. An LLM decides which videos to include in the final set by classifying the description and transcript of candidate videos. The search runs until the frontier defined by a set of parameters or the API budget is exhausted.
+
+ Try the interactive diagram below to see how the crawler works.
+
+{{< include yt_crawler_diagram.html >}}
+
+Data and decisions, including rejections, are saved incrementally as `.jsonl` files; checkpoints preserve queues and budget state so the crawl can be resumed or extended later.
+
+The crawler is available on [GitHub](https://github.com/psimm/yt-crawl). It's a one time project and won't be updated.
+
+### Scoping to German personal finance videos
+
+When the crawler is kicked off, the CLI interviews the user to calibrate the classifiers. An LLM comes up with positive and negative examples that the user can approve or edit. For the personal finance topic at hand I set them to:
+
+:::{.grid}
+:::{.g-col-6}
+**Positive examples**
+
+1. budgeting
+2. emergency savings
+3. private debt
+4. long-term investing
+5. retirement planning
+6. creditworthiness
+7. insurance
+8. saving for a home
+9. personal taxes
+10. budget apps.
+
+:::
+
+:::{.g-col-6}
+**Negative examples**
+
+1. corporate finance
+2. accounting
+3. monetary policy
+4. other macroeconomics
+5. professional banking
+6. public finance
+7. financial history
+8. pure market commentary
+9. regional house-price analysis without advice for private buyers
+10. wage negotiations discussed from an HR perspective
+:::
+:::
+
+Other settings for the crawler:
+
+- `language`: German
+- `start date`: 2016-01-01
+- `depth`: how many levels of related videos to follow, set to 1
+- `queries`: how many initial search queries to make, set to 8
+- `max_search_pages`: how many search pages to scrape for each query, set to 5
+- `max_channel_pages`: how many pages of videos to scrape for each channel, set to 35. Each page contains up to 30 videos.
+
+In total, the crawl took about 200k SearchAPI credits and $50 in OpenAI credits.
+
+## Part II: 10 years of German personal finance videos
+
+The following is an exploratory data analysis of the videos, based on their statistics, metadata and transcripts. I continue only with videos classified as relevant after their transcript was downloaded. Other videos may have been classified as irrelevant during data collection, after transcript review, or YouTube didn't consider them notable enough to provide a transcript. I also drop ARD Marktcheck, a public-TV consumer magazine: the classifier kept supermarket tests and product comparisons because they talk about prices, but they are not personal finance.
+
+## Rising popularity
+
+::: {.article-plot}
+```{python}
+def build_videos_year_plot():
+    plot_data = (
+        videos_quarter.with_columns(
+            pl.col("quarter").cast(pl.Utf8).str.slice(0, 4).alias("year")
+        )
+        .group_by("year")
+        .agg(pl.col("videos").sum())
+        .sort("year")
+        .to_pandas()
+    )
+    years = plot_data["year"].tolist()
+    last_year = years[-1]
+    n = int(plot_data["videos"].sum())
+    tooltips = layer_tooltips().line("Videos|@videos").format("@videos", "d")
+    return (
+        ggplot(plot_data, aes(x=as_discrete("year", levels=years), y="videos"))
+        + geom_bar(
+            stat="identity",
+            fill=COLOR_CUSTOM,
+            width=0.85,
+            tooltips=tooltips,
+        )
+        + scale_y_continuous(format="d")
+        + labs(
+            title="More videos in recent years",
+            subtitle=f"{n:,} videos with transcripts published per year",
+            x="",
+            y="Videos",
+            caption=f"{last_year} is incomplete",
+        )
+        + theme_custom()
+        + theme(panel_grid_major_x=element_blank())
+        + ggsize(680, 400)
+    )
+
+
+build_videos_year_plot()
+```
+:::
+
+The majority of videos in the dataset come from 2024 to 2026. The years 2016 to 2019 have much fewer videos. This has two reasons:
+
+1. YouTube grew as a platform from 1.4 billion users in 2016 to 2.7 billion in 2026 ([Source: GMI](https://www.globalmediainsight.com/blog/youtube-users-statistics/)).
+2. The crawling method can miss older videos: The crawler starts by using YouTube search. These tend to be recent videos. The same is true for suggested related videos. Historic videos are primarily found by collecting the whole video catalogue of channels. I set a high value for `max_channel_pages` to avoid missing any old videos. Still, the crawler may never find the channels that actively posted many years ago.
+
+To handle these effects in historical analyses, I'll focus on ratios such as share of videos mentioning a topic rather than absolute numbers.
+
+##  Overview of channels
+
+### Top channels
+
+Let's see what the most important channels are. Depending on the definition of importance, the selection changes substantially. The number of subscribers is the typical way to rank, but it measures the whole channel. News outlets like DER SPIEGEL or Tagesschau have millions of subscribers from general journalism, not from the handful of personal-finance videos in this crawl. Going by number of videos puts spammy channels at the top. Going by average views favors channels that had one breakout success. After trying various definitions, I ended up borrowing an idea from academia: the h-index. It considers both volume and popularity, and it is computed only on videos in this crawl: the h index of a channel is how many videos it has with at least h x 10000 views.
+
+```{python}
+def html_link(label: str, url: str) -> str:
+    return (
+        f'<a href="{escape(url, quote=True)}" target="_blank" '
+        f'rel="noopener noreferrer">{escape(label)}</a>'
+    )
+
+
+def shorten(text: str, limit: int = 40) -> str:
+    if len(text) <= limit:
+        return text
+    return text[: limit - 1] + "…"
+
+
+def compact_views(n: int) -> str:
+    if n >= 1_000_000:
+        return f"{n / 1_000_000:.2f}m"
+    if n >= 1_000:
+        return f"{n / 1_000:.0f}k"
+    return str(n)
+
+
+def channel_cell(name: str, url: str) -> str:
+    cell = html_link(name, url)
+    if name == "Überfluss":
+        cell += '<br><span style="font-size:12px">Belongs to Finanzfluss</span>'
+    return cell
+
+
+def build_h_index_table():
+    rows = top_channels_h_index.sort(["h", "views_sum"], descending=True)
+    table = rows.select(
+        pl.struct("channel_name", "channel_link")
+        .map_elements(
+            lambda row: channel_cell(row["channel_name"], row["channel_link"]),
+            return_dtype=pl.String,
+        )
+        .alias("channel"),
+        pl.col("h"),
+        pl.col("h").alias("h_bar"),
+        pl.col("subscribers").map_elements(compact_views, return_dtype=pl.String),
+        pl.col("like_rate"),
+        pl.struct("top_video_title", "top_video_id", "top_video_views")
+        .map_elements(
+            lambda row: (
+                f"{compact_views(row['top_video_views'])}<br>"
+                f'<span style="font-size:12px;white-space:nowrap">'
+                f"{html_link(shorten(row['top_video_title']), f'https://www.youtube.com/watch?v={row["top_video_id"]}')}"
+                f"</span>"
+            ),
+            return_dtype=pl.String,
+        )
+        .alias("top_video"),
+        pl.col("first_published").dt.year().alias("first_published"),
+    )
+    focus_rows = [
+        i for i, tone in enumerate(rows.get_column("tone").to_list()) if tone == "focus"
+    ]
+    return (
+        GT(table)
+        .tab_header(
+            title="Finanzfluss is in a different league",
+            subtitle="h videos with at least h × 10,000 views",
+        )
+        .cols_label(
+            channel="Channel",
+            h="h",
+            h_bar="",
+            subscribers="Subscribers",
+            like_rate="Like ratio",
+            first_published="First video",
+            top_video="Most viewed video",
+        )
+        .fmt_markdown(columns=["channel", "top_video"])
+        .fmt_integer(columns=["h", "first_published"], use_seps=False)
+        .fmt_percent(columns="like_rate", decimals=1)
+        .fmt_nanoplot(
+            columns="h_bar",
+            plot_type="bar",
+            options=nanoplot_options(
+                data_bar_fill_color=COLOR_CUSTOM,
+                data_bar_stroke_color=COLOR_CUSTOM,
+                data_bar_stroke_width=1,
+            ),
+        )
+        .cols_align(
+            align="right", columns=["h", "subscribers", "like_rate", "first_published"]
+        )
+        .cols_align(align="left", columns=["channel", "top_video"])
+        .cols_width(
+            cases={
+                "channel": "18%",
+                "h": "6%",
+                "h_bar": "12%",
+                "subscribers": "10%",
+                "like_rate": "10%",
+                "top_video": "34%",
+                "first_published": "10%",
+            }
+        )
+        .tab_style(
+            style=[style.fill(color="#dbeafe"), style.text(color="#1e40af")],
+            locations=loc.body(rows=focus_rows),
+        )
+        .tab_source_note(
+            "Like ratio is likes / views. Videos under 3 min or with like ratio below 0.5% dropped. First video is the earliest year in this crawl."
+        )
+        .pipe(table_theme_custom)
+    )
+
+
+build_h_index_table()
+```
+
+The leading channel is Finanzfluss, which has an h-index of `{python} finanzfluss_h`: `{python} finanzfluss_h` videos with at least `{python} f"{finanzfluss_h_views:,}"` views. This puts it in a huge lead over the second channel. Finanzfluss is a polished educational channel by Thomas Kehl with a calm style that treats its viewers as self-deciders. It arrived when young Germans started looking up ETFs. In addition, its bonus content channel Überfluss takes third place.
+
+Among the top 10, we see more general channels like Finanztip but also specialized channels like rentenbescheid24.de targeting retirees and immocation, focussing on real estate. Achieving a high h index requires popularity and consistency, so it's not surprising that the top channels have typically been posting for more than five years.
+
+### Timely advice and popular aspirations make topics for hit videos
+
+Subscriber counts and h-indexes measure who posts consistently. Let's zoom in on individual videos. After dropping brand-channel ads, the five most-watched remaining videos:
+
+```{python}
+def build_top_organic_table():
+    table = top_organic_videos.select(
+        pl.col("rank"),
+        pl.col("channel_name").alias("channel"),
+        pl.struct("title", "video_id")
+        .map_elements(
+            lambda row: html_link(
+                shorten(row["title"], 48),
+                f"https://www.youtube.com/watch?v={row['video_id']}",
+            ),
+            return_dtype=pl.String,
+        )
+        .alias("title"),
+        pl.col("published_time"),
+        pl.col("views").map_elements(compact_views, return_dtype=pl.String),
+        pl.col("like_rate"),
+    )
+    return (
+        GT(table)
+        .tab_header(title="Most viewed videos")
+        .cols_label(
+            rank="#",
+            channel="Channel",
+            title="Title",
+            published_time="Published",
+            views="Views",
+            like_rate="Like ratio",
+        )
+        .fmt_markdown(columns="title")
+        .fmt_integer(columns="rank", use_seps=False)
+        .fmt_date(columns="published_time", date_style="iso")
+        .fmt_percent(columns="like_rate", decimals=1)
+        .cols_align(align="center", columns="rank")
+        .cols_align(align="right", columns=["published_time", "views", "like_rate"])
+        .cols_align(align="left", columns=["channel", "title"])
+        .pipe(table_theme_custom)
+    )
+
+
+build_top_organic_table()
+```
+
+- FinanzNerd's Grundsteuer ELSTER walkthrough is a field-by-field tutorial for handling Germany's property tax reform. The video came at the right time when millions of home owners looked for an explanation.
+- Dr. Andreas Beck's lecture on living from invested capital is the only real investment advice in the top five. It talks to people who already have a lump sum, from a house sale or inheritance.
+- Two Finanzfluss videos: One is a myth or bust video on passive income. The other explains why saving the first 100,000 € feels so slow. They have the highest like rates of the five.
+- smartsteuer's "7 wichtige Neuerungen für Rentner 2024" is the same civic genre as the Grundsteuer video, aimed at 21 million pensioners and timed for January rule changes.
+
+### Individual vs corporate channels
+
+I had an LLM label each channel as either an individual channel (including ones that have a production team, e.g. Finanzfluss) and corporate channels, e.g. the channels of the insurances HUK, ERGO and R+V. The crawl has `{python} n_individual_channels` individual channels (`{python} f"{n_individual_videos:,}"` videos, `{python} f"{n_individual_views / 1e6:.0f}"` million views) and `{python} n_corporate_channels` corporate channels (`{python} f"{n_corporate_videos:,}"` videos, `{python} f"{n_corporate_views / 1e6:.0f}"` million views).
+
+## Content analysis
+
+### Defining topics
+
+The next step is to define a taxonomy of topics. I opted for two layers: topics and sub-topics. I started by listing what I already knew from watching German personal finance videos. Then I went through two rounds of iterations using the `bucket` function from OpenAI's [GABRIEL](https://github.com/openai/GABRIEL) package. I fed it the titles, descriptions, and opening minutes of the videos. It repeatedly showed the model a random subset of those texts and asked it to suggest a handful of topic names with short definitions. Many of those suggestions overlapped. In a second pass, the model voted on which topics were most useful until only a small set of non-overlapping topics remained. I did a final review, then used the taxonomy to label all data using GABRIEL's `classfiy` function. The labeling prompt takes in the title, description and the first 60 seconds of the transcripts. I ran the labeling in two passes:
+
+1. Label by the top level topics
+2. Label subtopics separate by each top level topic
+
+This keeps the number of choices shown to the model at any one point manageable.
+
+### Topic overview
+
+The breadth of topics mirrors the offerings of a full service consumer bank and insurance. Investing, budgeting and money habits and real estate are the three biggest topics. Hover over the interactive treemap below to see more subtopics and statistics. In the following, I will provide some mini deep dives into different subtopics.
+
+::: {.article-plot}
+```{python}
+def build_topic_treemap():
+    plot_data = (
+        subtopic_count.filter(pl.col("subtopic_videos") > 0)
+        .sort(["topic_order", "subtopic_videos"], descending=[False, True])
+        .with_columns(
+            pl.col("topic").cast(pl.Utf8),
+            pl.col("subtopic").cast(pl.Utf8),
+        )
+        .to_pandas()
+    )
+    fig = px.treemap(
+        plot_data,
+        path=["topic", "subtopic"],
+        values="subtopic_videos",
+        color="topic",
+        color_discrete_map=dict(zip(topic_levels, COLORS_CUSTOM)),
+        color_discrete_sequence=list(COLORS_CUSTOM),
+    )
+    fig.update_traces(
+        textinfo="label",
+        insidetextfont=dict(family="Inter, sans-serif", size=12),
+        customdata=[[parent or "personal finance"] for parent in fig.data[0].parents],
+        hovertemplate=(
+            "<b>%{label}</b><br>Videos: %{value}<br>"
+            "%{percentParent:.0%} of %{customdata[0]}<extra></extra>"
+        ),
+        marker=dict(line=dict(width=2, color=PLOT_BACKGROUND), cornerradius=0),
+        tiling=dict(pad=2),
+        pathbar=dict(visible=False),
+        root_color=PLOT_BACKGROUND,
+        level="",
+    )
+    fig.update_layout(
+        font=dict(family="Inter, sans-serif", size=12, color=PLOT_TEXT),
+        colorway=list(COLORS_CUSTOM),
+        updatemenus=[
+            dict(
+                type="buttons",
+                showactive=False,
+                x=1,
+                y=1.0,
+                xanchor="right",
+                yanchor="bottom",
+                pad=dict(r=0, t=0),
+                bgcolor=PLOT_BACKGROUND,
+                bordercolor=PLOT_RULE,
+                borderwidth=1,
+                font=dict(family="Inter, sans-serif", size=11, color=PLOT_TEXT),
+                buttons=[
+                    dict(
+                        label="Reset",
+                        method="restyle",
+                        args=[{"level": ""}],
+                    )
+                ],
+            )
+        ],
+        title=dict(
+            text=(
+                "Investing and budgeting fill most of the map"
+                f"<br><span style='font-size:12px;color:{PLOT_MUTED};font-weight:400'>"
+                "Click a topic to zoom in. Reset returns to the full map. "
+                "Tile size is the number of classified videos with that subtopic.</span>"
+            ),
+            font=dict(family="Inter, sans-serif", size=18, color=PLOT_TEXT),
+            x=0,
+            xanchor="left",
+            pad=dict(t=0, l=0),
+        ),
+        hoverlabel=dict(
+            bgcolor=PLOT_BACKGROUND,
+            bordercolor=PLOT_RULE,
+            font=dict(family="Inter, sans-serif", size=12, color=PLOT_TEXT),
+        ),
+        paper_bgcolor=PLOT_BACKGROUND,
+        plot_bgcolor=PLOT_BACKGROUND,
+        margin=dict(t=120, l=4, r=4, b=40),
+        width=680,
+        height=832,
+        showlegend=False,
+        uniformtext=dict(minsize=10, mode="hide"),
+        annotations=[
+            dict(
+                text="Multi-label · zero-hit subtopics omitted",
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=1,
+                y=-0.06,
+                xanchor="right",
+                yanchor="top",
+                font=dict(
+                    family="JetBrains Mono, monospace",
+                    size=9,
+                    color=PLOT_MUTED,
+                ),
+            )
+        ],
+    )
+    return fig
+
+
+display(
+    HTML(
+        build_topic_treemap().to_html(
+            include_plotlyjs="cdn",
+            full_html=False,
+            config={"displaylogo": False, "displayModeBar": False},
+            post_script="""
+var gd = document.getElementById('{plot_id}');
+gd.on('plotly_treemapclick', function(ev) {
+    var pt = ev.points && ev.points[0];
+    if (!pt) return;
+    var id = (pt.data.ids || [])[pt.pointNumber] || '';
+    if (id.indexOf('/') !== -1) return false;
+});
+""",
+        )
+    )
+)
+```
+:::
+
+### Shifting popularity of investments
+
+```{python}
+INVESTING_VEHICLES = {
+    "ETFs and index funds": "ETFs",
+    "Individual stocks": "Stocks",
+    "Gold": "Gold",
+    "Silver": "Silver",
+    "Bonds": "Bonds",
+    "Savings and deposits": "Savings accounts",
+    "Bausparvertrag": "Bauspar",
+    "P2P and private credit": "P2P",
+    "Active funds and robo-advisors": "Active funds",
+    "Cryptoassets": "Crypto",
+}
+
+
+def vehicle_share_in_year(name: str, year: int) -> float:
+    row = vehicle_year.filter((pl.col("vehicle") == name) & (pl.col("year") == year))
+    if row.is_empty():
+        return 0.0
+    return float(row.get_column("share")[0])
+
+
+classified_year = (
+    classified_videos.with_columns(pl.col("published_time").dt.year().alias("year"))
+    .group_by("year")
+    .agg(pl.len().alias("classified"))
+)
+vehicle_year = (
+    subtopic_quarter.filter(pl.col("topic") == "Investing")
+    .filter(pl.col("subtopic").cast(pl.Utf8).is_in(list(INVESTING_VEHICLES)))
+    .with_columns(
+        pl.col("quarter").cast(pl.Utf8).str.slice(0, 4).cast(pl.Int32).alias("year"),
+        pl.col("subtopic")
+        .cast(pl.Utf8)
+        .replace_strict(INVESTING_VEHICLES)
+        .alias("vehicle"),
+    )
+    .group_by("year", "vehicle")
+    .agg(pl.col("videos").sum().alias("hits"))
+    .join(classified_year, on="year")
+    .with_columns((pl.col("hits") / pl.col("classified") * 100).alias("share"))
+    .sort(["vehicle", "year"])
+)
+etf_recent = vehicle_year.filter(
+    (pl.col("vehicle") == "ETFs") & (pl.col("year") >= 2018)
+).get_column("share")
+etf_share_recent = float(etf_recent.median()) if etf_recent.len() else 0.0
+gold_share_2025 = vehicle_share_in_year("Gold", 2025)
+gold_share_2026 = vehicle_share_in_year("Gold", 2026)
+silver_share_2025 = vehicle_share_in_year("Silver", 2025)
+silver_share_2026 = vehicle_share_in_year("Silver", 2026)
+stocks_share_2020 = vehicle_share_in_year("Stocks", 2020)
+bonds_share_2026 = vehicle_share_in_year("Bonds", 2026)
+```
+
+From 2018 onward, ETFs are mentioned in about 20% of videos, going as the stable most popular investment form according to YouTube. ETFs can hold stocks or bonds, but in this niche the label usually means stock indices such as MSCI World or S&P 500. Individual stocks peaked in the Covid year 2020 (`{python} f"{stocks_share_2020:.0f}"`%), then receded. Private loans continuously lost popularity since 2018. Crypto is having boom and busts.
+
+Gold and silver are gaining momentum in 2025 and 2026. Gold was near zero until 2022, then `{python} f"{gold_share_2025:.1f}"`% in 2025 and `{python} f"{gold_share_2026:.1f}"`% in 2026. Silver was essentially not mentioned until 2025 (`{python} f"{silver_share_2025:.1f}"`%), then `{python} f"{silver_share_2026:.1f}"`% in 2026. Bonds have a low volume of video mentions (`{python} f"{bonds_share_2026:.1f}"`% in 2026).
+
+::: {.article-plot}
+```{python}
+def build_investment_vehicles_plot():
+    omitted = ["Bonds", "Active funds", "Bauspar"]
+    vehicle_order = [
+        v for v in INVESTING_VEHICLES.values() if v not in omitted
+    ]
+    plot_data = (
+        vehicle_year.filter(pl.col("year") >= 2018)
+        .filter(~pl.col("vehicle").is_in(omitted))
+        .sort(["vehicle", "year"])
+        .to_pandas()
+    )
+    plot_data["year"] = plot_data["year"].astype(int)
+    plot_data["vehicle"] = pd.Categorical(
+        plot_data["vehicle"], categories=vehicle_order, ordered=True
+    )
+    highlight = {"ETFs", "Gold", "Silver"}
+    plot_data = plot_data.sort_values(["vehicle", "year"])
+    plot_data["_draw"] = plot_data["vehicle"].map(
+        lambda v: 1 if v in highlight else 0
+    )
+    plot_data = plot_data.sort_values(["_draw", "vehicle", "year"])
+    gray = "#94a3b8"
+    vehicle_colors = {v: gray for v in vehicle_order}
+    vehicle_colors["ETFs"] = COLOR_CUSTOM
+    vehicle_colors["Gold"] = "#eab308"
+    vehicle_colors["Silver"] = COLORS_CUSTOM[1]
+    vehicle_shapes = {
+        "ETFs": 16,
+        "Stocks": 15,
+        "Gold": 17,
+        "Silver": 18,
+        "Savings accounts": 3,
+        "P2P": 4,
+        "Crypto": 8,
+    }
+    tooltips = (
+        layer_tooltips()
+        .line("@vehicle")
+        .line("Year|@year")
+        .format("@year", "d")
+        .line("Share|@share")
+        .format("@share", ".1f")
+        .line("Videos|@hits")
+    )
+    return (
+        ggplot(
+            plot_data,
+            aes(
+                x="year",
+                y="share",
+                group="vehicle",
+                color="vehicle",
+                shape="vehicle",
+            ),
+        )
+        + geom_line(size=1.5, tooltips=tooltips)
+        + geom_point(size=4.5, tooltips=tooltips)
+        + scale_color_manual(values=vehicle_colors, breaks=vehicle_order)
+        + scale_shape_manual(values=vehicle_shapes, breaks=vehicle_order)
+        + scale_x_continuous(breaks=[2018, 2020, 2022, 2024, 2026], format="d")
+        + scale_y_continuous(breaks=[0, 10, 20, 30], format="d")
+        + labs(
+            title="ETFs are the stable default. Gold and silver are on the rise.",
+            subtitle="Share of labeled videos with each investing vehicle",
+            x="",
+            y="Share of videos (%)",
+            color="",
+            shape="",
+            caption="Multi-label · 2026 through August · Bonds, active funds and Bauspar omitted",
+        )
+        + theme_custom()
+        + theme(panel_grid_major_x=element_blank())
+        + ggsize(680, 480)
+    )
+
+
+build_investment_vehicles_plot()
+```
+:::
+
+
+### The envelope method
+
+![Envelope method](envelope_method.png)
+
+Within the budgeting topic, the most commonly mentioned one is the envelope method (German: Umschlagmethode), which came up 3700 times. It's a way of organizing a budget with cash in physical envelopes. In short: After fixed costs, leftover cash is split into labeled envelopes for variable spending such as groceries, fuel and leisure. You pay only from the matching envelope. When it is empty, that category waits until the next month. It's anachronistic in an increasingly digitalized financial world, yet enjoys high popularity on YouTube. There are many reasons: a physical system makes budgeting tangible in a way that an app can't. Filling carefully labeled envelopes with crisp bank notes also makes for more satisfying scenes than a screen share.
+
+### The neo-broker wars
+
+One of the most common questions of new investors is: Which broker should I use? During the Covid years, neo brokers entered the scence and offered cheaper, simpler, self-service broker accounts. In 2022, about one in five videos mentioned Trade Republic, and about one in five mentioned Scalable. The share of Comdirect, which could be called the original neo broker, has fallen continously. By 2026 the shares have fallen to roughly 6% and 5%. Note that a video can mention more than one.
+
+::: {.article-plot}
+```{python}
+def build_broker_mentions_plot():
+    broker_order = [
+        "Trade Republic",
+        "Scalable Capital",
+        "comdirect",
+        "Finanzen.net Zero",
+        "Smartbroker",
+        "Traders Place",
+        "flatex",
+    ]
+    plot_data = (
+        broker_mentions.filter(pl.col("year") >= 2018)
+        .sort(["broker", "year"])
+        .to_pandas()
+    )
+    plot_data["year"] = plot_data["year"].astype(int)
+    plot_data["broker"] = pd.Categorical(
+        plot_data["broker"], categories=broker_order, ordered=True
+    )
+    highlight = {"Trade Republic", "Scalable Capital", "comdirect"}
+    plot_data["_draw"] = plot_data["broker"].map(
+        lambda v: 1 if v in highlight else 0
+    )
+    plot_data = plot_data.sort_values(["_draw", "broker", "year"])
+    gray = "#94a3b8"
+    broker_colors = {v: gray for v in broker_order}
+    broker_colors["Trade Republic"] = COLOR_CUSTOM
+    broker_colors["Scalable Capital"] = COLORS_CUSTOM[1]
+    broker_colors["comdirect"] = "#eab308"
+    broker_shapes = {
+        "Trade Republic": 16,
+        "Scalable Capital": 15,
+        "comdirect": 17,
+        "Finanzen.net Zero": 18,
+        "Smartbroker": 3,
+        "Traders Place": 4,
+        "flatex": 8,
+    }
+    tooltips = (
+        layer_tooltips()
+        .line("@broker")
+        .line("Year|@year")
+        .format("@year", "d")
+        .line("Share|@share")
+        .format("@share", ".1f")
+        .line("Mentions|@hits")
+    )
+    return (
+        ggplot(
+            plot_data,
+            aes(
+                x="year",
+                y="share",
+                group="broker",
+                color="broker",
+                shape="broker",
+            ),
+        )
+        + geom_line(size=1.5, tooltips=tooltips)
+        + geom_point(size=4.5, tooltips=tooltips)
+        + scale_color_manual(values=broker_colors, breaks=broker_order)
+        + scale_shape_manual(values=broker_shapes, breaks=broker_order)
+        + scale_x_continuous(breaks=[2018, 2020, 2022, 2024, 2026], format="d")
+        + scale_y_continuous(format="d")
+        + labs(
+            title="Trade Republic and Scalable peaked together in 2022",
+            subtitle="Share of videos mentioning each broker in the title or description",
+            x="",
+            y="Share of videos (%)",
+            color="",
+            shape="",
+            caption="Counted mentions in descriptions · multi-label",
+        )
+        + theme_custom()
+        + theme(panel_grid_major_x=element_blank())
+        + ggsize(680, 480)
+    )
+
+
+build_broker_mentions_plot()
+```
+:::
+
+## YouTube videos are financial education for millions
+
+Personal finance is a relevant topic for almost every adult in Germany. The view counts going into the millions demonstrate that YouTube is a key information source. Finanzfluss in particular has become a household name. To match the demand, there are videos aiming at beginner topics like practical budgeting all the way to expert topics like derivatives. Videos can also be divided into evergreen topics like setting up an ETF savings plan, and event driven ones, such as the property tax reform in 2022.
+
+A recent change that is already starting to generate videos is the new type of retirement account, the AVD (Altersvorsorgedepot). This corpus already includes `{python} n_avd_videos` videos about it. Again, millions of viewers are coming to YouTube to be educated about their options.
+
+The analysis in this article only scratches the surface of what this dataset offers. There are countless strategies, stories and viewpoints told in more than 25000 transcripts. Even more can be found in the comments.
+
+The crawler released along with this article is not finance-specific. It takes a bounded topic (language, date range, positive and negative examples), and snowballs through search, related videos and channel catalogues. Swap the seed questions and build a corpus for any niche on YouTube.
+
+## Acknowledgements
+
+Thank you to [SearchAPI](https://www.searchapi.io/?utm_source=&utm_medium=Ambassador&utm_campaign=simmering.dev) for providing free credits.
+
+If you're interested in customized social media analyses of finance, insurance or any other topic, please contact [Q | Agentur für Forschung](https://teamq.de/en/).

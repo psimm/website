@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://simmering.dev/blog.html</loc>
-    <lastmod>2026-08-02T18:13:16.021Z</lastmod>
+    <lastmod>2026-09-06T13:34:54.323Z</lastmod>
   </url>
   <url>
     <loc>https://simmering.dev/assets/fonts/jetbrains-mono/LICENSE.html</loc>
@@ -331,5 +331,13 @@
   <url>
     <loc>https://simmering.dev/blog/save-token-costs/index.html</loc>
     <lastmod>2026-06-27T12:38:17.170Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/finance-youtube-de/index.html</loc>
+    <lastmod>2026-09-10T06:16:40.861Z</lastmod>
+  </url>
+  <url>
+    <loc>https://simmering.dev/blog/finance-youtube-de/eda.html</loc>
+    <lastmod>2026-09-06T19:40:07.489Z</lastmod>
   </url>
 </urlset>

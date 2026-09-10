@@ -1,0 +1,304 @@
+{
+  "topics": [
+    {
+      "name": "Investing",
+      "description": "Putting money into financial assets and cash products to preserve capital, generate income, or grow wealth.",
+      "subtopics": [
+        {
+          "name": "ETFs and index funds",
+          "description": "Selecting and using ETFs and index funds, including Sparplan, MSCI World, FTSE All-World, S&P 500, and emerging-market funds."
+        },
+        {
+          "name": "Individual stocks",
+          "description": "Selecting, valuing, buying, holding, or selling shares in individual companies, including Aktien and Einzelwerte."
+        },
+        {
+          "name": "Gold",
+          "description": "Physical gold, gold coins or bars, gold ETCs such as Xetra-Gold, and gold price or inflation-hedge videos."
+        },
+        {
+          "name": "Silver",
+          "description": "Physical silver, Silbermünzen or bars, silver ETCs, and silver price or shortage videos."
+        },
+        {
+          "name": "Bonds",
+          "description": "Investing in government or corporate bonds and understanding yield, duration, credit risk, Anleihen, and bond funds."
+        },
+        {
+          "name": "Savings and deposits",
+          "description": "Using Tagesgeld, Festgeld, savings accounts, and similar low-risk interest-bearing products."
+        },
+        {
+          "name": "Bausparvertrag",
+          "description": "Bausparvertrag as a savings contract, including whether the classic Sparmodell is still worthwhile."
+        },
+        {
+          "name": "P2P and private credit",
+          "description": "P2P lending platforms such as Loanch, Mintos, Bondora, and Bondora Go & Grow."
+        },
+        {
+          "name": "Active funds and robo-advisors",
+          "description": "Using actively managed funds, wealth managers, or automated investment services and evaluating their fees and performance."
+        },
+        {
+          "name": "Portfolio strategy",
+          "description": "Asset allocation, diversification, rebalancing, and risk tolerance as the main subject of the video."
+        },
+        {
+          "name": "Cryptoassets",
+          "description": "Buying, holding, or evaluating cryptocurrencies and other digital assets as personal investments."
+        },
+        {
+          "name": "Leverage and derivatives",
+          "description": "Using options, futures, warrants, leveraged products, margin, or credit to amplify investment exposure and risk."
+        }
+      ]
+    },
+    {
+      "name": "Insurance",
+      "description": "Managing personal and household risks through appropriate insurance coverage at a reasonable cost.",
+      "subtopics": [
+        {
+          "name": "Private health insurance (PKV)",
+          "description": "Private Krankenversicherung membership: switching into PKV, contributions, deductibles, Beihilfe, Gesundheitsprüfung, and dedicated PKV versus GKV membership choices."
+        },
+        {
+          "name": "Statutory health insurance (GKV)",
+          "description": "Gesetzliche Krankenversicherung: Zusatzbeitrag, Familienversicherung, and staying in or returning to GKV."
+        },
+        {
+          "name": "Supplementary health cover",
+          "description": "Krankenzusatzversicherung, Zahnzusatz, Krankenhauszusatz, and other add-on policies on top of GKV."
+        },
+        {
+          "name": "Personal liability insurance",
+          "description": "Privathaftpflicht: coverage for accidental harm to other people or their property, including limits and exclusions."
+        },
+        {
+          "name": "Disability and income protection",
+          "description": "Berufsunfähigkeit, Erwerbsunfähigkeit, Krankentagegeld, and other cover that protects earned income against incapacity or severe illness."
+        },
+        {
+          "name": "Life and survivor protection",
+          "description": "Risikolebensversicherung, funeral cover, and related policies intended to protect dependants after a death."
+        },
+        {
+          "name": "Home and belongings insurance",
+          "description": "Hausrat, Wohngebäude, and Elementarversicherung for homes and possessions."
+        },
+        {
+          "name": "Legal expenses insurance",
+          "description": "Rechtsschutzversicherung for legal advice, lawyers, and court costs across private, employment, traffic, or housing disputes."
+        },
+        {
+          "name": "Motor insurance",
+          "description": "KFZ and Autoversicherung: Haftpflicht, Teilkasko, Vollkasko, deductibles, and no-claims bonuses."
+        },
+        {
+          "name": "Travel and specialist insurance",
+          "description": "Travel health, cancellation, pet, device, and other narrowly targeted policies, including whether the coverage is worthwhile."
+        }
+      ]
+    },
+    {
+      "name": "Budgeting and money habits",
+      "description": "Managing income, spending, saving, and everyday financial decisions to keep household finances sustainable.",
+      "subtopics": [
+        {
+          "name": "Income and expense tracking",
+          "description": "Recording, categorizing, and reviewing cash flows with a Haushaltsbuch, spreadsheet, or app."
+        },
+        {
+          "name": "Envelope method",
+          "description": "Umschlagmethode, cash stuffing, Sparchallenge, and physical or digital envelope systems for allocating cash."
+        },
+        {
+          "name": "Budget systems",
+          "description": "Zero-based budgets, 50/30/20, percentage rules, sinking funds, and similar allocation methods other than envelope systems."
+        },
+        {
+          "name": "Emergency funds",
+          "description": "Choosing the size, location, and use rules for liquid reserves that cover unexpected costs or income loss."
+        },
+        {
+          "name": "Saving goals",
+          "description": "Planning and automating savings for purchases, education, travel, family needs, or other short- and medium-term goals."
+        },
+        {
+          "name": "Reducing spending",
+          "description": "Finding unnecessary costs, negotiating bills, changing consumption habits, and evaluating frugality strategies."
+        },
+        {
+          "name": "Household financial planning",
+          "description": "Coordinating money between partners or family members, including shared expenses, accounts, and financial responsibilities."
+        },
+        {
+          "name": "Psychology of money",
+          "description": "Videos about money mindset, financial anxiety, or the psychology of spending and investing."
+        }
+      ]
+    },
+    {
+      "name": "Banking and payments",
+      "description": "Videos whose subject is Girokonto, debit or credit cards, Kontowechsel, banking apps, account fees, or fraud and phishing. A passing mention of Konto or Bank is not enough.",
+      "subtopics": [
+        {
+          "name": "Account comparisons",
+          "description": "Girokonto comparisons, including C24, Trade Republic, neobanks, traditional current accounts, Auslandskonto, fees, and Kontowechsel."
+        },
+        {
+          "name": "Credit cards",
+          "description": "Credit cards, bonus programs, cashback, benefits, and card fees."
+        },
+        {
+          "name": "Online banking security",
+          "description": "Keeping bank accounts safe, frozen accounts, phishing, and regaining access."
+        },
+        {
+          "name": "Banking apps",
+          "description": "Reviewing and comparing banking apps such as Finanzguru and bank-native apps."
+        }
+      ]
+    },
+    {
+      "name": "Retirement",
+      "description": "Government, employer, and private pension products: gesetzliche Rente, betriebliche Altersvorsorge, Riester, Rürup, Altersvorsorgedepot, and private Rentenversicherung. Ordinary ETF or stock investing for later is Investing.",
+      "subtopics": [
+        {
+          "name": "Statutory pension",
+          "description": "Gesetzliche Rente, Rentenpunkte, Rentenbescheid, Regelaltersgrenze, and public pension forecasts."
+        },
+        {
+          "name": "Occupational pension",
+          "description": "Betriebliche Altersvorsorge, Entgeltumwandlung, employer contributions, portability, and taxation."
+        },
+        {
+          "name": "Riester",
+          "description": "Riester-Rente: subsidies, fees, payout rules, and cancel or ripoff videos. Distinct from Rürup contracts and from the Altersvorsorgedepot."
+        },
+        {
+          "name": "Ruerup",
+          "description": "Rürup / Basisrente, including eligibility, tax treatment, fees, and payout rules. Distinct from Riester contracts."
+        },
+        {
+          "name": "Altersvorsorgedepot",
+          "description": "The proposed AV-Depot / Altersvorsorgedepot, including 2027-dated explainers and critiques. Distinct from Riester and from an ordinary depot."
+        },
+        {
+          "name": "Private pension insurance",
+          "description": "Private Rentenversicherung and capital life insurance used to generate retirement income."
+        },
+        {
+          "name": "Retirement needs and gaps",
+          "description": "Estimating future expenses, pension income, longevity, inflation, and the amount needed to close a retirement shortfall."
+        },
+        {
+          "name": "Retirement withdrawals",
+          "description": "Converting accumulated assets into sustainable income through withdrawals, annuities, or mixed strategies."
+        },
+        {
+          "name": "Early and flexible retirement",
+          "description": "Frührente, Rente mit 63, phased retirement, working in retirement, and the resulting benefit adjustments."
+        }
+      ]
+    },
+    {
+      "name": "Taxes",
+      "description": "Understanding and legally optimizing taxes that affect personal income, assets, investments, and major financial decisions.",
+      "subtopics": [
+        {
+          "name": "Filing, assessment and tax",
+          "description": "Preparing and filing German personal income tax returns with ELSTER, WISO, Taxfix, or smartsteuer, including deadlines and Finanzamt assessments."
+        },
+        {
+          "name": "Deductions and allowances",
+          "description": "Using deductible expenses, lump sums, tax-free allowances, family benefits, and other personal tax relief."
+        },
+        {
+          "name": "Investment taxes",
+          "description": "Abgeltungsteuer, Vorabpauschale, Freistellungsauftrag, dividends, fund taxation, crypto gains, and loss offsets."
+        },
+        {
+          "name": "Employment and self-employment taxes",
+          "description": "Tax questions involving salaries, benefits, side income, freelancing, business expenses, or mixed employment."
+        },
+        {
+          "name": "Property taxes",
+          "description": "Grundsteuer, Grunderwerbsteuer, and other taxes connected with buying, owning, renting, or selling real estate."
+        },
+        {
+          "name": "International taxation",
+          "description": "Personal tax residence, foreign income and assets, withholding taxes, and double-taxation issues."
+        },
+        {
+          "name": "Tax policy changes",
+          "description": "Legislative reforms, court decisions, thresholds, Neuerungen, and administrative changes that alter household finances."
+        }
+      ]
+    },
+    {
+      "name": "Real estate",
+      "description": "Buying, financing, owning, renting out, or selling residential real estate as a home or personal investment.",
+      "subtopics": [
+        {
+          "name": "Buying a home",
+          "description": "Searching for, viewing, negotiating, and completing the purchase of an owner-occupied house or Wohnung, including Nebenkosten and Notar."
+        },
+        {
+          "name": "Mortgage financing",
+          "description": "Baufinanzierung, Hypothek, Zinsbindung, Tilgung, Sondertilgung, Vorfälligkeit, Effektivzins, variables Darlehen, 100%-Finanzierung, KfW, affordability, and refinancing."
+        },
+        {
+          "name": "Renting versus buying",
+          "description": "Mieten oder kaufen comparisons of remaining a tenant versus purchasing a home."
+        },
+        {
+          "name": "Ownership costs",
+          "description": "Kaufnebenkosten, maintenance, Hausgeld, utilities, insurance, and reserves for repairs."
+        },
+        {
+          "name": "Building and renovating",
+          "description": "Financial planning for construction, modernization, energy upgrades, subsidies, and cost overruns."
+        },
+        {
+          "name": "Rental property investing",
+          "description": "Kapitalanlageimmobilie and Vermietung, including yields, vacancies, tenant issues, and financing risk."
+        },
+        {
+          "name": "Selling property",
+          "description": "Valuation, preparation, transaction costs, mortgage settlement, and financial decisions involved in a property sale."
+        }
+      ]
+    },
+    {
+      "name": "Credit and debt",
+      "description": "Consumer loans, car loans, buy-now-pay-later, SCHUFA, Inkasso, Pfändung, and personal insolvency. Home mortgages are real estate even when the video says Kredit.",
+      "subtopics": [
+        {
+          "name": "Consumer credit",
+          "description": "Getting consumer credit, buying on credit, buy now pay later schemes, interest rates on consumer credit"
+        },
+        {
+          "name": "Car loans",
+          "description": "Getting a car loan, interest rates on car loans"
+        },
+        {
+          "name": "Credit restructuring",
+          "description": "Taking out loans to finance other loans"
+        },
+        {
+          "name": "Debt collection",
+          "description": "Inkasso, Pfändung and related"
+        },
+        {
+          "name": "Credit scoring",
+          "description": "SCHUFA score and other credit requirements"
+        },
+        {
+          "name": "Financial distress",
+          "description": "Personal insolvency and debt counseling"
+        }
+      ]
+    }
+  ]
+}

@@ -501,6 +501,13 @@ body.quarto-dark .blog-post-nav-link:hover {
     text-underline-offset: 0.18em;
 }
 
+.article-plot .cell-output-display,
+.article-plot .cell-output-display > div,
+.article-plot svg,
+.article-plot iframe { max-width: 100%; }
+
+.article-plot .cell-output-display { overflow-x: clip; }
+
 @media (max-width: 767px) {
     .blog-post-nav {
         grid-template-columns: 1fr;

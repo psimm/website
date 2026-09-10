@@ -2,6 +2,8 @@
 title: "Blog"
 listing:
   contents: blog
+  exclude:
+    skip-listing: true
   sort: "date desc"
   type: default
   categories: true
