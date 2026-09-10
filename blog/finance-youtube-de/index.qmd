@@ -1,9 +1,10 @@
 ---
 title: "10 years of German personal finance YouTube videos analyzed"
 author: "Paul Simmering"
-date: "2026-09-07"
+date: "2026-09-10"
 categories: ["Social Media", "Python", "Machine Learning"]
 image: "image.webp"
+description: "A snowball crawl of German personal finance YouTube, then a transcript analysis of the most influential channels, topics, and brokers since 2016."
 execute:
   echo: false
 resources:
